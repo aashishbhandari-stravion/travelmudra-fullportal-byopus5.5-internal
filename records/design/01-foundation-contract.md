@@ -3254,7 +3254,7 @@ export interface CountryAdapter {
 ```
 
 Rules (MUST):
-1. Purity: an adapter module imports only `src/countries/contract.ts`, `zod`, and files inside its own package. A static test (T-F50) refuses imports of `node:*` I/O modules (`fs`, `net`, `http`, `https`, `child_process`, `worker_threads`, `dgram`, `dns`, `tls`), `src/kernel/*` (except `vocabulary/` types), `src/platform/*`, `src/modules/*` and `src/web/*`, and refuses `Date.now`, `Math.random`, `process.*` and `globalThis` access. Adapters never write state, never reach the network and never read files.
+1. Purity: an adapter module imports only `src/countries/contract.ts`, `zod`, and files inside its own package. A static test (T-F51) refuses imports of `node:*` I/O modules (`fs`, `net`, `http`, `https`, `child_process`, `worker_threads`, `dgram`, `dns`, `tls`), `src/kernel/*` (except `vocabulary/` types), `src/platform/*`, `src/modules/*` and `src/web/*`, and refuses `Date.now`, `Math.random`, `process.*` and `globalThis` access. Adapters never write state, never reach the network and never read files.
 2. Proposals only: every result is a proposal the owning writer accepts or rejects (B34, B36). An adapter never decides access, payment, readiness, outcome or launch.
 3. Fail closed: missing input ⇒ `unknown`, never `valid`. An exception, an invalid result shape or a call longer than `countries.callBudgetMs` (default 200 ms, measured with `performance.now()` around the synchronous call) ⇒ the caller treats the result as `unknown` / `country_adapter_error` and adds an `AttributionRecord` (Section 4.13). In-process runaway work that never returns is the accepted residual risk (B36 OWNER_DECISION): no sandbox, broker, worker thread or per-country scheduler is built.
 4. Containment: the caller invokes adapters only through `src/countries/invoke.ts` (`invokeAdapter(adapterId, version, fn, input, attributions)`), which applies rule 3, validates the input and result with zod, and never lets one country's failure change another country's result, list or queue (B36).
@@ -3264,12 +3264,12 @@ Rules (MUST):
 ### 16.3 Registry (`src/countries/registry.ts`)
 
 - The only file that imports adapter packages. It exports `ADAPTERS: readonly CountryAdapter[]` and `adapterCapabilities(env)` (synthetic adapters only when `env ∈ {test, local_test}`).
-- `src/server/compose.ts` and `tm release register` read the registry; no other file imports `src/countries/<pkg>/` (T-F50).
+- `src/server/compose.ts` and `tm release register` read the registry; no other file imports `src/countries/<pkg>/` (T-F51).
 - Duplicate `adapterId@version`, a manifest that fails its zod schema, or a synthetic adapter in `production` configuration refuses startup and release registration.
 
 ### 16.4 Conformance kit (`test/countries/conformance.ts`)
 
-A reusable suite. A test enumerates `ADAPTERS` and runs the kit for every adapter, so registering an adapter automatically subjects it to the kit (T-F51):
+A reusable suite. A test enumerates `ADAPTERS` and runs the kit for every adapter, so registering an adapter automatically subjects it to the kit (T-F52):
 - manifest valid; `adapterId`, `country`, `version` formats; `functions` match implemented methods; check codes unique;
 - purity (static import and global-access scan of the package);
 - determinism: the same input gives the same result 100 times;
@@ -3287,7 +3287,7 @@ A reusable suite. A test enumerates `ADAPTERS` and runs the kit for every adapte
 
 ### 16.6 No special-casing in shared code, and onboarding playbooks
 
-- Static test T-F52: outside `src/countries/`, test fixtures and `catalogue/synthetic/`, source files contain no ISO 3166 country code literal (alpha-2 or alpha-3, from an embedded list) except `IND` in the population-scope vocabulary, and no offering service code literal. Behaviour varies only through declarations, bindings, registries and adapters.
+- Static test T-F53: outside `src/countries/`, test fixtures and `catalogue/synthetic/`, source files contain no ISO 3166 country code literal (alpha-2 or alpha-3, from an embedded list) except `IND` in the population-scope vocabulary, and no offering service code literal. Behaviour varies only through declarations, bindings, registries and adapters.
 - Public site: a country page is one static content file `content/public/countries/<slug>.json` validated by a zod schema; adding it needs verified public facts only (B01). The SEO check covers it automatically.
 - Public playbooks (concise, public-fit, milestone 5): `docs/extending/new-service.md` (catalogue-only path, owner-gated items, launch plan and measures, impact review) and `docs/extending/new-country.md` (adapter package, registry, conformance kit, capability and release, declarations, public content, launch).
 
@@ -3295,9 +3295,22 @@ A reusable suite. A test enumerates `ADAPTERS` and runs the kit for every adapte
 
 | ID | Test | Proves |
 |---|---|---|
-| T-F50 | Static: adapter purity (imports and globals) and registry-only imports of adapter packages | 16.2 rule 1, 16.3 |
-| T-F51 | Conformance kit runs for every registered adapter (both synthetic adapters pass) | 16.4 |
-| T-F52 | Static: no country code or service code literals in shared code | 16.6 |
-| T-F53 | `invokeAdapter`: throw, invalid result and over-budget call each yield `unknown` / `country_adapter_error` plus one attribution; a second country's evaluation in the same transaction is unaffected | 16.2 rules 3–4, B36 |
-| T-F54 | A declaration that references an unregistered adapter or an unregistered version is `unsupported` (`declaration_unsupported`); registering the adapter in a new release makes it `supported` | 16.2 rule 5, 9.4 |
+| T-F51 | Static: adapter purity (imports and globals) and registry-only imports of adapter packages | 16.2 rule 1, 16.3 |
+| T-F52 | Conformance kit runs for every registered adapter (both synthetic adapters pass) | 16.4 |
+| T-F53 | Static: no country code or service code literals in shared code | 16.6 |
+| T-F54 | `invokeAdapter`: throw, invalid result and over-budget call each yield `unknown` / `country_adapter_error` plus one attribution; a second country's evaluation in the same transaction is unaffected | 16.2 rules 3–4, B36 |
+| T-F55 | A declaration that references an unregistered adapter or an unregistered version is `unsupported` (`declaration_unsupported`); registering the adapter in a new release makes it `supported` | 16.2 rule 5, 9.4 |
+
+## 17. Milestone allocation of the invariant tests (revision 3, architect)
+
+Section 13 lists every invariant test. Milestone 1 cannot prove module-level invariants before the modules exist, so each test is proven in the milestone that delivers its subject, and the final verification reruns all of them on the integrated system.
+
+| Milestone | Tests | How |
+|---|---|---|
+| 1 Foundation | T-F01–T-F15, T-F20, T-F21, T-F23–T-F31, T-F33, T-F35, T-F38, T-F51, T-F52, T-F53, T-F54 | through a test-only fixture module (`test/fixtures/kernel-fixture/`, table prefix `tst_`, migrations only in the test template) that exercises the command runner, guards (including an empty-scope partial unique index), tasks, blobs, fencing, workers, faults, diagnostics and the adapter contract; static tests run over the real source tree; T-F32 policy matrix runs for the skeleton actions available in milestone 1 |
+| 2 Identity, Catalogue, Documents/workers | T-F32 (full), T-F36, T-F47, T-F55 | real modules |
+| 3 Core, Intake, Payments | T-F13 (real scope), T-F16, T-F17, T-F18, T-F19, T-F22, T-F34, T-F43, T-F44, T-F45 | real modules |
+| 4 Operations, Delivery, Views | T-F39, T-F46, T-F49 | real modules |
+| 5 Release, backup, restore | T-F40, T-F41, T-F42, T-F48, T-F50 | real CLI against PostgreSQL 16.15 |
+| Final | all of Section 13 and 16.7 | integrated system |
 
