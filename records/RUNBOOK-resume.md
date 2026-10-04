@@ -42,6 +42,7 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
 | Milestone 2 lanes + integration | **merged to main 446132c** (identical to verified m2-integration 40af7de; 936/936 verified by orchestrator); worktrees/branches removed | — | — |
-| M2 review (SPEC/SEC/FAIL/EXT lenses + skeptics; UX approver; code fixes → UX fixes → UX recheck on one branch) | running | wf_67ea74ce-9a4 (task wvquaeslp) | travelmudra-m2-review-wf_67ea74ce-9a4.js |
+| M2 review | code: 26 findings, 12 confirmed P0/P1 (3 P0), fixed on branch fix/m2-review-findings 8363980 (950 tests). UX: changes_required (4 P0, 13 P1); UX fixer hit usage limit → partial work snapshotted d08c341 on worktree-wf_67ea74ce-9a4-19 (hooks enabled) | wf_67ea74ce-9a4 | travelmudra-m2-review-wf_67ea74ce-9a4.js |
+| M2 UX continuation (fixer ff-only to d08c341 → independent recheck) | running | wf_c2fe5b80-ca6 (task w333ic05m) | travelmudra-m2-ux-continue-wf_c2fe5b80-ca6.js |
 | Next | verify fix branch (UX fixer branch contains code fixes via ff), merge to main, gate, tag `m2-access-catalogue-documents`, verification record; then milestone 3 (core, intake + document association, payments) | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
