@@ -29,8 +29,9 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 ## Current state (update every step)
 | Item | State | Run id / branch | Script |
 |---|---|---|---|
-| Design (contract, modules, review, consolidation) | done | wf_e8b5df7e-a53 | travelmudra-design-wf_6f3d22c7-6e4.js |
+| Design (contract, modules, review, consolidation) | done; contract rev 4 (§16 extension, §17 test allocation, §18 delegated decisions) | wf_e8b5df7e-a53 | travelmudra-design-wf_6f3d22c7-6e4.js |
 | Design system (build → critique → fix) | running | wf_a69554df-5be, worktree-wf_a69554df-5be-1 | travelmudra-design-system-wf_a69554df-5be.js |
-| M1 stage A kernel core | running | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
-| Next | after stage A merge: M1 stage B (kernel runtime incl. REC-09 advisory gate + REC-11 kernel pool + REC-12 probe; platform seams; web shell + countries), then Principal UX approval of the design system, foundation review, tag `m1-foundation` | — | — |
+| M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
+| M1 stage B lanes (kernel runtime, platform seams, countries+static) | running | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
+| Next | merge B lanes (resolve vocabulary/reason-code conflicts; wire lease_lost hook into WorkerRunner), Principal UX approval gate for design system then merge, web-shell lane (needs design-system html.ts), foundation review workflow, gate, tag `m1-foundation` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
