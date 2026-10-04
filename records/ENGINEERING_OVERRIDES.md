@@ -49,3 +49,14 @@ Each entry is reversible engineering decomposition unless stated. None changes a
 - Replacement: `scripts/toolchain/install-user-toolchain.sh` downloads exact Ubuntu 24.04 packages with `apt-get download` (verified against signed indexes), extracts them into a user prefix, writes a SHA-256 manifest and `env.sh`. System-wide installation of the same packages remains an option for a host administrator.
 - Reason: passwordless sudo was not active in this session (`sudo -n` required a password; `/etc/sudoers.d/` held only its README); the product owner's temporary sudo offer was therefore not used. No host configuration was changed.
 - Downstream consequence: development processes use `LD_LIBRARY_PATH`/`TESSDATA_PREFIX`/`CVD_CERTS_DIR` from the prefix; packages in the prefix do not receive unattended security updates — rerun the script (optionally `--unpinned`) to refresh.
+
+## EO-08 — Client script policy: no JavaScript → progressive enhancement with one first-party script (2026-10-04)
+- Prior choice: CSP `script-src 'none'` everywhere except the CAPTCHA page.
+- Replacement: CSP `script-src 'self'` (no inline, no eval) with one small first-party enhancement script; every flow still works without JavaScript.
+- Reason: product owner's UI/UX direction (dynamic, responsive, meaningful micro-interactions, upload progress, live status) on top of server-rendered pages.
+- Impact: a first-party script surface to review; CSP still blocks inline and third-party scripts.
+- Downstream consequence: XSS defence still relies on output escaping plus a strict CSP without inline script.
+
+## EO-09 — Design skills installed (2026-10-04)
+- UI UX Pro Max (nextlevelbuilder/ui-ux-pro-max-skill@477bcb2), Impeccable (pbakaus/impeccable@6e802bd), Taste (Leonxlnx/taste-skill@ce26fc2, `design-taste-frontend`) installed at user level with PROVENANCE.md files; scripts reviewed before install (UI UX Pro Max: offline stdlib search over bundled CSV; Taste: markdown only; Impeccable: launcher that downloads a release engine binary verified only against a same-release checksum, plus a live mode that injects a script and asks for CSP relaxation).
+- Pre-fetching the Impeccable engine was denied by the session's auto-mode safety classifier. Agents use Impeccable in its documented degraded mode (markdown references only) and never run its launcher or live mode. Enabling the engine is the product owner's decision.

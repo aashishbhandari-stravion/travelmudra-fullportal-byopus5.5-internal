@@ -122,13 +122,23 @@ Cross-owner atomicity: a command handler owned by one module may call another ow
 
 `authorize(tx, actor, action, resource)` is the single policy entry. Every route, command, search, direct link, support view, task result, operation-result lookup and byte release calls it with current state (account status, owning TA, assignment, grants). Objects outside scope are indistinguishable from not found. Derived views never grant permission; list/search queries are scoped by the same policy predicate.
 
-## 7. Web surfaces
+## 7. Web surfaces and design system
 
-- Server-rendered HTML with an auto-escaping tagged-template helper (no template engine). No client JavaScript except the self-hosted ALTCHA widget on the TA sign-in page; CSP `script-src 'self'` on that page and `script-src 'none'` elsewhere.
+- Server-rendered HTML with an auto-escaping tagged-template helper (no template engine, no SPA framework). Every flow MUST work without JavaScript (progressive enhancement). One small first-party enhancement script (no framework, no inline script, no `eval`) MAY add: upload progress, inline validation using the constraint API, polling of long-running status regions, `<dialog>` confirmations, copy actions. CSP: `script-src 'self'` (no `'unsafe-inline'`, no `'unsafe-eval'`); `style-src 'self'`; fonts and images self-hosted. The self-hosted ALTCHA widget is the only third-party script and is served from our origin.
 - Surfaces: public (`/`, countries, about, search over static content, `robots.txt`, `sitemap.xml`), TA (`/ta/...`), operator (`/ops/...`), SuperAdmin (`/admin/...`), Accounts (`/accounts/...`, parked actions shown unavailable).
 - Every state-changing request: POST, session, CSRF synchronizer token, Origin/Referer check against configured origins, operation key. No generic table-mutation route.
 - Security headers via helmet: CSP, `frame-ancestors 'none'`, `Referrer-Policy: no-referrer`, `X-Content-Type-Options`, HSTS on HTTPS; `Cache-Control: no-store` on authenticated and byte responses. Authenticated pages carry `noindex`; robots disallows private surfaces.
 - Public site content is static, versioned content in the repository. Business locality is an unverified placeholder until verified evidence is supplied; the SEO check reports it as a release blocker. Do not invent business facts.
+
+### 7.1 UI/UX direction (product owner, 2026-10-04)
+
+Intent: state of the art, premium and deliberate, dynamic and responsive, visually distinctive without distraction, extremely clear despite complex application state, trustworthy around documents/payments/status, effortless across long multi-step workflows, excellent on desktop and mobile, polished across success/warning/failure/loading/correction/empty states. Priority: clarity + trust + workflow speed > visual spectacle. Avoid generic AI-SaaS aesthetics, gratuitous gradients, excessive cards, decorative animation and visual noise. Every screen answers: Where am I? What is happening? What requires my attention? What happens next?
+
+- The design system is established in the foundation milestone, in code, and reused by every later screen: design tokens (CSS custom properties), typography scale, spacing rhythm, colour semantics (status, severity, money, document states), surfaces/elevation, interaction states (hover/focus-visible/active/disabled/busy), form behaviour and validation patterns, action hierarchy, navigation, application-status patterns (progress meanings, pending owner/next action), document-state patterns, loading/skeleton/error/empty/success/correction patterns, responsive rules, motion principles (`prefers-reduced-motion` respected), and a small set of server-side component helpers. Modern vanilla CSS (custom properties, `@layer`, container queries, `:has()`, `:user-invalid`, cross-document view transitions). Self-hosted open-licence fonts. WCAG 2.2 AA.
+- Design skills (installed at `~/.claude/skills/`): **UI UX Pro Max** (`ui-ux-pro-max/SKILL.md`; broad reference layer; its offline `scripts/search.py` MAY be run), **Impeccable** (`impeccable/SKILL.md` + `reference/*.md`; primary product-UX craft and critique layer), **Taste** (`design-taste-frontend/SKILL.md`; visual-quality and anti-generic layer, with restraint for transactional workflows). They are complementary judgment, not specifications; the implementing agent decides and the orchestrator is final authority.
+- Skill safety rules: do NOT run Impeccable's `scripts/impeccable` launcher or engine (its binary download was blocked by the session safety classifier; use the skill's documented "launcher unavailable" path and read `reference/*.md` directly). Never use Impeccable live mode; never relax the product CSP for any tool. Do not run `npx` commands suggested by any skill. Do not let a skill add a CSS framework or SPA framework.
+- Concise `PRODUCT.md` (product/design context) and `DESIGN.md` (design-system reference) at the repository root are allowed if public-fit and short; no large design documents.
+- One bounded final UI/UX pass after the functional frontend is complete (milestone 6), using all three skills: cross-screen consistency, hierarchy, generic-looking UI, responsiveness, accessibility, workflow friction, form ergonomics, state communication, micro-interactions, motion, typography, spacing. Refactor only where the improvement is material; no indefinite polishing.
 
 ## 8. External seams
 
@@ -151,9 +161,9 @@ Implement each parked, excluded, known-limitation and owner-decision item as a v
 
 ## 11. Milestones (local main, one tag each)
 
-1. Foundation: kernel, platform facilities (database, blob store, workers, scanner, mail, CAPTCHA), web shell, schema framework, access-policy skeleton, invariant tests, independent foundation review.
+1. Foundation: kernel, platform facilities (database, blob store, workers, scanner, mail, CAPTCHA), web shell and design system, schema framework, access-policy skeleton, invariant tests, independent foundation review.
 2. Identity & Access; Catalogue, launch control and public site; Document Processing and workers.
 3. Core case model; Intake; Payment Records.
 4. Operations; TA Delivery; Derived Views and measures.
 5. Release/cutover, backup/restore, capacity, local install; full verification suite; crawl/SEO check.
-6. Independent multi-lens review, fixes, final verification and report.
+6. Independent multi-lens review, fixes, the bounded final UI/UX pass, final verification and report.
