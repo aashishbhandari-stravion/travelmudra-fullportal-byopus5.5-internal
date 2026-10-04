@@ -30,8 +30,9 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 | Item | State | Run id / branch | Script |
 |---|---|---|---|
 | Design (contract, modules, review, consolidation) | done; contract rev 4 (§16 extension, §17 test allocation, §18 delegated decisions) | wf_e8b5df7e-a53 | travelmudra-design-wf_6f3d22c7-6e4.js |
-| Design system | build+critique+fix done (8/8 findings applied, 159 tests); now in Principal UX approval gate → bounded fix/recheck → integration prep (merge main into branch, green check) | wf_b84d73e7-352 (task wscfmzk0e), branch worktree-wf_a69554df-5be-1 | travelmudra-ux-approval-and-integration-prep-wf_b84d73e7-352.js |
+| Design system | **merged** to main (f5fd6e5) after independent Principal UX approval (1 P0 + 4 P1 fixed and re-checked); main verified 492/492; worktree removed | wf_b84d73e7-352 | — |
 | M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
-| Next | after UX gate + integration prep: merge design-system branch; web-shell + server composition lane (Fastify shell, compose root wiring kernel pool/lease_lost→worker abort/task loop/watchInstallation, health, maintenance/error pages, operation lookup); foundation review workflow (B41); gate; tag `m1-foundation` | — | — |
+| M1 close: web shell + server composition lane ∥ four-lens foundation review → adversarial verify → fix round | running | wf_bbbfc620-233 (task wewb6nxqp) | travelmudra-m1c-webshell-and-foundation-review-wf_bbbfc620-233.js |
+| Next | merge web-shell branch and review-fix branch (both worktree branches), full gate, quick review of web shell if needed, tag `m1-foundation`; then milestone 2 lanes (identity+web auth, catalogue+launch+public site, documents+workers jobs) | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
