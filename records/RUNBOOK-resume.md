@@ -36,6 +36,6 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 | Design system | **merged** to main (f5fd6e5) after independent Principal UX approval (1 P0 + 4 P1 fixed and re-checked); main verified 492/492; worktree removed | wf_b84d73e7-352 | — |
 | M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
-| M1 close: web shell ∥ foundation review → verify → fix | done; web shell merged; review-fixes merged (b48df28); integration-seam fix agent running (compose auditHealth/sql, route markers vs single-policy scanner, single CSP) | wf_bbbfc620-233 | — |
-| Next | merge web-shell branch and review-fix branch (both worktree branches), full gate, quick review of web shell if needed, tag `m1-foundation`; then milestone 2 lanes (identity+web auth, catalogue+launch+public site, documents+workers jobs) | — | — |
+| **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
+| Next | Milestone 2 lanes: identity+auth surfaces, catalogue+launch+public site, documents pipeline+worker jobs; then integration, independent review (incl. Principal UX approval of new screens), tag `m2-…` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
