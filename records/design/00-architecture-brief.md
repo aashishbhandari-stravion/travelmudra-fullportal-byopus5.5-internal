@@ -13,6 +13,12 @@ Revision 2 replaces the zero-dependency/SQLite stack of revision 1 on the produc
 - All synthetic data is labelled synthetic (e.g. `@synthetic.test` emails, country "Synthetica", names prefixed `SYN`, passport numbers in a reserved synthetic pattern). Never use real personal data, real passport numbers or real business addresses.
 - Agents MUST NOT use `sudo` or change host configuration. Everything runs as the current user.
 
+## 0.1 Roles and authority (product owner, 2026-10-04)
+
+- **Principal technical architect: the orchestrator chat.** Owns every component design, interface, data model and integration; owns code accuracy and adherence to industry best practice; is the final technical authority over all agents' output. Agents propose; the architect decides, integrates and verifies. Nothing merges to `main` without the architect's review of the integrated result and a passing gate.
+- **Principal UX Engineer: every UX design and UX approval agent.** Acts at principal level: owns information architecture, interaction design, accessibility, state communication and visual quality for its scope, and argues from evidence (rendered screenshots, accessibility tooling, Impeccable detect, the design skills). A UX deliverable merges only after an independent Principal UX Engineer approval (approver is never the builder). The architect remains final authority where UX and technical constraints meet.
+- **Independent reviewers** never review their own work and rank findings P0/P1/P2 with a concrete scenario.
+
 ## 1. Stack (fixed)
 
 - Node.js 24.19 (`.nvmrc`, `engines`). TypeScript executed directly by Node type stripping: erasable syntax only (no `enum`, `namespace`, parameter properties, decorators); imports use explicit `.ts` extensions. `tsc` 5.9.3 type-checks with `noEmit`.
@@ -167,3 +173,14 @@ Implement each parked, excluded, known-limitation and owner-decision item as a v
 4. Operations; TA Delivery; Derived Views and measures.
 5. Release/cutover, backup/restore, capacity, local install; full verification suite; crawl/SEO check.
 6. Independent multi-lens review, fixes, the bounded final UI/UX pass, final verification and report.
+
+## 12. Production maintainability and extension model (product owner, 2026-10-04)
+
+The system MUST stay easy to maintain and extend in production. "Extension" means onboarding new countries and new services in existing countries. Design and code for it from the foundation.
+
+- **Service in an existing country, using existing service shapes, document types and validators:** catalogue data only (structural declaration + business baseline + behaviour binding already supplied by a release + scoped launch approval). No code change, no deployment.
+- **New country, or a service needing country-specific behaviour** (field mapping, document validity checks, official-artifact recognition, cut-off evidence rules): one self-contained country adapter package `src/countries/<iso-code>/` implementing a versioned adapter interface, registered in one registry, declaring the declaration-schema versions it supports. Adapters receive scoped inputs and return proposals/evidence only; they never write state, import module internals or reach the network. A reusable **adapter conformance test kit** MUST pass for every adapter. A synthetic reference adapter (country "Synthetica") demonstrates the pattern.
+- **New document type or validator:** added to the shared document-type/validator registry once, reused by every offering; offerings select and may narrow, never fork, shared validators.
+- **New actor/authority shape or change to the shared business contract:** not an extension; it needs a product owner decision.
+- **No country or service special-casing in core modules.** A static test rejects country codes, country names and offering identifiers in `src/kernel`, `src/platform`, `src/modules/*` and `src/web` outside data fixtures. Behaviour varies only through declarations, bindings, registries and adapters.
+- **Maintainability practices:** one responsibility per module with explicit public interfaces (`index.ts` exports only); sole-writer table ownership; closed sets with runtime validation; forward-only, checksummed SQL migrations with expand/contract for breaking changes; typed configuration validated at startup (12-factor style, secrets separate); structured allowlisted logs and separated health checks; dependency pinning with lockfile, `npm audit` and a CycloneDX SBOM (`npm sbom`) in each release manifest; lint + typecheck + tests as one gate; security controls mapped to OWASP ASVS level 2 where applicable; concise public docs: `docs/architecture.md`, `docs/operations.md`, `docs/extending/new-country.md`, `docs/extending/new-service.md`.
