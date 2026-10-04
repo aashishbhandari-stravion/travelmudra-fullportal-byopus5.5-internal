@@ -60,3 +60,75 @@ Each entry is reversible engineering decomposition unless stated. None changes a
 ## EO-09 — Design skills installed (2026-10-04)
 - UI UX Pro Max (nextlevelbuilder/ui-ux-pro-max-skill@477bcb2), Impeccable (pbakaus/impeccable@6e802bd), Taste (Leonxlnx/taste-skill@ce26fc2, `design-taste-frontend`) installed at user level with PROVENANCE.md files; scripts reviewed before install (UI UX Pro Max: offline stdlib search over bundled CSV; Taste: markdown only; Impeccable: launcher that downloads a release engine binary verified only against a same-release checksum, plus a live mode that injects a script and asks for CSP relaxation).
 - Pre-fetching the Impeccable engine was first denied by the session's auto-mode safety classifier; the product owner then explicitly authorized it. Engine 0.1.11 (`impeccable-linux-x64`, static-pie ELF) was fetched through the skill's launcher, which verified it against the release `.sha256`; its SHA-256 0221607e1f535af937ea267c347b1f90233b85dc2563cbd2eeefdf42e0e5c594 also matches GitHub's server-side asset digest. The release was published by github-actions[bot]; no build-provenance attestation exists for it. `context` was verified read-only; `detect` found 6/6 seeded anti-patterns in a probe page. Agents may run `context` and `detect` only; live mode, update/install/link/pin and CSP relaxation stay forbidden.
+
+<!-- EO-10 to EO-18: drafted in the design consolidation (register 02 Part B); reviewed and accepted by the architect 2026-10-04. -->
+
+## EO-10 — Worker resource limits: `prlimit --as/--nproc` → user cgroup scope (BND-01)
+- Prior choice: brief §2 and §2.1, contract §10.3 (rev 1): `prlimit --as=768MiB --nproc=16` (parse) and `--as=256MiB --nproc=8` (fetch) around `bwrap`; toolchain resolved at `${toolchain.dir}/bin`; host `LD_LIBRARY_PATH`/`TESSDATA_PREFIX` passed into the sandbox.
+- Replacement: `systemd-run --user --scope -p MemoryMax -p MemorySwapMax=0 -p TasksMax -p CPUQuota` around `prlimit --cpu --fsize --nofile -- bwrap …`; no address-space or process limit on the Node worker; `prlimit --as` (512 MiB) only on spawned native tools; explicit sandbox environment (`LD_LIBRARY_PATH=/opt/tm-toolchain/root/usr/lib/x86_64-linux-gnu`, `TESSDATA_PREFIX=…/root/usr/share/tesseract-ocr/5/tessdata`, `VIPS_CONCURRENCY=1`); `resolveTool` searches `root/usr/lib/postgresql/16/bin`, `root/usr/bin`, `root/usr/sbin`; start-up self-test with the real launch line; no silent fallback.
+- Reason: verified on this host (2026-10-04): `prlimit --as=768MiB node` aborts at start (V8 code-range reservation); `prlimit --nproc` counts every thread of the uid, so `bwrap` fails with EAGAIN; the toolchain lives under `root/usr/…`; `tesseract` cannot find its libraries without the prefix path. The rev 1 line stopped every document from becoming content-safe.
+- Impact: memory and task bounds are enforced by the kernel cgroup; native tools keep per-process address limits; worker health is `down` when the user systemd manager is unavailable.
+- Downstream consequence: the production host needs a user systemd manager with lingering (present here) or an equivalent delegated cgroup; this is a host/owner item at production setup. Contract §10.3, record 14 §5.2, tests T-F29/T-W09.
+
+## EO-11 — Restore: plain `pg_restore` → `pg_restore` + transaction-id epoch advance + projection rebuild (REC-03)
+- Prior choice: record 15 §3.5.2 (rev 1): `pg_restore` into a new cluster, then reopen.
+- Replacement: after `pg_restore`, stop the cluster and run `pg_resetwal -e <epoch>` so every new `xid8` exceeds the largest restored `sys_facts.tx_id`; restart; rebuild every projection before reopening. Snapshot rollback also rebuilds projections.
+- Reason: projection tailing uses the `xid8` watermark (contract C-04); a fresh cluster restarts its counter, so restored facts are hidden and new facts fall below the restored cursor.
+- Impact: restore needs the PostgreSQL server binaries of the prefix and a stopped cluster for one step; restore takes longer by one rebuild.
+- Downstream consequence: restore procedures stay PostgreSQL-specific (as EO-01 says); test T-F41/T-15-78 MUST run on the installed PostgreSQL 16.15.
+
+## EO-12 — Backup and checkpoint capture: file-then-encrypt → drain + exported snapshot + streaming encryption (REC-01, REC-02, SEC-05)
+- Prior choice: record 15 §3.4.2 step 3 and §3.5.1 (rev 1): plaintext `pg_dump` to file, blob copies to files, `age` per file afterwards; inventory read from the live database after the dump; blobs only in areas `canonical`/`quarantine`; no checkpoint retention.
+- Replacement: drain before capture; one exported snapshot shared by `pg_dump --snapshot` and the blob inventory; inventory by owner reference in any area (including staged blobs with a pending move); every artifact streamed through `age` (no plaintext at rest); checkpoints encrypted and disposed by `tm cutover cleanup` after a later complete backup; size estimate before capture.
+- Reason: B40 requires a consistent export plus every referenced blob, and encrypted recovery sets.
+- Impact: longer backup window (drain); `age` in every pipe; free-space check uses an estimate.
+- Downstream consequence: restore and rollback always need the custody identity (see Part C REC-19).
+
+## EO-13 — Catalogue release registration: after opening → inside the closed cutover verify step (COV-13 item 9)
+- Prior choice: record 12 E1 (rev 1): `tm cutover open` runs `cat.register_release_catalogue` as the first command after admission opens; contract §4.2 refused every command while closed.
+- Replacement: `CommandDef.maintenanceAllowed` for the engineering actor; `assertMaintenanceWriter` accepts admission `closed` with `closure_kind ∈ {initial, cutover}`; E1/E2 run during cutover step 6.
+- Reason: B39 "verifies … binding … compatibility while closed, then deliberately opens"; removes the window in which a new release serves cases without its catalogue registration and impact assessments.
+- Impact: one narrowly scoped exception to "no command while closed".
+- Downstream consequence: cutover verify fails closed if registration fails; opening stays a separate deliberate step.
+
+## EO-14 — Identity mail and codes: shared `mail.deliver`, 32-byte OTP token, enrolment token in URL → `iam.send_mail`, 8-digit OTP, enrolment code in a form (record 11 CCR-01, CCR-02, CCR-04)
+- Prior choice: contract rev 1 §1.1, §2.21, §12.1.
+- Replacement: Identity-owned task `iam.send_mail` (code encrypted on the `iam_` row until sent, then wiped); OTP = 8 decimal digits with bounded attempts; enrolment code typed into `POST /staff/enrol`.
+- Reason: sole writers (only Identity writes `iam_` rows; no secret in task payloads); a typed code is usable by a person (B08 bounded attempts); no bearer token in a URL (contract §5.5).
+- Impact: one more task kind; per-challenge guess probability 5 × 10⁻⁸.
+- Downstream consequence: none outside Identity.
+
+## EO-15 — Harness actor kind (record 13 CCR-07; 11 CCR-13; 15 CCR-15-14)
+- Prior choice: contract rev 1 §2.24 / §7.11: harness commands and the synthetic seed run as the `engineering` actor with a `harness:` label, although the engineering actor may not write business facts.
+- Replacement: actor kind `harness`, registered only in `test`/`local_test`, refused in production configuration; facts carry `actor_kind = 'harness'` and `command_name` prefixed `harness.`.
+- Reason: one auditable model; keeps "engineering never writes business facts" true.
+- Impact: one more value in a closed set and a CHECK.
+- Downstream consequence: production databases contain no `harness` facts (startup refuses synthetic data in production).
+
+## EO-16 — Kernel attribution sink for country defects (REC-07)
+- Prior choice: record 14 §3.4.6 (rev 1): the validity evaluator wrote the `country_defect` incident inline.
+- Replacement: evaluation records an in-memory attribution; the kernel flushes it after the transaction (commit or rollback, read or write) by enqueuing `ops.attribute_country_defect`.
+- Reason: B36 attribution must survive refused commands; read transactions MUST NOT write.
+- Impact: one task kind and one flush step in the runner.
+- Downstream consequence: none outside the kernel and Operations.
+
+## EO-17 — Task protocol hardening: lease-expiry bound, `defer`, blob owner hooks (REC-04, REC-17, record 14 CCR-03/CCR-04)
+- Prior choice: contract rev 1 §4.6: Recover set `failed_retryable` with no attempt check; no `defer` result; no owner hook for a terminal blob move.
+- Replacement: attempt bound at Lease and Recover with backoff and `lease_expired_exhausted`; `defer` without attempt use only while the awaited event can still happen; `onMoved`/`onIntegrityFailed`/`onMoveFailedTerminal` hooks.
+- Reason: B35 bounded retry and failure visibility; B12 missing bytes keep an owner.
+- Impact: poison tasks stop after `max_attempts`.
+- Downstream consequence: a crash-looping task becomes visible to its failure owner instead of looping.
+
+## EO-18 — Durable dedupe keys never derive from rotating secrets (REC-20, SEC-09)
+- Prior choice: record 13 §2.2 (rev 1): `ops_originals.item_key = passport:<applicant key HMAC>` with an unnamed key.
+- Replacement: the plain applicant key in the owner table; rule in contract §1.1 for every durable uniqueness key.
+- Reason: B40 restores install new secrets; a secret-derived key breaks the B30 once-only guard.
+- Impact: one PD column in an owner table (never in diagnostics).
+- Downstream consequence: none.
+
+## EO-19 — Country/service extension architecture (2026-10-04)
+- Prior choice: country-specific behaviour referenced only as `country_adapter_check` and 200 ms containment rules in records 12 and 14; no adapter interface, registry, package layout or conformance kit.
+- Replacement: contract §16: versioned pure adapter contract `tm-country-adapter/1`, one registry, `invokeAdapter` containment, conformance kit run for every registered adapter, two synthetic reference adapters, static no-special-casing test, onboarding playbooks.
+- Reason: product owner requirement (brief §12) that onboarding new countries and services is easy in production.
+- Impact: one new source area `src/countries/`; five foundation tests (T-F50–T-F54).
+- Downstream consequence: every country-specific rule ships as an adapter capability through a release; services on existing shapes need no code.

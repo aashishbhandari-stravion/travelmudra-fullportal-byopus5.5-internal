@@ -69,7 +69,7 @@ Installed without root into a user-space prefix by `scripts/toolchain/install-us
 - PostgreSQL: a dedicated TravelMudra cluster (data directory under the installation), `listen_addresses=''` (Unix socket only, socket directory mode 0700), `jit=off`, SCRAM authentication. Roles: `tm_owner` (owns schema; runs migrations; backup export), `tm_app` (runtime DML only; no DDL; on the fact log INSERT/SELECT only). Passwords live in the secrets directory.
 - ClamAV: a dedicated `clamd` (private Unix socket, mode 0600, `ConcurrentDatabaseReload no`, bounded threads/stream size) and scheduled `freshclam`. Managed by the `tm` CLI. Unavailable or timed-out scanner ⇒ fail closed (file stays quarantined, owned, retryable).
 - `tm` CLI: cluster init/start/stop, migrate, synthetic seed (local-test only), backup, restore, cutover (close/drain/checkpoint/migrate/verify/open), protection mark, release manifest, capacity record, SEO crawl check, synthetic mailbox reader, scanner start/update, test-harness actions.
-- Restricted file workers: child processes launched through one `WorkerRunner` with `bwrap` + `prlimit`:
+- Restricted file workers: child processes launched through one `WorkerRunner`: `systemd-run --user --scope` (cgroup `MemoryMax`, `TasksMax`, `CPUQuota`) around `prlimit` (CPU, file size, open files) around `bwrap`. Never `prlimit --as`/`--nproc` on a Node worker (verified to fail on this host; EO-10, contract §10.3); native tools inside the parse worker keep their own `prlimit --as`:
   - fetch worker: network allowed; filesystem limited to read-only runtime binds plus one scoped output directory; SSRF-safe public retrieval (Section 9).
   - parse worker: `--unshare-all` (no network, so no database or clamd socket either), read-only binds for Node, `node_modules` and the toolchain, one scoped temp directory, cleared environment, `--die-with-parent`, CPU/memory/file-size/process limits, wall-clock timeout with kill. Runs SheetJS, sharp, Tesseract, pdftotext/pdftoppm, qpdf, mrz.
   - Workers never write business state. They return bounded JSON proposals/evidence; the owning writer accepts or rejects them. Initial concurrency: one fetch worker and one parse worker.
@@ -77,7 +77,7 @@ Installed without root into a user-space prefix by `scripts/toolchain/install-us
 
 ### 2.1 Production sizing target (≈7 vCPU, ≈8 GB RAM)
 
-Defaults MUST fit: PostgreSQL `shared_buffers` ≤ 1 GB; clamd ≈ 1.0 GB resident (measured: 1004 MB with full signatures, 11 s start); tm-server ≤ 512 MB heap; one parse worker ≤ 768 MB address-space limit; one fetch worker ≤ 256 MB. Development uses the same defaults; the capacity record measures them.
+Defaults MUST fit: PostgreSQL `shared_buffers` ≤ 1 GB; clamd ≈ 1.0 GB resident (measured: 1004 MB with full signatures, 11 s start); tm-server ≤ 512 MB heap; one parse worker ≤ 768 MiB cgroup memory; one fetch worker ≤ 256 MiB cgroup memory (EO-10). Development uses the same defaults; the capacity record measures them.
 
 ## 3. Storage and transactions
 

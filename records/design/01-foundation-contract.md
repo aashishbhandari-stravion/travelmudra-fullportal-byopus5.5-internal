@@ -1,6 +1,6 @@
 # TravelMudra foundation contract (design record 01)
 
-Owner: orchestrator (design phase artefact). Date: 2026-10-04. Status: **revision 2**, consolidated after the independent five-lens design review of 2026-10-04 (ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`); ready for the foundation re-review (B41). Owner decisions and material engineering choices: `internal/records/design/02-owner-decision-register.md`.
+Owner: orchestrator (design phase artefact). Date: 2026-10-04. Status: **revision 3** (Section 16 added by the architect, 2026-10-04: country and service extension architecture). Revision 2 was consolidated after the independent five-lens design review of 2026-10-04 (ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`); ready for the foundation re-review (B41). Owner decisions and material engineering choices: `internal/records/design/02-owner-decision-register.md`.
 Authority, in order: `internal/records/BUILD_SPEC.md` (SHA-256 `4a6fd90657b0723f67fb13a58aa57b3377238fd361ee8f706867bb714d58ea89`); architecture brief revision 2 `internal/records/design/00-architecture-brief.md` (SHA-256 `08276a37822cd6144d7ce26a608ae089b5240d9f79f818e4745a0d78eaad7044`); `internal/records/ENGINEERING_OVERRIDES.md` (SHA-256 `52a32720de53366532f4cb564ce7037de3bad72f1d1027bec23f4d32263a44d1`); environment inventory 2026-10-04.
 
 This record settles the B41 foundation items: shared identifiers, fact ownership, state and control meanings, guard and atomic boundaries, operation and history shape, version bindings, owner interfaces and facility seams. Every later module design and implementation MUST follow it. A module design MAY add detail. A module design MUST NOT contradict this record without an orchestrator revision of this record.
@@ -3203,3 +3203,101 @@ Accepted requests are integrated in the sections named; their detail stays in th
 | 7 | Late application hook (14 CCR-08 vs 12) | `catalogue.noteGoverningBehindHead` |
 | 8 | Active intake attempts and group closure (14 CCR-09 vs 13 CMD-G3) | `groupClosureBlockers`; both counts MUST be zero |
 | 9 | Release catalogue registration while closed (15 §3.4.2 vs 12 E1) | maintenance commands during cutover verify, before open |
+
+## 16. Country and service extension architecture (revision 3, architect, 2026-10-04)
+
+Authority: product owner direction of 2026-10-04 (brief §12): the system MUST stay easy to maintain and extend in production, where extension means onboarding new countries and new services in existing countries. This section is normative and binds every module. It adds no business rule.
+
+### 16.1 Extension kinds and their only path
+
+| Extension | Path | Code change | Release | Owner decision |
+|---|---|---|---|---|
+| New service in an existing country, on existing service modes, document types and check kinds | Catalogue data: `decl/1` declaration (Section 9.2) + `bv/1` baseline + binding to capabilities already in the active release + launch plan + scoped launch approval (B05, B07) | none | none | only for owner-gated (G) items, as Section 9.2 states |
+| New document requirement type | Declaration data: `documents.requirements[].type` is a declared code (`^[a-z][a-z0-9_]{1,39}$`); wording lives in the baseline | none | none | none |
+| New country with no country-specific behaviour | Catalogue data (`cat_countries`, offerings, declarations) + static public content file + verified public facts | none | none | launch requirements of B02 |
+| New country-specific behaviour (document validity rule, intake column mapping, official-artifact recognition, travel-date rule) | One country adapter package `src/countries/<iso3 lower>/` (16.2), registered once (16.3), passing the conformance kit (16.4); declarations reference it by `{ adapterId, version }` | adapter package only | yes: the release capability set carries the adapter capability | none, unless the behaviour settles a PARKED/unselected policy (then G) |
+| New shared check kind usable by every country | Documents capability `documents.validity/<n>`: add the kind to `VALIDITY_CHECK_KINDS` with its evaluator in Documents, once | Documents module | yes | none |
+| New service mode, actor, authority shape, gate, outcome or external-act kind | not an extension: change of the shared business contract (B05 shape rule, Section 9.2) | contract revision | yes | **required** before the contract revision |
+
+Real countries: none is created by engineering in this build. Candidate countries are planning inputs (B02). The deliverable is the extension mechanism, two synthetic reference adapters and the onboarding playbooks (16.6).
+
+### 16.2 Country adapter contract (`src/countries/contract.ts`)
+
+```ts
+export const ADAPTER_API = 'tm-country-adapter/1' as const;
+export const ADAPTER_FUNCTIONS = ['checkValidity','evaluateTravelDateRules','proposeIntakeMapping','recognizeArtifact'] as const;
+export interface CountryAdapterManifest {
+  readonly api: typeof ADAPTER_API;
+  readonly adapterId: string;                 // ^[a-z]{3}\.[a-z][a-z0-9_]{1,30}$  e.g. 'syn.core'
+  readonly country: string;                   // ISO 3166-1 alpha-3, uppercase; synthetic codes allowed only for synthetic adapters
+  readonly version: string;                   // semver; the capability version
+  readonly synthetic: boolean;                // true ⇒ registered only when env ∈ {test, local_test}
+  readonly functions: readonly AdapterFunction[];
+  readonly checks: readonly { readonly code: string; readonly paramsSchema: JsonSchemaLite }[];  // codes usable in country_adapter_check params
+  readonly sourceDigest: string;              // filled by `tm release register` (Section 9.4 CCR-11 rule)
+}
+export interface CountryAdapter {
+  readonly manifest: CountryAdapterManifest;
+  checkValidity?(input: AdapterValidityInput): AdapterValidityResult;                 // pure, synchronous
+  evaluateTravelDateRules?(input: AdapterTravelInput): AdapterTravelResult;           // pure, synchronous
+  proposeIntakeMapping?(input: AdapterMappingInput): AdapterMappingResult;            // pure, synchronous
+  recognizeArtifact?(input: AdapterArtifactInput): AdapterArtifactResult;             // pure, synchronous
+}
+// Inputs are closed field sets built by the calling owner (no ids of other TAs, no raw files, no URLs):
+//   AdapterValidityInput { checkCode, params, documentType, mrz?: { documentCode, issuingState, expiry, birthDate }, image?: { width, height }, pdf?: { pages }, travel: { start, return } }
+//   AdapterMappingInput  { headers: string[] ≤ intake.maxColumns, sampleShapes: ('empty'|'date'|'number'|'text'|'url')[][] ≤ 5 rows }   // shapes only, never cell values
+//   AdapterArtifactInput { artifactType, textSha256, fields: { name?, passportNumber?, documentNumber?, issueDate?, expiryDate? } }      // fields extracted by the parse worker
+// Results use closed codes only and echo no input string:
+//   AdapterValidityResult { verdict: 'valid'|'invalid'|'unknown', code: AdapterCode }
+//   AdapterMappingResult  { columns: { header index → field key | 'ignore' | 'ask' }, code }
+//   AdapterArtifactResult { proposal: 'matches'|'no_match'|'unknown', code }
+```
+
+Rules (MUST):
+1. Purity: an adapter module imports only `src/countries/contract.ts`, `zod`, and files inside its own package. A static test (T-F50) refuses imports of `node:*` I/O modules (`fs`, `net`, `http`, `https`, `child_process`, `worker_threads`, `dgram`, `dns`, `tls`), `src/kernel/*` (except `vocabulary/` types), `src/platform/*`, `src/modules/*` and `src/web/*`, and refuses `Date.now`, `Math.random`, `process.*` and `globalThis` access. Adapters never write state, never reach the network and never read files.
+2. Proposals only: every result is a proposal the owning writer accepts or rejects (B34, B36). An adapter never decides access, payment, readiness, outcome or launch.
+3. Fail closed: missing input ⇒ `unknown`, never `valid`. An exception, an invalid result shape or a call longer than `countries.callBudgetMs` (default 200 ms, measured with `performance.now()` around the synchronous call) ⇒ the caller treats the result as `unknown` / `country_adapter_error` and adds an `AttributionRecord` (Section 4.13). In-process runaway work that never returns is the accepted residual risk (B36 OWNER_DECISION): no sandbox, broker, worker thread or per-country scheduler is built.
+4. Containment: the caller invokes adapters only through `src/countries/invoke.ts` (`invokeAdapter(adapterId, version, fn, input, attributions)`), which applies rule 3, validates the input and result with zod, and never lets one country's failure change another country's result, list or queue (B36).
+5. Versioning: a declaration references `{ adapterId, version }`; the binding is `supported` only when the active release `capability_set` contains `country.<adapterId>@<version>` with the registered `sourceDigest` (Section 9.4). A new adapter version is a new capability; existing applications keep their governing binding (B06); changes reach existing cases only through Section 9.3 continuation or transition.
+6. Data minimisation: inputs carry only the fields the function needs; personal data never leaves the calling owner except the extracted fields an artifact recognizer needs, and results echo none of it.
+
+### 16.3 Registry (`src/countries/registry.ts`)
+
+- The only file that imports adapter packages. It exports `ADAPTERS: readonly CountryAdapter[]` and `adapterCapabilities(env)` (synthetic adapters only when `env ∈ {test, local_test}`).
+- `src/server/compose.ts` and `tm release register` read the registry; no other file imports `src/countries/<pkg>/` (T-F50).
+- Duplicate `adapterId@version`, a manifest that fails its zod schema, or a synthetic adapter in `production` configuration refuses startup and release registration.
+
+### 16.4 Conformance kit (`test/countries/conformance.ts`)
+
+A reusable suite. A test enumerates `ADAPTERS` and runs the kit for every adapter, so registering an adapter automatically subjects it to the kit (T-F51):
+- manifest valid; `adapterId`, `country`, `version` formats; `functions` match implemented methods; check codes unique;
+- purity (static import and global-access scan of the package);
+- determinism: the same input gives the same result 100 times;
+- totality: 500 seeded generated well-formed inputs per function never throw and always return a schema-valid result;
+- fail closed: each input with one required field removed returns `unknown`, never `valid`;
+- no echo: no result contains any input string longer than 3 characters;
+- time: p99 of the generated calls ≤ 50 ms (a quarter of the call budget);
+- the adapter's own fixture cases (`src/countries/<pkg>/fixtures.ts`) with expected verdicts.
+
+### 16.5 Reference adapters
+
+- `src/countries/synthetic/syn/` (`syn.core`, country `SYN`, synthetic): `checkValidity` with one check code (`syn_passport_series`), `proposeIntakeMapping`, `recognizeArtifact` for artifact type `evisa_grant`. It demonstrates every adapter function used by records 12 and 14.
+- `src/countries/synthetic/syx/` (`syx.core`, country `SYX`, synthetic): minimal adapter with a test-only fault hook (throws or exceeds the budget when `TM_ENV=test` arms it) for the country-containment tests (record 12 T-C48, record 14 T-D22, T-F39).
+- Both are labelled synthetic in their manifests and on every page that shows them.
+
+### 16.6 No special-casing in shared code, and onboarding playbooks
+
+- Static test T-F52: outside `src/countries/`, test fixtures and `catalogue/synthetic/`, source files contain no ISO 3166 country code literal (alpha-2 or alpha-3, from an embedded list) except `IND` in the population-scope vocabulary, and no offering service code literal. Behaviour varies only through declarations, bindings, registries and adapters.
+- Public site: a country page is one static content file `content/public/countries/<slug>.json` validated by a zod schema; adding it needs verified public facts only (B01). The SEO check covers it automatically.
+- Public playbooks (concise, public-fit, milestone 5): `docs/extending/new-service.md` (catalogue-only path, owner-gated items, launch plan and measures, impact review) and `docs/extending/new-country.md` (adapter package, registry, conformance kit, capability and release, declarations, public content, launch).
+
+### 16.7 Foundation tests added by this section
+
+| ID | Test | Proves |
+|---|---|---|
+| T-F50 | Static: adapter purity (imports and globals) and registry-only imports of adapter packages | 16.2 rule 1, 16.3 |
+| T-F51 | Conformance kit runs for every registered adapter (both synthetic adapters pass) | 16.4 |
+| T-F52 | Static: no country code or service code literals in shared code | 16.6 |
+| T-F53 | `invokeAdapter`: throw, invalid result and over-budget call each yield `unknown` / `country_adapter_error` plus one attribution; a second country's evaluation in the same transaction is unaffected | 16.2 rules 3–4, B36 |
+| T-F54 | A declaration that references an unregistered adapter or an unregistered version is `unsupported` (`declaration_unsupported`); registering the adapter in a new release makes it `supported` | 16.2 rule 5, 9.4 |
+
