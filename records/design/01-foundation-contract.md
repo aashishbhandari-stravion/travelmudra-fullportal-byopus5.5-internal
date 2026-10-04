@@ -1,6 +1,6 @@
 # TravelMudra foundation contract (design record 01)
 
-Owner: orchestrator (design phase artefact). Date: 2026-10-04. Status: **revision 3** (Section 16 added by the architect, 2026-10-04: country and service extension architecture). Revision 2 was consolidated after the independent five-lens design review of 2026-10-04 (ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`); ready for the foundation re-review (B41). Owner decisions and material engineering choices: `internal/records/design/02-owner-decision-register.md`.
+Owner: orchestrator (design phase artefact). Date: 2026-10-04. Status: **revision 4** (Section 18: delegated owner decisions applied, 2026-10-04). Revision 3 (Section 16 added by the architect, 2026-10-04: country and service extension architecture). Revision 2 was consolidated after the independent five-lens design review of 2026-10-04 (ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`); ready for the foundation re-review (B41). Owner decisions and material engineering choices: `internal/records/design/02-owner-decision-register.md`.
 Authority, in order: `internal/records/BUILD_SPEC.md` (SHA-256 `4a6fd90657b0723f67fb13a58aa57b3377238fd361ee8f706867bb714d58ea89`); architecture brief revision 2 `internal/records/design/00-architecture-brief.md` (SHA-256 `08276a37822cd6144d7ce26a608ae089b5240d9f79f818e4745a0d78eaad7044`); `internal/records/ENGINEERING_OVERRIDES.md` (SHA-256 `52a32720de53366532f4cb564ce7037de3bad72f1d1027bec23f4d32263a44d1`); environment inventory 2026-10-04.
 
 This record settles the B41 foundation items: shared identifiers, fact ownership, state and control meanings, guard and atomic boundaries, operation and history shape, version bindings, owner interfaces and facility seams. Every later module design and implementation MUST follow it. A module design MAY add detail. A module design MUST NOT contradict this record without an orchestrator revision of this record.
@@ -3313,4 +3313,39 @@ Section 13 lists every invariant test. Milestone 1 cannot prove module-level inv
 | 4 Operations, Delivery, Views | T-F39, T-F46, T-F49 | real modules |
 | 5 Release, backup, restore | T-F40, T-F41, T-F42, T-F48, T-F50 | real CLI against PostgreSQL 16.15 |
 | Final | all of Section 13 and 16.7 | integrated system |
+
+## 18. Delegated owner decisions applied (revision 4, architect, 2026-10-04)
+
+Authority: on 2026-10-04 the product owner accepted the architect's recommendations for every open owner decision and recorded P1 item, and delegated all further decisions during this run to the architect ("go with your recommendations, i wont interrupt or take any decisions during the run"). Each decision below is reversible; register 02 keeps the alternatives. Where this section differs from earlier sections or module records, this section governs.
+
+### 18.1 Owner decisions
+
+| ID | Decision | Normative change |
+|---|---|---|
+| D-01 (OD-R2-01) | The exposure ceiling applies per TA **person account**. No agency entity is introduced. | none (I-09 stands). Re-keying `pay_ta_exposure` by a business id stays the documented path if an agency model is approved later. |
+| D-02 (OD-R2-02) | Gate 1 is re-evaluated at the **first start of operator work on each assignment**, not only at assignment. | Gate table (2.11): `gate1_service_payment` guards `assign`, `reassign`, and the first `start_operator_work` or `assistance_entry` on an active assignment (and in-place assistance approval on an assigned case) when no work step has started on that assignment. Passes on current `payment_received`, or a fresh Gate 1 exception with action key `start_operator_work`. The result is recorded on the work step. Later steps on the same assignment use that basis; a later correction to unpaid still opens `worked_then_corrected_to_unpaid` (record 15 C-P1). Record 13 test T-CO69 asserts the stricter rule. |
+| D-03 (OD-R2-03, OD-15-01) | A `payment_received` entry requires at least one evidence reference of kind `external_reference` or `document_version`; an `attestation` may only accompany it. A financial exception closed by a later SuperAdmin `payment_received` entry is shown as closed by a service entry, never as "collected". | `FIN_EXCEPTION_STATES = ['open','closed_by_service_entry']` (replaces `closed_collected`; bank-verified collection remains PARKED). `pay.record_service_status` refuses `payment_received` without qualifying evidence (`validation_failed` / `payment_evidence_required`). |
+| D-04 (OD-R2-04) | SuperAdmin byte access is minimised. | New action `document.retrieve_bytes_admin` (SuperAdmin only) replaces SuperAdmin `Y` on `document.retrieve_bytes`. It requires `_reason` and a closed purpose code `ADMIN_BYTE_PURPOSES = ['evidence_correction','payment_evidence','disclosure_incident']`, is single-file only (no SuperAdmin bulk selection), records the purpose on `dlv_releases` and in fact `dlv.release_checked`, and is refused while the audit projection is degraded (`privilegedElevation = true`). |
+| D-05 (OD-R2-05) | A **non-synthetic** offering whose declaration holds originals (`originals.custody.held = true`) cannot launch while `originals.returnPolicy` is unresolved. | `ops.approve_launch` refuses with `unavailable_parked` / `parked_custody_route_policy` for such offerings. Synthetic offerings keep the partial-return proof. |
+| D-06 (OD-R2-06) | Dependencies link applications of the **same group only**. | none (interim stands). |
+| D-07 (OD-R2-07) | Offering withdrawal is terminal. | The withdrawal command requires an explicit acknowledgement field (`acknowledge_irreversible = true`); the admin page states that withdrawal is irreversible in this build. |
+| D-08 (OD-15-03) | OS-level runtime-identity separation is a production setup step (dedicated system user, needs root once). | Documented in `docs/operations.md` (milestone 5); the local test installation keeps separate cluster, roles, sockets, directories, secrets and port under the current user. |
+| D-09 (OD-R2-08) | Separation-of-duties awareness: no product change in this build. | Listed in the final report. |
+| D-10 (register 02 Part A.2) | Every carried-forward decision keeps its recorded safe interim as the decision for this build. | none. |
+
+### 18.2 P1 dispositions
+
+| Item | Disposition | Milestone |
+|---|---|---|
+| REC-09 admission close can wait without bound | **Work.** Admission gate becomes a PostgreSQL advisory lock: every kernel write transaction takes `pg_advisory_xact_lock_shared(ADMISSION_GATE)` before `assertWriter`; `closeAdmission` takes `pg_advisory_xact_lock(ADMISSION_GATE)` (exclusive), whose queued request blocks newer shared requests, then updates `sys_installation`. Waiting writers fail by `lock_timeout` and retry into `maintenance`. A probe first demonstrates the starvation of the row-lock design and the fairness of the advisory gate. | 1 |
+| REC-11 kernel traffic shares the app pool | **Work.** Separate kernel pool (`db.kernelPoolMax` = 3) for lease, heartbeat, recovery and `LISTEN`; a task whose heartbeat reports `lease_lost` kills its worker process group. | 1 |
+| REC-12 predicate-lock promotion in large SERIALIZABLE batches | **Work.** Probe on PostgreSQL 16.15; set `max_pred_locks_per_transaction` and `catalogue.recheckBatchSize` from the measurement; keep 53200 retryable. | 1 (probe), 2 (tuning) |
+| COV-14 / BND-11 route names | **Work.** Record 11 §4.4 is the single path authority; module lanes align to it; T-F02 checks every registered route against it. | 2–4 |
+| MON-10 mistyped or renewed passport | **Work.** On draft creation and applicant-key change, a candidate check (same group, same normalized full name and date of birth, different applicant key, open application) opens an owned `possible_duplicate` intake incident. Never a merge, never a block of the existing application (B15, B16). | 3 |
+| SEC-04 staff OTP limiter lock-out | **Work.** Attacker-bound limiter key (IP + pre-session) plus a larger per-contact ceiling, and ALTCHA on the staff sign-in page. | 2 |
+| REC-14 scanner/worker outage consumes attempts | **Work.** `prepare` returns `defer` while facility health is `down`; bulk requeue command for the Documents queue. | 2 |
+| REC-15 process supervision | **Work.** `systemd --user` units with restart limits for `tm-server` and clamd, generated by `tm install`. | 5 |
+| REC-16 poison fact halts a projector | **Work.** Per-fact gap recording and a `degraded` projector state; other facts continue. | 4 |
+| REC-18 backup disk exhaustion | **Work.** Free-space reserve check with size estimate, retention count, separate target directory option. | 5 |
+| COV-15, MON-11, REC-08, REC-10, REC-19 | **Parked** as recorded notes (reconstruction input, price-order edge, two-phase closure, monotonic clock floor, off-host key custody). | — |
 
