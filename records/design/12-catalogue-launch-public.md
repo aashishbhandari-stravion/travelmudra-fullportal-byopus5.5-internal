@@ -1,6 +1,6 @@
 # TravelMudra design record 12 — Catalogue, launch control and public site
 
-Owner: design-phase agent for the orchestrator. Date: 2026-10-04. Status: proposed for orchestrator review.
+Owner: design-phase agent for the orchestrator. Date: 2026-10-04. Status: **revision 2** (consolidated after the 2026-10-04 design review; ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`). Contract record 01 revision 2 governs; the `decl/1` schema now lives only in contract 01 §9.2; Section 8 carries each request's disposition.
 Authority, in order: `internal/records/BUILD_SPEC.md` (rules B01–B47); architecture brief revision 2 (`00-architecture-brief.md`); `ENGINEERING_OVERRIDES.md`; environment inventory 2026-10-04; foundation contract `01-foundation-contract.md` (binding). This record adds module detail. It does not edit the contract. Every place where this module needs a contract change is in Section 8.
 
 Scope: Catalogue (B05, B06), launch control owned by Operations (B07, with the B32 per-offering measures plan required before launch), the public site (B01), the B02 rollout gate as it applies to catalogue and launch, and the B41 verification items that fall in this scope.
@@ -75,90 +75,23 @@ Catalogue never writes `core_`, `ops_` or other tables. Launch control never wri
 
 ## 2. Data model and tables owned
 
-### 2.1 Structural declaration `decl/1`
+### 2.1 Structural declaration `decl/1` (rev 2: normative schema in contract 01 §9.2)
 
-A declaration body is one JSON object with schema id `decl/1`. Every key below is optional in the parser so that a SuperAdmin can register a draft. A missing key is `incomplete`. A key MAY hold `{ "unresolved": <UNRESOLVED_REASON> }`. The parser never fills a default.
+Revision 2 (review findings COV-01, BND-02, COV-11, BND-04, COV-12, BND-05): the item keys, value forms, "complete when" rules, classes (L/A), mode rules, owner gates (G), closed vocabularies (`UNRESOLVED_REASONS`, `DECL_ITEM_KEYS`, `OWNER_GATED_ITEM_KEYS`, `DECL_ACTORS`, `AUTHORITY_KINDS`, `SUBMIT_CHECKS`, `VALIDITY_CHECK_KINDS`, `WITHDRAWAL_CUTOFF_KINDS`, `DELIVERY_EVIDENCE_KINDS`, `COMPLETION_EVIDENCE_CODES`, `HANDOVER_EVIDENCE`), the item-status function and the dependent-action table are defined **only** in contract 01 §9.2. The former item table of this section is withdrawn; it disagreed with the keys that Core, Documents and Delivery read (authority confirmation items, fee timing, form fields, per-outcome delivery and completion evidence, artifact types, handover evidence, return policy). The parser is the shared module `src/kernel/vocabulary/decl.ts` (`parseDecl`); this module calls it at registration and stores the result.
 
-```ts
-export const UNRESOLVED_REASONS = [
-  'owner_policy_pending','engineering_pending','parked_prep_only_cutoff','parked_custody_route_policy',
-  'parked_provider_route','parked_cancellation','unselected_price_fee_formula','unselected_other_mode_fee',
-] as const;
-export const DECL_ITEM_KEYS = [
-  'serviceMode','custodyPaths','promise','eligibility.population','eligibility.travelDateRules','actorsActions','authority',
-  'controls.gates','controls.submitChecks','controls.withdrawalCutoff','controls.otherCutoffs','documents','dependencies',
-  'progressMapping','financialConditions.servicePrice','financialConditions.governmentFee','financialConditions.priceFeeRelation',
-  'originals','originals.returnPolicy','outcomeEvidence','deliveryEvidence','completionEvidence','cancellation','provider',
-  'operatingReadiness',
-] as const;
-export const ITEM_STATUSES = ['supported','incomplete','unsupported','unresolved'] as const;
-export const ITEM_LAUNCH_CLASSES = ['launch_required','action_scoped'] as const;
-```
+Catalogue-specific rules that remain here:
 
-Item table. "L" = `launch_required`: launch and every new-case action need it `supported`. "A" = `action_scoped`: only the named dependent actions need it; an unresolved value leaves those actions visibly unavailable and MUST be acknowledged at launch (Section 3.4, OD-12-02).
-
-| Item key | Declared content | Complete when | Capability required | Class | Mode rules |
-|---|---|---|---|---|---|
-| `serviceMode` | one of `SERVICE_MODES` | equals `cat_offerings.service_mode` | `shape.<mode>` | L | — |
-| `custodyPaths` | `{ electronic: boolean, physical: boolean }` | at least one true | `custody.electronic` and/or `custody.physical` | L | `preparation_only` ⇒ `physical` original custody not declared (see `originals`) |
-| `promise` | `{ deliverable: 'government_outcome' or 'validated_packet' or 'provider_outcome', claimsGovernmentResult: boolean, summary: string ≤ 500 }` | all fields present | — | L | `preparation_only` ⇒ `validated_packet`, `claimsGovernmentResult = false` (B04); `third_party_filed` ⇒ `provider_outcome` |
-| `eligibility.population` | `{ nationality: 'IND', passportType: 'ordinary', residence: 'IND', purposes: ('tourism' or 'business')[] ≥ 1 }` | all fields present | — | L | any other value ⇒ `unsupported` with `population_out_of_scope` (B02) |
-| `eligibility.travelDateRules` | `{ minPassportValidityDaysAfterReturn: int ≥ 0, minDaysBeforeTravelStartToSubmit: int ≥ 0, maxDaysBeforeTravelStartToSubmit: int ≥ 1 or null }` | all fields present (null is a declared "no maximum") | — | L | used by Section 2.6 |
-| `actorsActions` | `{ localSteps: { code, actor: 'assigned_operator' or 'ta' or 'superadmin' }[] ≥ 1, externalActs: EXTERNAL_ACT_KINDS[] }` | step codes unique | `shape.<mode>` | L | `travelmudra_filed` ⇒ `government_submission` (+ `government_fee_payment` when fee `tm_funded`); `preparation_only` ⇒ `[]`; `third_party_filed` ⇒ `provider_handoff` only |
-| `authority` | `{ externalAuthority: { kind: 'government' or 'provider', label ≤ 120 }, taConfirmationTextVersion: string, applicantConsentStatement: boolean }` | all present | — | L | `preparation_only` ⇒ `externalAuthority` names the authority the TA files with; TravelMudra files nothing |
-| `controls.gates` | `{ gate2: 'applicable' or 'not_applicable', readiness: 'required' }` | both present | — | L | `travelmudra_filed` ⇒ `gate2 = 'applicable'` (B27); other modes ⇒ `not_applicable` (no inferred Gate 2) |
-| `controls.submitChecks` | `SUBMIT_CHECKS[]` (`mandatory_documents_present`, `identity_evidence_present`, `population_confirmed`, `travel_dates_valid`); empty array is a declared value | array present | — | L | — |
-| `controls.withdrawalCutoff` | `{ kind: 'evidenced_government_portal_submission' or 'evidenced_provider_handoff' or 'packet_release' }` | present | — | A | `travelmudra_filed` with `custodyPaths.electronic` ⇒ MUST be `evidenced_government_portal_submission` (B24); `preparation_only` real offerings hold `{ unresolved: 'parked_prep_only_cutoff' }` (B44) |
-| `controls.otherCutoffs` | `{ code, evidenceKind, appliesTo: ControlledAction }[]`; empty is declared | array present | — | L | — |
-| `documents` | `{ requirements: { type: /^[a-z][a-z0-9_]{1,39}$/, mandatory: boolean, subject: 'applicant' or 'other_person', formats: ('pdf' or 'jpeg' or 'png')[] ≥ 1, maxBytes: int ≤ 5242880, validityChecks: VALIDITY_CHECKS[] }[] }` | ≥ 1 mandatory requirement with `type = 'passport'`, `subject = 'applicant'` (B15 passport primary); types unique | `docs.standard`, `docs.check.<code>` per check | L | an `other_person` requirement is never mandatory identity evidence (B15) |
-| `dependencies` | `{ relations: { relationshipCode, upstreamServiceCode, requiredOutcome: Outcome, requiredArtifactType: string or null }[] }`; empty is declared | array present | `deps.declared` when non-empty | L | upstream in the same country (same group, B03) |
-| `progressMapping` | `{ steps: { code, meaning: ProgressMeaning }[] }` | every `actorsActions.localSteps` code mapped exactly once | — | L | — |
-| `financialConditions.servicePrice` | `{ basis: 'fixed_quoted_at_submission' }` | present | — | L | B17 |
-| `financialConditions.governmentFee` | `'tm_funded'` or `'not_handled_by_travelmudra'` | present | — | L | `travelmudra_filed` ⇒ `tm_funded` (B27); other modes ⇒ explicit `not_handled_by_travelmudra` or `{ unresolved: 'unselected_other_mode_fee' }` (B27, B29) |
-| `financialConditions.priceFeeRelation` | always `{ unresolved: 'unselected_price_fee_formula' }` for `tm_funded`; `'not_applicable'` otherwise | present | — | A | B29, B43; affects no executable action in this build (Accounts actions PARKED); shown as a boundary |
-| `originals` | `{ held: false }` or `{ held: true, itemTypes: string[] ≥ 1 }` | present | `custody.physical` when `held` | L | `held = true` requires `custodyPaths.physical`; `preparation_only` ⇒ `held = false` (B04, B30) |
-| `originals.returnPolicy` | `{ unresolved: 'parked_custody_route_policy' }` in this build when `held`; `'not_applicable'` when not held | present | — | A | B30 PARKED |
-| `outcomeEvidence` | `{ outcomes: { outcome: Outcome, evidenceKinds: EvidenceKind[] ≥ 1 }[] ≥ 1 }` | every outcome applicable to the mode (contract §2.5) | — | L | `preparation_only` ⇒ only `prepared_and_handed_over`, `withdrawn`, `dependency_failed`, `cancelled` if declared |
-| `deliveryEvidence` | `{ channels: DELIVERY_CHANNELS[] ≥ 1 }` | consistent with custody | — | L | — |
-| `completionEvidence` | `{ requires: ('outcome_recorded' or 'document_email_and_notice' or 'original_receipt_by_owner' or 'packet_handover' or 'direct_external_record')[] ≥ 1 }` | present | — | L | electronic TM-held result ⇒ `document_email_and_notice` (B24) |
-| `cancellation` | `'undeclared'` or `{ path: { code, evidenceKinds } }` | present | — | A | `'undeclared'` is a declared value: cancellation unavailable (B44) |
-| `provider` | `'none'` or `{ routeRef, ownerApprovalRef }` or `{ unresolved: 'parked_provider_route' }` | present | `provider.synthetic` for synthetic routes | L for `third_party_filed`; otherwise MUST be `'none'` | B04, B15, B42, B44 |
-| `operatingReadiness` | `{ requiredMeasures: MEASURE_CODES[] ≥ 1, requiredMonitors: MONITOR_CODES[] ≥ 1 }` | present | `measures.core` | L | `preparation_only` ⇒ includes `packet_handover_duration`, excludes government-result measures (B32) |
-
-A body that violates a mode rule or a type rule is refused at registration with `validation_failed`. A body that passes the parser but lacks a key or a "complete when" condition is registered; the item is `incomplete`.
+- Every key is optional in the parser so that a SuperAdmin can register a draft. A missing key is `incomplete`. The parser never fills a default.
+- A body that violates a mode rule or a type rule is refused at registration with `validation_failed` / `item_value_not_permitted`. A body that passes the parser but lacks a key or a "complete when" condition is registered; the item is `incomplete`.
+- Capability requirements per item (Section 2.4): `serviceMode`/`actorsActions` ⇒ `shape.<mode>`; `custodyPaths` ⇒ `custody.electronic` and/or `custody.physical`; `originals.custody` with `held` ⇒ `custody.physical`; `documents.requirements` ⇒ `docs.standard` and `docs.check.<kind>` per validity check kind; non-empty `dependencies` ⇒ `deps.declared`; `operatingReadiness` ⇒ `measures.core`; a synthetic `provider` route ⇒ `provider.synthetic` (test and local-test releases only); plus `country.<ALPHA3>`.
+- Owner gates (G, contract 01 §9.2): `controls.withdrawalCutoff` (except the fixed B24 value for electronic TravelMudra filing), non-empty `controls.otherCutoffs`, `financialConditions.governmentFee` for non-TravelMudra-filed modes, `originals.returnPolicy`, a declared `cancellation` path and a `provider` route are `supported` only when a `cat_owner_approvals` row for that declaration version lists the key (C5). A release-registered declaration (E1) therefore never settles them by itself. Real offerings in this build keep them `unresolved` (`unselected_other_mode_fee`, `parked_prep_only_cutoff`, `parked_custody_route_policy`, `parked_cancellation`, `parked_provider_route`).
+- Shape rule (COV-12, B05): actors and authority kinds are closed sets of the contract; a declaration that names any other value is refused at registration. A new actor or authority shape needs a product-owner decision and a contract revision.
 
 ### 2.2 Item status, declaration support and dependent actions
 
-Item status is derived by one pure function `itemStatus(key, body, offering, releaseCaps)`:
+Item status is the pure function `itemStatus(key, body, offering, releaseCaps, ownerApprovals)` of contract 01 §9.2 (order: unresolved → incomplete → population out of scope → owner approval required → capability missing → supported). Statuses 1–3 are stored at registration in `cat_declarations.items`; statuses 4 and 5 depend on the owner-approval rows and the active release and are evaluated at use. A declaration is usable only when `cat_declarations.status = 'supported'` (it has a support basis). A draft declaration answers `declaration_unsupported` for every action.
 
-| Order | Condition | Status | Code |
-|---|---|---|---|
-| 1 | value is `{ unresolved: r }` | `unresolved` | `declaration_item_unresolved` (detail `r`) |
-| 2 | key absent, or "complete when" fails | `incomplete` | `declaration_incomplete` |
-| 3 | value outside the approved population (B02) | `unsupported` | `population_out_of_scope` |
-| 4 | a required capability `id@version` is absent from the active release `capability_set` | `unsupported` | `declaration_unsupported` |
-| 5 | otherwise | `supported` | — |
-
-Statuses 1–3 are stored at registration in `cat_declarations.items`. Status 4 depends on the active release and is evaluated at use. A declaration is usable only when `cat_declarations.status = 'supported'` (it has a support basis). A draft declaration answers `declaration_unsupported` for every action.
-
-Dependent actions (control stage in brackets). The application's governing declaration is evaluated, never the head, except for new-case actions.
-
-| Controlled action | Items that MUST be `supported` | Failing code (stage) |
-|---|---|---|
-| `select_offering`, `start_intake`, `create_draft` (head declaration) | every L item | item code (5) |
-| `submit` | every L item of the governing declaration | item code (5) |
-| `request_assistance`, `assign`, `start_operator_work`, `assistance_entry` | `serviceMode`, `actorsActions`, `progressMapping` | item code (5) |
-| `record_readiness` | `documents`, `eligibility.*`, `dependencies`, `controls.gates`, `controls.otherCutoffs` | item code (5) |
-| `authorize_government_submission` | `authority`, `actorsActions`, `controls.gates`, `financialConditions.governmentFee`, `outcomeEvidence` | item code (5) |
-| `authorize_government_fee_payment` | as above and `governmentFee = 'tm_funded'` | item code (5); `service_mode_not_applicable` (6) |
-| `authorize_provider_handoff` | `provider`, `authority`, `actorsActions` | `provider_route_unapproved` (6) when `provider` is unresolved |
-| `release_packet` | `outcomeEvidence`, `deliveryEvidence` | item code (5) |
-| `record_outcome` (`cancelled`) | `cancellation` declared path | `cancellation_undeclared` (6) |
-| `request_withdrawal` | `controls.withdrawalCutoff` | `withdrawal_cutoff_undeclared` (9) |
-| `complete` | `completionEvidence`, `deliveryEvidence`, `originals` | item code (Core completion check) |
-| original return (Operations) | `originals.returnPolicy` | `parked_custody_route_policy` |
-
-Catalogue exports `declarationSupportFor(tx, governing, action, releaseId)` (CCR-06) that returns the blockers above with the item key in `ControlBlocker.ref` (CCR-12). The single control evaluator calls it in stage 5 and reads the stage 6/9 items through it.
+Dependent actions: contract 01 §9.2 table. Catalogue exports `declarationSupportFor(tx, governing, action, releaseId)` (CCR-06) that returns those blockers with the item key in `ControlBlocker.ref` (CCR-12). The single control evaluator calls it in stage 5 and reads the stage 6/9 items through it. The application's governing declaration is evaluated, never the head, except for new-case actions.
 
 ### 2.3 Business baseline `bv/1`
 
@@ -228,13 +161,13 @@ Continuation kinds:
 
 ### 2.6 Travel-date rule evaluation (for Core's recheck, B06)
 
-`evaluateTravelDateRules(decl, baseline, input)` is pure. Input: travel start and return (`LocalDate`), `today` (`LocalDate`, Asia/Kolkata), submitted flag, original estimate window end (from Core) or `null`, passport expiry date from the current positive passport extraction or `null`. Output:
+`evaluateTravelDateRules(decl, baseline, input)` is pure. Input: travel start and return (`LocalDate`), `today` (`LocalDate`, Asia/Kolkata), submitted flag, original estimate window end (from Core) or `null`. Rev 2 (COV-01): passport validity after return is a Documents validity check (`documents.requirements[].validityChecks`, kind `passport_valid_through_return_plus_months`, record 14 §3.4.6), not a travel-date rule; this function no longer reads a passport expiry. Output:
 
 | Field | Values | Rule |
 |---|---|---|
-| `validity` | `valid`, `invalid`, `unknown` | `unknown` when `eligibility.travelDateRules` is not `supported` or the passport expiry is `null`; `invalid` when expiry < return + `minPassportValidityDaysAfterReturn`, or (not submitted) today > start − `minDaysBeforeTravelStartToSubmit`, or (not submitted, max not null) today < start − max |
+| `validity` | `valid`, `invalid`, `unknown` | `unknown` when `eligibility.travelDateRules` is not `supported`; `invalid` when (not submitted) today > start − `minDaysBeforeTravelStartToSubmit`, or (not submitted, max not null) today < start − `maxDaysBeforeTravelStartToSubmit` |
 | `timing` | `threatens_travel`, `ok`, `unknown` | uses the governing baseline `processingEstimate.maxDays` from today as the later forecast; `threatens_travel` when forecast end ≥ travel start; `unknown` when any input is missing |
-| `codes` | closed reason codes | `travel_rule_passport_validity`, `travel_rule_too_late_to_submit`, `travel_rule_too_early_to_submit`, `travel_rule_unknown` (CCR-02) |
+| `codes` | closed reason codes | `travel_rule_too_late_to_submit`, `travel_rule_too_early_to_submit`, `travel_rule_unknown` (CCR-02; `travel_rule_passport_validity` dropped in rev 2) |
 
 Core records the result and keeps `travel_date_recheck_pending` while `validity = 'unknown'`. Filed facts are not re-evaluated (B06). The original estimated window is never changed; the forecast is shown separately (B17). The evaluator runs inside a country adapter boundary: an exception or a time-limit breach in a country's validity check returns `unknown` with `country_defect` attribution for that country only (B36; Section 5.1).
 
@@ -714,11 +647,11 @@ A draft has no support basis. A SuperAdmin discards a draft by `cat.retire_decla
 |---|---|
 | Actor / authorization | SuperAdmin; `catalogue.record_owner_approval` on `offering`; reason. |
 | Input | `{ declarationId, approvedBodySha256 (hex), approverRoleStatement, approvedOn: LocalDate, evidence: EvidenceRef[] ≥ 1, expectedRevision }` |
-| Checks | 1 kernel; 2 declaration exists, `status = 'draft'` (`declaration_not_draft`); 3 `approvedBodySha256` equals `body_sha256` (`owner_approval_scope_mismatch`); 4 at least one evidence of kind `owner_approval`; 5 no item has declared status `unsupported`, and every `requires` capability exists in the active release (`item_unsupported_needs_release`: an outside-product approval cannot supply executable behaviour); 6 no existing approval (unique). |
-| Writes | `cat_owner_approvals`; declaration `status = 'supported'`, `support_basis = 'owner_approval'`, `owner_approval_id`, `supported_at`. |
+| Checks | 1 kernel; 2 declaration exists; for a **structure approval** `status = 'draft'` (`declaration_not_draft`); for an **item approval** (rev 2, BND-04/COV-11) any status and `scope.itemKeys` ⊆ `OWNER_GATED_ITEM_KEYS` of contract 01 §9.2; 3 `approvedBodySha256` equals `body_sha256` (`owner_approval_scope_mismatch`); 4 at least one evidence of kind `owner_approval` (synthetic offerings in `test`/`local_test`: `synthetic_label`, recorded only by the harness seed); 5 structure approval: no item has declared status `unsupported`, and every `requires` capability exists in the active release (`item_unsupported_needs_release`: an outside-product approval cannot supply executable behaviour); 6 no existing approval with the same scope digest (`UNIQUE (declaration_id, scope_sha256)`). |
+| Writes | `cat_owner_approvals`. Structure approval: declaration `status = 'supported'`, `support_basis = 'owner_approval'`, `owner_approval_id`, `supported_at`. Item approval: no declaration change; the listed gated items become `supported` at use (contract 01 §9.2 item status step 4). |
 | Facts | `cat.owner_approval_recorded`, `cat.declaration_status_changed`. |
 | Errors | `validation_failed`; `control_blocked` with the codes above; `conflict_duplicate`; `stale_revision`. |
-| Concurrency | Unique `(declaration_id)` and the draft-state condition `WHERE status = 'draft' AND revision = $r`. |
+| Concurrency | Unique `(declaration_id, scope_sha256)` and, for a structure approval, the draft-state condition `WHERE status = 'draft' AND revision = $r`. |
 
 Items that are `incomplete` or `unresolved` stay so after approval and keep blocking their dependent actions (B05). The approval covers the exact version and scope only; a later version needs its own approval or release.
 
@@ -834,14 +767,14 @@ SuperAdmin; `catalogue.manage_identity`; reason. Input `{ offeringId, expectedRe
 
 | Field | Specification |
 |---|---|
-| Actor / authorization | `engineering` actor through `tm release register-catalogue --release <rel> --actor <label>`; `catalogue.register_release` (CCR-04). `tm cutover open` runs it as its first command after admission opens. |
+| Actor / authorization | `engineering` actor through `tm release register-catalogue --release <rel> --actor <label>`; `catalogue.register_release` (CCR-04). Rev 2 (COV-13 item 9): it is a `maintenanceAllowed` command that runs inside cutover step 6 (`verify`) while admission is still closed (`closure_kind ∈ {initial, cutover}`), after `activate` and before `tm admission open`; it is refused in every other admission state. Gated items of the registered declarations stay `unsupported` until a SuperAdmin records an owner approval (C5); declarations naming an actor or authority kind outside the contract's closed sets are refused (shape rule). |
 | Input | `{ releaseId, catalogue: { countries[], offerings[], declarations: { offeringKey, versionNo, supported: boolean, body }[], heads: { offeringKey, versionNo }[] }, impactStatement: Statement or null }` read from the release manifest (`sys_releases.manifest.catalogue`, CCR-11). |
 | Checks (order) | 1 kernel; 2 `releaseId = sys_installation.active_release_id` (`release_not_active`); 3 no `cat_release_registrations` row (`conflict_duplicate` / `release_catalogue_already_registered`); 4 synthetic entries only outside `production`; 5 per declaration: parse `decl/1`; an existing `(offering, version_no)` with a different `body_sha256` ⇒ whole command refused (`declaration_version_conflict`); identical ⇒ skipped; 6 every head declaration has its required capabilities in the release (`binding_unavailable_in_release`); 7 compute `capability_diff` against the release of the previous registration. |
 | Writes | Countries and offerings named and absent (with `ensureOfferingControls`); declarations (`supported`, basis `engineering_release`, `release_id`) or (`unsupported`, planning record); bindings for every supported declaration whose profile the release satisfies (new head bindings use the highest versions); for each offering whose head tuple changes: offering head and `publication_seq`, `cat_publications` kind `declaration_release` or `binding_release` (`actor_kind = 'engineering'`, `recorded_at = now`, `publication_at = sys_releases.activated_at`, `effective_condition = 'new_cases_from_deployment'`); for each offering whose head changes or whose open applications are on a binding that this release no longer supports: one assessment (`cause = 'release'`, `change_class` per diff, `statement_state` = `supplied` or `missing`), `latest_assessment_no + 1`; `cat_release_registrations` row. |
 | Facts | `cat.release_catalogue_registered` (CCR-03), `cat.declaration_registered`, `cat.binding_registered`, `cat.declaration_published`, `cat.release_impact_submitted`, `cat.impact_assessment_opened`. |
 | Tasks | `catalogue.impact_recheck` per assessment. |
-| Errors | `validation_failed`, `control_blocked`, `conflict_duplicate`, `maintenance` (admission closed: the command waits for open). |
-| Idempotency and concurrency | Same key ⇒ replay. New key after success ⇒ `conflict_duplicate`. Crash before commit ⇒ nothing written; rerun is safe. Lost acknowledgement ⇒ `tm` retries the same key. While unregistered after open, a removed capability already makes every dependent binding derived `incompatible` (Section 2.4), so no action uses a binding the release does not support; new cases continue on the previous head only if its binding is still supported. |
+| Errors | `validation_failed`, `control_blocked`, `conflict_duplicate`, `maintenance` (admission open or closed for another reason). |
+| Idempotency and concurrency | Same key ⇒ replay. New key after success ⇒ `conflict_duplicate`. Crash before commit ⇒ nothing written; rerun is safe. Lost acknowledgement ⇒ `tm` retries the same key. Because registration happens while closed, no window exists in which the new release serves cases without its registration; in addition a removed capability already makes every dependent binding derived `incompatible` (Section 2.4). |
 
 A head change at deployment is not a launch and needs no second launch approval for a launched, unsuspended offering (B06). If the new head declaration is incompatible with the published baseline, new cases answer `baseline_incompatible` until a SuperAdmin publishes a compatible baseline; `tm release register` prints this before cutover (RI-12-03).
 
@@ -977,7 +910,7 @@ TA surface:
 | Path | Method | Action / resource | Shown |
 |---|---|---|---|
 | `/ta/catalogue` | GET | `catalogue.read_selectable` / list | Countries with ≥ 1 offering visible to this TA. Per offering: title, mode label ("TravelMudra files", "Preparation only — you file", "Filed by a declared provider"), state badge: `Available`, or `Unavailable` with the closed reason (`offering_suspended`, `offering_withdrawn`). Not-launched and out-of-audience offerings are absent. |
-| `/ta/catalogue/offerings/:offeringId` | GET | `catalogue.read_selectable` / `offering` | From the head tuple: cost (service price in rupees, "fixed when you submit"); government fee statement: `tm_funded` ⇒ "TravelMudra pays the government fee and recovers the exact government amount from you, separately from the service price" (B27); boundary line "How the service price relates to the government fee is not decided yet" (`unselected_price_fee_formula`); other modes ⇒ "TravelMudra does not handle government or provider fees for this service" or the boundary `unselected_other_mode_fee`. Processing estimate ("estimate, not a guarantee", B17). Required documents: label, mandatory/optional, formats, size limit, description. Process overview. Boundary lines for every A item not supported: withdrawal unavailable (`withdrawal_cutoff_undeclared`), cancellation unavailable (`cancellation_undeclared`), original return unavailable (`parked_custody_route_policy`). Action: "Start an application" (link to Core's group selection) only when `canSelectOffering` allows; otherwise the blocking codes. Out-of-scope or not-launched id ⇒ 404. |
+| `/ta/catalogue/offerings/:offeringId` | GET | `catalogue.read_selectable` / `offering` | From the head tuple: cost (service price in rupees, "fixed when you submit"); government fee statement: `{ payer: 'travelmudra', … }` ⇒ "TravelMudra pays the government fee and recovers the exact government amount from you, separately from the service price" (B27); `'no_government_fee'` ⇒ "No government fee applies to this service"; boundary line "How the service price relates to the government fee is not decided yet" (`unselected_price_fee_formula`); other modes ⇒ the owner-approved statement (for example "TravelMudra does not handle government or provider fees for this service", only with an owner approval of that item, rev 2) or the boundary `unselected_other_mode_fee`. Processing estimate ("estimate, not a guarantee", B17). Required documents: label, mandatory/optional, formats, size limit, description. Process overview. Boundary lines for every A item not supported: withdrawal unavailable (`withdrawal_cutoff_undeclared`), cancellation unavailable (`cancellation_undeclared`), original return unavailable (`parked_custody_route_policy`). Action: "Start an application" (link to Core's group selection) only when `canSelectOffering` allows; otherwise the blocking codes. Out-of-scope or not-launched id ⇒ 404. |
 
 Operator surface:
 
@@ -1153,7 +1086,7 @@ This scope owns no periodic job and no date-triggered behaviour. Publications, l
 | Student, diplomatic and work visas; non-Indian or non-ordinary passports; non-resident applicants | B02 | `eligibility.population` outside scope ⇒ item `unsupported` on the admin item table; offering cannot launch | `population_out_of_scope` |
 | Historical and in-flight imports, other-tool integration | B02, B42 EXCLUDED | No catalogue import route; release registration loads declarations only | — |
 | Price versus government-fee formula | B29, B43 unselected | Item `financialConditions.priceFeeRelation` unresolved; TA offering page boundary line; admin item table | `unselected_price_fee_formula` |
-| Other-mode fee policy | B27, B29 unselected | Item `financialConditions.governmentFee` unresolved for non-TravelMudra-filed offerings that do not declare `not_handled_by_travelmudra`; offering cannot launch | `unselected_other_mode_fee` |
+| Other-mode fee policy | B27, B29, B43 unselected | Rev 2 (COV-11, BND-04): item `financialConditions.governmentFee` of every non-TravelMudra-filed offering is unsupported unless an owner approval lists it; real offerings keep it unresolved; offering cannot launch (L item) | `unselected_other_mode_fee`, `owner_approval_required` |
 | Preparation-only withdrawal cut-off | B44 PARKED | Item `controls.withdrawalCutoff` unresolved; TA page boundary line; withdrawal refused | `withdrawal_cutoff_undeclared` (item reason `parked_prep_only_cutoff`) |
 | Generic erroneous-case cancellation | B44 PARKED | `cancellation: 'undeclared'`; TA page boundary line | `cancellation_undeclared` |
 | Provider route and customer-data sharing | B15, B42, B44 | Real `third_party_filed` offerings hold `provider` unresolved ⇒ cannot launch; admin launch page lists the reason | `provider_route_unapproved` |
@@ -1173,9 +1106,11 @@ Synthetic data lives in `catalogue/synthetic/` and is loaded by `tm seed synthet
 
 | Offering key | Country | Mode | Custody | Notable declared items | Launchable |
 |---|---|---|---|---|---|
-| `SYN/syn_tourist_evisa/travelmudra_filed` | `SYN` Synthetica | `travelmudra_filed` | electronic | Gate 2 applicable; fee `tm_funded`; withdrawal cut-off `evidenced_government_portal_submission`; price-fee relation unresolved (acknowledged) | yes |
+| `SYN/syn_tourist_evisa/travelmudra_filed` | `SYN` Synthetica | `travelmudra_filed` | electronic | Gate 2 applicable; fee `{ payer: 'travelmudra', timing: 'separate_act' }`; withdrawal cut-off `evidenced_government_portal_submission`; price-fee relation unresolved (acknowledged) | yes |
 | `SYN/syn_business_paper/travelmudra_filed` | `SYN` | `travelmudra_filed` | physical + electronic | originals held; return policy unresolved (acknowledged) | yes |
-| `SYN/syn_tourist_prep/preparation_only` | `SYN` | `preparation_only` | electronic | fee `not_handled_by_travelmudra`; withdrawal cut-off unresolved `parked_prep_only_cutoff` (acknowledged); outcome `prepared_and_handed_over` only | yes |
+| `SYN/syn_evisa_fee_with_submission/travelmudra_filed` (rev 2, MON-01) | `SYN` | `travelmudra_filed` | electronic | fee `{ payer: 'travelmudra', timing: 'with_submission' }`; `externalActs = ['government_submission']` | yes |
+| `SYN/syn_paper_return/travelmudra_filed` (rev 2, COV-01/B41 partial return) | `SYN` | `travelmudra_filed` | physical + electronic | originals held (passport); `originals.returnPolicy = { recipientEvidenceKinds: ['attestation','document_version'], sharedItemReturn: 'single_application_only' }` with a **synthetic** owner approval (`synthetic_label`); proves partial return mechanics (record 13 T-CO61) | yes (test/local_test only) |
+| `SYN/syn_tourist_prep/preparation_only` | `SYN` | `preparation_only` | electronic | fee `not_handled_by_travelmudra` with a synthetic owner approval (rev 2; real offerings stay `unselected_other_mode_fee`); handover evidence `ta_retrieval_of_released_packet`; withdrawal cut-off unresolved `parked_prep_only_cutoff` (acknowledged); outcome `prepared_and_handed_over` only | yes |
 | `SYN/syn_tourist_provider/third_party_filed` | `SYN` | `third_party_filed` | electronic | provider `{ routeRef: 'synthetic:provider-1', ownerApprovalRef: 'synthetic' }`; capability `provider.synthetic` (present only in test and local-test releases, CCR-10) | yes (test/local_test only) |
 | `SYN/syn_tourist_provider_unapproved/third_party_filed` | `SYN` | `third_party_filed` | electronic | provider unresolved `parked_provider_route` | no — shows the boundary |
 | `SYN/syn_transit_dependent/travelmudra_filed` | `SYN` | `travelmudra_filed` | electronic | dependency on `syn_tourist_evisa` outcome `issued` with artifact `evisa_grant` | yes |
@@ -1195,7 +1130,11 @@ Levels: **U** unit (pure functions, no database); **I** integration over a real 
 | T-C04 | Capability profile and derived binding support with one and two versions of a capability in the release | B05, B39 | U | profile strings; support answers | an unreleased capability version never answers `supported` |
 | T-C05 | `launchDecision` full matrix: not launched / out of audience / suspension (continue, hold, missing) / withdrawal (permits, not) × draft / submitted × every controlled action of contract §2.14 | B07 | U | effect and codes per cell; most restrictive wins; codes include every contributor | no cell yields `allow` for `select_offering`, `start_intake`, `create_draft` unless launched, in audience, unsuspended, not withdrawn; payment status is not an input |
 | T-C06 | `impactFor` derivation table (Section 2.5), including late-created application without item, carried item, superseded assessment, declined transition | B06 | U | result per row | a non-head application without a valid current item never answers `none` |
-| T-C07 | `evaluateTravelDateRules`: valid, invalid (each rule), unknown (rules unresolved, missing passport expiry), forecast threatens travel | B06, B17 | U | outputs | `unknown` never maps to `valid` |
+| T-C07 | `evaluateTravelDateRules`: valid, invalid (each submit-window rule), unknown (rules unresolved), forecast threatens travel (passport validity is tested in record 14 T-D tests) | B06, B17 | U | outputs | `unknown` never maps to `valid` |
+| T-C60 | Rev 2 (COV-01, T-F36): every synthetic declaration parses with the shared `parseDecl`; a body with the withdrawn record-12 keys (`originals`, flat `deliveryEvidence.channels`) is refused | B05 | U | parse results | a second parser |
+| T-C61 | Rev 2 (BND-04, COV-11): E1 registers a real `preparation_only` declaration with `governmentFee: 'not_handled_by_travelmudra'` and a declared cancellation path ⇒ both items `unsupported` / `owner_approval_required`, launch refused; after C5 item approval listing both keys ⇒ supported | B05, B43, B44 | I | item statuses; approval row | launch on engineering basis alone |
+| T-C62 | Rev 2 (COV-12): a declaration naming actor `provider_agent` or authority kind `embassy_agent` is refused at registration | B05 | U/I | refusal code | registered declaration |
+| T-C63 | Rev 2 (COV-13 item 9): `tm cutover run` registers the release catalogue during verify while closed; `cat.register_release_catalogue` after `tm admission open` ⇒ `maintenance` | B39, B06 | MP | registration row before `sys.admission_opened` | registration after open |
 | T-C08 | Public renderer: duplicate title or description fails the build; canonical path normalization; JSON-LD omits `address` when locality unverified; `<` escaped in JSON-LD; non-production config adds `noindex` | B01 | U | rendered strings | no price, id pattern or synthetic marker in production render |
 | T-C09 | Launch plan completeness: each missing field path listed; `not_applicable` without reason incomplete; preparation-only plan without `packet_handover_duration` incomplete; target without a number incomplete | B32 | U | `missing` lists | no default target or owner is filled |
 
