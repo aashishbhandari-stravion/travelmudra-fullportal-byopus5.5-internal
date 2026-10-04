@@ -15,6 +15,9 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 - Toolchain: `$HOME/.local/opt/travelmudra-toolchain/env.sh`. Dev clamd: `$HOME/.local/share/travelmudra-dev/clamav/clamd.conf` (socket `run/clamd.sock`; start: `clamd --config-file=<conf>` with env sourced).
 - Workflow scripts and journals: `~/.claude/projects/<project>/<session>/workflows/scripts/` and `.../subagents/workflows/<run id>/journal.jsonl`.
 
+## Launch rule (lesson 2026-10-04)
+Always launch Workflow/Agent calls with the shell's working directory at the PRODUCT root. Worktree isolation uses the current repository; a launch from `internal/` created product worktrees inside the internal repo (cleaned up: branch moved to the product repo as `review-fixes`, internal objects purged).
+
 ## How to resume an interrupted workflow
 1. Find the run id and script path (table below). Read its `journal.jsonl`: one `result` line per completed agent.
 2. If the run is still active, wait. If it ended with an error/limit, re-invoke `Workflow({scriptPath, resumeFromRunId})`: completed agents replay from cache, the rest run live. Do not edit prompts of completed agents (that breaks the cache).
@@ -33,6 +36,6 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 | Design system | **merged** to main (f5fd6e5) after independent Principal UX approval (1 P0 + 4 P1 fixed and re-checked); main verified 492/492; worktree removed | wf_b84d73e7-352 | — |
 | M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
-| M1 close: web shell + server composition lane ∥ four-lens foundation review → adversarial verify → fix round | running | wf_bbbfc620-233 (task wewb6nxqp) | travelmudra-m1c-webshell-and-foundation-review-wf_bbbfc620-233.js |
+| M1 close: web shell ∥ foundation review → verify → fix | done; web shell merged; review-fixes merged (b48df28); integration-seam fix agent running (compose auditHealth/sql, route markers vs single-policy scanner, single CSP) | wf_bbbfc620-233 | — |
 | Next | merge web-shell branch and review-fix branch (both worktree branches), full gate, quick review of web shell if needed, tag `m1-foundation`; then milestone 2 lanes (identity+web auth, catalogue+launch+public site, documents+workers jobs) | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
