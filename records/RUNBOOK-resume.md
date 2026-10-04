@@ -30,8 +30,8 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 | Item | State | Run id / branch | Script |
 |---|---|---|---|
 | Design (contract, modules, review, consolidation) | done; contract rev 4 (§16 extension, §17 test allocation, §18 delegated decisions) | wf_e8b5df7e-a53 | travelmudra-design-wf_6f3d22c7-6e4.js |
-| Design system (build → critique → fix) | running | wf_a69554df-5be, worktree-wf_a69554df-5be-1 | travelmudra-design-system-wf_a69554df-5be.js |
-| M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
-| M1 stage B lanes (kernel runtime, platform seams, countries+static) | running | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
+| Design system (build → critique → fix) | build+critique done (2 P0, 6 P1, 5 P2); fix round resumed after limit (partial fix diff saved in session scratchpad, worktree reset to 5e0d85e) | wf_a69554df-5be (task w4wo39q71), worktree-wf_a69554df-5be-1 | travelmudra-design-system-wf_a69554df-5be.js |
+| M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
+| M1 stage B lanes (kernel runtime, platform seams, countries+static) | resumed after usage limit (first run died after ~1 min, no partial work) | wf_91b0d5e2-e8d (task wp9tshk9f) | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
 | Next | merge B lanes (resolve vocabulary/reason-code conflicts; wire lease_lost hook into WorkerRunner), Principal UX approval gate for design system then merge, web-shell lane (needs design-system html.ts), foundation review workflow, gate, tag `m1-foundation` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
