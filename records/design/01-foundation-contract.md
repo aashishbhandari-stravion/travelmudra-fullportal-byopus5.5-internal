@@ -2037,7 +2037,7 @@ export interface CoreApi {
     // conditions as recordContinuation; the quoted price is unchanged (only reduction_auto and an accepted increase change the effective price).
   proposePriceIncrease(tx: WriteTx, req: { readonly applicationId: ApplicationId; readonly baselineId: BaselineVersionId; readonly newPricePaise: Paise; readonly cause: 'mistaken_price' }): Promise<'proposed' | 'already_open' | 'not_higher' | 'not_applicable'>;   // writer form of CMD-S2 for the impact recheck
   setApplicantKey(tx: WriteTx, req: { readonly applicationId: ApplicationId | null; readonly groupId: GroupId; readonly offeringId: OfferingId; readonly newKey: ApplicantKey; readonly laterAttemptOf?: ApplicationId; readonly freshIntakeConfirmed?: boolean }): Promise<void>;
-    // rev 2 (MON-04): module-internal Core writer used by every path that sets or changes applicant_key; Section 3.5 guard rule
+    // rev 2 (MON-04): Core-internal writer (listed for completeness; other modules MUST NOT call it) used by every path that sets or changes applicant_key; Section 3.5 guard rule
   recordProtectionMark(tx: WriteTx, req: { readonly applicationId: ApplicationId; readonly restoreId: Id<'rst'>; readonly possiblyFiled: boolean; readonly possiblyPaid: boolean; readonly possiblyReleased: boolean }): Promise<'recorded' | 'already_recorded'>;   // engineering CLI only
 }
 // Commands (names used by others/harness): core.create_group, core.edit_travel_dates, core.close_group, core.edit_draft,

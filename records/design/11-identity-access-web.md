@@ -1,6 +1,6 @@
 # TravelMudra design record 11 — Identity & Access and the shared web shell
 
-Owner of this record: design phase (Identity & Access lane). Integration and every decision in it: orchestrator. Date: 2026-10-04. Status: proposed for review.
+Owner of this record: design phase (Identity & Access lane). Integration and every decision in it: orchestrator. Date: 2026-10-04. Status: **revision 2** (consolidated after the 2026-10-04 design review; ledger `internal/records/reviews/2026-10-04-design-review-ledger.md`). Contract record 01 revision 2 governs; Section 8 carries each request's disposition.
 Authority, in order: `internal/records/BUILD_SPEC.md` (B01–B47); architecture brief revision 2 (`00-architecture-brief.md`); `ENGINEERING_OVERRIDES.md` (EO-01…EO-07); environment inventory 2026-10-04; foundation contract `01-foundation-contract.md` (binding; cited as "contract §n").
 Scope: B08, B09, B10, B11, B07 (product-owner account), B29 (accounting grant), B33 (privileged elevation during audit outage), B37 (synthetic seed boundary), and the shared web shell: sessions, cookies, CSRF/origin/host checks, rate limiting and bot controls, sign-in, MFA, account lifecycle, grants, support view, full-audit access, operator suspension hand-off, and the complete route inventory.
 
@@ -13,7 +13,7 @@ This is an internal record. It cites rule IDs. Product source, tests, comments a
 | ID | Inputs in conflict | Resolution in this record | Who decides |
 |---|---|---|---|
 | X-01 | Task text says integration tests run over "real persisted SQLite". Brief revision 2 and EO-01 replace SQLite with PostgreSQL 16. | All integration tests in Section 7 run over real persisted PostgreSQL 16 (per-file database cloned from the migrated template, contract §10.1). | Orchestrator (already decided in EO-01). |
-| X-02 | Task text says "TOTP via node:crypto". Brief §1.1 lists `otpauth` 9.5.2 for staff TOTP. | TOTP generation and verification use `node:crypto` (`createHmac('sha1')`, `timingSafeEqual`) per RFC 4226/6238, about 40 lines in `src/modules/identity/totp.ts`. `otpauth` is used only in tests as an independent oracle. `qrcode` renders the enrolment SVG. Proposed: move `otpauth` to devDependencies (CCR-14). Reason: the verification path is short, security-critical and easy to prove against RFC vectors; one less runtime dependency in the authentication path. | Orchestrator (dependency set, rule R5). |
+| X-02 | Task text says "TOTP via node:crypto". Brief §1.1 lists `otpauth` 9.5.2 for staff TOTP. | **Decided in revision 2 (CCR-14 rejected; review finding COV-19):** TOTP generation and verification use the pinned runtime library `otpauth` 9.5.2 (brief §1.1), wrapped in `src/modules/identity/totp.ts` (constant-time comparison, step window ±1, replay guard `totp_last_step`). Reason: EO-02 records the product owner's direction to prefer mature libraries for security-sensitive code and names TOTP; the brief (revision 2) supersedes the earlier "node:crypto" task text. RFC 6238 SHA-1 test vectors are the independent oracle (T-U16). `qrcode` renders the enrolment SVG. No engineering override is needed. | Orchestrator (decided). |
 | X-03 | Contract §1.1 defines an OTP as "32 random bytes, base64url". B08 requires "bounded attempts", and a TA types the code from an email. | OTP = 8 decimal digits from `crypto.randomInt`. Attempt bounds (5 per challenge, issuance limits) give a per-challenge guess probability of 5 × 10⁻⁸. Session, lease and enrolment tokens stay 32 bytes. CCR-01. | Orchestrator. |
 | X-04 | Contract §12.1 route `/staff/enrol/:token` puts a bearer token in a URL. Contract §5.5 says "No URL is a bearer credential". | Enrolment code is typed or pasted into a `POST /staff/enrol` form. No token in any URL. CCR-02. | Orchestrator. |
 | X-05 | Contract §10.7 `captcha.verify(tx, …)` is a platform facility that inserts into `iam_captcha_spent` (an Identity table). Contract §3.1/T-F01: sole writers. | Platform keeps only pure functions (`createChallenge`, `verifyPayload`). Identity exports the writer `consumeBotCheck(tx, …)`, used by Identity and Intake commands. CCR-03. | Orchestrator. |
@@ -529,14 +529,14 @@ SuperAdmin; `grant.accounting_set`; reason; `privilegedElevation`. Grantee `FOR 
 
 | Item | Specification |
 |---|---|
-| Actor | `engineering` via `tm_owner` pool; command registered only when `env ∈ {test, local_test}`; `production` refuses at startup and the CLI exits non-zero (`synthetic_seed_refused`). |
+| Actor | rev 2 (record 11 CCR-13 accepted with edit): actor kind `harness` (contract 01 §2.24) with label from `--actor`; command name `harness.iam.seed_synthetic`; registered only when `env ∈ {test, local_test}`; `production` refuses at startup and the CLI exits non-zero (`synthetic_seed_refused`). |
 | Checks | 1. Zero accounts with `synthetic = false` exist (a real installation can never be seeded). 2. Zero accounts exist with the fixture emails. |
 | Writes | Fixed fixture set: 2 SuperAdmins, 3 operators, 3 TAs; emails `syn-<role>-<n>@synthetic.test`; names prefixed `SYN`; `synthetic = true`; status `active`; staff get `activation` enrolments delivered to the synthetic mailbox. No TOTP seeds are generated by the seed; enrolment uses the product path. |
-| Facts | `iam.account_created`, `iam.account_activated`, `iam.enrolment_issued`, actor `engineering`, reason "synthetic local-test identity fixture". |
+| Facts | `iam.account_created`, `iam.account_activated`, `iam.enrolment_issued`, actor kind `harness`, reason "synthetic local-test identity fixture". |
 | Boundary | Grants no product first-admin or all-admin-loss exception (B37, B44): `production` server startup refuses when any `synthetic = true` account exists (`synthetic_accounts_present`), and `iam.create_account` refuses `@synthetic.test` in `production`. |
 | Idempotency | Re-run ⇒ check 2 refuses; nothing written. |
 
-CCR-13 extends contract §2.24 so that the engineering actor may write these Identity facts in test/local_test only.
+CCR-13 (accepted with edit in contract revision 2) lets the `harness` actor kind — not the engineering actor — write these Identity facts in test/local_test only.
 
 ## 4. Queries, pages and routes
 
@@ -762,8 +762,8 @@ Every application route resolves the application and requires `OP-asg` unless ma
 | O22 | POST | `/ops/applications/:applicationId/outcome` | `operator.record_outcome` | OP-asg | `core.record_outcome` (declared cancellation only; else `parked_cancellation`) |
 | O23 | POST | `/ops/applications/:applicationId/applicant-withdrawal` | `operator.record_applicant_withdrawal` | OP-asg | `core.record_applicant_withdrawal` |
 | O24 | POST | `/ops/applications/:applicationId/deferral` | `operator.propose_deferral` | OP-asg | `core.propose_deferral` |
-| O25 | POST | `/ops/applications/:applicationId/packet/build` | `operator.build_packet` | OP-asg | Delivery packet build (name per Delivery design) |
-| O26 | POST | `/ops/applications/:applicationId/packet/release` | `operator.release_packet` | OP-asg | Delivery packet release (name per Delivery design) |
+| O25 | POST | `/ops/applications/:applicationId/packet/build` | `operator.build_packet` | OP-asg | `ops.request_packet_build` (rev 2, COV-03: Operations command calling `delivery.requestPacketBuild`) |
+| O26 | POST | `/ops/applications/:applicationId/packet/release` | `operator.release_packet` | OP-asg | `core.release_packet` (rev 2, COV-03: Core acceptance calling `delivery.markPacketReleased`) |
 | O27 | POST | `/ops/applications/:applicationId/handover` | `operator.record_custody` | OP-asg | `dlv.record_handover` |
 | O28 | POST | `/ops/applications/:applicationId/manual-email` | `operator.record_manual_email` | OP-asg | `dlv.record_manual_email` |
 | O29 | POST | `/ops/applications/:applicationId/direct-external` | `operator.record_direct_external` | OP-asg | `dlv.record_direct_external` |
@@ -771,13 +771,13 @@ Every application route resolves the application and requires `OP-asg` unless ma
 | O31 | POST | `/ops/applications/:applicationId/originals` | `operator.record_custody` | OP-asg | `ops.record_original_receipt` |
 | O32 | POST | `/ops/originals/:originalId/movements` | `operator.record_custody` | OP-asg of a linked application | `ops.record_original_movement` |
 | O33 | POST | `/ops/originals/:originalId/return` | `operator.record_custody` | OP-asg of a linked application | `ops.record_original_return`: always `unavailable_parked` / `parked_custody_route_policy` (B30) |
-| O34 | POST | `/ops/applications/:applicationId/wrong-recipient` | `incident.work` | OP-asg | `ops.report_wrong_recipient` |
+| O34 | POST | `/ops/applications/:applicationId/wrong-recipient` | `incident.report_disclosure` (rev 2, record 13 CCR-10) | OP-asg | `ops.report_wrong_recipient` |
 | O35 | GET | `/ops/incidents` | `incident.read` (list) | OP-asg, OP-rev, SV | Operations |
 | O36 | GET | `/ops/incidents/:incidentId` | `incident.read` | OP-asg, OP-rev, SV | reviewer sees artifact + minimal candidate identifiers only |
 | O37 | POST | `/ops/incidents/:incidentId/evidence` | `incident.work` | OP-asg, OP-rev | `ops.record_incident_evidence` |
 | O38 | POST | `/ops/incidents/:incidentId/resolve` | `incident.resolve` | OP-asg, OP-rev | `ops.resolve_incident` |
 | O39 | POST | `/ops/artifacts/:artifactId/confirm-association` | `incident.work` | OP-asg, OP-rev | `ops.confirm_artifact_association` |
-| O40 | POST | `/ops/failures` | `incident.work` | OP-asg of the subject | `ops.classify_failure` |
+| O40 | — | (removed in rev 2) | — | — | Failure classification is SuperAdmin-only (record 13 CMD-IN2, action `failure.classify`; review findings COV-14, SEC-13): route `POST /admin/failures/:subjectType/:subjectId/classify`. Operators open incidents with `incident.open` (record 13 CMD-IN1) |
 
 Document-email send and completion check have no route (`delivery_send_trigger_unselected`, `completion_check_trigger_unselected`, B46); the application page shows the pending state with those codes.
 
@@ -805,7 +805,7 @@ No POST route exists. `accounts.receipt_verify`, `accounts.adjust`, `exposure.re
 | D10 | GET | `/admin/queues/financial-follow-up` | `financial_exception.read` | Views (`Payment_Missing_Override`) | write-off `unselected_write_off` |
 | D11 | GET | `/admin/applications` | `application.read`, `search.private` | Views | |
 | D12 | GET | `/admin/applications/:applicationId` | `application.read` | Core/Views | |
-| D13 | POST | `/admin/applications/:applicationId/documents/:versionId/retrieve` | `document.retrieve_bytes` | `dlv.retrieve_document` | release check |
+| D13 | POST | `/admin/applications/:applicationId/documents/:versionId/retrieve` | `document.retrieve_bytes` | `dlv.retrieve_document` | release check; interim of owner decision OD-R2-04 (SuperAdmin byte access, review finding SEC-03) |
 | D14 | POST | `/admin/applications/:applicationId/assistance-decision` | `assistance.decide` | `core.decide_assistance` | R |
 | D15 | POST | `/admin/applications/:applicationId/assign` | `assignment.assign` | `core.assign` | R; Gate 1 |
 | D16 | POST | `/admin/applications/:applicationId/reassign` | `assignment.reassign` | `core.reassign` | R; audited hand-off |
@@ -920,7 +920,7 @@ Levels: **U** unit (pure, no database); **I** integration over a real persisted 
 | T-I13 | Non-disclosure in diagnostics: sign-in with email, wrong and right OTP, TOTP, ALTCHA payload | B08, B33 | I | pino output captured | email, OTP, TOTP, payload, cookie values, URL query in output (contract T-F31 pattern) |
 | T-I14 | Staff sign-in requires both factors | B08, B11, B41 | I | wrong TOTP + right OTP: attempt +1, `totp_fail_count +1`, failure fact; both right: staff session with `mfa_verified_at`, `totp_last_step` set | session with only one factor; session for a non-enrolled staff (decoy) |
 | T-I15 | TOTP replay and window lock: same TOTP code reused within its step (sequential and 2 concurrent); 10 TOTP failures in 24 h then valid codes | B08 | I + M | one session; `totp_last_step` monotonic; lock until window end (fake clock) | second session from one TOTP step; session during lock |
-| T-U16 | TOTP implementation against RFC 6238 SHA-1 vectors and against `otpauth` (dev oracle) for 10 000 random seeds/times | B08 | U | — | any mismatch |
+| T-U16 | TOTP wrapper (`otpauth` runtime, rev 2) against RFC 6238 SHA-1 vectors and an independent `node:crypto` HOTP oracle in the test suite for 10 000 random seeds/times | B08 | U | — | any mismatch |
 | T-I17 | Staff enrolment: activation issues enrolment; code from synthetic mailbox; open; confirm; then full sign-in | B08, B11 | I + E | enrolment `consumed`, seed stored encrypted, `iam.mfa_enrolled`, enrolment session revoked | enrolment code or seed in any SuperAdmin page response, fact, task payload, operation summary or log (scan all) |
 | T-I18 | Enrolment code: single use, expiry, 5 confirmation attempts, concurrent opens | B11 | I + M | states `consumed`/`expired`/`exhausted`; one enrolment session | second enrolment session; enrolment from an exhausted row |
 | T-I19 | Credential reset of an active operator | B11 | I | TOTP columns NULL, all sessions revoked (`credentials_reset`), new enrolment; old TOTP fails sign-in | admin-visible code; reset of self; reset of a TA (`unavailable_parked`, no rows) |
