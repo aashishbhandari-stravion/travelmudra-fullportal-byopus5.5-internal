@@ -23,6 +23,10 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 2. If the run is still active, wait. If it ended with an error/limit, re-invoke `Workflow({scriptPath, resumeFromRunId})`: completed agents replay from cache, the rest run live. Do not edit prompts of completed agents (that breaks the cache).
 3. Worktree agents leave branches `worktree-<run>-<n>`; check `git worktree list` and the branch log before re-running a builder (its commits may already exist).
 
+## Recovering builder lanes stopped by a usage limit (preferred over a plain resume)
+A plain `resumeFromRunId` re-runs an interrupted worktree agent from scratch in a NEW worktree and loses its partial work. Instead: (1) inspect each lane worktree (commits + uncommitted + untracked line counts); (2) snapshot partial work as one work-in-progress commit on the lane branch (hooks stay enabled — never `--no-verify`; run `repo_boundary.py check-range` on the branch); (3) launch a continuation workflow whose agents run `git merge --ff-only <lane branch>` in a fresh worktree, audit the inherited code, finish the scope, and may restructure their own branch history before hand-back. Example: `travelmudra-m2-lanes-continue.js`.
+Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made with `--no-verify` by mistake; the boundary range check on those exact commits was clean immediately afterwards. Not to be repeated.
+
 ## Milestone procedure
 1. Merge lane branches into `main` (`git merge --no-ff`), resolve conflicts as architect.
 2. Run the integration gate on the merged range; fix or send back failures.
@@ -37,6 +41,6 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 | M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
-| Milestone 2 lanes (identity+auth, catalogue+launch+public, documents+workers) | running | wf_290a64f0-49c (task wyxvi319g) | travelmudra-m2-lanes-wf_290a64f0-49c.js |
+| Milestone 2 lanes | first run stopped by usage limit after ~32 min (≈10.8k lines partial work snapshotted as WIP commits 751dd60 identity, 96b302a catalogue, ab72093 documents on branches worktree-wf_290a64f0-49c-1/2/3); continuation running | wf_85a739b3-4c2 (task w63pjmx7u) | travelmudra-m2-lanes-continue.js |
 | Next | integrate M2 lanes (compose.ts registrations, vocabulary/config appends, combined `tm seed synthetic`), full gate, M2 review workflow (spec coverage, security incl. auth/SSRF, Principal UX approval of new screens, failure modes) → verify → fix, tag `m2-access-catalogue-documents` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
