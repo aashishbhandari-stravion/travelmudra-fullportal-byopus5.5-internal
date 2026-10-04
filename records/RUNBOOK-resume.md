@@ -37,5 +37,6 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 | M1 stage A kernel core | **merged** to main (df65e51); 114 tests verified; worktree removed | wf_22e23e8d-b08 | travelmudra-m1a-kernel-core-wf_22e23e8d-b08.js |
 | M1 stage B lanes (kernel runtime, platform seams, countries+static) | **merged** to main (24f93fa, 620054f, 2d03767) + integration fixes b81fca0; integrated gate: typecheck/lint OK, 323/323 tests, 0 skipped; worktrees removed | wf_91b0d5e2-e8d | travelmudra-m1b-lanes-wf_91b0d5e2-e8d.js |
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
-| Next | Milestone 2 lanes: identity+auth surfaces, catalogue+launch+public site, documents pipeline+worker jobs; then integration, independent review (incl. Principal UX approval of new screens), tag `m2-…` | — | — |
+| Milestone 2 lanes (identity+auth, catalogue+launch+public, documents+workers) | running | wf_290a64f0-49c (task wyxvi319g) | travelmudra-m2-lanes-wf_290a64f0-49c.js |
+| Next | integrate M2 lanes (compose.ts registrations, vocabulary/config appends, combined `tm seed synthetic`), full gate, M2 review workflow (spec coverage, security incl. auth/SSRF, Principal UX approval of new screens, failure modes) → verify → fix, tag `m2-access-catalogue-documents` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
