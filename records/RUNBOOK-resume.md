@@ -23,6 +23,24 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 2. If the run is still active, wait. If it ended with an error/limit, re-invoke `Workflow({scriptPath, resumeFromRunId})`: completed agents replay from cache, the rest run live. Do not edit prompts of completed agents (that breaks the cache).
 3. Worktree agents leave branches `worktree-<run>-<n>`; check `git worktree list` and the branch log before re-running a builder (its commits may already exist).
 
+## Efficiency rules (product owner, 2026-10-05; binding)
+1. At most THREE parallel lanes (agents doing heavy work) at any time; concurrency is set by token budget, not by how many independent lanes exist.
+2. Workers return a COMPACT handoff only (schema below, length-capped). The orchestrator reviews diffs, contracts, migrations and interfaces plus the gate result — never full worker reasoning histories.
+3. Heartbeat cron hourly at :23 (job 6cb35e17; session-only). Workflow completion notifications are the primary wake signal.
+
+Compact handoff schema (use in every Workflow agent call):
+```js
+const HANDOFF = { type: 'object', properties: {
+  branch: { type: 'string', maxLength: 200 }, commit: { type: 'string', maxLength: 64 },
+  files_changed: { type: 'string', maxLength: 2500 },        // grouped paths, not contents
+  contracts_changed: { type: 'string', maxLength: 2500 },    // interfaces, api.ts, migrations, vocabulary, config keys, routes
+  tests: { type: 'string', maxLength: 600 },                 // command + actual counts
+  unresolved: { type: 'array', maxItems: 15, items: { type: 'object', properties: { priority: { type: 'string', enum: ['P0','P1','P2'] }, issue: { type: 'string', maxLength: 300 } }, required: ['priority','issue'] } },
+  rationale: { type: 'string', maxLength: 7000 },            // ≈1–2k tokens: key decisions, deviations, risks
+}, required: ['branch','commit','files_changed','contracts_changed','tests','unresolved','rationale'] }
+```
+Review procedure: `git diff --stat main..<branch>`; read diffs of migrations/, src/contracts/, src/modules/*/api.ts, src/kernel/vocabulary/, src/web/route-inventory.ts, compose/register files; boundary check-range; run the gate.
+
 ## Recovering builder lanes stopped by a usage limit (preferred over a plain resume)
 A plain `resumeFromRunId` re-runs an interrupted worktree agent from scratch in a NEW worktree and loses its partial work. Instead: (1) inspect each lane worktree (commits + uncommitted + untracked line counts); (2) snapshot partial work as one work-in-progress commit on the lane branch (hooks stay enabled — never `--no-verify`; run `repo_boundary.py check-range` on the branch); (3) launch a continuation workflow whose agents run `git merge --ff-only <lane branch>` in a fresh worktree, audit the inherited code, finish the scope, and may restructure their own branch history before hand-back. Example: `travelmudra-m2-lanes-continue.js`.
 Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made with `--no-verify` by mistake; the boundary range check on those exact commits was clean immediately afterwards. Not to be repeated.
@@ -45,4 +63,4 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | Milestone 3 lanes | views DONE (branch worktree-wf_5ba30037-8eb-5, a2734f6, 1020 tests); core/intake/payments/ops-tooling stopped by session limit → WIP a6eb6a7 (core), 2884869 (intake); payments d9dded6 and ops-tooling 3c0536a committed; continuation running with contract §21 guidance (thin pages, logic server-side; ops-tooling: core-centred cutover/backup, no 3-instance install; P-256 → prime256v1) | wf_d3faa9df-f1f (task wc0orapgj) | travelmudra-m3-lanes-continue.js |
 | Service split phase 1 | infra agent stopped by session limit after ~80 s (no work kept); DEFERRED until M3 continuation finishes (fewer concurrent agents ⇒ less in-flight loss per limit hit); relaunch the same script fresh | wf_5dfee1fa-8bc | travelmudra-service-split-phase1-wf_5dfee1fa-8bc.js |
 | Next | integrate M3 lanes (branch m3-integration; cross-module FK migration) and service-split phase 1; phase 2: port M3 pages to edge/staff over the API, delete the single-process server, all system/E2E tests on 3 instances; then M3 review (code + UX) → tag | — | — |
-| Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
+| Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |
