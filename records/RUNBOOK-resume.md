@@ -43,6 +43,6 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
 | Milestone 2 lanes + integration | **merged to main 446132c** (identical to verified m2-integration 40af7de; 936/936 verified by orchestrator); worktrees/branches removed | — | — |
 | M2 review | code: 26 findings, 12 confirmed P0/P1 (3 P0), fixed on branch fix/m2-review-findings 8363980 (950 tests). UX: changes_required (4 P0, 13 P1); UX fixer hit usage limit → partial work snapshotted d08c341 on worktree-wf_67ea74ce-9a4-19 (hooks enabled) | wf_67ea74ce-9a4 | travelmudra-m2-review-wf_67ea74ce-9a4.js |
-| M2 UX continuation (fixer ff-only to d08c341 → independent recheck) | running | wf_c2fe5b80-ca6 (task w333ic05m) | travelmudra-m2-ux-continue-wf_c2fe5b80-ca6.js |
+| M2 UX continuation | first continuation stopped by the WEEKLY limit (reset 2026-10-05 17:30); further partial work snapshotted 34ff06c on worktree-wf_c2fe5b80-ca6-1 (hooks on); continuation-2 running (ff-only to 34ff06c → fix → independent recheck) | wf_7f08517f-961 (task w4oo1hn52) | travelmudra-m2-ux-continue-2.js |
 | Next | verify fix branch (UX fixer branch contains code fixes via ff), merge to main, gate, tag `m2-access-catalogue-documents`, verification record; then milestone 3 (core, intake + document association, payments) | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
