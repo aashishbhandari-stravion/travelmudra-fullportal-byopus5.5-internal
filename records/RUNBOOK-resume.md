@@ -43,5 +43,5 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
 | **Milestone 2** | **tagged `m2-access-catalogue-documents` (da113be)**; 981/981 verified; record verification/2026-10-05-m2-*.md | — | — |
 | Milestone 3 five lanes (core, intake+association, payments, ops-tooling, views) | running | wf_5ba30037-8eb (task w42m7270l) | travelmudra-m3-lanes.js |
-| Next | integrate on branch m3-integration (append-only shared files; ONE cross-module FK migration for owed FKs), seam-fix agent, verify, merge; M3 review (code lenses + skeptics; UX approval of new screens) → fixes → tag `m3-cases-intake-payments` | — | — |
+| Next | (milestone 4 adds a TOPOLOGY lane per contract §20: surfaces/task kinds per process, TLS + per-server DB roles, S3-compatible blob adapter, split-mode test) — integrate on branch m3-integration (append-only shared files; ONE cross-module FK migration for owed FKs), seam-fix agent, verify, merge; M3 review (code lenses + skeptics; UX approval of new screens) → fixes → tag `m3-cases-intake-payments` | — | — |
 | Heartbeat | session cron `7,37 * * * *` (job ad07c898; session-only) | — | — |
