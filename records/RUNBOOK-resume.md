@@ -26,7 +26,8 @@ Always launch Workflow/Agent calls with the shell's working directory at the PRO
 ## Efficiency rules (product owner, 2026-10-05; binding)
 1. At most THREE parallel lanes (agents doing heavy work) at any time; concurrency is set by token budget, not by how many independent lanes exist.
 2. Workers return a COMPACT handoff only (schema below, length-capped). The orchestrator reviews diffs, contracts, migrations and interfaces plus the gate result — never full worker reasoning histories.
-3. Heartbeat cron hourly at :23 (job 6cb35e17; session-only). Workflow completion notifications are the primary wake signal.
+3. Worker agents MUST NOT spawn sub-agents (no Agent/Task tool, no nested workflows); every prompt says so. Lesson 2026-10-06: an integration agent spawned 4 sub-agents (6 concurrent total) and the session limit hit within an hour.
+4. Heartbeat cron hourly at :23 (job 6cb35e17; session-only). Workflow completion notifications are the primary wake signal.
 
 Compact handoff schema (use in every Workflow agent call):
 ```js
@@ -61,7 +62,7 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | **Milestone 1** | **tagged `m1-foundation` (d878072)**; 599/599 verified; record verification/2026-10-04-m1-foundation.md | — | — |
 | **Milestone 2** | **tagged `m2-access-catalogue-documents` (da113be)**; 981/981 verified; record verification/2026-10-05-m2-*.md | — | — |
 | Milestone 3 lanes | ALL DONE: core worktree-wf_d3faa9df-f1f-1 d322341 (1062), intake -f1f-2 baeac9e (1070), payments -f1f-3 f42e024 (1069), ops-tooling -f1f-4 4ac88f5 (1046; footprint verified safe — classifier timed out on it; systemd 'travelmudra-lab-*' units belong to the separate AstraGPT6 project, left untouched), views worktree-wf_5ba30037-8eb-5 a2734f6 (1020). 4 orphaned /tmp/tm-test-* envs stopped and removed. | wf_d3faa9df-f1f | — |
-| M3 integration agent (branch m3-integration worktree; core merged bc7b8c5; merging payments, intake, views, ops-tooling; cross-module FK migration; port wiring; doc.parse serialization fix; test-env reaper) | running (1 lane) | Agent (background) | — |
-| Service split phase 1 (compact handoff schema) | running in parallel (sequential agents ⇒ 1 lane; total 2 ≤ 3 cap) | wf_750091dd-27f (task wg3rn3djv) | travelmudra-service-split-phase1-v2.js |
+| M3 integration | agent stopped by session limit (it had spawned 4 sub-agents — now forbidden); 25 commits + WIP snapshot 3b4462b on m3-integration; all lane branches merged or superseded; lane worktrees removed | — | — |
+| Service split phase 1 | infra agent stopped by session limit after 63 min; 2 commits + WIP snapshot d36f5d5 on worktree-wf_750091dd-27f-1 (P-256 → prime256v1 needed in src/platform/service-tls.ts) | wf_750091dd-27f | — |
 | Next | integrate M3 lanes (branch m3-integration; cross-module FK migration) and service-split phase 1; phase 2: port M3 pages to edge/staff over the API, delete the single-process server, all system/E2E tests on 3 instances; then M3 review (code + UX) → tag | — | — |
 | Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |
