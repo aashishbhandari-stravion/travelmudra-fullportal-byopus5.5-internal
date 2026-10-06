@@ -132,3 +132,10 @@ Each entry is reversible engineering decomposition unless stated. None changes a
 - Reason: product owner requirement (brief §12) that onboarding new countries and services is easy in production.
 - Impact: one new source area `src/countries/`; five foundation tests (T-F50–T-F54).
 - Downstream consequence: every country-specific rule ships as an adapter capability through a release; services on existing shapes need no code.
+
+## EO-20 — Primary case lists read the authoritative tables (2026-10-06)
+- Prior choice: record 15 §4.3 lists T18, O02, D02 and D10 among the pages that read the case projections (`view_applications`, `view_assignment_queue`).
+- Replacement: those four lists keep reading Core's and Payment Records' authoritative tables through their own queries, scoped by the access policy on `core_applications`. The projections serve search, history, the SuperAdmin applications list with filters (D11), the monitors and the measures.
+- Reason: a primary work list must never lag behind the work it lists. The projections are rebuild-safe and exactly-once but asynchronous; an operator or SuperAdmin acting from a lagging list could miss or double-handle work. Search and history tolerate a short, signalled lag.
+- Impact: none on schema or contracts; the projection queries `views.ta_applications` and `views.ops_work` stay bound and tested for a later switch.
+- Downstream consequence: if list filters by progress or group are required on T18/O02/D02/D10, add them to the authoritative queries or switch with a visible "not current" signal.
