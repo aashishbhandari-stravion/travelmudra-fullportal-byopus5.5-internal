@@ -105,7 +105,7 @@ Configuration: 5 invariant commissions with file lists + Principal UX approver (
 | Round 2 | not triggered | not triggered |
 
 Findings:
-1. Invariant commissions found two code P0s (a result file recorded under an incident could attach to any candidate case; an ordinary withdrawal was allowed after an evidenced filing for most offerings) that the broad lenses of milestone 3 would likely have needed far more tokens to reach. Narrow commissions improved yield per token by about a third.
+1. Invariant commissions found two code P0s (a result file recorded under an incident could attach to any candidate case; an ordinary withdrawal was allowed after an evidenced filing for most offerings) at 4.3M processed tokens per accepted code defect, against 6.4M for the broad lenses of milestone 3. The code under review differs, so this is a directional comparison, not a controlled one.
 2. Dropping the P1 verifier lost nothing measurable: every P1 reproduced in the fixer's own first step.
 3. The UX fixer is now the dominant cost (39%): one agent carries about 360k tokens per request across 19 screens, inflated by screenshots kept in context. Next change: split UX fixes into screen groups of at most 5 findings, keep screenshots out of the working context (write them to disk, inspect selectively), and let the independent recheck carry the full visual pass.
 4. Fixer working sets fell to 113–182k per request with subsystem chunks of at most 4.
