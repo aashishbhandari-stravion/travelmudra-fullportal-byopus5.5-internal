@@ -64,6 +64,6 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | Milestone 3 lanes | ALL DONE: core worktree-wf_d3faa9df-f1f-1 d322341 (1062), intake -f1f-2 baeac9e (1070), payments -f1f-3 f42e024 (1069), ops-tooling -f1f-4 4ac88f5 (1046; footprint verified safe — classifier timed out on it; systemd 'travelmudra-lab-*' units belong to the separate AstraGPT6 project, left untouched), views worktree-wf_5ba30037-8eb-5 a2734f6 (1020). 4 orphaned /tmp/tm-test-* envs stopped and removed. | wf_d3faa9df-f1f | — |
 | M3 integration | **merged to main 56db071** (verified 1367/1367; 4 consecutive green runs; kernel task-row locking fix) — not yet tagged (tag after service split + review) | — | — |
 | Service split phase 1 | DONE on worktree-wf_b74a5c37-afd-4 f0bcbcf | — | — |
-| Service split phase 2 stage A (merge split onto main; core-api composes all M3 modules with real audit health; secrets tightening; green) | running (1 agent, worktree) | Agent (background) | — |
+| Service split phase 2 stage A | **merged to main** (verified 1466/1466; known P-256 history false positive recorded) | — | — |
 | Next | stage B: 3 lanes by module (core pages; intake pages; payments+views pages) on edge/staff over the API, each with its own contracts/bindings files; stage C: delete single-process server, product tests on 3 instances; then M3 review (code lenses + UX) → tag `m3-cases-intake-payments` | — | — |
 | Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |

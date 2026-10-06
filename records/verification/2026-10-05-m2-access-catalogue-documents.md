@@ -20,3 +20,6 @@
 
 ## Process notes
 - `--no-verify` was used once on the first WIP snapshots (751dd60, 96b302a, ab72093); range check clean; not repeated.
+
+## Known boundary-check false positive (recorded 2026-10-06)
+- `repo_boundary.py check-range` (extended) reports "workspace identifier 'P-256'" for historical commits cff8124 (added) and bf3a41c (replaced by `prime256v1`) of the service split, merged to main in the stage A merge. `P-256` is the public NIST elliptic-curve name, not an internal workspace identifier; the current tree is clean (extended tree check passes; the pre-push hook checks the tree). Accepted; history not rewritten; checker not weakened. Range checks that include these two commits will keep reporting it.
