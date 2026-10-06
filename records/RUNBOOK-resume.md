@@ -65,5 +65,6 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | M3 integration | **merged to main 56db071** (verified 1367/1367; 4 consecutive green runs; kernel task-row locking fix) — not yet tagged (tag after service split + review) | — | — |
 | Service split phase 1 | DONE on worktree-wf_b74a5c37-afd-4 f0bcbcf | — | — |
 | Service split phase 2 stage A | **merged to main** (verified 1466/1466; known P-256 history false positive recorded) | — | — |
-| Next | stage B: 3 lanes by module (core pages; intake pages; payments+views pages) on edge/staff over the API, each with its own contracts/bindings files; stage C: delete single-process server, product tests on 3 instances; then M3 review (code lenses + UX) → tag `m3-cases-intake-payments` | — | — |
+| Service split phase 2 stage B (3 lanes by module: core, intake, payments+views; port M3 pages to edge/staff over the API; compact handoffs) | running | wf_79605878-457 (task wqjiv1q6i) | travelmudra-split-phase2-stageb-*.js |
+| Next | merge stage B lanes (append-only registries: core-api registry/allowlists, contracts index, app route lists, NOT_YET_PORTED must be empty); stage C (1 agent): delete single-process server, three-instance restore (stage A P1), systemd units for core/edge/staff, product tests on 3 instances; then M3 review (code lenses + UX) → tag `m3-cases-intake-payments` | — | — |
 | Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |
