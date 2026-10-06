@@ -25,3 +25,8 @@ Status: raw observations, recorded during the milestone 3 review run. Not yet an
 ## Decision recorded (architect, delegated by the product owner)
 - The concurrency cap is a tunable experiment, not a fixed rule, while the no-sub-agents rule holds. Milestone 4: write-capable lanes stay at 3 (integration conflicts, not tokens, limit them); read-only review and verification agents may run up to 5 at a time. Measure 5-hour window use per run to compare against this run.
 - Accepted by the product owner on 2026-10-06.
+
+## Test stability under full-suite load (2026-10-07)
+- Five load-dependent test failures surfaced at the parent gate during milestones 4 and 5, each passing alone: a history page read before its projection caught up; a browser view-transition abort on a test page without the opt-in; an instance port taken between check and bind (test ports came from the kernel's ephemeral range, which outgoing connections share); a measures wait on every measure instead of the one under test; a bulk-slot race where the background task loop let a one-row intake finish before the third concurrent start.
+- None was a product defect; each was fixed at its root (bounded waits on the right condition, ports below the ephemeral range, a deterministic slot race with sheets that wait for an answer). The busy-port case also gained a named refusal (`address_in_use`).
+- Lesson: agents run targeted tests, so timing assumptions only show under the full concurrent suite at the parent gate. Each gate run costs about 6.5 minutes. Proposal for milestone 6: one focused commission that runs the full suite several times under load and removes timing assumptions before the final verification.
