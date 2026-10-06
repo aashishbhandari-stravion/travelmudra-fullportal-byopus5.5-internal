@@ -79,3 +79,33 @@ Concurrency:
 
 M6:
 9. Unchanged by this policy: exhaustive independent review of the frozen candidate, broad adversarial fan-out, full-system assurance.
+
+## 8. Milestone 4 review under the new direction (run wf_6941faf5-f46, 2026-10-07)
+Configuration: 5 invariant commissions with file lists + Principal UX approver (read-only, up to 5 at a time); two validators per P0 only; no P1 verifier (the fixer reproduces first); subsystem fix chain of at most 4 findings; one fix verifier (P0 revert-sensitivity, P1 rejections, half of P1 sampled, regression lens, targeted tests); UX fixer; conditional round 2; UX recheck. All 17 agents claude-opus-5-5, effort high (every response).
+
+| Measure | M3 review | M4 review |
+|---|---|---|
+| Agents | 33 | 17 |
+| Requests | 1,843 | 1,231 |
+| Processed tokens | 388.7M | 246.4M |
+| Fresh tokens (input + cache write + output) | 10.28M | 5.04M |
+| Wall clock | 5.7 h | 3.7 h |
+| Accepted defects (code + UX) | 38 (17 code P1 + 3 carried, 17 UX, 1 recheck) | 30 (2 P0 + 9 P1 code, 8 P0 + 11 P1 UX) |
+| Processed per accepted defect | 10.2M | 8.2M |
+| Fresh per accepted defect | 270k | 168k |
+| Code P0 found | 0 | 2 (both confirmed by both validators) |
+| Code review: processed per accepted code defect | 6.4M (broad lenses) | 4.3M (invariant commissions) |
+| Reviewer working set per request | 150–200k | 135–161k |
+| Fixer working set per request / processed per fixed item | 210–300k / 7.2M | 113–182k / 4.7M |
+| Verification layer cost | 4% (20 P1 verifiers, 0 refuted) | 2% (4 P0 validators, 0 refuted) |
+| P1 handling | separate verifier | fixer reproduced 9 of 9 before fixing; 0 rejected |
+| Fix-check rejections | 0 of 21 | 0 of 11 (P0 revert-sensitivity confirmed) |
+| UX fixer share / working set | 18% / 376k | 39% / 360k (261 requests, 80 min) |
+| UX recheck | 1 new P1 | approved; 6 P2 |
+| Round 2 | not triggered | not triggered |
+
+Findings:
+1. Invariant commissions found two code P0s (a result file recorded under an incident could attach to any candidate case; an ordinary withdrawal was allowed after an evidenced filing for most offerings) that the broad lenses of milestone 3 would likely have needed far more tokens to reach. Narrow commissions improved yield per token by about a third.
+2. Dropping the P1 verifier lost nothing measurable: every P1 reproduced in the fixer's own first step.
+3. The UX fixer is now the dominant cost (39%): one agent carries about 360k tokens per request across 19 screens, inflated by screenshots kept in context. Next change: split UX fixes into screen groups of at most 5 findings, keep screenshots out of the working context (write them to disk, inspect selectively), and let the independent recheck carry the full visual pass.
+4. Fixer working sets fell to 113–182k per request with subsystem chunks of at most 4.
