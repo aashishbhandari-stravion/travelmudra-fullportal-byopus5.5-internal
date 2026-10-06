@@ -24,3 +24,4 @@ Status: raw observations, recorded during the milestone 3 review run. Not yet an
 
 ## Decision recorded (architect, delegated by the product owner)
 - The concurrency cap is a tunable experiment, not a fixed rule, while the no-sub-agents rule holds. Milestone 4: write-capable lanes stay at 3 (integration conflicts, not tokens, limit them); read-only review and verification agents may run up to 5 at a time. Measure 5-hour window use per run to compare against this run.
+- Accepted by the product owner on 2026-10-06.
