@@ -17,6 +17,7 @@ Owner: orchestrator. Purpose: let this session, or a fresh one, continue the Tra
 
 ## Launch rule (lesson 2026-10-04)
 Always launch Workflow/Agent calls with the shell's working directory at the PRODUCT root. Worktree isolation uses the current repository; a launch from `internal/` created product worktrees inside the internal repo (cleaned up: branch moved to the product repo as `review-fixes`, internal objects purged).
+The cwd is read when each agent STARTS, not when the workflow launches: never `cd internal` while a workflow runs; use `git -C internal …` and absolute paths (lesson 2026-10-06: stage C2 started in the internal repo and returned a no-op P0). A resume replays every completed agent, including a failed no-op: edit that agent's prompt before resuming.
 
 ## How to resume an interrupted workflow
 1. Find the run id and script path (table below). Read its `journal.jsonl`: one `result` line per completed agent.
@@ -66,6 +67,6 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | Service split phase 1 | DONE on worktree-wf_b74a5c37-afd-4 f0bcbcf | — | — |
 | Service split phase 2 stage A | **merged to main** (verified 1466/1466; known P-256 history false positive recorded) | — | — |
 | Service split phase 2 stage B (3 lanes by module: core, intake, payments+views; port M3 pages to edge/staff over the API; compact handoffs) | DONE, not merged: core worktree-wf_79605878-457-1 @1e3b96f (1481), intake lane/intake-association-pages @5e94154 (1478), payments-views worktree-wf_79605878-457-3 @9c3f3da (1476). P1s handed to stage C1. Architect decisions: operator uploads via staff only for operator_assistance_upload/operator_artifact_upload on the assigned case; intake-incident "assign" command parked (P2; SuperAdmin acts on incidents directly) | wf_79605878-457 | travelmudra-split-phase2-stageb-*.js |
-| Service split phase 2 stage C (sequential, 1 lane at a time): C1 merge stage B + real intake/payment paths in system tests + port ops.documents.upload; C2 retire single-process server, three-instance restore, systemd units, product tests on 3 instances | running | wf_3321b7f7-454 (task wde92goyu) | travelmudra-split-phase2-stagec-wf_3321b7f7-454.js |
+| Service split phase 2 stage C (sequential, 1 lane at a time): C1 merge stage B + real intake/payment paths in system tests + port ops.documents.upload; C2 retire single-process server, three-instance restore, systemd units, product tests on 3 instances | C1 DONE worktree-wf_3321b7f7-454-1 @a7d501c (operator uploads ported, real paths in system tests, NOT_YET_PORTED empty; 4 P2 parked). C2 relaunched (first attempt ran in the internal repo) | wf_3321b7f7-454 (task wqt6nahtb) | travelmudra-split-phase2-stagec-wf_3321b7f7-454.js |
 | Next | review C2 handoff → gate on integrated result → merge to main; then M3 review (code lenses + UX) → tag `m3-cases-intake-payments` | — | — |
 | Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |
