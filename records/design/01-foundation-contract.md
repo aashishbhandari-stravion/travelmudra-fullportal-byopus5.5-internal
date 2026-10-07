@@ -3442,3 +3442,11 @@ Consequences: the operations guide documents per-release directories, restarting
 
 ### 21.8 Release procedures while closed for a restore (architect decision, 2026-10-07; amends T-F48)
 A restored installation's configuration never equals the restored release's manifest (paths, ports, recipient differ), so it MUST register, activate and verify a release for its own configuration before opening. Therefore, while admission is closed for a restore (`restore_clean`, `restore_interval_loss`), the maintenance writer MUST accept exactly the release procedures (release registration with its catalogue registration, activation, verification) and MUST refuse every other maintenance or business write with the closure's code. T-F48 is amended accordingly: its test asserts both the accepted release procedures and the refusal of any other maintenance command while closed for a restore.
+
+### 21.9 Release binding amendments after the end-to-end walk (architect decision, 2026-10-07)
+The end-to-end walk of the operations guide on the fixed branch found three P1 defects in 21.7/21.8 and the fix verifier one more. Amendments:
+1. Configuration digests MUST NOT depend on the directory of the code that computes them. A default derived from the running code directory (for example `public.contentDir`) is digested in a release-relative form, so a descriptor written from one release directory matches the same configuration run from another.
+2. The verification stamp is per installation: `<appRoot>/.tm-verified/<installation id>.json`. Two installations that share a release directory MUST NOT overwrite or invalidate each other's stamp. A start check reads only its own installation's stamp.
+3. The release procedures (release catalogue registration, activation, verification, code rollback) are accepted under every closure kind (initial, cutover, maintenance, emergency, restore). Every other maintenance command keeps its closure rules (21.8). An emergency code rollback can therefore be verified and opened.
+4. Verification and opening MUST refuse while any checkpoint is `capturing` or a snapshot-rollback intent record exists; the interrupted rollback is completed by its rerun first.
+5. `tm migrate` while closed for a restore MUST refuse with the closure's code (21.8 applies to owner-role DDL too).
