@@ -139,3 +139,10 @@ Each entry is reversible engineering decomposition unless stated. None changes a
 - Reason: a primary work list must never lag behind the work it lists. The projections are rebuild-safe and exactly-once but asynchronous; an operator or SuperAdmin acting from a lagging list could miss or double-handle work. Search and history tolerate a short, signalled lag.
 - Impact: none on schema or contracts; the projection queries `views.ta_applications` and `views.ops_work` stay bound and tested for a later switch.
 - Downstream consequence: if list filters by progress or group are required on T18/O02/D02/D10, add them to the authoritative queries or switch with a visible "not current" signal.
+
+## EO-21 — Release binding of running processes (2026-10-07)
+- Prior choice: record 15 section 3.4 verified the procedure's own tree and core's release id at start; edge and staff carried no release identity (the shared-database fencing of section 20 did not survive the section 21 split).
+- Replacement: contract section 21.7 (per-release directories, verification stamps, start-time artifact and configuration checks on every instance, release identity on the service API, epoch increment at opening, verification cleared by snapshot rollback and restore, migration only to the target release).
+- Reason: four confirmed P0 findings of the milestone 5 review; the release rule requires verifying the actual artifact and configuration and that old writers cannot reconnect.
+- Impact: unit templates, release.env, the core API header, edge/staff start, cutover verify/migrate/open, restore, snapshot rollback, the operations guide.
+- Downstream consequence: a cutover restarts every instance on the new release before opening.
