@@ -1,0 +1,739 @@
+{
+ "coverage": {
+  "SPEC2": "Candidate 6360420 reviewed against B11 to B20. Code read: identity accounts and elevation (B11); delivery/release.ts in full, retrieval, email and resend, bytes-integrity ownership (B12); association rule, artifact confirm/reject/replace, wrong-recipient report and notices (B13); intake correction upload, correction plan, row pattern, acceptRow, per-service processing (B14, B16); 5 MB and format limits (B15); submission and price (B17); holds, assignment, reassignment, assistance, corrections and same-person evidence, dependencies (B18, B19); controls evaluator in full and gate exceptions (B20); policy rows. Throwaway probes reproduced SPEC2-01, SPEC2-02 and SPEC2-03; probes removed, worktree clean, no processes left. Not re-reported (parked or contract-accepted): Gate 1 at reassignment, second disclosure report on one version, filing while a mistaken increase is open. No defect found in: holds blocking readiness, filing and packet release; release-check order and no substitution; gate exception scope, single use and staleness; SuperAdmin elevation. Not covered in depth: B14 preflight and mapping-fault pause; B15 validity checks; the B13 rule 6 scope (comment says travel agent, code walks only the offering; judged P2, not reported).",
+  "SPEC4": "Worktree reset to 6360420; npm ci run. Read BUILD_SPEC B24/B25/B31-B47, the M3/M4/M5 carried-forward lists and the partial traceability rows. Reviewed:\n- delivery: mail-deliver, manual resend, harness send/notice, notice writer and acknowledgement, release check, delivery pages, handover, manual email, direct external delivery, restore boundary for sends\n- core: completion evidence, group-end eligibility\n- identity: getRecipient, credential reset (lost mailbox parked), privileged elevation versus audit health\n- kernel: diagnostics allowlist, PostgreSQL log settings (terse), SSRF rules, blob cleanup, restore task cancellation\n- other: backup encryption and LAST_GOOD, worker concurrency (fetch 1 / parse 1), measures, effort samples, protection marks, excluded-scope greps, secrets and home paths\nTwo throwaway three-instance probes, deleted afterwards (worktree clean, my processes ended):\n1. A second TA tried every TA GET route on another TA's application, group, versions, notices and intake (search, payments, lists and history included): all 404 or no data. Search only echoes the query. No leak.\n2. A download aborted after the headers confirmed SPEC4-01.\nSound: B31 recipient rule, no resend after an uncertain send, B46 harness-only boundaries, B33 allowlist and the suspension exemption, B40 sends made uncertain at restore, B36 SSRF deny lists, B42/B44 boundaries. Release, restore and capacity were not re-tested (covered by M5).",
+  "SPEC1": "Worktree reset to 6360420 and npm ci run. The traceability document has no B01-B10 rows, so I traced each clause to code and tests directly. B01: route inventory and TA catalogue display (cost, estimate, documents, process), 'only new cases' intake text. B02: population scope and purposes. B03: open-scope index, later-attempt rule, immutable identities. B04: decl mode rules, prep-only originals refusal. B05: strict baseline, owner approval, publish checks. B06: preview, publication record, impact recheck, transitions, travel-date recheck. B07: launchEffect, launch/expand/suspend/lift/withdraw commands, new-case and intake controls. B08: CAPTCHA before TA OTP, decoys, attempt bounds, staff TOTP, intake bot checks. B09: email-change command, recipient read at send, lost-mailbox unavailable state. B10: policy rule table, support view, group read grants, history redaction. Probe: the catalogue-impact transition tests ran (3 pass) and confirm SPEC1-01. SPEC1-02 is a code reference only, because a probe needs a custom adapter declaration. The full suite was not run. The worktree is unchanged, one run script is in the scratchpad, and no process remains. Not reported because the contract decided them: offering-with-mode as the duplicate-scope service, no CAPTCHA on individual intake or staff sign-in. Seen and left to other commissions (B43): refund route D109.",
+  "SPEC3": "Worktree at 6360420 after npm ci; probes ran on the core kit and were then deleted (worktree clean, no processes left). Read code for B21 (outcomes, deriveProgress, pendingOnAction, deferral), B22 (link, prerequisiteState, evaluateDependents; probe of a possible filing that resolves as not filed), B23 (authorization record, stage-8 protection, act evidence, held corrections, unresolved completion; probes of a correction held on the fee act and of the future owner), B24 (withdrawal paths and cut-offs, completion evidence E1-E7, handovers, harness completion), B25 (group-end sweep and eligibility, outstanding money, ordinary close), B26 (Gate 1 at assignment and first work, service entries, financial exceptions per OD-15-01), B27 (Gate 2 incl. same_attempt, fee-carrying act, fee records), B28 (reservation under the exposure lock, parked default-ceiling paid case, ceiling changes), B29 (accounting grant limited to the accounts surface, parked actions, follow-up reassignment), B30 (original receipt, link, movement and return, the policy on originals, custody holds). Known and parked items were not re-reported. Not run: the full npm run check, three-instance system runs, UI rendering.",
+  "SEC": "Candidate 6360420 in a throwaway worktree; all probes deleted and the worktree is clean.\n\nCode read: core API server and allowlists, session resolution, the whole access policy (rules, resolvers, list predicates, support view), BFF server (CSRF, Origin, Host, cookies, multipart order, redirects, byte pass-through), CSP and HTML escaping, edge processing peer check, fetch worker SSRF rules, staging-blob scope checks, multi-id commands, delivery release check, diagnostics and PostgreSQL logging, backup encryption, file modes, units, public content.\n\nProbes on three live instances:\n1. Every edge and staff query, called at core with TA1's ids as TA2, anonymous at edge and staff, an unassigned operator, an accounting operator, cross-BFF tokens, and support views of a TA and an operator. No leak.\n2. After reassignment the old operator gets 404 on the case and the operation lookup, but the resolved incident stays readable and closable (SEC-01).\n3. Group read grant before and after revocation, and TA suspension mid-session: both enforced.\n4. SSRF address checks (SEC-02).\n\nNot covered: deep command checks on every POST route, timing attacks, OTP brute force beyond reading the code, production proxy and client-IP behaviour (later phase).",
+  "FLOW": "The worktree was reset to 6360420 and npm ci ran. I read these cross-module flows: submission and price; the payment entry against assignment (lock orders) and Gate 1 at work; single, selection and round-robin assignment and reassignment (duty and reconciliation transfer); act authorization with exposure and act evidence; official result, artifact, association rule, manual confirm and reject; wrong-recipient report and notices; the release check and mail.deliver; withdrawal and deferral; dependencies; completion evidence and group end; pendingOnAction and progress against the TA page; intake writers; the views touch rules; the task loop and facility gating; the processing client; and the doc.scan, doc.parse and intake fetch tasks.\n\nProbes ran in throwaway files, which were removed afterwards; no processes were left running. They covered FLOW-01 (parseEffect unit), FLOW-02 and FLOW-04 (real database through the core kit). FLOW-03 rests on a code reference only.\n\nThese were checked and found sound: payment against assignment; reassignment against authorization; withdrawal against authorization; release recipient binding; notice recipient rules and dedupe; the mail recipient refresh; and the cross-TA candidate filter.\n\nNot covered: the catalogue impact walk, launch and suspension, restore, a full npm run check, and suspected P2 staleness of views rows after document-version facts that carry no application id.",
+  "MAINT": "Worktree reset to 6360420 and npm ci run. Full test suite run with TAP timings: 1698 tests, 1698 pass, 0 fail, 0 skipped, 414 s. Read in full: README.md, docs/architecture.md, docs/playbooks/README.md, docs/extending/new-country.md, and the static boundary checkers (module-boundaries, app-boundary, service-split, sole-writers header, traceability). Ran a TypeScript AST scan for unused and test-only exports across src (about 300 unused vocabulary z*/type exports were ignored as low value). Ran an identical-function-body duplicate scan. Checked that every tm command in the docs resolves in the CLI, that every documented --flag exists in src/cli or src/platform, that every repository path named in the docs exists, and that documented config keys exist in the config schemas. All of these were consistent; docs-to-code drift is low apart from MAINT-05. Ran a probe of evidence parsing across 5 modules (MAINT-02). Grepped for duplicated state subsets, cross-module SQL reads and weak test assertions (assert.rejects without a matcher: only in tests that assert follow-up state, so not reported). Not covered in depth: operations.md prose beyond the key, flag and path checks; refusal-codes coverage (a static test already checks it); and BFF page-level duplication beyond evidence parsing and incident states. The probe file was deleted, the worktree is clean, and no processes were left running from this worktree.",
+  "EXT": "Reset to 6360420. Following only the two extension guides and the conformance kit, I built synthetic adapter syz.core@1.0.0 (checkValidity, evaluateTravelDateRules, fixtures) and added one registry entry. Typecheck, lint and the kit passed. Two pin tests outside the extension point had to change (EXT-04); then the full suite passed, 1712/1712.\n\nA system probe on the three real instances (core, edge, staff) used staff pages only to create country SYZ, its offering, declaration, owner approval, binding, baseline, declaration publication, launch plan, launch and listing. It also added a new SYN service: business purpose, new document type invitation_letter, new artifact type business_evisa_grant. One application of each went through edge intake and checks, submission, payment, assignment, operator work, filing, an issued outcome (association verified) and edge delivery.\n\nNegative probes: documented step order (EXT-02); preview-page publish (EXT-03); a 46-day stay against the 30-day rule, accepted without travel_dates_valid and refused with it (EXT-01). Static review: adapter call sites, registry and digest, literal scanner, SEO markers, literal searches. No edits made (read-only review).\n\nProbe saved in scratchpad/ext-probe/ (syz/, ext-probe.test.ts, tracked.diff). Worktree restored to clean; nothing committed. The harness stopped its own processes. An unrelated core process from another worktree was left running."
+ },
+ "findings": [
+  {
+   "id": "SPEC2-01",
+   "priority": "P1",
+   "subsystem": "intake",
+   "file": "src/modules/intake/domain/correction.ts",
+   "line": 74,
+   "rule_refs": [
+    "B14",
+    "B16"
+   ],
+   "issue": "The correction plan matches a correction row to an earlier chain row by applicant key alone. In a valid several-rows-per-applicant batch (B14 accepts this pattern), every applicant key belongs to one row per service. Every correction row for such an applicant therefore gets two or more hits and becomes a false 'identity_conflict_in_batch' incident. No correction upload can ever correct or confirm these applicants. Even an identical re-upload opens new open intake incidents, which then also hold group closure.",
+   "scenario": "A TA bulk-uploads a sheet where applicant S5910001 has two rows (tourist eVisa, paper return) and S5910002 has one row. The attempt is fully_processed with row_pattern multiple_rows_per_applicant and all rows accepted. The TA uploads the identical file as a correction. Both rows of S5910001 become incident_open / identity_conflict_in_batch / unmatched, and two open ambiguous_applicant intake incidents appear. A real change to either row gives the same result.",
+   "evidence": "Ran a throwaway probe in test/intake against kit.bulkExcel and kit.correct. Output: MULTI FIRST fully_processed multiple_rows_per_applicant [accepted, accepted, accepted]. MULTI CORR [[incident_open, identity_conflict_in_batch, unmatched], [incident_open, identity_conflict_in_batch, unmatched], [untouched_by_correction, null, unchanged]]. MULTI INCIDENTS: 2 open ambiguous_applicant. Code: planCorrection 'if (hits.length > 1) return { ... state: incident_open, code: identity_conflict_in_batch }'. byKey groups chain rows by applicantKey only.",
+   "fix": "When the chain's row pattern is multiple_rows_per_applicant, match by applicant key plus service set (or applicant key plus original locator). Raise identity_conflict_in_batch only when the rows that share a key also differ in identity. Add a correction test for a several-rows-per-applicant chain.",
+   "lens": "SPEC2",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced at 6360420. planCorrection groups chain rows by applicantKey only. More than one hit becomes unmatched / incident_open / identity_conflict_in_batch. A valid multiple_rows_per_applicant chain has one row per service for each repeated key, so every correction row for that applicant takes this branch. Design step 1 states the rule literally but ignores this pattern. That conflicts with the"
+    }
+   ]
+  },
+  {
+   "id": "SPEC2-02",
+   "priority": "P1",
+   "subsystem": "intake",
+   "file": "src/modules/intake/domain/correction.ts",
+   "line": 52,
+   "rule_refs": [
+    "B16"
+   ],
+   "issue": "An eligible per-service failure is never retried when another service in the same row succeeded. classify() treats a row as failed only when its state is failed/incident_open and it has no effect. A row with one created draft and one service refused for an eligible reason (for example offering_suspended, which is listed in ELIGIBLE_FAILURES) has state 'accepted'. An identical correction therefore classifies it 'unchanged' and never processes the refused service again. B16 requires that the Nth identical retry resolves accepted effects and eligible failures. A fresh bulk intake of the same file is refused with source_already_ingested, so the TA cannot retry from the same source either.",
+   "scenario": "Row 'S5900001, services: syn_paper_return, syn_tourist_evisa'. The paper offering is suspended while the attempt runs: tourist is created and paper is refused with offering_suspended (an eligible failure). The suspension ends. The TA uploads the identical sheet twice as corrections: each time the row is untouched_by_correction / unchanged with no service results, and only the tourist draft exists. Re-starting the same source is refused with conflict_duplicate source_already_ingested.",
+   "evidence": "Ran a throwaway probe in test/intake. Output: FIRST row accepted [paper: refused offering_suspended, tourist: created]. CORR row 0 untouched_by_correction unchanged []. CORR row 1 untouched_by_correction unchanged []. APPS [[tourist, draft]]. A new kit.bulkExcel of the same workbook was rejected: source_already_ingested. Code: 'const failed = FAILED_STATES.has(t.state) && !t.hasEffect' and 'if (same && !failed) return { cls: unchanged, state: untouched_by_correction }'.",
+   "fix": "Classify per service rather than per row. When the latest chain row has any service refused with an ELIGIBLE_FAILURES code and no effect for that offering, send the row on as failed_retry for those offerings only. acceptRow already resolves the created services through recorded effects, so no duplicate is created. Add a test with a partially refused row and an identical correction.",
+   "lens": "SPEC2",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced at 6360420, and the defect is wider than the finding says. Partial rows: one created draft makes the row 'accepted' (rows.ts:220), so classify() calls an identical row 'unchanged'. Single-service rows: process-rows.ts:223 always stores row state_code = null for service refusals. A row refused only for offering_suspended is therefore 'failed' with code null, and classify (correction.ts:5"
+    }
+   ]
+  },
+  {
+   "id": "SPEC2-03",
+   "priority": "P1",
+   "subsystem": "documents",
+   "file": "src/modules/core/controls.ts",
+   "line": 339,
+   "rule_refs": [
+    "B19",
+    "B23",
+    "B18"
+   ],
+   "issue": "Document evidence changes are applied immediately while filing may have occurred. Field and identity corrections are held. Documents commands (upload, replace, associate, revoke) go through Core's 'correct_application' controls. Stage 8 for correct_application refuses only after evidenced filing or packet release. Nothing holds or refuses a document change while an act is 'authorized' or 'filing_unknown'. B23 requires proposed corrections to be held separately while filing is unknown. B19 requires protected facts to stay historical with no latest-write-wins. The evidence set that may have reached the authority is therefore changed in place.",
+   "scenario": "An operator authorizes a government submission (act 'authorized'), then formally returns the case to the TA. The TA's field edit is correctly held (held_filing_unknown). In the same state, the TA uploads a new photo and a new passport through doc.upload_for_application. Both are accepted: the new photo association becomes positive beside the original, and the new passport association is 'ambiguous' beside the filed one. The application's evidence state, fingerprint and requirement status change while filing is uncertain.",
+   "evidence": "Ran a throwaway probe in test/core using kit.submitted, ready, authorizeExternalAct, formalReturn and kit.upload. Output: ACT [authorized]. PHOTO UPLOAD accepted (status proposed). PASSPORT UPLOAD accepted. ASSOC AFTER adds {photo: positive} and {passport: ambiguous} to the two original positives. CORRECTIONS shows no held row for the document changes. Code: controls.ts stage 8 'else if (action === correct_application) { if (!open || filedEvidenced(acts) || packetRelease) push(correction_historical_after_filing) }'. There is no authorized/filing_unknown branch. documents/commands/associate.ts:64 relies on that evaluation.",
+   "fix": "When any act is 'authorized' or 'filing_unknown', refuse Documents association changes for the application with a filing_uncertainty_protection blocker (for example 'filing_possibly_occurred'), or hold them like the 3.2.1 correction rows. Release them through the same not_filed_evidenced / filed_evidenced resolution. Add a test next to the held-correction test in test/core/acts.test.ts.",
+   "lens": "SPEC2",
+   "final": "P0",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "Reproduced, and worse than reported. While a government_submission act is 'authorized', the TA can do three things after a formal return. The TA can upload a new photo and a new passport, and can revoke the passport association that was authorized for filing. Field edits in the same state are held, so only fields are protected. The spec says to protect attempted facts as if filed and to hold corre"
+    }
+   ]
+  },
+  {
+   "id": "SPEC2-04",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/modules/core/commands/drafts.ts",
+   "line": 231,
+   "rule_refs": [
+    "B19",
+    "B20",
+    "B22"
+   ],
+   "issue": "core.link_dependency runs no control evaluation. It does not check for a protection mark or filing-uncertainty or filed acts, so a TA can add a declared dependency to an application that is filed or possibly filed (for example after a formal return) and bump its material revision. core.unlink_dependency refuses unless the case is confirmed unfiled, so the two commands disagree.",
+   "scenario": "A case is filed_evidenced, then the operator formally returns it to the TA. The TA links a new declared dependency. The link is accepted, material_revision increases, and the filed application gains a new prerequisite.",
+   "evidence": "Code reading: linkDependency handle checks only lifecycle open, taEditorPermits, the declared relation, outcome compatibility and cycles, and never calls requireControls. unlinkDependency has 'if (!confirmedUnfiled(await authorizationsOf(...))) throw filing_possibly_occurred'. No probe run.",
+   "fix": "Apply the same confirmedUnfiled / protection-mark check to link_dependency, or route it through requireControls with a correct_application-like stage 3 and stage 8.",
+   "lens": "SPEC2",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "SPEC4-01",
+   "priority": "P0",
+   "subsystem": "delivery",
+   "file": "src/apps/shared/server.ts",
+   "line": 431,
+   "rule_refs": [
+    "B31",
+    "B24",
+    "B41"
+   ],
+   "issue": "In the three-instance topology a TA (or staff) byte retrieval is recorded as 'streamed' (TA page: 'Received') when the browser received nothing or only part of the file. Core records the result once it hands the bytes to its own socket toward edge. Edge's sendBytes pipes core's response into the browser reply, but a browser disconnect does not travel back to core. Design test T-15-33 requires 'client abort: stream_failed, never streamed'. Today that test runs only against core in a single process, so the traceability row says 'proven' while the deployed topology violates it.",
+   "scenario": "A TA's browser drops the connection after the download headers. Core has already written the file to its socket toward edge and records 'streamed' with the full size; the TA page shows 'Received'. For a packet, dlv.record_handover treats any 'streamed' packet release as system verification (handover.ts:93-97). With handover evidence ta_retrieval_of_released_packet, Core then records the preparation-only outcome 'prepared_and_handed_over' from a retrieval the TA never got. The ZIP selection ('included' per item), the SuperAdmin download and the review copy share this path.",
+   "evidence": "Ran a throwaway system probe (startThreeInstances, synthetic seed, TA1 application with accepted Passport and Photo). It posted the edge retrieval form, read only the status and headers, and destroyed the socket. Output: 'abortAfter=0 status=200 clientGot=0 size=1049 rows=[{\"result\":\"streamed\",\"b\":1049}]'. The client received 0 bytes and core recorded streamed with 1049 bytes. Code: retrieval.ts:198 records 'streamed' when the core-side stream completes ('handed to the connection'). server.ts:431-462 does r.stream.pipe(check) and never reports the browser-side result to core. pages.ts:137 labels streamed 'Received'. test/delivery/release.test.ts:286 (T-15-33) covers only the kit, not the edge leg.",
+   "fix": "Make 'streamed' mean the end client received the bytes. Core keeps the result open until edge reports, through a send-end continuation under the same operation key, how the browser leg ended. Edge reports stream_failed on an early close. With no report, the result stays unrecorded. Alternatively, propagate the abort upstream and record only after edge acknowledges. Add a three-instance test that aborts a file, a ZIP and a packet after the headers and asserts no 'streamed' and no system-verified handover.",
+   "lens": "SPEC4",
+   "final": "P0",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "Real, but the probe overstates it. Fastify destroys only edge's `check` Transform, so core's response is never destroyed. Core reports complete on its own 'finish', meaning handed to the socket toward edge. A browser that aborts mid-stream, with the rest of the file still fitting in the buffers between core and edge, gets 'streamed' with the full size. A larger remainder is recorded as stream_fail"
+    },
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "Reproduced on 6360420 in the three-instance topology. Core records 'streamed' once it hands the bytes to its own socket toward edge (core-api/server.ts sendReleased: 'finish' means complete). Edge's sendBytes (apps/shared/server.ts:431-462) pipes the core response into the browser reply and never reports the browser leg to core. Edge also does not cancel the upstream request when the browser goes "
+    }
+   ]
+  },
+  {
+   "id": "SPEC4-02",
+   "priority": "P1",
+   "subsystem": "views",
+   "file": "src/modules/views/measures.ts",
+   "line": 219,
+   "rule_refs": [
+    "B32",
+    "B33"
+   ],
+   "issue": "Six launch-plan measures stay 'pending' and report 'not_captured' (value null, missing share 100%) although their source facts are now recorded: operator, TA and partner effort (M-06: ops_effort_samples via ops.record_effort_sample), wrong-association quality (M-05: incidents of kinds artifact_association, artifact_missing_or_wrong, wrong_recipient_disclosure), stage durations (M-01: wait intervals) and packet handover time. The milestone-4 plan scoped M-01..M-08 capture, but only M-02, 03, 04, 07, 08 and 09 were built. No parked item covers this gap.",
+   "scenario": "An operator records effort samples with ops.record_effort_sample, and a wrong-recipient incident is opened and resolved. The SuperAdmin measures page still shows operator_effort, ta_effort, partner_effort and wrong_association_rate as 'not captured'. The page therefore states that the source is not part of this installation, while the facts exist. B32 requires wrong-association quality and operator/TA/partner effort with sampling and missing shares to be recorded and reviewed with the first live baseline after 30 days. Launch-plan targets for these measures can never be checked against data.",
+   "evidence": "measures.ts:207-246 defines operator_effort, ta_effort, partner_effort, wrong_association_rate, stage_event_durations and packet_handover_duration with source kind 'pending'. case-measures.ts:137-206 overrides only calendar/tm waits, post_submission_correction_rate, repeat_external_act_rate, intake_row_yield, the two ta_fee measures and outcome_distribution. src/modules/operations/case-work/commands/effort.ts inserts ops_effort_samples and appends ops.effort_sample_recorded. test/views/measures.test.ts:68 and :105 assert that operator_effort and stage_event_durations stay pending/not_captured, with the comment 'whose facts later case-processing work records: no data yet', which is stale since milestone 4. Design record 15 section 4.3.2 marks M-06 'not_captured' only because 'no capture source exists in the foundation'; that source now exists (CCR-15-15).",
+   "fix": "Add case-measure definitions over the existing sources. M-06: ops_effort_samples per party and step, de-duplicated by sample id; missing_reason samples count as missing; sampling basis as a dimension. M-05: the three incident kinds over official artifacts, per cohort. M-01: stage durations from the wait intervals, open intervals censored. Packet handover: release to handover, censored. Update measures.test.ts and add a test that one effort sample and one incident produce values.",
+   "lens": "SPEC4",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "The finding is real. recomputeMeasures marks every non-'facts' definition 'not_captured' (no value, 100% missing). Six measures are still 'pending' and have no case-measures override, although their source facts are recorded today. Operators record effort samples through route O52. The accepted design test T-15-53 rev 2 requires M-06 to be computed from ops_effort_samples. The M4 plan scoped M-01."
+    }
+   ]
+  },
+  {
+   "id": "SPEC4-03",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/modules/core/derived.ts",
+   "line": 208,
+   "rule_refs": [
+    "B24",
+    "B31",
+    "B46"
+   ],
+   "issue": "The completion check accepts any 'result_available' notice of the application as the web-notification evidence. The notice does not have to name the artifact version that the accepted email carried. This check runs only under the labelled harness, because the completion trigger is unselected (B46).",
+   "scenario": "A result notice is posted for artifact A. A is later replaced by artifact B, for example after a wrong-recipient block. An accepted email carries B. The harness completion check then counts the old notice for A as the web notification for B, so completion is satisfied without a notice about the delivered result.",
+   "evidence": "derived.ts:207-208: the email check matches artifactVersion, but the notice check is ev.notices.find((n) => n.kind === 'result_available') with no artifact or version match. evidence.ts:16-27 returns notices without params.",
+   "fix": "Require the notice params to name the eligible artifact (or its outcome) that the accepted email carried. Alternatively, record this as part of the B46 owner decision on the send event.",
+   "lens": "SPEC4",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "SPEC1-01",
+   "priority": "P1",
+   "subsystem": "catalogue",
+   "file": "src/modules/catalogue/commands/impact.ts",
+   "line": 218,
+   "rule_refs": [
+    "B06",
+    "B05"
+   ],
+   "issue": "cat.approve_transition accepts any evidence entry of kind release_manifest as engineering compatibility evidence. It never checks that the id is a registered release or that it names the target binding. The contract (C14 check 5) requires 'a release_manifest evidence naming the target binding'. B06 requires engineering compatibility evidence for a per-application structural transition, so a SuperAdmin can supply that evidence alone by typing a label.",
+   "scenario": "A SuperAdmin publishes an owner-approved declaration on a launched offering. No release impact statement exists, so `named` is null. The SuperAdmin approves the transition of a draft with compatibilityEvidence [{kind:'release_manifest', id:'compat-1'}]. 'compat-1' is not a release and names no binding. The transition is accepted, and the draft's governing tuple moves to the new head at once. A submitted application gets the same acceptance and only waits for TA authority.",
+   "evidence": "impact.ts:218 `const manifestEvidence = input.compatibilityEvidence.some((e) => e.kind === 'release_manifest');` is the only check. No lookup of the release or the binding id follows. Reproduced: test/integration/catalogue-impact.test.ts 'a submitted application with a material difference waits for renewed travel agent authority; a draft transitions at once' passes with ids 'compat-1' and 'compat-2' (3/3 pass in this worktree). The draft's declaration_id became the new head.",
+   "fix": "Accept release_manifest evidence only when its id equals a registered release that supports the head binding (bindingStatus(head.bindingId, thatRelease) = 'supported'), or when the evidence names head.bindingId. Otherwise refuse with transition_evidence_missing. Add a negative test that uses an unknown release id.",
+   "lens": "SPEC1",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Confirmed. Check 5 of record 12 requires a statement that says requires_transition or compatible_continuation. Otherwise the input must carry a release_manifest evidence naming the target binding. The code only checks the kind, so a free-typed id passes. No override or parked item covers this. I rank it P1, not P0. The handler already refuses unless the head binding is 'supported' by the running r"
+    }
+   ]
+  },
+  {
+   "id": "SPEC1-02",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/core/tasks.ts",
+   "line": 177,
+   "rule_refs": [
+    "B06",
+    "B17",
+    "B36"
+   ],
+   "issue": "After a group travel-date edit, the core.travel_date_recheck task re-reads only document validity. It never calls catalogue.evaluateTravelDateRules (the declared travel-date rules and the country adapter checks, which get the `submitted` flag). It then always advances dates_checked_revision, which clears travel_date_recheck_pending. Record 12 \u00a72.6 and T-C23 require Core to recheck with evaluateTravelDateRules and to keep travel_date_recheck_pending while the validity is unknown. For submitted applications, no other code path evaluates the travel rules: stage 10 runs them only for 'submit', with submitted:false.",
+   "scenario": "Take an offering whose declaration names a country_adapter_check with fn evaluateTravelDateRules, where the adapter judges submitted work. The TA moves the group's travel start earlier. The recheck task marks the submitted, unfiled application as checked. This holds when the adapter would answer invalid, and also when it throws or overruns, which should give unknown and a country_defect. Readiness and filing authorization then proceed with no travel-date blocker. The catalogue impact recheck (impact-recheck.ts:114) does evaluate the same rules with submitted:true for a catalogue change, so the two recheck paths judge the same application differently.",
+   "evidence": "tasks.ts:177-198: the record step computes codes only from documents.requirementEvidence, then runs `UPDATE core_applications SET dates_checked_revision = ${group.dates_revision}` without a condition. No call to deps.catalogue.evaluateTravelDateRules exists outside controls.ts:532 (the submit branch of validationStage). No test asserts travel_date_recheck_pending (grep over test/ finds none). The groups-drafts test asserts only that the revision advances.",
+   "fix": "In the recheck record step, for unfiled, unprotected applications, call deps.catalogue.evaluateTravelDateRules(governing declaration, governing baseline, {travel dates, today, submitted: lifecycle === 'submitted'}) inside the adapter boundary. Record its codes. Leave dates_checked_revision unchanged (keep the blocker) while validity is 'unknown', and surface 'invalid' as a stage-10 blocker. Add the T-C23 test: unknown or adapter failure keeps travel_date_recheck_pending, and filed facts stay unchanged.",
+   "lens": "SPEC1",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "The finding is accurate, but the harm is latent, so P1. At 6360420 the core.travel_date_recheck record step (tasks.ts:168-198) re-reads only documents.requirementEvidence, then advances dates_checked_revision unconditionally. evaluateTravelDateRules runs only at submit (controls.ts:532, submitted:false) and in the catalogue impact recheck (impact-recheck.ts:114). This breaks record 12 \u00a72.6 (keep t"
+    }
+   ]
+  },
+  {
+   "id": "SPEC1-03",
+   "priority": "P1",
+   "subsystem": "views",
+   "file": "src/web/route-inventory.ts",
+   "line": 146,
+   "rule_refs": [
+    "B01"
+   ],
+   "issue": "The operator surface has no country/service discovery. B01 requires operator/SuperAdmin surfaces with country/service discovery. Record 12 \u00a75 designs a read-only operator route `/ops/catalogue/offerings/:offeringId` (catalogue.read_selectable). The route inventory and the staff app do not implement it, and no recorded gap or visible unavailable state replaces it. The policy grants operators catalogue.read_selectable, but no route uses that grant for operators.",
+   "scenario": "An operator signs in to the staff instance. The operator wants to read a published offering's cost, estimate, required documents and process before an application of that offering is assigned. No /ops catalogue page exists; /ta/catalogue is surface 'ta' only, and /admin/catalogue is SuperAdmin-only. The operator can see offering values only on the page of an application assigned to them.",
+   "evidence": "`grep -rn \"ops/catalogue\" src test` returns nothing. route-inventory.ts lists T02/T03 (/ta/catalogue) for TA and D32-D95 (/admin/catalogue, /admin/launch) for SuperAdmin; the O-rows have no catalogue route. policy.ts: 'catalogue.read_selectable': { ta: 'any', operator: 'any', superadmin: 'any', sv: true }.",
+   "fix": "Add the designed read-only staff route /ops/catalogue (list) and /ops/catalogue/offerings/:offeringId. Use selectableOfferings and offeringDisplay on the head tuple for published offerings, add both to the route inventory and the ops navigation, and cover them with the access matrix test. Or record an explicit gap with a visible unavailable state.",
+   "lens": "SPEC1",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "This is real. Design record 12 defines a read-only operator route `/ops/catalogue/offerings/:offeringId` (catalogue.read_selectable). No such route exists. I found no recorded gap, override, owner decision, parked item or visible unavailable state that replaces it. The domain already supports it: `selectableOfferings` returns every published offering for a staff reader, the core queries accept any"
+    }
+   ]
+  },
+  {
+   "id": "SPEC1-04",
+   "priority": "P1",
+   "subsystem": "docs",
+   "file": "docs/verification/traceability.md",
+   "line": 3,
+   "rule_refs": [
+    "B01",
+    "B05",
+    "B07",
+    "B08",
+    "B09",
+    "B10"
+   ],
+   "issue": "The traceability document maps only T-F, T-CO and T-15 identifiers. The design test identifiers of the identity/access/web record (T-I01-T-I50), the catalogue/launch/public record (T-C01-T-C63) and the intake/documents record are not mapped, and no test names them. Those identifiers carry most of the proof for B01, B05, B07, B08 and B09. As a result, no row says whether a design test is proven, partial or a gap. The milestone-6 acceptance requires every row to be proven or a recorded gap.",
+   "scenario": "A reviewer or maintainer looks for the proof of a B06/B07/B09 clause through the traceability document and finds no row. A design test with no test and no implementation passes unnoticed: T-C23 (travel-date recheck keeps travel_date_recheck_pending while the rules are unknown) has neither (see SPEC1-02), and the static traceability check cannot flag it because the identifier is absent.",
+   "evidence": "traceability.md lines 3-8 scope the document to `T-F01`-`T-F55`, `T-CO01`-`T-CO76`, `T-15-01`-`T-15-81`. `grep -rhoE '\\bT-(C|I)[0-9]+\\b' test` returns 0 matches. Spot checks show that tests exist for many of these identifiers without a traced row (for example launch-control.test.ts 'lifting restores exactly the approved audience, never wider' for T-C26, and catalogue-concurrency.test.ts 'no draft is accepted after the suspension commits' for T-C41).",
+   "fix": "Extend traceability.md and test/static/traceability.test.ts with the T-I, T-C and intake/documents design test families. Give each identifier a proven/partial/gap row so that untested items such as T-C23 become recorded gaps or get tests.",
+   "lens": "SPEC1",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced at 6360420. The traceability document and its static check cover only the contract families T-F (55), T-CO (76) and T-15 (81). Three module records define about 187 more design test ids (T-I, T-C, T-D, T-W) that the document does not map. No test, source file or doc names any of them. The milestone-5 record says the document covers every invariant and design test id. The milestone-6 gat"
+    }
+   ]
+  },
+  {
+   "id": "SPEC3-01",
+   "priority": "P0",
+   "subsystem": "core",
+   "file": "src/modules/core/writers.ts",
+   "line": 275,
+   "issue": "A correction held while the separate fee-payment act was possibly filed stays `held_filing_unknown` after the fee act is evidenced as filed. resolveHeldCorrections returns early for a filed fee payment (\"a filed fee payment alone does not\"). It neither applies nor releases the correction. No open act remains, nothing blocks the government submission, and the staff case page does not show held corrections. The operator then submits to the government with the old snapshot. The submission filing marks the correction `superseded_by_filing` and only opens a post-filing incident afterwards.",
+   "scenario": "TOURIST offering (separate fee act). The operator authorizes government_fee_payment. A SuperAdmin correction from evidence is accepted and held. The fee act is evidenced filed (TM paid). The correction stays held_filing_unknown and the only act is fee:filed_evidenced. Readiness is re-recorded. authorize government_submission is ACCEPTED while the snapshot still has travelPurpose='tourism', the value the correction removes. Filing the submission marks the correction superseded_by_filing and opens a post_filing_correction incident. Result: an irreversible government submission on stale applicant data, with no blocker or visible signal before the act.",
+   "evidence": "Reproduced with a probe on the core kit (test/core/kit.ts, removed afterwards). Output: 'correction after fee paid held_filing_unknown'; acts [{government_fee_payment, filed_evidenced}]; 'authorize submission accepted'; 'snapshot fields at submission authorization { travelPurpose: 'tourism' }'; 'correction after submission filed superseded_by_filing'; incidents [post_filing_correction]. Code: writers.ts resolveHeldCorrections `if (to === 'filed_evidenced' && !filing) return;`. controls.ts has no held-correction blocker for AUTHORIZE actions. readinessBasis counts held corrections but does not block.",
+   "fix": "When the last open act leaves authorized/filing_unknown and no submission or handoff is filed, resolve held corrections whatever the act kind: a filed fee payment releases them for re-application, as not_filed does. Also add a stage-10 blocker (for example `held_correction_pending`) on authorize_* and release_packet while any correction is held_filing_unknown or released_for_reapply. Add a test for the fee-filed-then-submission path.",
+   "rule_refs": [
+    "B23",
+    "B21"
+   ],
+   "lens": "SPEC3",
+   "final": "P0",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "Reproduced on 6360420. The separate fee act holds a correction while it is authorized. When that fee act is evidenced as filed, resolveHeldCorrections returns early: writers.ts:288, `if (to === 'filed_evidenced' && !filing) return;`. The correction is neither superseded nor released, and no later path resolves it before the submission. Nothing blocks the irreversible act: controls.ts has no held-c"
+    },
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "I could not refute the finding. correctionStage (corrections.ts:38) holds a correction while any act is open, the fee act included. resolveHeldCorrections (writers.ts:288) returns early for a filed fee act. Not superseding is right, because filedEvidenced counts only a submission or handoff, but the correction is also never released. No other path resolves it, and no rule makes the fee act come af"
+    }
+   ]
+  },
+  {
+   "id": "SPEC3-02",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/core/writers.ts",
+   "line": 212,
+   "issue": "A dependent whose possible filing later resolves as not filed never receives `dependency_failed`, even though its upstream has a final incompatible outcome. evaluateDependents runs only when the upstream changes. At that moment the dependent is not confirmed unfiled, so it is skipped, and because the dependency was `waiting` (not `met`) no follow-up incident opens. recordExternalActEvidence does not re-evaluate the dependent's own dependencies when its act becomes not_filed_evidenced. pendingOnAction rule 20 skips `failed_incompatible`, so the case then shows a misleading next action. Its authorization is permanently blocked.",
+   "scenario": "Same applicant and group. A TRANSIT dependent is linked to a TOURIST upstream, submitted and ready, and its fee act is authorized. The upstream is filed and refused: the dependency becomes failed_incompatible and the dependent outcome stays null (correct while possibly filed). The dependent's fee act is then evidenced not_filed. The dependent is now confirmed unfiled, but its outcome stays null. Pending says reconfirm_readiness, then 'ready / authorize_external_act', while authorization stays refused with dependency_outcome_unmet. The paid, worked case cannot end with its group. Only a withdrawal, with the wrong outcome, ends it.",
+   "evidence": "Reproduced with a probe on the core kit (removed). Output: 'dep state failed_incompatible'; 'dependent after not-filed submitted null'; pending {ownerKind:'assigned_operator', reasonCode:'readiness_stale', nextActionCode:'reconfirm_readiness'}; 'authorize submission rejected [dependency_outcome_unmet, readiness_stale]'; 'after settle null'. The existing test 'keeps a filed dependent protected' (test/core/withdrawal-dependencies.test.ts) stops before the act resolves. Related: a refused-to-issued outcome correction never reconsiders a stored failed_incompatible row.",
+   "fix": "After recordExternalActEvidence moves a dependent's act to not_filed_evidenced (and when its last protected act resolves), re-evaluate that application's own dependencies. Record dependency_failed when one is failed_incompatible and the dependent is now confirmed unfiled. Make pendingOnAction name an owner and next action for failed_incompatible instead of skipping it. Include failed_incompatible in the reconsider set on 'outcome_corrected'.",
+   "rule_refs": [
+    "B22",
+    "B21"
+   ],
+   "lens": "SPEC3",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Confirmed in code and by a probe. evaluateDependents (src/modules/core/writers.ts:165-224) runs only when the upstream changes. At that moment the dependent's fee act is still 'authorized', so confirmedUnfiled is false and no outcome is recorded. d.state was 'waiting', not 'met', so the incident branch (line 218) does not run either. recordExternalActEvidence (lines 238-280) never re-evaluates the"
+    }
+   ]
+  },
+  {
+   "id": "SPEC3-03",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/core/writers.ts",
+   "line": 322,
+   "issue": "The future owner the SuperAdmin names for an administrative external_outcome_unresolved completion is stored but never used. A later official fact opens `official_fact_follow_up` with ownerKind 'assigned_operator', which openIncident resolves to the current active assigned operator, or the SuperAdmin queue if none is active. It never uses future_owner_id. ops.record_official_result also requires the assigned operator. The core-operations module record specifies `openIncident(official_fact_follow_up, owner = future_owner_id, ...)`, and the staff form calls the field 'Owner of any later official fact'.",
+   "scenario": "An application is assigned to op1 and its submission act is filing_unknown with a no_information reconciliation attempt. SuperAdmin sa1 authorizes unresolved completion with futureOwnerAccountId = sa1 (stored: future_owner_id = sa1). A later official 'issued' result arrives. The follow-up incident is owned by op1, not sa1. If op1 has been suspended, it goes to the generic SuperAdmin queue. The named owner gets nothing and cannot record the result through ops.record_official_result (requireAssigned).",
+   "evidence": "Code: writers.ts recordOutcomeFromEvidence: `ownerKind: future === undefined ? 'superadmin' : 'assigned_operator'`. operations/case-work/incidents.ts openIncident resolves `assigned_operator` through activeOperatorOf and has no explicit owner account input. grep shows future_owner_id is read only for display (staff-views.ts:129). Probe confirmed future_owner_id = sa1 is stored while the application stays assigned to op1. The core kit's stand-in incident writer cannot show the final owner, so ownership is shown from the code path.",
+   "fix": "Pass the exhausted act's future_owner_id as the explicit owner account of the follow-up incident (extend OpenRequest with an owner account). Let that owner, or the current assigned operator, record the later official fact. Add a test where the future owner differs from the assigned operator.",
+   "rule_refs": [
+    "B23"
+   ],
+   "lens": "SPEC3",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced from the code path at 6360420. After an external_outcome_unresolved completion, a later official fact reaches recordOutcomeFromEvidence, which never reads future_owner_id. It passes only ownerKind 'assigned_operator', and openIncident takes no owner account input. The owner resolves to activeOperatorOf(application), or to the SuperAdmin queue if no operator is active. So the SuperAdmin'"
+    }
+   ]
+  },
+  {
+   "id": "SPEC3-04",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/modules/core/derived.ts",
+   "line": 121,
+   "issue": "A dependency on an upstream that ended with its group (lifecycle ended_with_group, outcome null) stays `outcome_unmet` forever. The group-end sweep does not call evaluateDependents, and prerequisiteState treats a null outcome as still pending. A paid, worked dependent then shows 'await_dependency' with no way to progress.",
+   "scenario": "Same group. An unpaid TOURIST upstream with no operator work, and a paid, assigned TRANSIT dependent that conditions on it. The group return date passes and the sweep ends the upstream with the group. The dependent is not group-end eligible (paid, worked), and its dependency stays waiting with pending 'dependency_outcome_unmet / await_dependency' indefinitely.",
+   "evidence": "Code reading only, not reproduced. tasks.ts groupEndSweepTask record updates lifecycle without evaluateDependents. derived.ts prerequisiteState: `if (outcome === null) return { state: 'outcome_unmet' ... }` regardless of the upstream lifecycle.",
+   "fix": "Treat an upstream that ended with its group as final-incompatible for its dependents (run evaluateDependents from the sweep), or give the wait a named owner and next action.",
+   "rule_refs": [
+    "B22",
+    "B25"
+   ],
+   "lens": "SPEC3",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "SEC-01",
+   "priority": "P1",
+   "subsystem": "operations",
+   "file": "src/modules/operations/case-work/incidents.ts",
+   "line": 222,
+   "rule_refs": [
+    "B10",
+    "B19"
+   ],
+   "issue": "Incident access through the owner or reviewer relation outlives reassignment. transferApplicationDuties moves only incidents in state open, assigned or awaiting_evidence. The 'asg_or_rev' relation (policy.ts:553-556) grants incident.read, incident.work and incident.resolve to whoever is still stored as owner or reviewer. It checks neither the incident state nor current assignment. So the former operator keeps the old link to a resolved or closed incident and can still run ops.close_incident. The review-copy relation (reviewArtifact) already limits itself to open incidents; this relation does not.",
+   "scenario": "Op1 is assigned to TA1's application. Op1 opens an operational_failure incident whose note contains the applicant's name and passport number, then resolves it. A SuperAdmin reassigns the application to op2. After that, op1 gets 404 on /ops/applications/<app>, which is correct. But GET /ops/incidents/<inc> still returns 200, with the note, the resolution, the evidence references and the application reference. POST /ops/incidents/<inc>/close is accepted (303), and the row records closed_by = op1. The closed incident stays readable to op1 indefinitely. The same root cause applies to a stand-in reviewer: when the case is later assigned, the reviewer keeps resolved incidents.",
+   "evidence": "Probe on the three instances (throwaway system test, not committed). The incident row before and after reassignment was {state: resolved, owner_kind: assigned_operator, owner_account_id: op1}, so it was not transferred. After reassignment: op1 case page 404, op2 case page 200, op1 incident page 200 showing the applicant marker, the passport number and the application id. The op1 close returned 303 and the row became {state: closed, closed_by: op1}. Afterwards op1 could still read the closed incident (200). Code: incidents.ts:222 limits the transfer to open states. policy.ts:497-504 resolves the incident owner and reviewer without the state. policy.ts:553-556 honours them unconditionally. Bounded impact: a resolved incident's content no longer changes, and the only action left is close.",
+   "fix": "Make the owner and reviewer relation hold only while the incident is open, and only while the owner is still the application's current assigned operator (or the incident has no application). Mirror the 'about' rule of reviewArtifact. Also transfer resolved, not-yet-closed incidents in transferApplicationDuties. Add a system test: reassign, then the former operator gets 404 on the incident page and on close.",
+   "lens": "SEC",
+   "final": "P0",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P0",
+     "reasoning": "Reproduced at 6360420. transferApplicationDuties (incidents.ts:222) moves only open, assigned and awaiting_evidence incidents. The incident resolver (policy.ts:497-504) passes owner and reviewer without the state, and 'asg_or_rev' (policy.ts:553-556) accepts them before it checks the current assignment. So a former assigned operator keeps incident.read, work and resolve on resolved and closed inci"
+    }
+   ]
+  },
+  {
+   "id": "SEC-02",
+   "priority": "P2",
+   "subsystem": "intake",
+   "file": "src/workers/ssrf.ts",
+   "line": 22,
+   "rule_refs": [],
+   "issue": "The fetch worker's IPv6 deny list does not include the deprecated IPv4-compatible block ::/96. ipaddr.js classifies hex-form addresses such as ::7f00:1 (127.0.0.1) and ::a00:1 (10.0.0.1) as 'unicast'. Both isPublicAddress and the request-filtering-agent connect-time check therefore accept them. This contradicts the file's statement that embedded IPv4 forms are denied outright.",
+   "scenario": "A travel agent's row-file link names a host whose DNS gives only the AAAA answer ::7f00:1. checkAddresses accepts it, the pinned lookup connects to it, and RequestFilteringHttpsAgent also accepts it. The request reaches loopback only on a host whose kernel still routes IPv4-compatible addresses, for example through a legacy sit0 automatic tunnel. On this host the connection does not complete. Low likelihood.",
+   "evidence": "node probe: isPublicAddress('::7f00:1') = true, isPublicAddress('::a00:1') = true. ipaddr.parse('::7f00:1').range() = 'unicast'. request-filtering-agent allows range 'unicast' (lib line 80). On this host a connect to ::7f00:1 with a listener on 127.0.0.1 did not complete.",
+   "fix": "Add '::/96' to DENY_V6, keeping ::/128 and ::1/128, or deny any IPv6 address whose first 96 bits are zero. Add the case to the SSRF unit tests.",
+   "lens": "SEC",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "FLOW-01",
+   "priority": "P1",
+   "subsystem": "documents",
+   "file": "src/modules/documents/tasks/parse.ts",
+   "line": 127,
+   "issue": "A transport failure between core and edge's processing service (edge restart, 503 on stop, or health already marked down) is recorded as a fact about the file, not as a retryable outage. In doc.parse, extract() catches every worker-job exception and returns a tool-failure finding, so the version settles as extraction_failed (extraction_tool_failed). Intake has the same class: fetchToStaging turns transport worker_failed into an outcome, and fetch-row-files records the link as 'unreadable' without retry. Also, the compose flag scannerUp updates only on the 10 s probe, so scan tasks are still leased after a markDown and spend scanner_unavailable counts.",
+   "scenario": "Edge restarts while parse tasks are in flight. One OCR job fails in transport and markDown() clears the health. Every other in-flight task past inspect_pdf then gets worker_failed at once and settles as extraction_failed. A passport then needs a manual TA resolution or a SuperAdmin requeue. An official result opens an association incident (extraction_unavailable). Because the listener returns early once incident_id is set, a later requeue never restores automatic association. Bulk row files fetched during the restart are recorded as unreadable links, and the drafts are created without them.",
+   "evidence": "Probe: parseEffect with inspect_pdf ok, then the next job throws TmError('unavailable_dependency','worker_failed'), as processing-client post() does on a transport error. Output: jobs [inspect_pdf, extract_pdf_text]; result {kind:'passed', finding:{toolFailed:true}, failureCode:'worker_failed'}; decision 'failed extraction_tool_failed -> extraction_failed'. Code: parse.ts:127-131 (catch-all); processing-client.ts post() and run(); association.ts early return on incident_id; fetch-source.ts:66-68; fetch-row-files.ts record (no RETRYABLE_FETCH rethrow, unlike fetch-source); compose.ts:770 (scannerUp).",
+   "fix": "Give processing-client transport and health failures a distinct code, for example processing_unreachable. extract(), the row-file fetch and scanEffect MUST rethrow it, so the task retries and facility gating stops leases. Only a worker's own response MAY become an extraction or link verdict. The scanner facility SHOULD follow the client health at once. Add a system test that restarts edge mid-parse and mid-fetch.",
+   "lens": "FLOW",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced at 6360420. In extract() (parse.ts:127-131), a catch-all turns any thrown worker error into toolFailed. effectWorkers passes runner.run straight through. processing-client run() and post() throw worker_failed both on a transport error and when health is already marked down. So when edge restarts mid-parse, a version past the structural check settles as extraction_failed / extraction_too"
+    }
+   ]
+  },
+  {
+   "id": "FLOW-02",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/core/tasks.ts",
+   "line": 137,
+   "issue": "The periodic enqueue jobs select with ORDER BY id LIMIT and keep no cursor, while their task dedupe keys are per day. Rows that never leave the selection therefore hold the window permanently. group_end_enqueue takes the first 500 open groups past their return date. A group with any paid or worked case never closes, because in production nothing leaves lifecycle 'submitted': completion is harness-only. timing_risk_enqueue takes the first 1000 submitted applications with no outcome, and cases that wait on filing_unknown, deferral or an external result stay in that set.",
+   "scenario": "After 500 groups that hold a paid case pass their return dates, later groups are never selected. Their unpaid, unworked drafts (including withdrawn ones) never end with the group, and the group never closes, which violates the group-end rule. Once more than 1000 submitted applications without an outcome exist across all travel agents, newer applications never get the daily elapsed-window or travel-start timing check, so their timing notice is never posted.",
+   "evidence": "Real-database probe, with the limit scaled down to the number of stuck groups (2): two groups past return, each with a paid submitted case, and a later group past return with an unpaid draft. Over three days of enqueueGroupEndSweeps: 'limit 2 sweeps for the late group: 0 late draft lifecycle draft' on 03-05, 03-06 and 03-07. Code: tasks.ts:137 (ORDER BY group_id LIMIT 500); tasks.ts:278 (ORDER BY application_id LIMIT 1000); admin.ts:209 is the only writer of lifecycle 'completed' (harness).",
+   "fix": "Page through the whole eligible set each day with a cursor carried in the task payload. Alternatively, keep a last-checked day per group or application and select the oldest first. Groups that can never end by group end MAY be excluded at selection time. Add a test with more stuck rows than the limit.",
+   "lens": "FLOW",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced. enqueueGroupEndSweeps (tasks.ts:133-137) selects open past-return groups ORDER BY group_id LIMIT 500 with no cursor and no rotation. enqueueTimingChecks (tasks.ts:274-278) selects submitted, outcome-less applications ORDER BY application_id LIMIT 1000 the same way. The per-day dedupe keys do not change which rows are selected. Ids are random (kernel/ids.ts newId), so once stuck rows ex"
+    }
+   ]
+  },
+  {
+   "id": "FLOW-03",
+   "priority": "P1",
+   "subsystem": "operations",
+   "file": "src/modules/operations/case-work/association.ts",
+   "line": 81,
+   "issue": "Association rule assoc/1 walks openApplicationsForOffering: every draft or submitted application of the offering for all travel agents, in id order. It stops silently after 2000 rows (CANDIDATE_LIMIT) and then decides as if the walk were complete. Worked applications never leave 'submitted' in production, so the open set of an offering grows without bound. Once past 2000, the newest applications, which receive the results, lie beyond the window. Rule 3 (exactly one candidate) and rule 6 (no contradictory identifier) are then evaluated on a partial set.",
+   "scenario": "An offering has more than 2000 submitted applications. (a) Each new result is uploaded for an application beyond the window, fails with no_candidate and opens an incident, so automatic association is in effect disabled. (b) A travel agent has the same applicant in two filed groups of the offering. Trip 2's visa is uploaded to the trip-1 application, which lies inside the window, while the trip-2 application lies beyond it. Only one candidate is seen, and the visa is verified and released for the wrong trip without the required conflict review.",
+   "evidence": "Code: association.ts:52-53 and 81-96 (10 pages of 200; no truncation signal; the decision at 98-100 treats the partial walk as complete). catalogue-writers.ts:69-73: lifecycle IN ('draft','submitted') for all travel agents, ORDER BY application_id. admin.ts:209 is the only writer of 'completed' (harness). Each walked row also runs several queries inside the parse task's SERIALIZABLE record transaction. Not reproduced at 2000-row scale.",
+   "fix": "Query the candidates directly: open applications of the same travel agent and offering whose applicant key or normalized passport number is among the extracted candidates. This is one indexed query. Any bounded walk that remains MUST fail closed (no verification) when it is truncated.",
+   "lens": "FLOW",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced. The assoc/1 walk (association.ts:81-96) stops after 2000 rows with no truncation signal and decides at lines 98-100 as if complete. It filters by travel agent only after paging, so other agents' open applications use up the window. Worked applications stay open: the group-end sweep ends only unworked ones (derived.ts:254-256), and 'completed' is harness-only by owner decision. Correcti"
+    }
+   ]
+  },
+  {
+   "id": "FLOW-04",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/modules/core/controls.ts",
+   "line": 466,
+   "issue": "After an accepted withdrawal, the application remains editable. The correct_application control checks only that the lifecycle is open, not the outcome or withdrawal_id. As a result, core.edit_draft, core.correct_identity and the document upload, replace and associate commands are accepted on a withdrawn draft and on a withdrawn submitted-unassigned case. The TA page still renders the edit and identity forms (open && editorPermits), with a 'Draft' progress badge beside the Withdrawn outcome.",
+   "scenario": "A TA withdraws a draft or an unassigned submitted case, and the withdrawal is accepted with outcome 'withdrawn'. The page still shows 'Draft' and the edit forms. The TA's edits are accepted and new applicant snapshots are written for a case that can never be submitted, which is refused only at submission with outcome_already_recorded.",
+   "evidence": "Real-database probe: requestWithdrawal on a draft was accepted (lifecycle draft, outcome withdrawn), and core.edit_draft then gave 'accepted'. On a withdrawn submitted case the edit was also 'accepted', and the snapshot count rose to 3. Code: controls.ts:466-467; associate.ts correctable() uses the same control; ta.ts editForm and identityForm are gated on open && editorPermits only.",
+   "fix": "Block correct_application when outcome or withdrawal_id is not null, except on a declared post-outcome correction path. Hide the edit forms when an outcome is recorded.",
+   "lens": "FLOW",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "MAINT-01",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/catalogue/commands/impact.ts",
+   "line": 29,
+   "issue": "The 'possibly filed' external-act state set is a Core-owned protection rule. It is re-declared as a private untyped Set<string> in catalogue/commands/impact.ts:29, catalogue/tasks/impact-recheck.ts:47, catalogue/preview.ts:27 and core/catalogue-writers.ts:61. It also appears as PROTECTED_STATES in core/store.ts:335 and as inline literals in core/tasks.ts:183 and core/commands/withdrawal.ts:47. The exported POSSIBLY_COMMITTED_STATES in core/store.ts:333 is never used. The kernel vocabulary defines no such subset. Catalogue receives raw ExternalActState values through its port and interprets them itself.",
+   "scenario": "An engineer adds a sixth ExternalActState that means a filing may have happened, for example a submission-in-flight state. The engineer updates core/store.ts PROTECTED_STATES. No compiler error appears, because every copy is a string Set or an inline comparison. If the Catalogue copy in commands/impact.ts or tasks/impact-recheck.ts is missed, a SuperAdmin can choose 'continue_on_head' and the recheck can carry the item for an application whose act is in the new state. That bypasses the 'filing_possibly_occurred' protection on the Catalogue side. Only Core's catalogue-writers check remains, and only if that copy was updated.",
+   "evidence": "grep finds 4 copies of new Set(['authorized', 'filing_unknown', 'reconciliation_exhausted']) at catalogue/commands/impact.ts:29, catalogue/tasks/impact-recheck.ts:47, catalogue/preview.ts:27 and core/catalogue-writers.ts:61. Other copies: core/store.ts:335 PROTECTED_STATES; inline in core/tasks.ts:183 and core/commands/withdrawal.ts:47. The unused export core/store.ts:333 POSSIBLY_COMMITTED_STATES has a different member set (it includes filed_evidenced). catalogue/ports.ts:50,69 passes raw { kind, state } act lists.",
+   "fix": "Declare POSSIBLY_FILED_ACT_STATES once in src/kernel/vocabulary/external-acts.ts, typed as readonly ExternalActState[], with an isPossiblyFiled(state) helper. Replace all seven copies with the helper, or have Core's port return possiblyFiled: boolean. Delete POSSIBLY_COMMITTED_STATES. A unit test SHOULD classify every EXTERNAL_ACT_STATES member explicitly, so a new state forces a decision.",
+   "rule_refs": [
+    "B34"
+   ],
+   "lens": "MAINT",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced at 6360420. The contract's foundation table defines a 'protected as possibly filed' column: authorized, filing_unknown and reconciliation_exhausted. The kernel vocabulary (src/kernel/vocabulary/external-acts.ts) exports only EXTERNAL_ACT_STATES and OPEN_EXTERNAL_ACT_STATES, with no protected subset. The rule is copied by hand as untyped Set<string> literals or inline comparisons across "
+    }
+   ]
+  },
+  {
+   "id": "MAINT-02",
+   "priority": "P1",
+   "subsystem": "core",
+   "file": "src/modules/core/commands/common.ts",
+   "line": 27,
+   "issue": "The contract defines EvidenceRef.note as at most 200 characters with no personal data. Six modules each re-implement evidence parsing, and their behaviour differs. Delivery (delivery/commands/common.ts:25) refuses notes that match /[@/]|www\\./. Payments (payments/commands/common.ts:34-42) uses a different email/URL regex. Core, Catalogue, Operations launch and case work have no note guard. Core and Catalogue do not trim the id; the others do. The staff BFF's case-work evidenceOf (case-work.ts:455) turns an empty kind into 'attestation'.",
+   "scenario": "An operator records act evidence (ops.record_act_evidence) or a Core filing decision with note 'sent to ravi@example.com'. The command accepts the note and stores it permanently in the append-only fact log. The same note on a delivery handover or a payment entry is refused. A reference typed as ' REF-1 ' is stored with its spaces by Core and Catalogue and as 'REF-1' by case work, so the same evidence does not match across modules.",
+   "evidence": "A probe run in the throwaway worktree with input [{kind:'external_reference', id:' REF-1 ', note:'sent to ravi@example.com'}] gave these results. delivery zDeliveryEvidence: refused. payments noteProblem: email_like. core zRequiredEvidence: accepted, id ' REF-1 ' kept. case-work evidenceRefs: accepted, id 'REF-1'. catalogue zEvidenceList: accepted, id ' REF-1 ' kept. Normalizer copies: kernel/facts.ts:74, payments common.ts:52, catalogue/domain.ts:272, operations/commands/launch.ts:54, case-work/evidence.ts:27, delivery common.ts:25.",
+   "fix": "Put one zod evidence schema in the kernel vocabulary (subjects.ts, next to zEvidenceRef). It MUST trim id and note, drop an empty note, and apply one guard against email, URL and address patterns. All modules MUST use it instead of their local copies. The staff BFF MUST refuse an empty kind instead of defaulting it to attestation. Remove the unused BFF copy apps/staff/catalogue/shared.ts:237.",
+   "rule_refs": [
+    "B01"
+   ],
+   "lens": "MAINT",
+   "final": "P1",
+   "validated": true,
+   "verdicts": [
+    {
+     "confirmed": true,
+     "priority": "P1",
+     "reasoning": "Reproduced. The kernel zEvidenceRef checks only note length. The contract also says a note carries no personal data, and nothing enforces it. Six module normalizers disagree on the note guard and on id trimming. Two parts of the scenario are not reachable from the staff UI. The BFF helpers trim ids before sending, so an untrimmed id reaches a module only by a direct mTLS core-API call. The case-wo"
+    }
+   ]
+  },
+  {
+   "id": "MAINT-03",
+   "priority": "P2",
+   "subsystem": "operations",
+   "file": "src/modules/operations/case-work/incidents.ts",
+   "line": 35,
+   "issue": "The open-incident state set ('open','assigned','awaiting_evidence') is copied as literals in about 12 places: case-work SQL (incidents.ts:201,222,248; facade.ts:142), incidents.ts:38, delivery/pages.ts:115, staff BFF case-work.ts:96, labels.ts:38 and core/case.ts:81. The exported OPEN_INCIDENT_STATES (store.ts:167) is not imported by any of these. The blocking-kind rule has three forms: the unused export BLOCKING_KINDS (incidents.ts:35), the SQL literal in blockingIncidents (incidents.ts:202) and an inline copy in delivery/pages.ts:116.",
+   "scenario": "An engineer reads BLOCKING_KINDS ('Kinds that block a byte release') and adds a kind there. Nothing changes, because the byte-release gate uses the SQL literal at line 202. The opposite case also fails silently: a new blocking kind or open state is added to the SQL gate, but delivery/pages.ts still computes applicationBlocked from its own copy. The TA delivery page then shows no block while release refuses.",
+   "evidence": "incidents.ts:35 BLOCKING_KINDS has no reference outside its file (unused-export scan). incidents.ts:202 has kind IN ('wrong_recipient_disclosure', 'bytes_integrity'). delivery/pages.ts:115-116 repeats both the state set and the kind set inline.",
+   "fix": "Add OPEN_OPS_INCIDENT_STATES and BLOCKING_OPS_INCIDENT_KINDS to src/kernel/vocabulary/incidents.ts, where BFFs can also load them. Bind the arrays into the SQL (= ANY(...)) and use them in delivery and the staff BFF. Delete the dead export.",
+   "rule_refs": [],
+   "lens": "MAINT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "MAINT-04",
+   "priority": "P2",
+   "subsystem": "other",
+   "file": "src/modules/core/controls.ts",
+   "line": 713,
+   "issue": "Production code and tests never call these exported symbols, and several look authoritative. controls.ts:713-731: canSubmit, canAssign, canStartOperatorWork, canAuthorizeFiling, canReleasePacket and canSelectOffering. errors.ts:160 notImplemented. retry.ts:30 isConnectionLevelError. recovery.ts:325 lastCompleteBackup, which compose.ts:773 and capacity.ts:275 duplicate. delivery: releaseUnrecorded, readPacketsOf. catalogueCommandList. intake: fileSettled, TERMINAL_STATES, TERMINAL_ROW_STATES. core/store.ts: readSnapshot, readAssistance, assignmentsOf, readAuthorization, bumpApplication. NO_SESSIONS. Staff catalogue intField.",
+   "scenario": "An onboarding engineer adds a new submit-time control and changes canSubmit or TERMINAL_STATES, expecting a behaviour change. Nothing changes, and the engineer loses time or merges a no-op believed to be a fix.",
+   "evidence": "A TypeScript AST scan (scratchpad unused.mjs) flagged each name as declared once and referenced nowhere else in src, test, scripts or catalogue. Spot-checks confirmed the results by grep.",
+   "fix": "Delete the listed symbols. If useful, add an unused-export check (for example a small TS scan in test/static) that skips the closed-vocabulary z*/type exports.",
+   "rule_refs": [],
+   "lens": "MAINT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "MAINT-05",
+   "priority": "P2",
+   "subsystem": "docs",
+   "file": "docs/architecture.md",
+   "line": 19,
+   "issue": "The architecture layer table says the Web layer (src/web) 'May import kernel, platform, module api.ts'. The service split forbids this. Edge and staff load src/web, and app-boundary.ts forbids every src/modules/ file for a BFF, including api.ts. The section 'Case work, delivery and views: who owns which files' describes the milestone-4 parallel build ('frozen interfaces', 'append-only shared files') in the present tense, but that process has ended. frozen-interfaces.test.ts still pins exact function lists.",
+   "scenario": "An onboarding engineer follows the table and imports a module's api.ts from a src/web helper. The service-split static test fails with an app_imports_domain path that the documentation said was allowed. Another engineer reads the append-only and frozen-interface rules as current policy and avoids a valid refactor of src/contracts/delivery.ts.",
+   "evidence": "docs/architecture.md layer table, Web row; test/static/lib/app-boundary.ts APP_FORBIDDEN includes /^src\\/modules\\//; src/web contains no module import (grep), which shows that the documented permission is unused.",
+   "fix": "Change the Web row to 'kernel vocabulary and pure helpers, platform TLS/config, contracts; never modules'. Rewrite the ownership section as historical, or remove it, and keep the composition-port paragraph.",
+   "rule_refs": [],
+   "lens": "MAINT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "MAINT-06",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/modules/core/lists.ts",
+   "line": 31,
+   "issue": "Some modules read other modules' tables directly with SQL, and no static test covers these reads. Core reads cat_countries and cat_offerings (lists.ts:31,68,124,145; staff-views.ts:181; catalogue-reads.ts). Intake reads cat_countries (planning.ts:175). Delivery reads core_packet_releases (packets.ts:113). The identity policy reads core_applications.assigned_operator_id (policy.ts:730,737). The sole-writers static test checks only writes, so these reads break only at runtime. core/catalogue-reads.ts records itself as debt.",
+   "scenario": "Catalogue renames or splits cat_countries.name, or Core moves the operator assignment into its own table. Type checking and the static tests pass. Core's group lists and Intake planning then fail at runtime with a SQL error, and the identity policy's group.read and incident.read scope predicates fail as well. Only tests that exercise those paths catch the failure.",
+   "evidence": "A grep of FROM/JOIN across src/modules/* found these foreign-prefix reads. test/static/lib/sole-writers.ts header: 'each module is the only writer'; it has no read rule.",
+   "fix": "Expose the reads through the owners' api.ts queries (the catalogue country query and Core's operator-of-application). Alternatively, list the accepted cross-owner reads in a static allowlist so that a new one is a reviewed decision.",
+   "rule_refs": [
+    "B34"
+   ],
+   "lens": "MAINT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "MAINT-07",
+   "priority": "P2",
+   "subsystem": "core",
+   "file": "src/domain/compose.ts",
+   "line": 545,
+   "issue": "composeDomain is one function of about 370 lines (compose.ts:545-914, 50 KB file). It wires every module, owns the timers and probes, builds health and the backup-age check, and handles shutdown and undo. It re-implements kernel queries (backup age at compose.ts:773). The test suite (1698 tests, 414 s) is dominated by two 50-iteration race loops: payments/exposure.test.ts 'concurrent commitments ... (50 races)' takes 96.5 s and the correction/assignment race takes 29 s.",
+   "scenario": "A change to health or probe behaviour has to be made inside the single wiring function, where an accidental change to the undo order or timer cancellation is easy to miss in review. Separately, a developer running one test file waits about 100 s for one race test.",
+   "evidence": "Function outline of src/domain/compose.ts. The TAP durations from a full run in the throwaway worktree: tests 1698, pass 1698, skipped 0, duration_ms 414358.",
+   "fix": "Move health and probes and the job/timer set into their own composition files that return cancel handles. Use the kernel query. Make the race-loop count an environment knob, for example 10 by default and 50 in a full check.",
+   "rule_refs": [],
+   "lens": "MAINT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-01",
+   "priority": "P1",
+   "subsystem": "catalogue",
+   "file": "src/modules/core/controls.ts",
+   "line": 527,
+   "issue": "Declared travel-date rules (eligibility.travelDateRules and evaluateTravelDateRules adapter checks) run only when controls.submitChecks lists travel_dates_valid. Nothing requires that opt-in: the parser accepts a travel-date adapter check without it. The synthetic declarations omit it, so the seeded SYX check syx_min_lead_days never runs at submit. No test uses it and the guides never mention it. Readiness and the date-change recheck never evaluate travel rules. Yet the declaration page lists travel date rules as Supported, Launch required, gating submit and record_readiness.",
+   "scenario": "SYZ onboarded through the documented pages with country_adapter_check syz.core@1.0.0 evaluateTravelDateRules syz_max_stay_days {days:30} and the usual submitChecks [mandatory_documents_present, identity_evidence_present]. A travel agent creates an SYZ group from today+30 to today+75 (46 days) and submits a complete draft. The submission is accepted, so the application goes to filing in breach of the declared country rule. Add travel_dates_valid and the same draft is refused. A misconfiguration the guides invite therefore fails open.",
+   "evidence": "Probe on three instances. Without travel_dates_valid, the long-stay submit answered 303 ?done=submitted. With it, the ready page showed 'The application cannot be submitted yet' and nothing was submitted, while the 11-day SYZ case still went through to delivery. controls.ts:527 `if (checks.includes('travel_dates_valid'))` is the only submit-time caller of evaluateTravelDateRules. core/tasks.ts travelDateRecheckTask re-reads document evidence only. `grep -r travel_dates_valid test/` finds nothing. The SYX submitChecks in catalogue.json omit it.",
+   "fix": "Fail closed. Either always evaluate declared travel rules and travel-date adapter checks at submit, or refuse a decl/1 body that declares them without travel_dates_valid. Add travel_dates_valid to the synthetic declarations. Add a system test for the invalid, unknown and valid cases. Document the rule in new-service.md.",
+   "rule_refs": [
+    "B06",
+    "B02"
+   ],
+   "lens": "EXT",
+   "final": "P1",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-02",
+   "priority": "P1",
+   "subsystem": "docs",
+   "file": "docs/extending/new-service.md",
+   "line": 20,
+   "issue": "The documented procedure does not work as written. (1) It omits the owner's structure approval (cat.record_owner_approval, approvalKind=structure). Without it the declaration stays draft and neither the baseline editor nor bind is offered; step 5 covers only gated items. (2) It omits cat.preview_declaration and cat.publish_declaration, the only step that sets the head. (3) Step 3's baseline 'preview then publish' is not offered for a new offering. (4) Launch must acknowledge the unresolved priceFeeRelation item, which contradicts 'no unsupported capability'. (5) A real offering's structure approval needs owner_approval evidence.",
+   "scenario": "A SuperAdmin follows new-service.md literally: offering, draft declaration, then step 3 'Baseline'. No baseline editor is shown. Step 4 'Bind': no bind form is shown. The service goes live only by guessing the undocumented order: structure approval, bind, baseline draft, declaration preview with that baseline, declaration publish, launch plan, launch with acknowledgements.",
+   "evidence": "Probe log. The doc-order baseline editor was not offered (false) and the doc-order bind was not offered (false). After the structure approval (303), the bind form appeared (303), the baseline draft was accepted (303) and the baseline page had no preview form. The declaration preview (303) and the declaration publish (303, pub_\u2026?done=published) set the head. The launch form carried ack.financialConditions.priceFeeRelation. Both new applications then completed intake through edge delivery.",
+   "fix": "Rewrite the steps in the order the product enforces: offering; draft; structure approval (plus gated-item approvals); bind; baseline draft; declaration preview with that baseline; publish from the declaration page; launch plan; launch with acknowledgements. Fix 'Checks before launch'. Add a system test that onboards through the staff pages; none exists today.",
+   "rule_refs": [
+    "B06"
+   ],
+   "lens": "EXT",
+   "final": "P1",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-03",
+   "priority": "P1",
+   "subsystem": "catalogue",
+   "file": "src/apps/staff/catalogue/baselines.ts",
+   "line": 111,
+   "issue": "After a declaration preview, staff redirects to /admin/catalogue/previews/:id. That page renders the baseline's 'Publish these values' form whenever the baseline is previewed under this preview id, and never checks preview.kind. For a declaration preview, that form always fails at core with preview_stale and the false message 'The work or the offering changed since the preview'. The form that works is on the declaration page. This affects every first publication of a new offering and every declaration change published with a new baseline.",
+   "scenario": "On a new offering, the SuperAdmin previews the declaration with its drafted baseline, lands on the preview page and clicks Publish. The answer is 409 preview_stale and nothing is published. Repeating the preview gives the same result, so the SuperAdmin is told the offering changed when it did not.",
+   "evidence": "Probe log: 'preview page forms' = ['/sign-out','/admin/catalogue/baselines/bbv_\u2026/publish']. Submitting it gave 409 'Reference code: preview_stale'. The declaration page's /publish form then succeeded (303). baselines.ts:111 `const open = m.baseline !== null && m.baseline.status === 'previewed' && m.baseline.preview_id === m.preview.preview_id;`. commands/baselines.ts:152 refuses because preview.declaration_id !== head_declaration_id.",
+   "fix": "Show the baseline publish form only for preview.kind === 'baseline'. For a declaration preview, render the declaration publish form, or redirect the preview to the declaration page's publish section. Add a test that publishes a first declaration with its baseline through the pages.",
+   "rule_refs": [
+    "B06"
+   ],
+   "lens": "EXT",
+   "final": "P1",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-04",
+   "priority": "P2",
+   "subsystem": "tests",
+   "file": "test/countries/registry.test.ts",
+   "line": 64,
+   "issue": "Registering an adapter exactly as new-country.md says ('one entry \u2026 npm run check MUST pass') breaks npm run check. Tests outside the documented extension points pin the exact registry list. For a real ISO adapter, the production expectations also break, because those tests assert the production adapter set and capabilities are empty.",
+   "scenario": "Register syz.core (or a real fra.core) with one registry entry. Three tests fail: conformance.test.ts:10 and registry.test.ts:64-65 and :72. For a real adapter, registry.test.ts:66 activeAdapters('production').list() = [] and :68 adapterCapabilities('production') = [] fail too.",
+   "evidence": "Ran test/countries and test/static with SYZ registered: 109 tests, 3 fail (actual [... 'country.syz.core@1.0.0'] against an expected list of two). After those two test files were updated, the full suite passed: 1712 of 1712, the probe included.",
+   "fix": "Assert properties instead of the literal list: synthetic entries absent in production, every entry has a capability, and the reference adapters are present. Or name these files as a required step in new-country.md.",
+   "rule_refs": [],
+   "lens": "EXT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-05",
+   "priority": "P2",
+   "subsystem": "docs",
+   "file": "docs/extending/new-country.md",
+   "line": 22,
+   "issue": "(1) The functions table implies the product uses proposeIntakeMapping and recognizeArtifact. Only checkValidity (validity.ts:140) and evaluateTravelDateRules (travel.ts:86) are invoked. Unused mapping is parked; unused recognition is not: official results are matched by the shared rule assoc/1 (case-work/association.ts). (2) The synthetic package location src/countries/synthetic/<code> (synthetic: true, non-ISO code), which the registry enforces, is undocumented. (3) The digest includes fixtures.ts but not the shared contract.ts (dayNumber, paramsSatisfy, schemas) that adapters import.",
+   "scenario": "An engineer implements recognizeArtifact for a new country so its grant numbers are recognised. The conformance kit passes, but the adapter is never called and results are still matched only by passport number and name. Separately, a fix to dayNumber in contract.ts changes the date verdicts of syn.core@1.0.0 for applications already bound to it, and the release registers without capability_digest_changed.",
+   "evidence": "`grep -rn invokeAdapter src` lists only validity.ts and travel.ts. registry.ts adapterSourceDigest hashes only entry.files under packageDir. registry.ts checkRegistry requires src/countries/synthetic/<code> for synthetic entries.",
+   "fix": "Mark proposeIntakeMapping and recognizeArtifact as not yet used by the product, or wire them in. Document the synthetic package location. Either cover contract.ts in every adapter digest, or treat any behavioural change to contract.ts as a new adapter API version.",
+   "rule_refs": [],
+   "lens": "EXT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  },
+  {
+   "id": "EXT-06",
+   "priority": "P2",
+   "subsystem": "other",
+   "file": "src/cli/seo/check.ts",
+   "line": 181,
+   "issue": "Hard-coding inventory: no country, service or price rule is hard-coded in shared code beyond what the specification sanctions (TRAVEL_PURPOSES, IND). Remaining items: (a) the synthetic guards list only SYN and SYX (SYNTHETIC_MARKERS here; /^sy[nx]_/ in test/static/lib/code-literals.ts), and the literal scanner flags ISO codes only, so a shared-code branch on 'SYZ' or 'SYN' passes; (b) document-type labels in TYPE_OPTIONS (shared/pages/documents.ts:301, parked) and artifact-type labels humanized from codes; (c) 'passport' literals at controls.ts:514, decl.ts:468, originals.ts:113, parse.ts:253; (d) the baseline price field rejects '2,750'.",
+   "scenario": "A third synthetic country (code SYZ) in public content or shared code is not caught by the synthetic-content or literal guards. A SuperAdmin typing the price as the preview page shows it ('2,750') gets 422 'servicePricePaise: invalid format', an error that names an internal field.",
+   "evidence": "Probe: price '2,750' gave 422 'servicePricePaise: invalid format'; '2750.00' was accepted. Delivery pages showed 'Evisa grant (official result)'. read-models.ts:232 rupeesToPaise compared with shared/pages/payments.ts paiseFromRupees.",
+   "fix": "Derive synthetic markers from the registry or from is_synthetic codes, and flag any three-letter upper-case code literal outside src/countries. Add labels for declared artifact types to bv/1. Use one rupee parser for both forms.",
+   "rule_refs": [],
+   "lens": "EXT",
+   "final": "P2",
+   "validated": false,
+   "verdicts": []
+  }
+ ]
+}
