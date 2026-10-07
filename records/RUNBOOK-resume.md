@@ -84,3 +84,4 @@ Note (2026-10-05): the M2 snapshot commits 751dd60, 96b302a, ab72093 were made w
 | Next | M5 review → gate → tag `m5-release-recovery-verification`; then M6 | — | — |
 | Remote backup | the product owner pushed main 819139e + tags m1-foundation, m2-access-catalogue-documents himself (2026-10-06; pre-push boundary hook clean). The agent sandbox sees the remote as empty: do not use `git ls-remote` as evidence. Agents still never push. Privacy: stay local, no cloud sessions | — | — |
 | Heartbeat | session cron hourly `23 * * * *` (job 6cb35e17; session-only) | — | — |
+| Owner notes 2026-10-07 | Max resets the weekly limit at 97% (do not pause for it earlier); owner inputs (locality, contact, legal pages, country list) come later; production readiness (Cloudflare, real email server) is a later phase he drives — list hand-off items in the final report | — | — |
