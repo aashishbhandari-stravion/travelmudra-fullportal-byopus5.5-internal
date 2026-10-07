@@ -1,0 +1,26 @@
+{
+ "groups": {
+  "ops": [
+   "UX-1",
+   "UX-10",
+   "UX-11",
+   "UX-13"
+  ],
+  "ta-a": [
+   "UX-2",
+   "UX-3",
+   "UX-7"
+  ],
+  "ta-b": [
+   "UX-4",
+   "UX-9",
+   "UX-12"
+  ],
+  "nav": [
+   "UX-5",
+   "UX-6",
+   "UX-8"
+  ]
+ },
+ "note": "UX findings of the final UI/UX review are in the orchestrator transcript; each fixer receives its findings in the prompt."
+}
