@@ -3,7 +3,7 @@
 Date: 2026-10-08. Author: the orchestrator (principal technical architect). Status: final. Private record (internal repository).
 
 ## 1. Outcome in one paragraph
-TravelMudra, the B2B visa-services portal, is built to the specification as a local test installation of three instances that talk only through authenticated API calls: **core** (PostgreSQL, the file store, all business logic and background work), **edge** (public site, travel-agent sign-in and surface, bulk intake and uploads, the sandboxed file-processing service with the malware scanner) and **staff** (Operations, SuperAdmin and Accounts). Six milestones are complete and tagged on local `main` (m1–m5 already tagged; milestone 6 tag `m6-final-assurance` at [FINAL_COMMIT]). The final verification ran [FINAL_TESTS] automated tests three times without a failure, plus an end-to-end walk of the operating guide, a public-site search-readiness check, a capacity record and a repository boundary check over the whole history. Nothing was pushed; you push once, yourself.
+TravelMudra, the B2B visa-services portal, is built to the specification as a local test installation of three instances that talk only through authenticated API calls: **core** (PostgreSQL, the file store, all business logic and background work), **edge** (public site, travel-agent sign-in and surface, bulk intake and uploads, the sandboxed file-processing service with the malware scanner) and **staff** (Operations, SuperAdmin and Accounts). Six milestones are complete and tagged on local `main` (m1–m5 already tagged; milestone 6 tag `m6-final-assurance` at 7be21b1). The final verification ran 1846 automated tests three times without a failure (typecheck and lint clean), plus an end-to-end walk of the operating guide, a public-site search-readiness check, a capacity record and a repository boundary check over the whole history. Nothing was pushed; you push once, yourself.
 
 ## 2. What was built
 - **Surfaces:** public site (crawlable, titles, canonical URLs, sitemap, robots, structured data; four owner inputs pending), travel-agent portal, operator portal, SuperAdmin portal, Accounts surface; one design system (light and dark, keyboard and screen-reader accessible; axe found 0 violations on every page in the final pass).
@@ -16,12 +16,12 @@ TravelMudra, the B2B visa-services portal, is built to the specification as a lo
 - **Delivery:** one release check for every file, downloads and bounded ZIP selections, notices, preparation packets and handover, synthetic email only; pages say "Sent in full", never "Received", because the server cannot know browser receipt.
 - **Views and measures:** projections for lists, search, history, monitors; operating measures with truthful "not captured" states.
 - **Release, recovery and capacity:** releases bound to verified code and configuration on every instance, cutover, code and snapshot rollback, encrypted backup, restore with interval-loss scope and owner-approved reopening, request deadlines and capacity limits fitted to the production host profile, per-instance descriptors for dedicated OS users, systemd user units.
-- **Size:** about 94,000 lines of TypeScript source in 494 files, 53,000 lines of tests in 266 files, 26 database migrations, about 270 routes.
+- **Size:** about 94,000 lines of TypeScript source in 495 files, 53,000 lines of tests in 267 files, 26 database migrations, about 270 routes.
 
 ## 3. Assurance
 - Each milestone: an independent multi-lens review, adversarial validation of serious findings, fixes reproduced first with tests that fail without the fix, an independent fix check, and an end-to-end or UX recheck where relevant.
 - Serious defects found and fixed by the reviews (examples): an identity swap through corrections (M3); a result file attachable to any candidate case and withdrawals after an evidenced filing (M4); a lossy restore that could be reopened without the owner's approval and four release-binding defects that let unverified code or configuration run (M5); document changes during a possible filing, an incorrect "received" record, a correction stuck after a resolved fee filing, incident access surviving reassignment, and a privacy defect that showed another applicant's file (M6).
-- Traceability: every invariant and design test id is mapped to the tests that prove it (`docs/verification/traceability.md`): [TRACE_PROVEN] proven, [TRACE_PARTIAL] partial with the missing assertion stated, [TRACE_GAP] recorded gaps.
+- Traceability: every invariant and design test id is mapped to the tests that prove it (`docs/verification/traceability.md`): 399 identifiers: 317 proven, 78 partial with the missing assertion stated, 4 recorded gaps.
 - Test stability: intermittent failures under load were investigated to the root; three were real product defects (fixed).
 
 ## 4. Decisions made on your behalf
@@ -37,7 +37,7 @@ You delegated every run decision on 2026-10-04. All are recorded and reversible:
 4. **Push:** `main` and the six milestone tags are ready for your single push.
 
 ## 6. Parked findings (P2) for later
-Listed with scenarios in the milestone verification records (`verification/2026-10-0*-*.md`) and the milestone 6 record. Notable: the local supervisor stops all instances during a rollback across a configuration change; no documented tester procedure for sign-in codes on a local installation; scanner signatures live in a per-user data directory; staging overshoot by concurrent uploads; capacity failures consume task attempts; a few line-length and naming-consistency polish items.
+Listed with scenarios in the milestone verification records (`verification/2026-10-0*-*.md`) and the milestone 6 record. Notable: an application stays editable after an accepted withdrawal (the withdrawal itself stands); the fetch worker's IPv6 deny list lacks the IPv4-compatible block; the local supervisor stops all instances during a rollback across a configuration change; no documented tester procedure for sign-in codes on a local installation (the preview helper in section 9 covers your use), and a restored installation has no mail transport; scanner signatures live in a per-user data directory; staging overshoot by concurrent uploads; capacity failures consume task attempts; wording, name-order and line-length polish on some pages.
 
 ## 7. Process notes
 - A `--no-verify` slip on three work-in-progress commits in milestone 2 (the boundary check on those commits was clean); not repeated.
@@ -53,4 +53,9 @@ Listed with scenarios in the milestone verification records (`verification/2026-
 - Details: `reviews/2026-10-06-m3-review-telemetry-and-orchestration-policy.md` and `reviews/2026-10-06-orchestration-retro-notes.md`.
 
 ## 9. How to see it
-See section 10 (preview) — filled in when the local preview is running.
+A local preview is running on this machine, installed from the tag with the product's own procedure (`docs/operations.md`): three instances, PostgreSQL and the malware scanner as systemd user units (linked, not enabled at boot), loopback only, synthetic mail only.
+
+- Public site and travel-agent portal: http://127.0.0.1:4610. Staff portal (operators, SuperAdmin, Accounts): http://127.0.0.1:4612.
+- Accounts: `syn-ta-1..3`, `syn-operator-1..3`, `syn-superadmin-1..2`, all `@synthetic.test`.
+- Sign-in codes: run `node ~/.local/share/travelmudra-preview/signin-codes.mjs <email>` in your own terminal. It reads the local synthetic mailbox and, for staff, prints the current authenticator code. The orchestrator verified travel-agent, operator and SuperAdmin sign-in end to end without displaying any code.
+- Guide (what to try, stop, start, remove): `~/.local/share/travelmudra-preview/README.md`. Synthetic sample documents for uploads: `~/.local/share/travelmudra-preview/samples/`.
