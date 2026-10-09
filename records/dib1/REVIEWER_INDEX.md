@@ -19,7 +19,7 @@ product tree because it names internal identifiers. All paths below are relative
 | HEAD commit | 2026-10-09T10:25:46+05:30, "Add an agent guide that a fresh clone can read first"; 340 commits since `969ca68` (2026-10-04) |
 | Accepted build tag | `m6-final-assurance` → `7be21b1` (2026-10-08). Commits after it change only docs, `.gitignore`, `eslint.config.js` and `scripts/uat/` (no `src/`, `test/` or `migrations/` change: `git diff --stat 7be21b1..HEAD`) |
 | Milestone tags | `m1-foundation`, `m2-access-catalogue-documents`, `m3-cases-intake-payments`, `m4-operations-delivery-views`, `m5-release-recovery-verification`, `m6-final-assurance` |
-| Internal repository HEAD | `982e1052b291f8034c04b7c0c0fa219639847caf` (2026-10-09T10:13:20+05:30) |
+| Internal repository HEAD | `982e1052b291f8034c04b7c0c0fa219639847caf` (2026-10-09T10:13:20+05:30) was HEAD when this index was written. The index itself was added in `c6d29ad` and this correction is a later commit, so this row cannot name the current HEAD. Take the frozen internal SHA from Max's Stage 0 designation, not from this row |
 | Working tree | Product: clean before this index (0 modified, 0 untracked). Internal: clean. Ignored: `node_modules/`, `internal/`, `.claude/`, local `CLAUDE.md`/`AGENTS.md` |
 | Complete candidate snapshot | Yes for product source at HEAD. This index is versioned in the private repository, not in the product repository (see section I) |
 
