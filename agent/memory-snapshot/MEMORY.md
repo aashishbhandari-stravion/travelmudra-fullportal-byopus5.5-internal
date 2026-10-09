@@ -1,0 +1,13 @@
+- [Project setup roles](project-setup-roles.md) — public-bound root repo + nested private internal/; spec in internal/records; Max pushes
+- [UI design direction](ui-design-direction.md) — clarity+trust+speed over spectacle; 3 design skills as judgment; one bounded final UI pass
+- [Roles and extension model](roles-and-extension.md) — orchestrator = principal architect; implementation workers = Principal Software Engineer; UX agents = Principal UX Engineer; country/service onboarding by data + adapters
+- [Delegated decisions](delegated-decisions.md) — Max delegated all run decisions (2026-10-04); decide, record, keep reversible; hard limits unchanged
+- [Auto-resume after limits](auto-resume.md) — restart after usage-limit pauses without asking; snapshot+continue recovery; runbook in internal/records/RUNBOOK-resume.md
+- [Production topology](production-topology.md) — 3 instances, API calls only (contract §21): core (DB+domain), edge (TA+bulk+processing), staff (Ops/SuperAdmin); never test as monolith
+- [Efficiency rules](efficiency-rules.md) — max 3 parallel lanes; compact capped worker handoffs; review diffs/contracts not narratives; hourly heartbeat
+- [Data privacy](data-privacy.md) — Max: nobody incl. Anthropic research may access his data; no cloud/push without his informed decision
+- [Orchestration direction](orchestration-direction.md) — keep intelligence, cut redundant assurance loops; P0 repro, P1 fixer-repro, targeted tests; M6 heavy; propose M4–M6 policy from M3 telemetry
+- [Production readiness](production-readiness.md) — later phase Max drives (Cloudflare, real email); he resets weekly limit at 97%; owner inputs later
+- [Local preview](local-preview.md) — ~/.local/share/travelmudra-preview, user units, 4610/4612; helper prints codes (Max's terminal only)
+- [UAT deploy script](uat-deploy-script.md) — all local UAT deploys via scripts/uat/uat.py (config + port registry + cleanup); enhance it, never hand-run steps
+- [Lane convention (nested layout)](lane-convention-nested.md) — projectctl refuses nested layout; hand-made lanes under ~/workDirectory; Max lane max-uat-2026-10-09 = lane-max on 4620/4622
