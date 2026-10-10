@@ -7,8 +7,8 @@ Status: architect's plan. Not accepted product policy. Not an assessment of the 
 Max asked the Principal Technical Architect to form a small team and plan the UI that the architect
 would build from the UX specifications alone. No product code and no Opus design record was an input.
 The plan is the baseline for three later steps that Max proposed: an independent review by Goku, a
-gap comparison against the built Opus UI, and a change-cost assessment. Those steps are not part of
-this folder.
+gap comparison against the built Opus UI, and a change-cost assessment. The prompt for the first step is
+in this folder; the steps themselves are not.
 
 ## Inputs (the only sources)
 
@@ -46,6 +46,7 @@ conflict. Disagreements that remain are recorded in the review findings.
 | `BULK-UPLOAD-UI-PLAN.md` | Bulk upload UI plan: screens, flow, correction and retry semantics, acceptance mapping |
 | `COVERAGE-MATRIX.md` | Every UX and BU requirement bundle and scenario mapped to a page and a behavior, or marked open |
 | `REVIEW-FINDINGS.md` | Independent reviewer's ranked findings and the architect's disposition of each |
+| `GOKU-REVIEW-PROMPT.md` | Prompt for Goku's independent review of the plan (GPT-6.1 Sol, `xhigh`), with operator notes for Max. Goku writes `GOKU-REVIEW-2026-10-10.md` beside it |
 
 ## Writing style
 
