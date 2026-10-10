@@ -233,6 +233,12 @@ Correction to this folder's evidence summary: its §5 table has fifteen rows of 
 handover counts 17 accepted reads on 7 October plus 2 on 8 October from the raw event logs. The two counts
 measure different things (observations vs accepted reads) and do not contradict; the summary is not amended.
 
+Acknowledged by Max on 10 October 2026, late evening, as inputs to the §6 discussion: the sizing target is his
+(100 applicants, 500 documents per workload, several at once); the measured fairness failure (first document
+after 29 s vs 441 s); real documents are light (about two thirds need no OCR); provider behavior to plan for
+(throttling unobserved not absent, non-document responses, pagination untested); nothing proved on real data for
+the parallel designs; the eight lessons map onto §6, §8 and §9 and none contradicts the orchestrator direction.
+
 What the handover does not change: the eight questions of §6 stay open and stay Max's; §8 directions stand;
 no implementation is authorized (DECISIONS §2). Items for Max in the Astra chat, not for this project: the
 frozen-candidate choice (question 2), the durability promotion (question 8), and the archive expiry.
