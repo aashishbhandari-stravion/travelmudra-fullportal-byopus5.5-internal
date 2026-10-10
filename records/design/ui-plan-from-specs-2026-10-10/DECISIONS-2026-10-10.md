@@ -49,13 +49,13 @@ selection in the architecture repository when he next edits it, with a pointer t
 | OC-06 Identities and providers | Decided (PD, OD §5) | No UI effect |
 | OC-07 Readiness stage labels | Decided: the five OD §6 labels | Whether Core carries the state machine is an inventory question (§4) |
 | OC-08 First country and owner | Still an input from Max | Fixtures stay synthetic |
-| OC-09 Preparation-only packet release under B46 | Open. Max decides with BS B04, B24, B31 in front of him | Plan keeps the conservative treatment |
+| OC-09 Preparation-only packet release under B46 | Closed by Max on 10 October 2026 (§1.5). The code serves `core.release_packet` as a command of the assigned operator; download is a recorded byte release. No owner choice remains | The `B46 BOUNDARY` marker on Release packet (CMD-40) and on download (CMD-18) is wrong and is corrected in the rewrite pass |
 | OC-10 TA onboarding route | Open. Max decides with BS B08, B11, B44 in front of him | Plan keeps SuperAdmin-created accounts |
-| RF-07 SuperAdmin `external_outcome_unresolved` | Open. Max reads BS B23 and B24 and decides whether the command records authorization only or also triggers Core completion | Disagreement stays recorded in REVIEW-FINDINGS |
+| RF-07 SuperAdmin `external_outcome_unresolved` | Closed by Max on 10 October 2026 (§1.5). The code serves `core.authorize_unresolved_completion`; it records an authorization that names a future owner and does not complete the case. The plan's reading stands | The reviewer's B46 concern does not apply. The disagreement stays recorded in REVIEW-FINDINGS as history |
 
 The markers `B46 BOUNDARY` and `OWNER CHOICE PENDING (Astra-only source)` in UI-PLAN.md and
-BULK-UPLOAD-UI-PLAN.md are now resolved as above except for OC-09, OC-10 and RF-07. The plan text is not
-rewritten; this file governs where it differs.
+BULK-UPLOAD-UI-PLAN.md are now resolved as above except for OC-10. The plan text is not rewritten; this file
+governs where it differs.
 
 ### 1.4 Applicability note of 7 October (architecture README)
 
@@ -64,6 +64,24 @@ replaces inference. Proposal for the architecture repository README, applied by 
 repository: "On 10 October 2026 the decision owner confirmed that OD §§2 to 6 and the PD owner decisions are
 implementation-agnostic product policy and apply to the Opus product. OD §1, §7 and §8 remain Astra execution
 decisions." This repository does not edit that file.
+
+### 1.5 Closure of OC-09 and RF-07 (added 10 October 2026, later the same day)
+
+Max confirmed the closure of OC-09 and RF-07 on 10 October 2026 on the evidence of
+`SURFACE-INVENTORY-2026-10-10.md` §6 (product commit 102e4c9):
+
+- OC-09. `core.release_packet` is a served Core command of the assigned operator (`src/core-api/bindings/core.ts`,
+  line 492 at 102e4c9). The packet download is a recorded byte release. Preparation-only release is therefore
+  not an unselected B46 trigger; it is implemented product behavior. The plan's conservative treatment ends.
+  The rewrite shows Release packet and Record packet handover as available actions under their existing
+  preconditions.
+- RF-07. `core.authorize_unresolved_completion` is a served Core command (`src/contracts/core.ts`, line 134
+  at 102e4c9). It records the SuperAdmin's authorization of an `external_outcome_unresolved` completion
+  and names the future owner. It does not complete the case. The plan's reading (authorization only; the
+  completion itself follows the Core invariant of OD §3) stands. REVIEW-FINDINGS RF-07 keeps its text as the
+  record of the disagreement; no P1 remains open.
+
+Of the plan's open owner choices, OC-08 (an input) and OC-10 remain with Max.
 
 ## 2. Scope of work
 

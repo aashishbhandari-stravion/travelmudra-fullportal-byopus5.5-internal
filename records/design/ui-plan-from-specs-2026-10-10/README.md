@@ -49,7 +49,7 @@ conflict. Disagreements that remain are recorded in the review findings.
 | `COVERAGE-MATRIX.md` | Every UX and BU requirement bundle and scenario mapped to a page and a behavior, or marked open |
 | `REVIEW-FINDINGS.md` | Independent reviewer's ranked findings and the architect's disposition of each |
 | `GOKU-REVIEW-PROMPT.md` | Prompt for Goku's independent review of the plan. Withdrawn by Max on 10 October 2026; kept as a record, not to be launched |
-| `DECISIONS-2026-10-10.md` | Max's decisions of 10 October 2026: OD/PD apply to Opus, B46 closed, OC-01 to OC-07 resolved, kernel and Core rules, Goku review withdrawn, surface inventory authorized, UAT triage rule |
+| `DECISIONS-2026-10-10.md` | Max's decisions of 10 October 2026: OD/PD apply to Opus, B46 closed, OC-01 to OC-07 resolved, OC-09 and RF-07 closed on the inventory's evidence (§1.5), kernel and Core rules, Goku review withdrawn, surface inventory authorized, UAT triage rule |
 | `SURFACE-INVENTORY-2026-10-10.md` | Every plan read model and command against the Core, edge and staff API, with the Kind 1 / Kind 2 bucket. Written 10 October 2026 from a read-only code survey at product commit 102e4c9 |
 
 ## Writing style
