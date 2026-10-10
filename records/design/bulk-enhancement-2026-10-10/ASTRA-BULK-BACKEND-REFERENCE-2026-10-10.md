@@ -111,6 +111,12 @@ No implementation is authorized (DECISIONS §2).
 
 ## 6. Design questions the enhancement plan must answer (not decided here)
 
+Prerequisite set by Max on 10 October 2026: before the bulk upload lane starts, Max and the Opus architect
+discuss and close these questions together, in one sitting, so that the lane receives a crisp requirement and
+acceptance set. The architect MUST raise this prerequisite when the lane is planned; Max does not expect to
+override it. The outcome is a bulk requirements and acceptance document in this folder, in Max's words where
+the choice is his.
+
 1. Admission: ten submissions in five seconds. Accept all, acknowledge with an attempt id, queue by arrival,
    show queue position and reason. Does the per-TA cap of 2 become a queue instead of a refusal? Max's stated
    intent says yes.

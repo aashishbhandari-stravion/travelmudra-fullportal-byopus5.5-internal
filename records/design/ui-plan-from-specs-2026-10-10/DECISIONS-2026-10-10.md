@@ -83,6 +83,22 @@ Max confirmed the closure of OC-09 and RF-07 on 10 October 2026 on the evidence 
 
 Of the plan's open owner choices, OC-08 (an input) and OC-10 remain with Max.
 
+### 1.6 OC-08 and OC-10 parked (added 10 October 2026, evening)
+
+Max accepted the architect's recommendation on 10 October 2026 to park both, with these reasons:
+
+- OC-08 (first real country and service, accountable owner). A business input, not a design blocker. B02 and
+  OD §6 govern; the product carries country and service as data and readiness evidence. Nothing in the UI
+  rewrite or the bulk enhancement depends on the choice. Due when Max plans production readiness, bundled with
+  the real business details that the public site's structured data and locality need. Fixtures stay synthetic.
+- OC-10 (TA onboarding route). The plan's default stands: a SuperAdmin creates and activates every TA account
+  (AD-05, B11); no self-registration or request page exists. A request route would be a Kind 2 change (new Core
+  fact, public form with bot controls, the parked eligibility policy of B08 and B44) and goes through the §3.2
+  gate if Max ever wants it. The rewrite builds Create account either way.
+
+Status of the plan's open owner choices after this entry: none blocks the execution plan, the UI rewrite or the
+bulk enhancement.
+
 ## 2. Scope of work
 
 - No refactoring and no code implementation is authorized. Work is strategy, research and review only.
