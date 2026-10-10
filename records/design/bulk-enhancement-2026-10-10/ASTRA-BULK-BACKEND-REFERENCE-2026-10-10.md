@@ -152,3 +152,52 @@ Recorded in Max's words where quoted. They are direction for the enhancement des
    it are a starting point for measurement, not a design limit. Opus MUST NOT limit itself by them. Every
    concurrency limit is configuration, raisable without a code change; sizing follows measurement on the target
    host. (Consistent with Max's 8 October delta for Astra, R1, R13, R14.)
+3. On the two Opus facts of §5 (confirmed by Max on 10 October 2026, later the same day): the Opus default
+   `tasks.concurrency.fetch = 1` is the B38 starting value and falls under direction 2; it is not a design limit.
+   The per-TA cap `intake.concurrentAttemptsPerTa = 2` that refuses a third concurrent start with
+   `capacity_limited` is contrary to Max's intent. Direction: a bulk submission above any per-TA limit is
+   accepted and queued with a visible position and reason, never refused (§6 question 1 is answered: yes). The
+   value of the limit stays configuration. No code change is authorized by this direction (DECISIONS §2).
+
+## 9. Architect's thoughts on fault tolerance and recovery, for the Opus design (10 October 2026)
+
+Recorded at Max's request as input for the Opus architect. These are thoughts, not design and not decisions.
+The Opus architect owns the design and MAY depart from any point here with a recorded reason.
+
+1. Three failure classes, three kinds of record. The bulk upload MUST recover from (a) a process or host crash
+   at any step, (b) a code version that produced wrong outcomes, and (c) a bad input. Each class needs a
+   different record, and that is how "not too much, not too less" is decided: record what a re-run of that
+   class needs, and nothing that only a human narrative would want.
+2. Class (a), crash. The kernel already holds what this class needs: durable tasks, leases with heartbeat,
+   dedupe keys carrying the attempt generation, recovery of expired leases, idempotent replay through the
+   command outcome envelope (`src/kernel/tasks.ts`, `src/modules/intake/enqueue.ts`). The design SHOULD add
+   nothing new here except a restart test at every step boundary (crash after fetch and before record; crash
+   inside process_rows) and a fencing rule: a worker that lost its lease MUST NOT write over the result of the
+   worker that recovered the task. Astra reached the same fencing by epoch tokens on members; Opus has the
+   lease generation for it.
+3. Class (b), buggy code. This is the one addition. Every per-row and per-document outcome MUST carry the
+   identity of the processing version that produced it (a build or commit identifier and, where relevant, the
+   extraction or classification profile version). The retained input bytes (source files with SHA-256, the
+   parsed sheet) MUST stay available for the retention period. Then one command, "re-run every outcome produced
+   by version X for attempt or TA Y", can rebuild the affected rows from retained bytes without a new download
+   and without asking the TA for anything. The re-run is a new attempt generation, so the dedupe keys and the
+   history stay intact; the earlier outcomes are superseded, not deleted. Astra approximated this with its
+   extraction profile in the reuse key; Opus SHOULD make the version an explicit field of the outcome.
+4. Class (c), bad input. Already covered by the facts the product records: per-row outcomes, incidents,
+   `possible_duplicate`, needs-attention states. No new record. The re-run of a corrected input is a new
+   attempt by the TA.
+5. Audit versus telemetry. Audit holds business facts: who submitted, which bytes with which hash, which
+   version processed them, which outcome, which re-run superseded which. Telemetry holds capacity events:
+   waits, retries for 429/503, queue positions, slot utilization. Audit rows are never created by a capacity
+   wait (Astra's 454 `fetch_busy` rows of 8 October are the counter-example). This split is what keeps the
+   audit "not too much".
+6. Recovery as a module. The recovery module owns: the restart recovery of class (a) as a start-up and
+   periodic step; the "re-run by version" command of class (b); a dry-run that lists what a re-run would touch
+   before it runs; and a report that proves a re-run finished (counts equal, as in Astra's `identified =
+   completed + remaining`). It MUST be testable by killing a process at each step and by replaying a retained
+   attempt under a deliberately changed version. Whether the module touches the kernel task runner is a
+   separate decision for Max (DECISIONS §3); the thoughts above do not need a kernel change on their face,
+   because the kernel already offers the primitives in point 2.
+7. What Astra did right and what transfers. Immutable retained bytes with hash; a frozen inventory before
+   rows start; a terminal event only after commit; count equations checked at the end of every run; a kill
+   switch for a new mechanism. These are disciplines, not code, and they transfer.
