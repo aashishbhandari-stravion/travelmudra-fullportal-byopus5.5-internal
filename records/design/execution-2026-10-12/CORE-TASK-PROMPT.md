@@ -28,6 +28,9 @@ approved together so that "holistically the design and code is done":
 | P-10 (e) action-specific Gate 1 context (first work, reassignment) | Kind 1 | `P-10-wp06-core-requests.md` |
 | P-12 option C: a SuperAdmin queue `first_work_gate1` derived from recorded facts (display only; shares the helper of (e)) | Kind 1 as narrowed | `P-12-assistance-first-work-exception-route.md` §11, review `research/reviews/P-11-12-review.md` |
 | P-10 (g) a payment correction that changes only `eventAt` is refused `correction_no_change` | Defect, payments | `P-10-wp06-core-requests.md` |
+| P-14 (1) gate basis of each act Core offers on the operator case (met / met by which exception until when / not met); extension of P-10 (e) | Kind 1 | `P-14-wp07-gate-basis-and-gate2-read.md` |
+| P-14 (2) suspected defect: `pay.application_payments.gate2` evaluates the operator's authorize action with the SuperAdmin as actor; failing test first, close as not a defect if it passes | Defect (suspected) | `P-14-wp07-gate-basis-and-gate2-read.md` |
+| P-13 (8) stored subject and version identifiers in `dlv.selection`; P-13 (9) email attempts newest first with a stated cap: ONLY if Max adds them to the batch (orchestrator tells the lane) | Kind 1; defect | `P-13-wp08-delivery-reads.md` (amended) |
 
 Not in this lane: P-11 (gate exception evidence, Kind 2, separate decision and separate task); P-05 (catalogue
 display, UI lane grant); anything the bulk lane owns, including the K2-S1 group files
