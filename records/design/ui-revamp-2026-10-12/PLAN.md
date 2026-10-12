@@ -140,6 +140,7 @@ Every decision that came up during the lane, with what the architect decided and
 | 19 | 12 Oct 2026 | Keeping search text out of the address (TA search) | A new shell "seal" route: the search form posts, the server answers with an encrypted, session-bound token in the address; no Core command. Subject to the independent review. | Keeps search by passport number without exposing it in history; the alternative loses search beyond 200 rows. | WP-03 §3 |
 | 20 | 12 Oct 2026 | Confirmation statement texts | A catalogue keyed by statement code and version; draft texts for synthetic versions; a version without text cannot be submitted. Input needed from Max: approved statement texts (C05). | A travel agent must confirm a readable text (B17). | WP-03 §3 |
 | 21 | 12 Oct 2026 | Passport two-page rule and number format (UAT-14, UAT-09) | Partly met until the bulk lane's passport parts and passport-number commit are on main; the form states the rule, the page states no format of its own. | The rule belongs to the bulk lane's document policy. | P-08 |
+| 22 | 12 Oct 2026 | A page that keeps showing private facts after access was revoked (found by the WP-03 review in today's page code) | Fixed as a class: one helper for optional reads; access refusals always reach the shell; a sweep removes every catch-all read in page code in WP-01. | BS B10: revocation takes effect on the next read; a hidden refusal breaks it. | LD-14 |
 
 ## 8. Seam items assigned to the lane
 
