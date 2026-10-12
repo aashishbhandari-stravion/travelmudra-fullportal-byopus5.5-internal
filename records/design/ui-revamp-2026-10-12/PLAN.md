@@ -124,3 +124,9 @@ Every decision that came up during the lane, with what the architect decided and
 | 7 | 12 Oct 2026 | UAT-11 imports across groups | Seam request P-01 to the bulk lane; per group until served. | No read model exists; the orchestrator ruled out a per-group join. | P-01 |
 | 8 | 12 Oct 2026 | Codex review budget | At most two Codex reviews per package (design before code where risk is high; code before integration); fixes checked by the architect, not sent back. | Max's limit of one review per unique artifact, no back-and-forth. | LD-13 |
 | 9 | 12 Oct 2026 | Served commands with no page in the plan | Each got a page: document re-checks on SA-08; "Close the group" on TA-05 (Core decides); four more SA-09 decision kinds; parked money actions shown as notices, not controls. | Hiding a served command is a product decision; the spec does not forbid any of them. | COMMAND-COVERAGE §6 |
+
+## 8. Seam items assigned to the lane
+
+| ID | Date | Item | Source | When | Package |
+|---|---|---|---|---|---|
+| S-01 | 12 Oct 2026 | Texts of the bulk lane's new reason codes in the catalogue `src/apps/shared/pages/intake.ts` (provider_busy, provider_page_not_document, too_many_pages, passport_back_missing, passport_over_supplied, system_busy, listing_unreadable, passport_number_invalid; rerun_difference waits for its Kind 2 decision), wording by the UI lane under UI-PLAN §11; UAT-13 fallback: a page shows the code itself when its text is missing | Orchestrator, SEAM-CONTRACT §5 (internal 2b74a21); bulk lane proposal P-K1 item 11 | Codes land with the bulk lane's vocabulary commit; texts are added in the same integration window, against main, never against a lane commit. The fallback rule and the listing_unreadable and passport_number_invalid texts MAY go in with WP-04. | WP-04 |
