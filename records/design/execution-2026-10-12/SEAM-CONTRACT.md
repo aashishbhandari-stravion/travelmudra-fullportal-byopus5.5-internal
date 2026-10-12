@@ -74,3 +74,26 @@ widget on those two forms and does not depend on its removal.
 | P-08 seam request (UI lane `output/proposals/P-08-*.md`): DEP-1 integrate bulk commit 4496ee9 on main before WP-03 implementation; DEP-2 passport parts (one file with both pages, or two files with a `part` front/back) in `intake.start_page`, `doc.upload_for_application` and `doc.application_evidence` as a seam version; P2 a general passport-number shape | UI lane | 12 Oct 2026 | P1 (DEP-1, DEP-2), P2 | DEP-1: integration request put to Max on 12 Oct: the bulk branch up to d2edd03 (seven commits, all additive and authorized, main merged, `npm run check` green) fast-forwards onto main. DEP-2: routed to the bulk lane as input to the document-policy capability and seam v2 (with SR-B1). Interim stands: one-file shape only; refusal text without a format until DEP-1. | DEP-1 waits for Max; DEP-2 open with the bulk lane. |
 | P-09 Kind 1 bundle of TA list and case facts (UI lane `output/proposals/P-09-*.md`) | UI lane | 12 Oct 2026 | P2, Kind 1 | PARKED as a note (P2 is not worked). Revisit if a P0 page cannot meet D7 without one of the facts. | Parked. |
 | FYI from the UI lane: WP-03 adds a shell route kind "seal" (a POST without a Core command, CSRF-checked, 303 with an AES-GCM session-bound token) to keep TA search text out of the address (SH-R06); under Codex design review | UI lane | 12 Oct 2026 | Shell, UI lane files | Noted. Conditions: the review verdict is reported at the WP-03 boundary; key material comes from the existing session secret infrastructure, no new secret or configuration key (`src/platform/config.ts` is orchestrator-owned and needs a proposal); no Core involvement. | Open until the WP-03 boundary. |
+| SR-B2 seam answer to P-08 DEP-2: passport back-page inputs and parts facts (bulk lane `output/proposals/SR-B2-passport-back-page-inputs.md`) | Bulk lane | 12 Oct 2026 | P1, seam v2 | Recorded as seam version 2 (§6). Multipart parsing assigned to the bulk lane's CAP-04 commit; rendering to the UI lane after integration. Review conditions on the composition recorded in §6. | Open until the CAP-04 commit hash is reported and integrated. |
+
+## 6. Seam version 2 (announced 12 October 2026, served when the bulk lane's CAP-04 commit is integrated)
+
+Source: bulk lane `output/proposals/SR-B2-passport-back-page-inputs.md` (seam answer to P-08 DEP-2) and SR-B1.
+Design: two one-page passport files are joined in the processing sandbox into one two-page version, which is then
+the passport evidence. Core, the association model and the declarations stay unchanged; parts are command inputs
+and read-model facts only.
+
+| Item | Definition | Owner |
+|---|---|---|
+| `intake.start_individual` | file items accept `part: 'front' \| 'back'`; the identity field may appear twice | Bulk lane |
+| `doc.upload_for_application` | optional `part` | Bulk lane |
+| Multipart names, individual form | `doc.<requirementType>` is the front or the single file; `doc.<requirementType>.back` is the back | Parsing in the route handlers: bulk lane (CAP-04 commit). Rendering of the inputs with these names: UI lane (WP-03/WP-04, after integration). Both touch `src/apps/edge/intake/routes.ts`; the orchestrator resolves a conflict on main. |
+| Multipart names, document upload | optional field `part` | Same split |
+| `intake.start_page` | per requirement: `pages: 2 \| null`, `acceptsParts` | Bulk lane |
+| `doc.application_evidence` | identity requirement: `parts: {front, back: 'accepted' \| 'pending' \| 'missing', pagesSupplied} \| null`; statuses `incomplete`, `over_supplied` (SR-B1) | Bulk lane; label texts UI lane |
+
+Orchestrator conditions on the composition design (review items for the CAP-04 independent review, not a block):
+the composed two-page version MUST record the provenance of both source uploads (their content hashes and upload
+identities) and the original bytes MUST stay retrievable as evidence (Astra lesson 7: bind byte comparisons to
+exact bytes; reference §9); a composed version is a new document version with its own scan result; the Nth
+identical upload of the same part is idempotent.
