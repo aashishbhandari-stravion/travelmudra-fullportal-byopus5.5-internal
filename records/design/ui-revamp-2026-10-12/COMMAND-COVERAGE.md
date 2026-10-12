@@ -58,7 +58,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.authorize_external_act` | CMD-36 | served | `ops.applications.authorize_act` | OP-04 | WP-07 | K-EXT; confirmIrreversible is a real field |
 | `core.authorize_unresolved_completion` | CMD-59 | served | `admin.applications.unresolved_completion` | SA-04 (decision on SA-09) | WP-11 | Records authorization and future owner; does not complete the case |
 | `core.check_completion` | CMD-48 | deliberate boundary | `admin.delivery.completion_check` | OP-07 | WP-08 | Boundary shown as Core answers (LD-04); route is on the admin surface; no form posts it today |
-| `core.close_group` | none (§5 group B) | served | `ta.groups.close` | NO PAGE — needs a page or a hide decision. Only fit is TA-05, but plan AD-06 and A-02 say no role has a Close-group command | unassigned | Posted today from the group page; TA-05 would be WP-03 |
+| `core.close_group` | none (§5 group B) | served | `ta.groups.close` | TA-05 (CC-02) | WP-17 | Posted today from the group page; TA-05 would be WP-03 |
 | `core.correct_from_evidence` | CMD-58 | served | `admin.applications.correct_from_evidence` | SA-04 (decision on SA-09) | WP-11 | Two shapes (outcome, fields); no WP command list names it |
 | `core.correct_identity` | none (§5 group B) | served | `ta.applications.correct_identity` | TA-09; TA-07 (returned case) | WP-03 | Needs same-person evidence; the page posts only changed fields |
 | `core.create_group` | CMD-6 | served | `ta.groups.create` | TA-13; TA-04; BU-P01 | WP-03 | Form moves to the TA-13 task page; country must be listed |
@@ -69,14 +69,14 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.edit_draft` | CMD-9 | served | `ta.applications.edit` | TA-09 | WP-03 | A section is a subset of fields |
 | `core.edit_travel_dates` | CMD-7 | served | `ta.groups.travel_dates` | TA-13 (edit mode); TA-05 | WP-17 | TA-13 itself is built in WP-03; the recheck preview lands in WP-17 |
 | `core.end_deferral` | none (§5 group C) | served | `ops.applications.end_deferral` | OP-02 | WP-17 | Operator ends a deferral with a note |
-| `core.flag` | CMD-34 | served | `ops.applications.flag` | OP-03 | WP-09 | Blocks filing and packet release until answered |
+| `core.flag` | CMD-34 | served | `ops.applications.flag` | OP-03 | WP-07 | Blocks filing and packet release until answered |
 | `core.formal_return` | CMD-32, CMD-33 | served | `ops.applications.return` | OP-03; OP-02 ("Return for TA review") | WP-07 | One command for CMD-32 and CMD-33; merge them; WP-09 adds "Return for TA review" |
 | `core.grant_gate_exception` | CMD-72 | served | `admin.applications.grant_exception` | SA-09 | WP-06 | Gate 1 first; the Gate 2 decision uses the same page in WP-07 |
-| `core.hand_back` | none (§5 group B) | served | `ta.applications.hand_back` | TA-07 (returned case) | WP-09 | Returns a returned submitted case to the operator; no WP names this panel |
+| `core.hand_back` | none (§5 group B) | served | `ta.applications.hand_back` | TA-08 (returned submitted case) | WP-03 | Returns a returned submitted case to the operator; no WP names this panel |
 | `core.link_dependency` | none (§5 group B) | served | `ta.applications.link_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
 | `core.propose_deferral` | CMD-35 | served | `ops.applications.propose_deferral` | OP-02 | WP-17 | Justification and proposed review date |
 | `core.propose_price_increase` | none (§5 group D) | served | `admin.applications.price_increase` | SA-04 (decision on SA-09) | WP-17 | SuperAdmin proposes; the travel agent decides (core.decide_price_increase) |
-| `core.reassign` | CMD-57 | served | `admin.applications.reassign` | SA-03 | WP-12 | Reason required; preview then receipt |
+| `core.reassign` | CMD-57 | served | `admin.applications.reassign` | SA-03c | WP-06 | Reason required; preview then receipt |
 | `core.recheck_travel_dates` | none (§5 group C) | served | `admin.applications.travel_recheck`, `ops.applications.travel_recheck` | OP-02; SA-04 | WP-17 | Same command from ops and admin routes |
 | `core.record_applicant_withdrawal` | CMD-17 | served | `ops.applications.applicant_withdrawal` | OP-02 | WP-17 | Operator records the applicant request; evidence reference required |
 | `core.record_assistance_entry` | CMD-31 | served | `ops.applications.assistance_entry` | OP-02 | WP-09 | Identity changes need same-person evidence |
@@ -93,17 +93,17 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.revoke_gate_exception` | CMD-72 (§5 group A) | served | `admin.gate_exceptions.revoke` | SA-09 | WP-06 | SA-09 MUST offer revoke |
 | `core.submit` | CMD-11 | served | `ta.applications.submit` | TA-08; BU-P10 | WP-03 | Carries the confirmations and quoted price shown; WP-04 builds BU-P10 |
 | `core.unlink_dependency` | none (§5 group B) | served | `ta.applications.unlink_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
-| `dlv.acknowledge_notice` | CMD-15 | served | `admin.notices.acknowledge`, `ops.notices.acknowledge`, `ta.notices.acknowledge` | TA-10; TA-07; OP-10 (operator notices); SA-10 (SuperAdmin notices) | WP-17 | Three routes; recipient only; TA-10 is built in WP-08; SA-10 is in no WP |
-| `dlv.manual_resend` | none (§5 group C) | served | `ops.delivery.resend` | OP-06 | WP-19 | From a failed send only; an uncertain send refuses it |
+| `dlv.acknowledge_notice` | CMD-15 | served | `admin.notices.acknowledge`, `ops.notices.acknowledge`, `ta.notices.acknowledge` | TA-10; TA-07; OP-10 (operator notices); SA-10 (SuperAdmin notices) | WP-08 | Three routes; recipient only; TA-10 is built in WP-08; SA-10 is in no WP |
+| `dlv.manual_resend` | none (§5 group C) | served | `ops.delivery.resend` | OP-06 | WP-08 | From a failed send only; an uncertain send refuses it |
 | `dlv.queue_document_email` | CMD-44 | deliberate boundary | `ops.delivery.document_email` | OP-06 | WP-08 | Boundary shown as Core answers (LD-04); no form posts it today |
 | `dlv.record_direct_external` | CMD-41, CMD-45 | served | `ops.delivery.direct_external` | OP-04 (provider handoff); OP-06 | WP-10 | Delivery made by an external party; claims no TravelMudra-held result |
 | `dlv.record_handover` | CMD-40, CMD-45 | served | `ops.delivery.handover` | OP-04 (packet handover); OP-06 | WP-10 | Packet handover names the released packet |
-| `dlv.record_manual_email` | CMD-46 | served | `ops.delivery.manual_email` | OP-06 | WP-19 | Attributed record; never system-verified |
+| `dlv.record_manual_email` | CMD-46 | served | `ops.delivery.manual_email` | OP-06 | WP-08 | Attributed record; never system-verified |
 | `doc.associate` | none (§5 group B) | served | `ops.documents.associate`, `ta.documents.associate` | TA-09 (required-document slot); TA-07; BU-P06; OP-02 (ops route) | WP-03 | Links an existing group version to a requirement; two routes (ta, ops) |
 | `doc.confirm_classification` | none (§5 group B) | served | `ta.documents.classification` | TA-09 (evidence results); TA-07 (document rows) | WP-03 | Posted today from the document-version page, which the plan lacks |
 | `doc.replace_version` | CMD-10 | served | `ta.documents.replace` | TA-09; TA-07; BU-P06 ("Replace document") | WP-03 | Multipart; WP-04 builds the BU-P06 control |
-| `doc.requeue_bulk` | none (§5 group D) | served | `admin.documents.requeue_bulk` | NO PAGE — needs a page or a hide decision. The plan has no page for the documents processing queue (SA-08 shows read-only degradation only) | unassigned | Bulk requeue of failed checks; posted today from /admin/documents/queue |
-| `doc.requeue_check` | none (§5 group D) | served | `admin.documents.requeue` | NO PAGE — needs a page or a hide decision. The plan has no page for the documents processing queue (SA-08 shows read-only degradation only) | unassigned | Requeue of one failed check; posted today from /admin/documents/queue |
+| `doc.requeue_bulk` | none (§5 group D) | served | `admin.documents.requeue_bulk` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Bulk requeue of failed checks; posted today from /admin/documents/queue |
+| `doc.requeue_check` | none (§5 group D) | served | `admin.documents.requeue` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Requeue of one failed check; posted today from /admin/documents/queue |
 | `doc.resolve_extraction` | none (§5 group B) | served | `ta.documents.resolve_extraction` | TA-09 (evidence results); TA-07; BU-P06 | WP-03 | Travel agent types the MRZ fields and attests; host page missing in plan |
 | `doc.upload_for_application` | CMD-10 | served | `ops.documents.upload`, `ta.documents.upload` | TA-09; BU-P06; OP-02 (assistance upload, ops route) | WP-03 | Multipart; two routes (ta, ops) |
 | `iam.activate_account` | CMD-65 | served | `admin.accounts.activate` | SA-06 | WP-02 | Account status change; reason required |
@@ -146,7 +146,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.expand_launch_scope` | none (§5 group D) | served | `admin.launch.expand` | SA-05 (launch and admission) | WP-02 | The "expand" half of the plan row "Launch / expand" |
 | `ops.lift_suspension` | CMD-63 | served | `admin.launch.lift` | SA-05; SA-09 | WP-13 | Restores the approved scope only |
 | `ops.link_original` | CMD-51 (§5 group A) | served | `ops.custody.link` | OP-09 | WP-12 | Links an original to another application |
-| `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-05 (association incident); OP-08; SA-08 | WP-08 | Two routes (ops, admin); other incident kinds are WP-14 |
+| `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-05 (association incident); OP-08; SA-08 | WP-14 | Two routes (ops, admin); other incident kinds are WP-14 |
 | `ops.post_disclosure_notice` | CMD-49 | served | `admin.incidents.notice`, `ops.incidents.notice` | OP-08; SA-08 | WP-14 | Two routes (ops, admin) |
 | `ops.record_act_evidence` | CMD-37, CMD-38, CMD-41 | served | `ops.case_work.act_evidence` | OP-04 | WP-07 | K-EXT; filing_unknown is the uncertain path |
 | `ops.record_artifact` | CMD-10 | served | `ops.case_work.artifact` | OP-05 | WP-08 | Multipart; can replace an artifact for an incident |
@@ -159,7 +159,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.record_original_receipt` | CMD-51 | served | `ops.custody.receipt` | OP-09 | WP-12 | Possession attested; evidence |
 | `ops.record_original_return` | CMD-51 | served | `ops.custody.return` | OP-09 | WP-12 | Only under an owner-approved return policy |
 | `ops.record_readiness` | CMD-30 | served | `ops.case_work.readiness` | OP-02 | WP-07 | Binds to the basis digest the page showed |
-| `ops.record_reconciliation_attempt` | CMD-39 | served | `ops.case_work.reconciliation` | OP-04 | WP-11 | The conclude field records the act evidence in the same command |
+| `ops.record_reconciliation_attempt` | CMD-39 | served | `ops.case_work.reconciliation` | OP-04 | WP-07 | The conclude field records the act evidence in the same command |
 | `ops.record_work_step` | none (§5 group C) | served | `ops.case_work.work_step` | OP-02 (readiness checklist) | WP-07 | Work steps exist as facts; no plan command records them |
 | `ops.reject_artifact_association` | CMD-43 (§5 group A) | served | `ops.incidents.reject_association` | OP-05 | WP-08 | OP-05 MUST offer reject |
 | `ops.report_wrong_recipient` | CMD-50 (§5 group A) | served | `ops.incidents.disclosure` | OP-08; OP-02 | WP-14 | Replaces the dropped Block-version row (CMD-50) |
@@ -198,24 +198,24 @@ A byte release is not a Core command. A BFF asks Core to stream bytes. The route
 |---|---|---|
 | WP-01 | 8 | `iam.end_support_view`, `iam.open_enrolment`, `iam.request_staff_otp`, `iam.request_ta_otp`, `iam.sign_out`, `iam.staff_enrol`, `iam.staff_sign_in`, `iam.verify_ta_otp` |
 | WP-02 | 20 | `cat.bind_declaration`, `cat.create_country`, `cat.create_offering`, `cat.draft_declaration`, `cat.edit_baseline`, `cat.preview_baseline`, `cat.preview_declaration`, `cat.publish_baseline`, `cat.publish_declaration`, `cat.record_owner_approval`, `cat.set_country_listing`, `iam.activate_account`, `iam.approve_account`, `iam.create_account`, `iam.decline_account`, `iam.restore_account`, `iam.suspend_account`, `ops.approve_launch`, `ops.expand_launch_scope`, `ops.record_launch_plan` |
-| WP-03 | 11 | `core.correct_identity`, `core.create_group`, `core.edit_draft`, `core.request_assistance`, `core.submit`, `doc.associate`, `doc.confirm_classification`, `doc.replace_version`, `doc.resolve_extraction`, `doc.upload_for_application`, `intake.start_individual` |
+| WP-03 | 12 | `core.correct_identity`, `core.create_group`, `core.edit_draft`, `core.hand_back`, `core.request_assistance`, `core.submit`, `doc.associate`, `doc.confirm_classification`, `doc.replace_version`, `doc.resolve_extraction`, `doc.upload_for_application`, `intake.start_individual` |
 | WP-04 | 3 | `intake.answer_question`, `intake.resume`, `intake.start_bulk` |
 | WP-05 | 1 | `intake.correction_upload` |
-| WP-06 | 5 | `core.assign`, `core.assign_selection`, `core.grant_gate_exception`, `core.revoke_gate_exception`, `pay.record_service_status` |
-| WP-07 | 12 | `core.authorize_external_act`, `core.formal_return`, `ops.record_act_evidence`, `ops.record_effort_sample`, `ops.record_readiness`, `ops.record_work_step`, `ops.start_work`, `ops.withdraw_readiness`, `pay.approve_ceiling_increase`, `pay.decline_ceiling_increase`, `pay.lower_ceiling`, `pay.request_ceiling_increase` |
-| WP-08 | 8 | `core.check_completion`, `core.record_outcome`, `dlv.queue_document_email`, `ops.confirm_artifact_association`, `ops.open_incident`, `ops.record_artifact`, `ops.record_official_result`, `ops.reject_artifact_association` |
-| WP-09 | 7 | `core.decide_assistance`, `core.flag`, `core.hand_back`, `core.record_assistance_entry`, `core.report_problem`, `core.resolve_hold`, `core.respond_flag` |
+| WP-06 | 6 | `core.assign`, `core.assign_selection`, `core.grant_gate_exception`, `core.reassign`, `core.revoke_gate_exception`, `pay.record_service_status` |
+| WP-07 | 14 | `core.authorize_external_act`, `core.flag`, `core.formal_return`, `ops.record_act_evidence`, `ops.record_effort_sample`, `ops.record_readiness`, `ops.record_reconciliation_attempt`, `ops.record_work_step`, `ops.start_work`, `ops.withdraw_readiness`, `pay.approve_ceiling_increase`, `pay.decline_ceiling_increase`, `pay.lower_ceiling`, `pay.request_ceiling_increase` |
+| WP-08 | 10 | `core.check_completion`, `core.record_outcome`, `dlv.acknowledge_notice`, `dlv.manual_resend`, `dlv.queue_document_email`, `dlv.record_manual_email`, `ops.confirm_artifact_association`, `ops.record_artifact`, `ops.record_official_result`, `ops.reject_artifact_association` |
+| WP-09 | 5 | `core.decide_assistance`, `core.record_assistance_entry`, `core.report_problem`, `core.resolve_hold`, `core.respond_flag` |
 | WP-10 | 6 | `core.link_dependency`, `core.release_packet`, `core.unlink_dependency`, `dlv.record_direct_external`, `dlv.record_handover`, `ops.request_packet_build` |
-| WP-11 | 4 | `core.authorize_unresolved_completion`, `core.correct_from_evidence`, `core.resolve_protection_mark`, `ops.record_reconciliation_attempt` |
-| WP-12 | 5 | `core.reassign`, `ops.link_original`, `ops.record_original_movement`, `ops.record_original_receipt`, `ops.record_original_return` |
+| WP-11 | 3 | `core.authorize_unresolved_completion`, `core.correct_from_evidence`, `core.resolve_protection_mark` |
+| WP-12 | 4 | `ops.link_original`, `ops.record_original_movement`, `ops.record_original_receipt`, `ops.record_original_return` |
 | WP-13 | 11 | `cat.approve_transition`, `cat.assign_impact_reviewer`, `cat.decide_impact_items`, `cat.request_impact_recheck`, `cat.retire_declaration_draft`, `cat.retire_offering`, `core.decide_transition`, `ops.lift_suspension`, `ops.record_existing_work_treatment`, `ops.suspend_offering`, `ops.withdraw_offering` |
-| WP-14 | 7 | `ops.assign_incident_reviewer`, `ops.classify_failure`, `ops.close_incident`, `ops.post_disclosure_notice`, `ops.record_incident_evidence`, `ops.report_wrong_recipient`, `ops.resolve_incident` |
+| WP-14 | 10 | `doc.requeue_bulk`, `doc.requeue_check`, `ops.assign_incident_reviewer`, `ops.classify_failure`, `ops.close_incident`, `ops.open_incident`, `ops.post_disclosure_notice`, `ops.record_incident_evidence`, `ops.report_wrong_recipient`, `ops.resolve_incident` |
 | WP-15 | 11 | `iam.approve_elevation`, `iam.cancel_email_change`, `iam.confirm_email_change`, `iam.create_group_read_grant`, `iam.decline_elevation`, `iam.request_elevation`, `iam.reset_credentials`, `iam.revoke_grant`, `iam.set_accounting_grant`, `iam.start_email_change`, `iam.start_support_view` |
 | WP-16 | 5 | `pay.exclude_fee`, `pay.reassign_follow_up_owner`, `pay.record_refund`, `pay.release_reservation`, `pay.write_off` |
-| WP-17 | 13 | `core.apply_held_correction`, `core.decide_deferral`, `core.decide_price_increase`, `core.edit_travel_dates`, `core.end_deferral`, `core.propose_deferral`, `core.propose_price_increase`, `core.recheck_travel_dates`, `core.record_applicant_withdrawal`, `core.record_forecast`, `core.record_operational_withdrawal`, `core.request_withdrawal`, `dlv.acknowledge_notice` |
+| WP-17 | 13 | `core.apply_held_correction`, `core.close_group`, `core.decide_deferral`, `core.decide_price_increase`, `core.edit_travel_dates`, `core.end_deferral`, `core.propose_deferral`, `core.propose_price_increase`, `core.recheck_travel_dates`, `core.record_applicant_withdrawal`, `core.record_forecast`, `core.record_operational_withdrawal`, `core.request_withdrawal` |
 | WP-18 | 2 | `intake.abandon`, `intake.dispose_incident` |
-| WP-19 | 2 | `dlv.manual_resend`, `dlv.record_manual_email` |
-| unassigned | 3 | `core.close_group`, `doc.requeue_bulk`, `doc.requeue_check` |
+| WP-19 | 0 | — (keeps the delivery-ownership and uncertainty views of V15 and V16; its two commands moved to WP-08) |
+| unassigned | 0 | — |
 | **Total** | **144** | |
 
 Observations. WP-02 carries 20 commands because the whole catalogue lifecycle (country, offering, declaration, baseline, bind, publish, launch) must work before an offering is admitted; UI-PLAN §12.1 names 5 for it. WP-17 carries 13 (timing, deferral, withdrawal, price decisions, notices). WP-05 carries 1 and WP-18 carries 2. WP-20 and WP-21 carry none.
@@ -314,4 +314,20 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-10 | `dlv.retrieve_selection` ("Download of several files") | Home: the result and delivery section of TA-07. | The download belongs to the application workspace (UX §4.2 Account and §4.1 "retrieve eligible bytes"). | WP-08 |
 | CC-11 | `accounts.home` (`/accounts`) and the accounting grant | Decided in the WP-01 design (AD-12: an accounting grant is not a context). | Shell question. | WP-01 |
 
+| CC-12 | WP-06 commands on the old SuperAdmin case page | The WP-06 commands leave `admin.applications.detail`: the page keeps the facts and links to SA-03a, SA-03c, SA-09g and SA-09r. Each command has one host page for each use. | One decision page per kind; a second form for the same decision would carry different wording. | WP-06 |
+| CC-13 | WP-08 commands on the operator case page and the incident page | The WP-08 commands leave those pages; the pages keep the facts and link to OP-05 and OP-05r. `ops.open_incident` has no OP-05 control (Core refuses result-file incident kinds for operators) and goes to WP-14. | One host page per command. | WP-08, WP-14 |
+
 After these dispositions no served command is without a page.
+
+### 6.1 Package moves decided in the package reviews (applied to §3 and §5.1 on 13 October 2026)
+
+| Command | From | To | Decision |
+|---|---|---|---|
+| `core.hand_back` | WP-09 | WP-03 (TA-08) | WP-03 Q-W03-06 |
+| `core.reassign` | WP-12 | WP-06 (SA-03c) | WP-06 Q-W06-01 |
+| `core.flag`, `ops.record_reconciliation_attempt` | WP-09, WP-11 | WP-07 | WP-07 Q-W07-02, Q-W07-03 |
+| `dlv.manual_resend`, `dlv.record_manual_email` | WP-19 | WP-08 (OP-06) | WP-08 Q-W08-01 |
+| `dlv.acknowledge_notice` | WP-17 | WP-08 (TA-10); the operator and SuperAdmin notice routes stay with WP-15 (CC-03) | WP-08 Q-W08-02 |
+| `ops.open_incident` | WP-08 | WP-14 | CC-13 |
+| `core.close_group` | unassigned | WP-17 (TA-05; WP-03 carries the existing form) | CC-02 |
+| `doc.requeue_check`, `doc.requeue_bulk` | unassigned | WP-14 (SA-08) | CC-01 |
