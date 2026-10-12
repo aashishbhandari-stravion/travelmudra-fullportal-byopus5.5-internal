@@ -346,14 +346,17 @@ run live from a Mac, or replay it afterwards step by step.
 - No cloud service (no hosted browser grid, no hosted dashboard). Everything stays on this machine, in line
   with the data-privacy rule.
 
-### E.3 Environment (existing setups only; Max, 12 October 2026)
+### E.3 Environment (Max, 12 October 2026)
 
-- No new lane and no new installation. The suite runs against the existing `lane-max` installation (edge
-  `http://127.0.0.1:4620`, staff `http://127.0.0.1:4622`). It MUST NOT run against `preview`, which holds
-  the manual run and the real passport data.
-- The suite code is written in an existing working tree, chosen by Max when the work starts.
-- Each run uses unique names (`E2E-<run id>` in group names and surnames), so runs do not depend on a
-  clean database. `lane-max` keeps its data between runs.
+- No new lane. The suite runs against its own installation `e2e`, created with `uat.py up` on ports edge
+  4630, staff 4632, core 4631, processing 4633 (the free block `uat.py suggest-ports` gave on 12 October).
+- The suite MUST NOT run against `preview` (manual run and real passport data) or `lane-max`.
+- `e2e` is removed with `uat.py cleanup e2e --confirm e2e` when the automation campaign ends; its
+  configuration file is deleted after the cleanup. Between runs, `uat.py stop e2e` frees the memory.
+- Each run uses unique names (`E2E-<run id>` in group names and surnames), so runs do not need a clean
+  database.
+- Chromium, the headless shell and ffmpeg (video) are already installed on the server
+  (`~/.cache/ms-playwright`). Firefox is not; phase 4 installs it.
 
 ### E.4 Design
 
@@ -368,15 +371,20 @@ run live from a Mac, or replay it afterwards step by step.
 | Bulk sources | Excel and CSV run fully local. Google Sheet and Drive sources need real public Google links: the fetch worker accepts only public internet addresses (SSRF rule), so a local stub cannot stand in. These tests carry the tag `@external` and run only on request. |
 | Evidence | Per run: HTML report, trace per test, video and screenshot on failure, a JUnit file. Stored outside the repository under `~/workDirectory/...` and kept or deleted per the evidence rules. |
 
-### E.5 Watching runs remotely
+### E.5 Watching runs from the MacBook
 
-| Option | How the Director watches | Use |
-|---|---|---|
-| 1. Playwright UI mode (recommended for live) | `npx playwright test --ui --ui-host=127.0.0.1 --ui-port=4640` on this machine. On the Mac: `ssh -N -L 4640:127.0.0.1:4640 -L 4620:127.0.0.1:4620 -L 4622:127.0.0.1:4622 <this machine>`, then open `http://127.0.0.1:4640`. Shows each step live, with DOM snapshot, network and console; can rerun one test. | Live watching and debugging |
-| 2. HTML report and trace viewer (recommended after the run) | `npx playwright show-report --host 127.0.0.1 --port 4641` on this machine, tunnelled the same way. Each step has screenshots before and after, and a video. | Review after an unattended run |
-| 3. Headed browser on a virtual display | Xvfb plus x11vnc plus noVNC on loopback, tunnelled. Shows the real browser window moving. | Demonstrations; more setup |
+The tests run headless on the Delhi server. Nothing is installed on the MacBook: Chrome on the Mac opens
+web pages that the server serves on 127.0.0.1, through the same kind of SSH tunnel that Max already uses
+for `preview`.
 
-All listeners bind to 127.0.0.1 only and are reached through the SSH tunnel, like the installations.
+| Method | On the server | On the MacBook | What you see |
+|---|---|---|---|
+| 1. Live: Playwright UI mode | `npx playwright test --ui --ui-host=127.0.0.1 --ui-port=4640` | `ssh -N -L 4640:127.0.0.1:4640 <server>`, then Chrome at `http://127.0.0.1:4640` | The test list; each step appears as it runs, with a page snapshot, network and console. Start or rerun one test with a click. |
+| 2. After the run: HTML report | `npx playwright show-report --host 127.0.0.1 --port 4641` | `ssh -N -L 4641:127.0.0.1:4641 <server>`, then Chrome at `http://127.0.0.1:4641` | Pass and fail per step, screenshots, a video of each test, and the step-by-step trace viewer. |
+| 3. To see the app yourself during a run | nothing extra | add `-L 4630:127.0.0.1:4630 -L 4632:127.0.0.1:4632` to the tunnel | The `e2e` installation in your own browser. |
+
+Recommendation: method 2 by default (run, then review the report); method 1 when a test fails and you want
+to watch it. A virtual-display setup (VNC) is not needed and is dropped.
 
 ### E.6 Phases
 
@@ -401,12 +409,12 @@ orchestrator.
 | Google sources change or are deleted | Someone edits the public test sheet and `@external` tests fail. | Fixtures owned by one account, read-only for others; tests check counts, not exact layouts. |
 | Suite pollutes manual data | A run points at `preview` by mistake. | The config refuses any base URL whose ports are not the `lane-max` ports (4620, 4622). |
 
-### E.8 Decisions for the Director
+### E.8 Decisions (Max, 12 October 2026)
 
-| ID | Decision | Recommendation |
+| ID | Question | Decision |
 |---|---|---|
-| E-1 | Installation for the suite. | Decided by Max (12 October 2026): existing `lane-max`, no new lane or installation. |
-| E-2 | The suite lives in the public repository under `test/e2e/` (synthetic data only). | Yes. |
-| E-3 | Who owns the public Google fixtures for `@external` tests, and may they stay public between runs? | One owner account; keep them synthetic; review quarterly. |
-| E-4 | Live watching method. | Option 1 (UI mode) plus option 2 (reports). Option 3 only for demonstrations. |
-| E-5 | Start the automation lane now, or after Max's manual pass 1? | After pass 1, so the suite encodes the confirmed behaviour and not the defects found by hand. |
+| E-1 | Installation for the suite | Approved: a third installation `e2e` (ports 4630 to 4633), removed when the campaign ends. No new lane. |
+| E-2 | Where the suite lives | Approved: public repository, `test/e2e/`, synthetic data only. |
+| E-3 | Public Google test data | Max creates the Google Sheets and Drive folders for the suite; they stay public throughout. Conditions: (a) they hold synthetic data only and are separate from the real-passport folders of the manual run; (b) their links stay out of the public repository and are read from a local, untracked file or environment variable. |
+| E-4 | Watching runs | Through Chrome on the MacBook and an SSH tunnel; no remote desktop. Default: HTML report after the run; UI mode when debugging (E.5). |
+| E-5 | When to build | Proposed, to be confirmed by Max: the build starts after the manual UAT. Phase 0 (harness, sign-in fixture, smoke test) does not depend on the page design and can start then. The sequence specs (phases 1 to 4) are written against the rewritten UI, page by page as each rewritten page is accepted, and serve as its acceptance tests. Specs written against the current UI would be rewritten with it. |
