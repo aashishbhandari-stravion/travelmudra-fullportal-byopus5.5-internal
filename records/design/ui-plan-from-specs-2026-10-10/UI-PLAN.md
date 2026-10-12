@@ -1481,3 +1481,40 @@ source and batch limits (input C12) before BU-11 can show real values.
 Architect disposition of the further items: A-04 is confirmed (AD-13). V11 uses the same command, Record
 external action evidence, under current authority; no separate command exists. C12 is an input request to
 Max; until supplied, BU-P02 shows "Source limit: not configured".
+
+## 14. Dated addition, 12 October 2026 (UI revamp lane)
+
+Added by the Principal Technical Architect of lane `ui-revamp-2026-10-12` (Opus 5.5) under
+`execution-2026-10-12/UI-REVAMP-PROMPT.md` §4. Source: `../../uat/2026-10-12-uat-pass1-triage.md` §1 and §3.1.
+This section adds states and rules. It does not rewrite sections 1 to 13. Where it differs from them, it
+governs for the named page.
+
+### 14.1 PUB-02 Sign-in: three added states (UAT-01, UAT-02, UAT-08)
+
+| ID | State | Required behavior |
+|---|---|---|
+| PUB-02-S8 | Form already used (UAT-01) | The browser Back button returns the TA to the email step. The TA MUST be able to correct the address and send a new code without a manual reload. When the server refuses a reused operation key (`conflict_operation_key`), the refusal stays. The error text MUST offer a fresh form in one action ("Start again"), or the page MUST render a fresh form by itself. The error MUST NOT read as a fault of the address. |
+| PUB-02-S9 | Code step names the address (UAT-02) | The code step MUST name the address that the TA typed, in the no-disclosure form: "If [address] can sign in, we sent a code to it." The line repeats the TA's own input. It MUST NOT state an account fact. The code step MUST offer "Use a different address" and, separately, "Request a new code". "Use a different address" returns to the email step with a fresh form. |
+| PUB-02-S10 | Bot-check challenge expired (UAT-08, derived) | When the challenge of the sign-in form has expired (`captcha.ttlMs`, 5 minutes), the message MUST say that the check on this page has expired and that a reload gives a new check. The message MUST offer the reload in one action. It MUST NOT read as a generic failure ("The verification did not pass. Try again." is not acceptable alone). |
+
+These states join the PUB-02 list of section 3.1. S1 to S6 still do not apply to PUB-02.
+
+### 14.2 TA-09 Individual intake: two added rules (UAT-14, UAT-09)
+
+- TA-09-R1 (UAT-14). The passport requirement MUST state the rule: a passport is exactly two pages, the front
+  page and the back page. The TA MAY provide one file that holds both pages, or two files, one for each page.
+  The form states both accepted shapes beside the passport input. The same rule text appears on BU-P02 and
+  BU-P06 (see `BULK-UPLOAD-UI-PLAN.md` §7.2). Completeness checks belong to the bulk lane (document policy);
+  the page shows what the read model reports.
+- TA-09-R2 (UAT-09). A refused passport number MUST show the expected format in the message. The format comes
+  from the validation rule that the Core applies. The page MUST NOT state a format of its own.
+
+### 14.3 Acceptance additions bound to work packages
+
+| Finding | Page | Work package |
+|---|---|---|
+| UAT-01, UAT-02, PUB-02-S10 | PUB-02 | WP-01 |
+| UAT-05 | PUB-01 and the other public pages | WP-20 |
+| UAT-14 (TA-09-R1), UAT-09 message (TA-09-R2) | TA-09 | WP-03 |
+| UAT-06, UAT-10, UAT-14 (BU-P02, BU-P06) | BU-P02, BU-P04, BU-P06 | WP-04 |
+| UAT-11 | BU-P09 or TA-01 | WP-04, after a seam request (`SEAM-CONTRACT.md` §3) |
