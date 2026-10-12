@@ -145,7 +145,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.confirm_artifact_association` | CMD-43 | served | `ops.incidents.confirm_association` | OP-05 | WP-08 | Reviewer attests each compared field |
 | `ops.expand_launch_scope` | none (§5 group D) | served | `admin.launch.expand` | SA-05 (launch and admission) | WP-02 | The "expand" half of the plan row "Launch / expand" |
 | `ops.lift_suspension` | CMD-63 | served | `admin.launch.lift` | SA-05; SA-09 | WP-13 | Restores the approved scope only |
-| `ops.link_original` | CMD-51 (§5 group A) | served | `ops.custody.link` | OP-09 | WP-12 | Links an original to another application |
+| `ops.link_original` | CMD-51 (§5 group A) | served | `ops.custody.link` | OP-09l `/ops/applications/:id/originals/:org/share` (same operator only; no unlink) | WP-12 | Links an original to another application |
 | `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-05 (association incident); OP-08; SA-08 | WP-14 | Two routes (ops, admin); other incident kinds are WP-14 |
 | `ops.post_disclosure_notice` | CMD-49 | served | `admin.incidents.notice`, `ops.incidents.notice` | OP-08; SA-08 | WP-14 | Two routes (ops, admin) |
 | `ops.record_act_evidence` | CMD-37, CMD-38, CMD-41 | served | `ops.case_work.act_evidence` | OP-04 | WP-07 | K-EXT; filing_unknown is the uncertain path |
@@ -155,9 +155,9 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.record_incident_evidence` | CMD-49 | served | `admin.incidents.evidence`, `ops.incidents.evidence` | OP-08; SA-08 | WP-14 | Two routes (ops, admin) |
 | `ops.record_launch_plan` | none (§5 group D) | served | `admin.launch.plan` | SA-05 (launch and admission) | WP-02 | Precedes launch |
 | `ops.record_official_result` | CMD-42 | served | `ops.case_work.official_result` | OP-05 | WP-08 | Multipart; optional artifact |
-| `ops.record_original_movement` | CMD-51 | served | `ops.custody.movement` | OP-09 | WP-12 | Holder "unknown" needs the uncertainty statement |
-| `ops.record_original_receipt` | CMD-51 | served | `ops.custody.receipt` | OP-09 | WP-12 | Possession attested; evidence |
-| `ops.record_original_return` | CMD-51 | served | `ops.custody.return` | OP-09 | WP-12 | Only under an owner-approved return policy |
+| `ops.record_original_movement` | CMD-51 | served | `ops.custody.movement` | OP-09m `/ops/applications/:id/originals/:org/movement` | WP-12 | Holder "unknown" needs the uncertainty statement |
+| `ops.record_original_receipt` | CMD-51 | served | `ops.custody.receipt` | OP-09n `/ops/applications/:id/originals/new` | WP-12 | Possession attested; evidence |
+| `ops.record_original_return` | CMD-51 | served | `ops.custody.return` | OP-09t `/ops/applications/:id/originals/:org/return` (only under an owner-approved return policy; partial stays partial) | WP-12 | Only under an owner-approved return policy |
 | `ops.record_readiness` | CMD-30 | served | `ops.case_work.readiness` | OP-02 | WP-07 | Binds to the basis digest the page showed |
 | `ops.record_reconciliation_attempt` | CMD-39 | served | `ops.case_work.reconciliation` | OP-04 | WP-07 | The conclude field records the act evidence in the same command |
 | `ops.record_work_step` | none (§5 group C) | served | `ops.case_work.work_step` | OP-02 (readiness checklist) | WP-07 | Work steps exist as facts; no plan command records them |
@@ -318,6 +318,7 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-13 | WP-08 commands on the operator case page and the incident page | The WP-08 commands leave those pages; the pages keep the facts and link to OP-05 and OP-05r. `ops.open_incident` has no OP-05 control (Core refuses result-file incident kinds for operators) and goes to WP-14. | One host page per command. | WP-08, WP-14 |
 | CC-14 | WP-10 commands on the operator case page, OP-06 and TA-07 | The WP-10 commands leave those pages; each has one host page (TA-07l hosts link and unlink; OP-04p, OP-04r, OP-06h, OP-06e). UI-PLAN's "Record provider handoff" is WP-07's act command for `provider_handoff`; "Record provider filing evidence" has no Core command (WP-10 STOP-W10-02, to Max in P-15). | One host page per command. | WP-10 |
 | CC-15 | WP-11 commands on the old SuperAdmin case page | The WP-11 commands leave it; SA-04a is rebuilt on the kept path (OP-02 layout without operator actions) and keeps facts and links; one host page per command use (SA-09u, SA-09o, SA-09e, SA-09m); the carried WP-17 forms stay on SA-04a until WP-17. Note: `core.apply_held_correction` has no staff route (edge allowlist only; WP-11 STOP-W11-03). | One host page per command use. | WP-11 |
+| CC-16 | WP-12 commands on the operator case page | The WP-12 commands leave OP-02 "Delivery & originals"; each has one host page (OP-09n, OP-09m, OP-09t, OP-09l) under the application's Originals page OP-09. The rail destination "Originals" stays hidden until Core serves an originals register read (WP-12 STOP-W12-01). | One host page per command. | WP-12 |
 
 After these dispositions no served command is without a page.
 
