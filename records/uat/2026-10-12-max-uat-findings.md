@@ -186,6 +186,26 @@ Note:      Owner decision; changes the group model and the intake rules. Options
            architect's recommendation are in chat on 12 October 2026. Decision pending.
 ```
 
+```
+### UAT-08  Bulk import refused: "The verification did not pass"
+Role:      TA (syn-ta-3)
+Page:      /ta/groups/<group>/intake/new   Plan ID: E2E-4 4.13
+Steps:     1. Open the bulk import form. 2. Choose "A public Google Drive folder with a sheet listing
+           the applicants". Paste the folder link. 3. Take some minutes to fill the form. 4. Submit.
+Expected:  The import starts, or the page says exactly what to do.
+Actual:    "There is a problem. The verification did not pass. Try again." No import started.
+Evidence:  screenshot from Max (chat, 12 October 2026); not stored here because it shows a Drive link
+Severity:  P1
+Class:     A
+Repeat:    Once (so far)
+Note:      Architect analysis (probable cause, not yet proven): the bot-check challenge is put into
+           the page when the page loads and lives 5 minutes (`captcha.ttlMs`). It is also bound to
+           the session. A form that stays open more than 5 minutes, or survives a new sign-in, fails
+           on submit with a message that does not say why. The edge and core logs hold no line for
+           the refusal. Sign-in pages have the same design, but those forms are short. Workaround:
+           submit within 5 minutes of opening or reloading the page.
+```
+
 ## Observations without a finding
 
 | Plan ID | Observation | Result |
@@ -207,5 +227,6 @@ Note:      Owner decision; changes the group model and the intake rules. Options
 | UAT-05 | Public pages need more useful content and a better layout | Signed out | / | P2 | C |
 | UAT-06 | Bulk import form shows every field for every source type | TA | intake/new | P2 | C |
 | UAT-07 | Services are chosen per import, not fixed at group creation | TA | groups/new, intake/new | P1 | B |
+| UAT-08 | Bulk import refused: "The verification did not pass" | TA | intake/new | P1 | A |
 
 Counts: P0 __ / P1 __ / P2 __. Class A __ / B __ / C __ / D __.
