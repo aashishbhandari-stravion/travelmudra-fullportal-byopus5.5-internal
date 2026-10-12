@@ -8,7 +8,8 @@ opens its chat with its prompt. Max decides, integrates and pushes.
 |---|---|
 | `UI-REVAMP-PROMPT.md` | Prompt for the UI revamp lane (`ui-revamp-2026-10-12`). Opus 5.5 is the lane's Principal Technical Architect. |
 | `BULK-REFACTOR-PROMPT.md` | Prompt for the bulk upload redesign lane (`bulk-refactor-2026-10-12`). Opus 5.5 is the lane's Principal Technical Architect. |
-| `SEAM-CONTRACT.md` | The seam between the lanes: ownership, the bulk read models and commands the UI lane builds against, the change rule, and the integration order. |
+| `SEAM-CONTRACT.md` | The seam between the lanes: ownership, the bulk read models and commands the UI lane builds against, the change rule, the integration order, the request log (§5) and seam versions (§6). |
+| `CORE-TASK-PROMPT.md` | Prompt for the Core task lane (`core-reads-2026-10-12`): Core defect fixes and Kind 1 read models approved as one batch. Launch after Max confirms to the orchestrator. |
 
 ## Lanes
 
