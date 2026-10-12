@@ -107,6 +107,8 @@ Added to the plan text in this internal clone on 12 October 2026, commit 5ab4626
 | ID | Item | Rank | Status |
 |---|---|---|---|
 | Q-L1 | LD-11 sign-in harness for agent proofs on `lane-ui` | P1 | Answered 12 October 2026: yes, harness allowed |
+| Q-L2 | P-05: an exception to DECISIONS §3.1 point 2 for showing declared eligibility, promise, travel-date rules, dependencies and the authority label to travel agents (UX §3.1 step 1) | P1 | Sent through the orchestrator 12 October 2026; TA-03 shows product-wide scope until decided |
+| Q-L3 | Owner inputs the public site needs: verified contact and locality (C02), approved country list (C03), provider responsibilities beyond the declared label, public copy approval | P1 | Recorded; pages omit the blocks until supplied |
 
 ## 7. Decisions for Max's end review
 
@@ -131,6 +133,8 @@ Every decision that came up during the lane, with what the architect decided and
 | 14 | 12 Oct 2026 | Freshness wording | Lag form ("Behind by 40 s when read at 3:30 pm IST"). | Projections carry no as-of time; no Core change requested. | LD-08 |
 | 15 | 12 Oct 2026 | Public pages while owner inputs are missing | Omit every block whose input is missing (countries, address, contact, imagery); structured data `Organization` and `WebSite` only; plain sign-in copy that says accounts are set up by TravelMudra. Input needed from Max: verified public contact and locality (C02), country list (C03). | Nothing is invented on a public page (BS B01, B02). | WP-20 §3 |
 | 16 | 12 Oct 2026 | Copy approval | A release blocker `public_copy_unapproved` stays until Max approves the public copy for its content version. | CR-09: all copy is draft until approved. | WP-20 §3 |
+| 17 | 12 Oct 2026 | Offering eligibility on the service detail page | Ask Core for the declared facts (P-05) and Max for an exception to the Kind 1 rule; show the product-wide scope meanwhile. | The spec requires eligibility before intake; the facts exist; the rule that would admit them is Max's. | P-05, WP-02 §4 |
+| 18 | 12 Oct 2026 | Core defects found by the independent reviews | Reported, not worked around: sign-in replay normalization (P-04), launch revision guard and plan replay (P-06). The UI avoids the first by normalizing the address. | The lane does not own Core; hiding a defect in a page is forbidden. | P-04, P-06 |
 
 ## 8. Seam items assigned to the lane
 
