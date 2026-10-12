@@ -53,6 +53,14 @@ Note:      <optional; what you would want instead, in one sentence>
 
 If unsure between A and C, choose A. A wrong fact on screen is A until the data proves otherwise.
 
+## Status (Max, 12 October 2026)
+
+UAT pass 1 stopped after E2E-1 and the first part of E2E-2 and E2E-4. Max's decision: fix nothing now,
+including UAT-12 (P0, parked by owner decision). All findings go into the work after the UI rewrite:
+class C items become rewrite acceptance criteria; class A items are fixed after the rewrite lands; class
+B and D items wait for Max's decision. Not executed: E2E-1 1.9 to 1.14 (in part), E2E-2 after 2.3,
+E2E-3, E2E-4 A and C, E2E-5.
+
 ## Findings
 
 Recorded by the architect from Max's report on 12 October 2026. Discussion only: nothing is fixed or
@@ -331,4 +339,4 @@ Note:      Without the code the TA cannot fix the source and support cannot tria
 | UAT-12 | Every Google Drive folder import fails | TA | /ta/intake/<attempt> | P0 | A |
 | UAT-13 | Failed import says "See the reference code" but shows none | TA | /ta/intake/<attempt> | P1 | A |
 
-Counts: P0 __ / P1 __ / P2 __. Class A __ / B __ / C __ / D __.
+Counts: P0 1 / P1 5 / P2 7. Class A 3 / B 2 / C 6 / D 2. Total 13.
