@@ -102,8 +102,8 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `doc.associate` | none (§5 group B) | served | `ops.documents.associate`, `ta.documents.associate` | TA-09 (required-document slot); TA-07; BU-P06; OP-02 (ops route) | WP-03 | Links an existing group version to a requirement; two routes (ta, ops) |
 | `doc.confirm_classification` | none (§5 group B) | served | `ta.documents.classification` | TA-09 (evidence results); TA-07 (document rows) | WP-03 | Posted today from the document-version page, which the plan lacks |
 | `doc.replace_version` | CMD-10 | served | `ta.documents.replace` | TA-09; TA-07; BU-P06 ("Replace document") | WP-03 | Multipart; WP-04 builds the BU-P06 control |
-| `doc.requeue_bulk` | none (§5 group D) | served | `admin.documents.requeue_bulk` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Bulk requeue of failed checks; posted today from /admin/documents/queue |
-| `doc.requeue_check` | none (§5 group D) | served | `admin.documents.requeue` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Requeue of one failed check; posted today from /admin/documents/queue |
+| `doc.requeue_bulk` | none (§5 group D) | served | `admin.documents.requeue_bulk` | SA-08b `/admin/documents/requeue` | WP-14 | Bulk requeue of failed checks; posted today from /admin/documents/queue |
+| `doc.requeue_check` | none (§5 group D) | served | `admin.documents.requeue` | SA-08c `/admin/documents/:dov/requeue` | WP-14 | Requeue of one failed check; posted today from /admin/documents/queue |
 | `doc.resolve_extraction` | none (§5 group B) | served | `ta.documents.resolve_extraction` | TA-09 (evidence results); TA-07; BU-P06 | WP-03 | Travel agent types the MRZ fields and attests; host page missing in plan |
 | `doc.upload_for_application` | CMD-10 | served | `ops.documents.upload`, `ta.documents.upload` | TA-09; BU-P06; OP-02a (assistance upload, ops route, built in WP-09; OP-02 if the seam overlap is not confirmed) | WP-03 | Multipart; two routes (ta, ops) |
 | `iam.activate_account` | CMD-65 | served | `admin.accounts.activate` | SA-06 | WP-02 | Account status change; reason required |
@@ -139,20 +139,20 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `intake.start_bulk` | CMD-20, CMD-21 | served | `ta.intake.start_bulk` | BU-P02 | WP-04 | Multipart; bot check; source limits |
 | `intake.start_individual` | CMD-8 | served | `ta.intake.start_individual` | TA-09 (entry from BU-P01) | WP-03 | Multipart; one command creates the application(s) |
 | `ops.approve_launch` | CMD-63 | served | `admin.launch.approve` | SA-05; SA-09 | WP-02 | Launch scope for an offering |
-| `ops.assign_incident_reviewer` | CMD-55 | served | `admin.incidents.reviewer` | SA-08; SA-02 | WP-14 | Reviewer gets no filing authority |
-| `ops.classify_failure` | none (§5 group D) | served | `admin.failures.classify` | SA-08 (incident detail) | WP-14 | Posted today from the admin incident page; local, shared or unresolved |
-| `ops.close_incident` | CMD-49 | served | `admin.incidents.close`, `ops.incidents.close` | OP-08; SA-08 | WP-14 | Two routes (ops, admin); follows resolve |
+| `ops.assign_incident_reviewer` | CMD-55 | served | `admin.incidents.reviewer` | SA-08v `/admin/incidents/:id/reviewer` | WP-14 | Reviewer gets no filing authority |
+| `ops.classify_failure` | none (§5 group D) | served | `admin.failures.classify` | SA-08f `/admin/failures/incident/:id/classify` (incident subjects only on a page) | WP-14 | Posted today from the admin incident page; local, shared or unresolved |
+| `ops.close_incident` | CMD-49 | served | `admin.incidents.close`, `ops.incidents.close` | OP-08i, SA-08i (on the incident page; ends every duty; no reopen) | WP-14 | Two routes (ops, admin); follows resolve |
 | `ops.confirm_artifact_association` | CMD-43 | served | `ops.incidents.confirm_association` | OP-05 | WP-08 | Reviewer attests each compared field |
 | `ops.expand_launch_scope` | none (§5 group D) | served | `admin.launch.expand` | SA-05 (launch and admission) | WP-02 | The "expand" half of the plan row "Launch / expand" |
 | `ops.lift_suspension` | CMD-63 | served | `admin.launch.lift` | SA-05; SA-09 | WP-13 | Restores the approved scope only |
 | `ops.link_original` | CMD-51 (§5 group A) | served | `ops.custody.link` | OP-09l `/ops/applications/:id/originals/:org/share` (same operator only; no unlink) | WP-12 | Links an original to another application |
-| `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-05 (association incident); OP-08; SA-08 | WP-14 | Two routes (ops, admin); other incident kinds are WP-14 |
-| `ops.post_disclosure_notice` | CMD-49 | served | `admin.incidents.notice`, `ops.incidents.notice` | OP-08; SA-08 | WP-14 | Two routes (ops, admin) |
+| `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-08o `/ops/applications/:id/incidents/new`; SA-08o `/admin/incidents/new` (`artifact_association` not offered) | WP-14 | Two routes (ops, admin); other incident kinds are WP-14 |
+| `ops.post_disclosure_notice` | CMD-49 | served | `admin.incidents.notice`, `ops.incidents.notice` | OP-08n, SA-08n `…/incidents/:id/notices` (one per account; variant by Core's role of the account) | WP-14 | Two routes (ops, admin) |
 | `ops.record_act_evidence` | CMD-37, CMD-38, CMD-41 | served | `ops.case_work.act_evidence` | OP-04 | WP-07 | K-EXT; filing_unknown is the uncertain path |
 | `ops.record_artifact` | CMD-10 | served | `ops.case_work.artifact` | OP-05 | WP-08 | Multipart; can replace an artifact for an incident |
 | `ops.record_effort_sample` | none (§5 group C) | served | `ops.case_work.effort` | OP-02 | WP-07 | Operator effort; the SuperAdmin observation route D117 is unregistered |
 | `ops.record_existing_work_treatment` | CMD-62 | served | `admin.launch.treatment` | SA-05; SA-09 | WP-13 | K-BATCH |
-| `ops.record_incident_evidence` | CMD-49 | served | `admin.incidents.evidence`, `ops.incidents.evidence` | OP-08; SA-08 | WP-14 | Two routes (ops, admin) |
+| `ops.record_incident_evidence` | CMD-49 | served | `admin.incidents.evidence`, `ops.incidents.evidence` | OP-08e, SA-08e `…/incidents/:id/evidence` | WP-14 | Two routes (ops, admin) |
 | `ops.record_launch_plan` | none (§5 group D) | served | `admin.launch.plan` | SA-05 (launch and admission) | WP-02 | Precedes launch |
 | `ops.record_official_result` | CMD-42 | served | `ops.case_work.official_result` | OP-05 | WP-08 | Multipart; optional artifact |
 | `ops.record_original_movement` | CMD-51 | served | `ops.custody.movement` | OP-09m `/ops/applications/:id/originals/:org/movement` | WP-12 | Holder "unknown" needs the uncertainty statement |
@@ -162,9 +162,9 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.record_reconciliation_attempt` | CMD-39 | served | `ops.case_work.reconciliation` | OP-04 | WP-07 | The conclude field records the act evidence in the same command |
 | `ops.record_work_step` | none (§5 group C) | served | `ops.case_work.work_step` | OP-02 (readiness checklist) | WP-07 | Work steps exist as facts; no plan command records them |
 | `ops.reject_artifact_association` | CMD-43 (§5 group A) | served | `ops.incidents.reject_association` | OP-05 | WP-08 | OP-05 MUST offer reject |
-| `ops.report_wrong_recipient` | CMD-50 (§5 group A) | served | `ops.incidents.disclosure` | OP-08; OP-02 | WP-14 | Replaces the dropped Block-version row (CMD-50) |
+| `ops.report_wrong_recipient` | CMD-50 (§5 group A) | served | `ops.incidents.disclosure` | OP-08w `/ops/applications/:id/disclosure` (blocks the file for good; one per file; SuperAdmin route missing, WP-14 STOP-W14-02) | WP-14 | Replaces the dropped Block-version row (CMD-50) |
 | `ops.request_packet_build` | CMD-40 (§5 group A) | served | `ops.case_work.packet_build` | OP-04p `/ops/applications/:id/packet` (build and rebuild with `supersedePacketId`) | WP-10 | Builds or rebuilds a packet; release is core.release_packet |
-| `ops.resolve_incident` | CMD-49 (§5 group A) | served | `admin.incidents.resolve`, `ops.incidents.resolve` | OP-08; SA-08 | WP-14 | Two routes (ops, admin); resolve with evidence, then close |
+| `ops.resolve_incident` | CMD-49 (§5 group A) | served | `admin.incidents.resolve`, `ops.incidents.resolve` | OP-08r, SA-08r `…/incidents/:id/resolve` | WP-14 | Two routes (ops, admin); resolve with evidence, then close |
 | `ops.start_work` | none (§5 group C) | served | `ops.case_work.start_work` | OP-02 | WP-07 | Assigned operator starts work on the case |
 | `ops.suspend_offering` | CMD-63 | served | `admin.launch.suspend` | SA-05; SA-09 | WP-13 | Existing-work treatment prompt follows |
 | `ops.withdraw_offering` | CMD-63 | served | `admin.launch.withdraw` | SA-05; SA-09 | WP-13 | Irreversible; acknowledgement required |
@@ -319,6 +319,7 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-14 | WP-10 commands on the operator case page, OP-06 and TA-07 | The WP-10 commands leave those pages; each has one host page (TA-07l hosts link and unlink; OP-04p, OP-04r, OP-06h, OP-06e). UI-PLAN's "Record provider handoff" is WP-07's act command for `provider_handoff`; "Record provider filing evidence" has no Core command (WP-10 STOP-W10-02, to Max in P-15). | One host page per command. | WP-10 |
 | CC-15 | WP-11 commands on the old SuperAdmin case page | The WP-11 commands leave it; SA-04a is rebuilt on the kept path (OP-02 layout without operator actions) and keeps facts and links; one host page per command use (SA-09u, SA-09o, SA-09e, SA-09m); the carried WP-17 forms stay on SA-04a until WP-17. Note: `core.apply_held_correction` has no staff route (edge allowlist only; WP-11 STOP-W11-03). | One host page per command use. | WP-11 |
 | CC-16 | WP-12 commands on the operator case page | The WP-12 commands leave OP-02 "Delivery & originals"; each has one host page (OP-09n, OP-09m, OP-09t, OP-09l) under the application's Originals page OP-09. The rail destination "Originals" stays hidden until Core serves an originals register read (WP-12 STOP-W12-01). | One host page per command. | WP-12 |
+| CC-17 | WP-14 commands on the incident pages, the case page, OP-02 "Delivery & originals" and the documents queue rows | Each command has one host page per surface; close stays on the incident page. The SuperAdmin incident page has no association decision form (S-09). | One host page per command. | WP-14 |
 
 After these dispositions no served command is without a page.
 
