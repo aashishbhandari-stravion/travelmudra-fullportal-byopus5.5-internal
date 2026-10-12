@@ -113,6 +113,89 @@ Note:      Options for Max (real email, a fixed test code in configuration, or t
            decision, not a fix.
 ```
 
+```
+### UAT-04  TA cannot start a single application outside a group
+Role:      TA
+Page:      /ta/groups, /ta/applications   Plan ID: E2E-2 2.1
+Steps:     1. Sign in as a TA. 2. Look for "New application" outside a group.
+Expected:  A TA can start one application directly.
+Actual:    Only "Start a group" exists. Inside a group the TA can add one applicant by form or
+           many by bulk import.
+Evidence:  none
+Severity:  P2
+Class:     B
+Repeat:    Yes (every time)
+Note:      By design today: the group holds the country and the travel dates, and every
+           application belongs to one group. Max's ruling: P2, decide later whether it is needed.
+           Architect option: a "New application" entry that asks country and dates and creates a
+           group of one behind the scenes (view change only, no domain change).
+```
+
+```
+### UAT-05  Public pages need more useful content and a better layout
+Role:      Signed out
+Page:      / and the other public pages on :4610   Plan ID: E2E-1 1.1 to 1.3
+Steps:     1. Open http://127.0.0.1:4610/ signed out. 2. Visit the 5 public pages.
+Expected:  A welcome, what TravelMudra does, who it is for, and clear sign-in directions.
+Actual:    The pages exist and work, but the content is thin and the layout is plain.
+Evidence:  none
+Severity:  P2
+Class:     C
+Repeat:    Yes (every time)
+Note:      Max: can run in parallel with other work. Content and search readiness follow
+           WEB-20260926-01 (unique title and description per page, structured data with locality).
+```
+
+```
+### UAT-06  Bulk import form shows every field for every source type
+Role:      TA
+Page:      /ta/groups/<group>/intake/new   Plan ID: E2E-4 4.2
+Steps:     1. Open a group. Start a bulk import. 2. Choose "A public Google Drive folder with a
+           sheet listing the applicants".
+Expected:  Only the inputs for the chosen source show, and each required input is marked required.
+Actual:    "Public link", "Spreadsheet file" and "Sheet listing the applicants" all show for every
+           choice, all marked "(optional)". The Services block shows for every choice.
+Evidence:  screenshot from Max (chat, 12 October 2026); not stored here because it shows a Drive link
+Severity:  P2
+Class:     C
+Repeat:    Yes (every time)
+Note:      Architect check of the server (start-bulk.ts): each source type is validated on the
+           server. Excel needs a file of the right type and size; Sheet and Folder types need a
+           Google link of the right kind; a folder without a sheet needs at least one service; the
+           companion sheet is read only for "folder with a sheet". So the backend is not loose; the
+           form is. One server gap: an input that does not belong to the chosen type (for example a
+           file with a Folder choice) is ignored without a message. The rewrite plan already has a
+           per-choice source form (BULK-UPLOAD-UI-PLAN CMP-30). Rewrite acceptance: per-choice
+           fields, required marks, and a refusal (not silence) for an input of the wrong type.
+```
+
+```
+### UAT-07  Services are chosen per import, not fixed at group creation
+Role:      TA
+Page:      /ta/groups/new, /ta/groups/<group>/intake/new   Plan ID: E2E-3 3.1, E2E-4 4.2
+Steps:     1. Start a group (country, label, travel dates). 2. Start a bulk import.
+Expected:  (Max) The TA chooses the services when the group is created. A different service for the
+           same people goes into a new group.
+Actual:    The group has no services. Each import, and each single applicant, names its own
+           services; a sheet may also name services per row.
+Evidence:  screenshot from Max (chat, 12 October 2026)
+Severity:  P1
+Class:     B
+Repeat:    Yes (every time)
+Note:      Owner decision; changes the group model and the intake rules. Options and the
+           architect's recommendation are in chat on 12 October 2026. Decision pending.
+```
+
+## Observations without a finding
+
+| Plan ID | Observation | Result |
+|---|---|---|
+| E2E-1 1.6 | `syn-ta-1` signed in with a correct code. | Pass |
+| E2E-1 1.14 | The TA session ended after inactivity and asked for a new sign-in. Max estimated about 20 minutes; the configured TA idle limit is 30 minutes (`session.taIdleMs`). Note the clock time on the next timeout to confirm. | Pass (time to confirm) |
+| E2E-1 1.1 | 5 public pages are reachable signed out on :4610. Content quality: UAT-05. | Pass |
+| E2E-1 1.6 | Mini security check: a code issued to `syn-ta-1` was entered on the `syn-ta-3` code step. Refused with "The code is invalid or has expired. Request a new code." The message does not say whether the account exists. | Pass |
+| E2E-1 1.6 | `syn-ta-3` signed in. | Pass |
+
 ## Summary table (fill at the end)
 
 | ID | Title | Role | Page | Severity | Class |
@@ -120,5 +203,9 @@ Note:      Options for Max (real email, a fixed test code in configuration, or t
 | UAT-01 | Back from code page gives "form already used" error | Signed out | /sign-in | P2 | C |
 | UAT-02 | Code page has no "use a different address" option | Signed out | /sign-in | P2 | C |
 | UAT-03 | Synthetic mailbox sign-in is slow for human testers | All | sign-in pages | P1 | D |
+| UAT-04 | TA cannot start a single application outside a group | TA | /ta/groups | P2 | B |
+| UAT-05 | Public pages need more useful content and a better layout | Signed out | / | P2 | C |
+| UAT-06 | Bulk import form shows every field for every source type | TA | intake/new | P2 | C |
+| UAT-07 | Services are chosen per import, not fixed at group creation | TA | groups/new, intake/new | P1 | B |
 
 Counts: P0 __ / P1 __ / P2 __. Class A __ / B __ / C __ / D __.
