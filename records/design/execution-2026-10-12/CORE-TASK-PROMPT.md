@@ -32,6 +32,8 @@ approved together so that "holistically the design and code is done":
 | P-14 (2) suspected defect: `pay.application_payments.gate2` evaluates the operator's authorize action with the SuperAdmin as actor; failing test first, close as not a defect if it passes | Defect (suspected) | `P-14-wp07-gate-basis-and-gate2-read.md` |
 | P-13 (8) stored subject and version identifiers in `dlv.selection`; P-13 (9) email attempts newest first with a stated cap: ONLY if Max adds them to the batch (orchestrator tells the lane) | Kind 1; defect | `P-13-wp08-delivery-reads.md` (amended) |
 
+P2 notes from the UI lane, not worked unless Max assigns them (PRI-20260930-01): `dlv.record_direct_external` and the physical handover lack a business duplicate guard and a lifecycle guard (BS B35; STOP-W10-08); a future direct-external date is accepted (R-14); a reused authenticator code within the same 30 s step gets the combined "did not work" text and counts toward the lock (WP-01 F-02).
+
 Not in this lane: P-11 (gate exception evidence, Kind 2, separate decision and separate task); P-05 (catalogue
 display, UI lane grant); anything the bulk lane owns, including the K2-S1 group files
 (`src/modules/core/commands/groups.ts`, `src/modules/core/intake-writers.ts`, the group paths of `facade.ts`
