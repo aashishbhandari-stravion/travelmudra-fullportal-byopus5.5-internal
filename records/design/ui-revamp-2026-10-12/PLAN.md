@@ -109,6 +109,7 @@ Added to the plan text in this internal clone on 12 October 2026, commit 5ab4626
 | Q-L1 | LD-11 sign-in harness for agent proofs on `lane-ui` | P1 | Answered 12 October 2026: yes, harness allowed |
 | Q-L2 | P-05: an exception to DECISIONS §3.1 point 2 for showing declared eligibility, promise, travel-date rules, dependencies and the authority label to travel agents (UX §3.1 step 1) | P1 | Sent through the orchestrator 12 October 2026; TA-03 shows product-wide scope until decided |
 | Q-L3 | Owner inputs the public site needs: verified contact and locality (C02), approved country list (C03), provider responsibilities beyond the declared label, public copy approval | P1 | Recorded; pages omit the blocks until supplied |
+| Q-L4 | Approved wording of each confirmation statement version (C05) before the first real offering | P1 | Synthetic draft texts meanwhile |
 
 ## 7. Decisions for Max's end review
 
@@ -135,6 +136,9 @@ Every decision that came up during the lane, with what the architect decided and
 | 16 | 12 Oct 2026 | Copy approval | A release blocker `public_copy_unapproved` stays until Max approves the public copy for its content version. | CR-09: all copy is draft until approved. | WP-20 §3 |
 | 17 | 12 Oct 2026 | Offering eligibility on the service detail page | Ask Core for the declared facts (P-05) and Max for an exception to the Kind 1 rule; show the product-wide scope meanwhile. | The spec requires eligibility before intake; the facts exist; the rule that would admit them is Max's. | P-05, WP-02 §4 |
 | 18 | 12 Oct 2026 | Core defects found by the independent reviews | Reported, not worked around: sign-in replay normalization (P-04), launch revision guard and plan replay (P-06). The UI avoids the first by normalizing the address. | The lane does not own Core; hiding a defect in a page is forbidden. | P-04, P-06 |
+| 19 | 12 Oct 2026 | Keeping search text out of the address (TA search) | A new shell "seal" route: the search form posts, the server answers with an encrypted, session-bound token in the address; no Core command. Subject to the independent review. | Keeps search by passport number without exposing it in history; the alternative loses search beyond 200 rows. | WP-03 §3 |
+| 20 | 12 Oct 2026 | Confirmation statement texts | A catalogue keyed by statement code and version; draft texts for synthetic versions; a version without text cannot be submitted. Input needed from Max: approved statement texts (C05). | A travel agent must confirm a readable text (B17). | WP-03 §3 |
+| 21 | 12 Oct 2026 | Passport two-page rule and number format (UAT-14, UAT-09) | Partly met until the bulk lane's passport parts and passport-number commit are on main; the form states the rule, the page states no format of its own. | The rule belongs to the bulk lane's document policy. | P-08 |
 
 ## 8. Seam items assigned to the lane
 
