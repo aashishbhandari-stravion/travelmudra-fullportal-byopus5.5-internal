@@ -129,6 +129,8 @@ Every decision that came up during the lane, with what the architect decided and
 | 12 | 12 Oct 2026 | Receipt without accepted time | Build receipts with reference and resulting facts; ask for the time as Kind 1 request P-02. | The lane does not own the binding; low harm. | P-02 |
 | 13 | 12 Oct 2026 | The Accounts area | Removed from the context selector; route kept until WP-16 rehomes its notices, then retired. | AD-12: an accounting grant is not a context. | WP-01 §3 |
 | 14 | 12 Oct 2026 | Freshness wording | Lag form ("Behind by 40 s when read at 3:30 pm IST"). | Projections carry no as-of time; no Core change requested. | LD-08 |
+| 15 | 12 Oct 2026 | Public pages while owner inputs are missing | Omit every block whose input is missing (countries, address, contact, imagery); structured data `Organization` and `WebSite` only; plain sign-in copy that says accounts are set up by TravelMudra. Input needed from Max: verified public contact and locality (C02), country list (C03). | Nothing is invented on a public page (BS B01, B02). | WP-20 §3 |
+| 16 | 12 Oct 2026 | Copy approval | A release blocker `public_copy_unapproved` stays until Max approves the public copy for its content version. | CR-09: all copy is draft until approved. | WP-20 §3 |
 
 ## 8. Seam items assigned to the lane
 
