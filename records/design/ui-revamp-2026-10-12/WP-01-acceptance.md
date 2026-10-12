@@ -6,7 +6,7 @@
 | Work package | WP-01 (UI-PLAN §12.1; lane PLAN §3) |
 | Author | Principal Product Manager (Claude subagent), 12 October 2026 |
 | Decision owner | Principal Technical Architect of the lane (LD-12) |
-| Status | Draft. Step 1 of lane PLAN §3. Not run. Input to the UX design review and the independent review. |
+| Status | Run on 12–13 October 2026 on `lane-ui` at 42cb373 (results §6, findings §7). Architect's dispositions: `WP-01.md` §6.1 (A65 amended to Core's answer for a sequential reuse). |
 | Product base | lane branch `ui-revamp-2026-10-12` at 102e4c9 |
 | Installation | `lane-ui`: edge http://127.0.0.1:4650 (public site, travel-agent sign-in, travel-agent pages); staff http://127.0.0.1:4652 (staff sign-in, operator and SuperAdmin pages) |
 | Writing style | ASD-STE100 at about 75% (STY-20261003-01) |
@@ -400,148 +400,162 @@ removal from the bulk and correction forms (UAT-08, bulk lane).
 
 | Field | Value |
 |---|---|
-| Verified on (date, IST) | |
-| Installation and ref (`uat.py status lane-ui` output: commit or tag) | |
-| Lane commit of the tests named for `T` items | |
-| Browsers and versions | |
-| Assistive technology used | |
-| V23 result (parts A, B, C; where shown) | |
-| Open findings (ID, rank, scenario) | |
-| Signed by (role and name) | |
+| Verified on (date, IST) | 12 October 2026 (runs from 22:28 IST on 12 October to 00:50 IST on 13 October 2026) |
+| Installation and ref (`uat.py status lane-ui` output: commit or tag) | lane-ui, ref 42cb373, release rel_27WRF39X1T6TGZ00F3H2PA1D94, admission open |
+| Lane commit of the tests named for `T` items | 42cb373 (tests read at the commit, not from the working tree). Run record from the architect: typecheck and lint clean; unit 669 (668 + the crawl-record test fixed by 42cb373); UI 657/657; static 74/74; system 172/172. Core-module tests cited from test/identity, test/views and test/ops-tooling are outside that record; the PM ran the cited files at an export of 42cb373: 76/76 pass. |
+| Browsers and versions | Playwright 1.63.0: Chromium headless shell 153.0.8010.12; full Chromium 153.0.8010.12 (channel "chromium") for the back/forward cache items A34, A62 (S8), A67, A131. axe-core 4.13.0 through @axe-core/playwright 4.13.0, tags wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa, at 1440 × 900 and 390 × 844. |
+| Assistive technology used | None. No screen reader was run (A03, A105 read the Chromium accessibility tree); keyboard-only items were driven by key presses only; reduced motion and greyscale were emulated. |
+| V23 result (parts A, B, C; where shown) | Not proven. Part A on lane-ui: no fabricated zero; freshness wording only on the WP-01 pages ("Read at", "Checked at"). Part B and part C by test: B1, B7, C2, C3, C7, C9 covered; B3 deferred (design V23-2); B4 not covered; B2, B5, B6, B8, C4, C5, C6, C8 partly covered. |
+| Open findings (ID, rank, scenario) | F-01 (P2, A101): the code-step links "Use a different address" and "Request a new code" are 21 px high at 390 px, under the required 44 × 44. F-02 (P2, A65): a reused authenticator code gets the combined text, not the "already used" text, and counts as a second-factor failure. Scenarios in "Findings of the acceptance run". |
+| axe version | axe-core 4.13.0 (@axe-core/playwright 4.13.0); 28 page states, each at 1440 and 390 px: 0 serious or critical, 0 moderate, 0 minor violation nodes. |
+| Result summary | Deferred 5, Fail 2, Not proven 13, Pass 111 (of 131 items); V23 Not proven |
+| Signed by (role and name) | Principal Product Manager (Claude Opus subagent) |
 
-Result per item (Pass, Fail, Blocked or Not run; evidence reference; note):
+Result per item (Pass, Fail, Deferred with the deciding record, or Not proven; evidence reference; note):
 
 | ID | Result | Evidence | Note |
 |---|---|---|---|
-| WP01-A01 | | | |
-| WP01-A02 | | | |
-| WP01-A03 | | | |
-| WP01-A04 | | | |
-| WP01-A05 | | | |
-| WP01-A06 | | | |
-| WP01-A07 | | | |
-| WP01-A08 | | | |
-| WP01-A09 | | | |
-| WP01-A10 | | | |
-| WP01-A11 | | | |
-| WP01-A12 | | | |
-| WP01-A13 | | | |
-| WP01-A14 | | | |
-| WP01-A15 | | | |
-| WP01-A16 | | | |
-| WP01-A17 | | | |
-| WP01-A18 | | | |
-| WP01-A19 | | | |
-| WP01-A20 | | | |
-| WP01-A21 | | | |
-| WP01-A22 | | | |
-| WP01-A23 | | | |
-| WP01-A24 | | | |
-| WP01-A25 | | | |
-| WP01-A26 | | | |
-| WP01-A27 | | | |
-| WP01-A28 | | | |
-| WP01-A29 | | | |
-| WP01-A30 | | | |
-| WP01-A31 | | | |
-| WP01-A32 | | | |
-| WP01-A33 | | | |
-| WP01-A34 | | | |
-| WP01-A35 | | | |
-| WP01-A36 | | | |
-| WP01-A37 | | | |
-| WP01-A38 | | | |
-| WP01-A39 | | | |
-| WP01-A40 | | | |
-| WP01-A41 | | | |
-| WP01-A42 | | | |
-| WP01-A43 | | | |
-| WP01-A44 | | | |
-| WP01-A45 | | | |
-| WP01-A46 | | | |
-| WP01-A47 | | | |
-| WP01-A48 | | | |
-| WP01-A49 | | | |
-| WP01-A50 | | | |
-| WP01-A51 | | | |
-| WP01-A52 | | | |
-| WP01-A53 | | | |
-| WP01-A54 | | | |
-| WP01-A55 | | | |
-| WP01-A56 | | | |
-| WP01-A57 | | | |
-| WP01-A58 | | | |
-| WP01-A59 | | | |
-| WP01-A60 | | | |
-| WP01-A61 | | | |
-| WP01-A62 | | | |
-| WP01-A63 | | | |
-| WP01-A64 | | | |
-| WP01-A65 | | | |
-| WP01-A66 | | | |
-| WP01-A67 | | | |
-| WP01-A68 | | | |
-| WP01-A69 | | | |
-| WP01-A70 | | | |
-| WP01-A71 | | | |
-| WP01-A72 | | | |
-| WP01-A73 | | | |
-| WP01-A74 | | | |
-| WP01-A75 | | | |
-| WP01-A76 | | | |
-| WP01-A77 | | | |
-| WP01-A78 | | | |
-| WP01-A79 | | | |
-| WP01-A80 | | | |
-| WP01-A81 | | | |
-| WP01-A82 | | | |
-| WP01-A83 | | | |
-| WP01-A84 | | | |
-| WP01-A85 | | | |
-| WP01-A86 | | | |
-| WP01-A87 | | | |
-| WP01-A88 | | | |
-| WP01-A89 | | | |
-| WP01-A90 | | | |
-| WP01-A91 | | | |
-| WP01-A92 | | | |
-| WP01-A93 | | | |
-| WP01-A94 | | | |
-| WP01-A95 | | | |
-| WP01-A96 | | | |
-| WP01-A97 | | | |
-| WP01-A98 | | | |
-| WP01-A99 | | | |
-| WP01-A100 | | | |
-| WP01-A101 | | | |
-| WP01-A102 | | | |
-| WP01-A103 | | | |
-| WP01-A104 | | | |
-| WP01-A105 | | | |
-| WP01-A106 | | | |
-| WP01-A107 | | | |
-| WP01-A108 | | | |
-| WP01-A109 | | | |
-| WP01-A110 | | | |
-| WP01-A111 | | | |
-| WP01-A112 | | | |
-| WP01-A113 | | | |
-| WP01-A114 | | | |
-| WP01-A115 | | | |
-| WP01-A116 | | | |
-| WP01-A117 | | | |
-| WP01-A118 | | | |
-| WP01-A119 | | | |
-| WP01-A120 | | | |
-| WP01-A121 | | | |
-| WP01-A122 | | | |
-| WP01-A123 | | | |
-| WP01-A124 | | | |
-| WP01-A125 | | | |
-| WP01-A126 | | | |
-| WP01-A127 | | | |
-| WP01-A128 | | | |
-| WP01-A129 | | | |
-| WP01-A130 | | | |
-| WP01-A131 | | | |
-| V23 proof | | | |
+| WP01-A01 | Pass | lane-ui runs ta-signin, visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Label "Test environment. Synthetic data only." visible on every page read (sign-in, help, code steps, enrolment, set-up, signed-in pages of the three roles, account, SH-02 denied and not found, operation status, public 404); kept after reload and navigation; no control hides it. Maintenance page: by test only (A78). |
+| WP01-A02 | Pass | lane-ui runs ta-signin, visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Every title read starts with "[TEST] " and names the page (for example "[TEST] Enter your code · TravelMudra", "[TEST] Assigned work · Operations · TravelMudra"). |
+| WP01-A03 | Pass | lane-ui runs visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Read in the Chromium accessibility tree, not with VoiceOver or NVDA: the banner landmark holds "Test environment. Synthetic data only." as text; no aria-hidden ancestor; on /sign-in, /staff/sign-in, help, enrolment, SH-02 denied and one signed-in page per role. |
+| WP01-A04 | Pass | test/unit/web/shell.test.ts "the environment label and the title > production shows neither the label nor the prefix"; test/unit/web/signed-in.test.ts "in production: no environment label and no [TEST] prefix"; test/unit/web/status-pages.test.ts "the no-access page > shows no environment label and no \"[TEST]\" in production" | Shell, signed-in, status and no-access documents in production: no label, no prefix. |
+| WP01-A05 | Deferred | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Rail: Services, Groups, Applications, Notices, Payment history; Account only in the account menu. "Home" is hidden until TA-01 exists: WP-01-design §2.2 (Home `/ta` hidden, WP-03). Everything else passes. |
+| WP01-A06 | Deferred | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Rail: My work, Incidents and follow-up, Notices and account, Services; "Originals" absent. "Applications" hidden until WP-07 (WP-01-design §2.2, no `/ops/applications` page); "Services" stays as a transitional item (WP-01.md §3 Q-12). |
+| WP01-A07 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Rail: Home, Work queues, Applications & groups, Offerings & launch, Accounts & access, Money & exposure, Incidents & audit. Notices in the top bar, "Your account" in the account menu; no PARKED destination. |
+| WP01-A08 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | All rail destinations of the three roles: aria-current="page" on one item; weight 650 against 520; a 4 px left indicator only on the current item; identifiable with the page in greyscale (shots/ta-rail-greyscale.png). |
+| WP01-A09 | Deferred | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA: "Search your applications", Notices, Help, account menu (name, "Travel agent", Sign out). SuperAdmin: "Search all applications", Notices, Help, account menu. Operator: Notices, Help, account menu, no search: WP-01-design §2.1 R5 ("operator: none", no page). |
+| WP01-A10 | Pass | lane-ui runs apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | syn-ta-2 searched for the surname of syn-ta-1's applicant, the application reference and a random string: three identical 200 answers ("No application matches"); no count, hint or "hidden results" text. |
+| WP01-A11 | Deferred | Component: test/unit/web/results.test.ts "freshness > lag: the exact words, with the time as a time element" and "unavailable: …" | Deferred by WP-01-design §2.1 R12 (pages adopt CMP-12 when their package rebuilds them) and WP-01.md §3 Q-05 (the TA search page is rebuilt in WP-03). At 42cb373 the search results show no freshness line; scope (own applications only) passes on lane-ui (A10). |
+| WP01-A12 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA, operator, SuperAdmin: Help opens a panel with page help and the §11.3 notice that contacting support is unavailable (owner business owner); no hours, response time, telephone or promise; Escape closes it and focus returns to Help. |
+| WP01-A13 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA and operator: the Notices entry opens /ta/notices and /ops/notices; no count shown because nothing awaits acknowledgement (zero shows nothing, D7); no "unread" or "read" marker. |
+| WP01-A14 | Pass | lane-ui runs ta-shell, staff, a20 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | No context selector for syn-ta-1, syn-ta-2, syn-operator-1, syn-superadmin-1 and syn-superadmin-2 (the five accounts this run may use); each synthetic account holds one context. syn-ta-3, syn-operator-2, -3 and syn-superadmin-3 were not signed in by instruction. |
+| WP01-A15 | Not proven | test/unit/web/signed-in.test.ts "the context selector lists the contexts a person holds, never an accounting grant"; test/unit/web/shell.test.ts "the top bar > the context selector: …" | The listing is tested. No test switches context, proves unchanged permissions, or opens a first-context page while the second context is active. |
+| WP01-A16 | Deferred | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | WP-01 pages pass: /account "Read at [time] IST", operation status "Checked at [time] IST". List pages (applications, groups, notices, work) show no freshness line yet: WP-01-design §2.1 R12 (pages adopt CMP-12 when their package rebuilds them). |
+| WP01-A17 | Pass | lane-ui runs ta-signin, visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Every page loaded fresh: first Tab is "Skip to main content", Enter moves focus to main; one banner, one main, one h1; signed-in pages have the labelled navigation "Main"; no skipped heading level. |
+| WP01-A18 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Every signed-in page read: exactly one polite region (#toast-region, role=status), empty at load. |
+| WP01-A19 | Pass | lane-ui runs ta-signin, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in and /staff/sign-in: text wordmark "TravelMudra", no logo image, no rail, no private search, no Notices. |
+| WP01-A20 | Pass | lane-ui runs a20 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA, operator, SuperAdmin: rail visible and 232 px at 1440 px; from 1000 px a "Menu" button with an accessible name ("Menu, current: …") and expanded state (native details/summary, no aria-expanded attribute); Enter opens, Escape closes and returns focus. At 390 px the open menu is in the page flow and sized to its list (WP-01-design §2.1 R11, D-11), not a fixed full-height overlay. The first measurement (runs ta-shell, staff) misread the display:contents rail as hidden and was repeated. |
+| WP01-A21 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/shell.test.ts "the rail > one counted page shows its number, zero shows nothing, an unreadable count shows Unavailable"; test/unit/nav-counts.test.ts "navigation counts > give null for a count that cannot be read (unknown is not zero), and count it again on the next page" | L baseline: no rail item or Notices entry shows "0". The failure part is by test (WP-01.md §3 P-W01, V23 part B by test): an unreadable count shows "Unavailable", never 0. The top-bar Notices entry under failure is asserted only by the gallery consistency check. |
+| WP01-A22 | Pass | lane-ui runs ta-signin, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA: "You are signed out." on /sign-in; Back shows the sign-in page; a new tab on /ta/applications shows sign-in. Operator: the same on /staff/sign-in and /ops/work. |
+| WP01-A23 | Not proven | test/unit/web/sign-in-pages.test.ts "answers sign-out by core's answer, always with Clear-Site-Data" | The lost acknowledgement is a row only for "Sign out everywhere" (signed_out=unconfirmed). Plain "Sign out" with a lost acknowledgement, and the next page load, are not asserted. |
+| WP01-A24 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | h1 "Sign in"; for travel agents, no password; labelled "Email address" (type=email, autocomplete=username); labelled "Verification" region with one sentence; "Send sign-in code"; help link. |
+| WP01-A25 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Both disclosures and /sign-in/help: "[Action] is unavailable until the product owner approves / selects …. Owner: product owner"; no account-request form. |
+| WP01-A26 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Travel-agent path stated; staff path named, not linked; no staff host address on edge (WP-01.md §3 Q-08). |
+| WP01-A27 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | In-page validation: "There is a problem" focused; link moves focus to the field; aria-invalid; inline error; nothing sent. |
+| WP01-A28 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | "Enter an email address like name@example.com"; "abc" kept. |
+| WP01-A29 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Code step opened; "If syn-ta-1@synthetic.test can sign in, we are sending a code to it."; a code arrived. |
+| WP01-A30 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Unknown address: identical text (address aside), identical elements, identical statuses (303, 200); no mail. |
+| WP01-A31 | Not proven | test/system/sign-in.test.ts "answers a known, an unknown and a staff address identically: same status, location, cookies and page" | No test requests a code for a suspended or a pending TA account through the page (the core decoy test covers pending, staff and unknown addresses, not a suspended TA). |
+| WP01-A32 | Pass | lane-ui runs ta-advanced (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | JavaScript off: 422 "This check needs JavaScript, which is off in this browser. Turn on JavaScript for this site, reload the page and send the form again." with help link; address kept; no code. |
+| WP01-A33 | Pass | lane-ui runs timed (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | After 5 min 20 s: 422 with the expired-check text, "Reload the page" action; no code; after the action and a send the code step opened and a code arrived. |
+| WP01-A34 | Pass | lane-ui runs ta-advanced (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Full Chromium: Back from the code step reloads a fresh form (new key); the corrected address sent at once (no manual reload, no error, field not marked); code arrived. The 409 S8 recovery itself is shown under A35 (2). |
+| WP01-A35 | Pass | lane-ui runs ta-advanced, review (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/signin-address.test.ts "the address cookie through the BFF > names the newest request: request A, request B, then a replay of A keeps B …"; test/system/sign-in.test.ts "the sign-in steps at edge > answers a used form sent again with another address with a fresh 409 form …" | (1) identical mixed-case replay redirected to the same code step, no second code; (2) changed content 409 with S8 copy, no code; (3) new key is a new request with a new check; (4) A, B, replay A: the code step names B. |
+| WP01-A36 | Pass | lane-ui runs a36 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | With syn-ta-2 (syn-ta-3 not used): refused (429) once its window held three requests; an unknown address refused at its fourth request (429) with the same text "Too many code requests in a short time for this address or from this browser. You cannot request a code for now. Try again later."; no countdown; after the window a request worked and a code arrived. |
+| WP01-A37 | Not proven | Part 1: test/unit/web/sign-in-pages.test.ts "states limits and unavailable services as form-level items, and an address problem at the address"; test/system/three-instances.test.ts "core down > makes edge answer a truthful 503 …" | Part 1 (503, nothing sent, owner TravelMudra operations) is covered. Part 2 (mail-provider failure at the worker boundary, same neutral response for eligible and unknown addresses, reason category on the failed task) has no test. |
+| WP01-A38 | Pass | test/unit/web/sign-in-pages.test.ts "chooses the check text from the posted proof: expired, did not pass, or JavaScript off"; test/system/sign-in.test.ts "refuses a missing bot check before any address-keyed limit is spent, and forged or foreign requests" | Failed proof: "The check did not pass. This page now has a new check…", nothing issued. |
+| WP01-A39 | Pass | test/unit/web/sign-in-pages.test.ts "shows an unconfirmed request again under its own key, so sending it again cannot issue a second code"; test/unit/bff.test.ts "keeps a code request whose answer was lost unresolved when its new bot check cannot be read either"; test/system/three-instances.test.ts "a lost acknowledgement > is reported as unknown, and the same operation key replays the recorded result" | Copy differs from the draft ("TravelMudra did not confirm your request…"); it states the same facts: no claim, neutral, a new send under the same key cannot issue a second code (CR-09 draft-copy rule). |
+| WP01-A40 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | URL /sign-in/verify for every address; title and history hold no address or code. |
+| WP01-A41 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | localStorage 0, sessionStorage 0, no IndexedDB database. |
+| WP01-A42 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | "If syn-ta-1@synthetic.test can sign in, we are sending a code to it."; "works once" and "expires" stated without numbers; no account fact. |
+| WP01-A43 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | "Use a different address" and "Request a new code" are separate links; a fresh form (new key, new check) prefilled with the previous address (Q-09); first send worked; the code step named syn-ta-2. |
+| WP01-A44 | Pass | lane-ui runs ta-advanced (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Email step with "Send a new code to this address. A new code replaces the previous one."; a new bot-check proof was sent; neutral line; a new code arrived. |
+| WP01-A45 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | One input, visible label, inputmode=numeric, autocomplete=one-time-code; a clipboard paste "dddd dddd" signed in. |
+| WP01-A46 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Signed in to /ta/applications (the TA landing until TA-01, WP-03); Back shows no code form. |
+| WP01-A47 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Empty: summary focused. Wrong 8-digit code: 422, the combined code-failure text, link to the field, field empty, "Request a new code"; identical for the unknown address. |
+| WP01-A48 | Pass | lane-ui runs a48 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Code used 631 s after the request: 422 with the combined text (names "expired"), "Request a new code", field empty, no session. |
+| WP01-A49 | Pass | lane-ui runs a49b (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/sign-in-pages.test.ts "gives the combined code failure with an empty field, and never repeats an unconfirmed verification" | (1) one session; (2) identical replay from the same browser state: 409 "Sign-in could not be completed in this browser" with "Request a new code", no session cookie; (3) the used code in a fresh form: 422 combined text, no session. Core rules also by test/identity/sign-in.test.ts (run at the 42cb373 export: pass). Two earlier attempts failed on harness timing (mail race, rate window), not on the product. |
+| WP01-A50 | Pass | lane-ui runs ta-advanced (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Five wrong codes, then the correct code: refused with the combined text that says to request a new code; the six answers are identical for the unknown address. |
+| WP01-A51 | Pass | lane-ui runs ta-advanced (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Code entered in a second browser: 422 with the combined text (WP-01.md §3 Q-09), which names "from another browser" and offers "Request a new code"; no session in either browser. |
+| WP01-A52 | Pass | test/unit/web/sign-in-pages.test.ts "gives the combined code failure with an empty field, and never repeats an unconfirmed verification"; "the code step > offers only a new code when the sign-in result is not known" | 503 "The sign-in result is not known. Request a new code and sign in again." with one "Request a new code". |
+| WP01-A53 | Pass | lane-ui runs apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Signed out, the syn-ta-1 application address led to /sign-in?next=[that address]; after sign-in as syn-ta-1 the browser landed on that application. |
+| WP01-A54 | Pass | lane-ui runs apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | syn-ta-2 on the A53 address: SH-02 "You do not have access to this page" (404) with no applicant name, reference, group or country. Read with syn-ta-2 already signed in (the sign-in-with-next path is the A53 mechanism). |
+| WP01-A55 | Pass | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | With syn-ta-2 (syn-ta-3 not used in this run): A "Sign out everywhere" -> "You are signed out everywhere…"; B -> /sign-in?session_ended=1 "Your session ended…"; Back in B shows no private content. |
+| WP01-A56 | Not proven | test/unit/web/sign-in-pages.test.ts "the email step > states each landing in words"; test/system/flows.test.ts "a travel agent's address change > needs the code sent to the current address and then the one sent to the new address" | Notice texts and session revocation are tested. The initiating browser's redirect to "Sign in with your new email address." and the second browser's generic session-ended landing after an email change are not asserted. |
+| WP01-A57 | Pass | lane-ui runs apps, a20 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA session on 4650 opening 4652/ops/work -> /staff/sign-in; operator session on 4652 opening 4650/ta/applications -> /sign-in?next=…. (A first operator read used /ta, which is not a page, and was repeated.) |
+| WP01-A58 | Pass | lane-ui runs a20 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | syn-ta-1 account page as SuperAdmin: controls are copy reference, open support view, suspend, open grants; none shows, chooses or resends a code, sets a password or signs in as the TA; the support view says "You cannot act as them, change anything or download documents." (The first read, run staff, looked at a closed disclosure and was repeated.) |
+| WP01-A59 | Pass | test/ops-tooling/backup-restore.test.ts "T-15-67: makes old sessions, sign-in codes, enrolment links, lease tokens and keyed digests unusable …" and "keeps the installation closed for a clean restore with a new writer epoch and secret generation" (outside the 42cb373 run record; run by the PM at an export of 42cb373: pass) | Asserted at the identity and installation level; an unusable session takes the generic signed-out path (test/system/refusals.test.ts). |
+| WP01-A60 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | h1 "Staff sign-in"; mailed code and authenticator code stated; labelled email and "Verification"; JavaScript off: no code, the page says why. |
+| WP01-A61 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | syn-operator-1 and an unknown address: same code step and statuses (303); a mailed code only for the real account. |
+| WP01-A62 | Pass | lane-ui runs timed, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | S10: expired check on the staff form refused with the expired text and "Reload the page"; then a code arrived. S8: Back from the staff code step reloads a fresh form; the corrected address sent at once (Q-08). |
+| WP01-A63 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Two labelled fields with hints, one-time-code on both; both empty: "There are 2 problems" focused, links to each field; a mailed code pasted with a space accepted. |
+| WP01-A64 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Operator landed on /ops/work (My work); SuperAdmin on /admin/monitors (Home links to Monitors until SA-01, WP-01-design §2.2). |
+| WP01-A65 | Fail | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | First two attempts: same combined text, nothing names the failed code, both fields empty. A reused authenticator code (sequential, 4 s after its sign-in) got the combined text, not "This authenticator code was already used…". Finding F-02. **Amended 13 Oct (WP-01.md §6.1): a sequential reuse gets Core's combined text; the expectation now matches, so the item passes on this evidence.** |
+| WP01-A66 | Not proven | lane-ui runs enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); no test (see note) | L passes with the run's own synthetic operator (syn-operator-3 not used): suspended account and unknown address get the same answer (303, same page), no mail, no "suspended"; after restore it signed in. T part: no test requests a staff code for a suspended account. |
+| WP01-A67 | Pass | lane-ui runs enrol, a67b (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/sign-in-pages.test.ts "the enrolment set-up > answers a stale revision with the current key and revision, saying the set-up changed" | QR and key with "Shown to you only"; key not in URL or title; reload shows the key while open; second tab 409 "This set-up changed since you opened the page…" with the current key, field not marked; after completion Back shows the browser's resubmission page (net::ERR_CACHE_MISS) and the set-up address redirects to /staff/enrol: no key. Codes and key held in memory only. |
+| WP01-A68 | Pass | lane-ui runs enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/identity/accounts.test.ts "stops an enrolment after five wrong authenticator codes and refuses an expired code" (run by the PM at an export of 42cb373: pass) | Wrong and used codes: 422 "The enrolment code is invalid, already used or expired. Ask a SuperAdmin to send a new one."; field empty; nothing about the account. Expired: by test. |
+| WP01-A69 | Pass | lane-ui runs enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/identity/accounts.test.ts "activation mails an enrolment code nobody else sees; …" (run at the 42cb373 export: pass) | Hint "5 tries left" -> "4 tries left"; at the limit "Set-up stopped" with "Enter a new enrolment code"; a correct code enrolled and the operator signed in with both codes. |
+| WP01-A70 | Not proven | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/sign-in-pages.test.ts "the account page > shows no grant section without the grant, \"Not set up\" without an authenticator, and no sign-out in a support view" | L passes: name, role, "Set up on [time] IST.", reset by a SuperAdmin, nobody sees the key; no key, QR or secret. "Not set up" by test. No test makes the account read fail (S7, never "Not set up"). |
+| WP01-A71 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Sessions list without address or device details; the confirmation states the consequences first; both browsers signed out; B lands on staff sign-in with the session-ended message. |
+| WP01-A72 | Pass | lane-ui runs staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | No "Mark as read"; notices list and accounting-grant section unchanged (the grant shows only while held, AD-12). |
+| WP01-A73 | Pass | lane-ui runs apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | 404 "You do not have access to this page. Your access may have changed…" with "Go to your home"; no applicant, reference, group or country; one h1; environment label shown. |
+| WP01-A74 | Pass | lane-ui runs apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | One character of the reference changed: same text, same main content, same title, same HTTP status (404). |
+| WP01-A75 | Not proven | test/system/case-rules.test.ts "authorizes an operation lookup again: after a reassignment the previous operator's lookup is refused like a missing resource"; test/system/core-pages.test.ts "reassigns: the new operator acts, the previous one no longer reads the case" | T part covered. L part not run: lane-ui holds no submitted application, so no application can be assigned or reassigned; making one needs the submission path outside WP-01. |
+| WP01-A76 | Pass | lane-ui runs enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/system/refusals.test.ts "a suspended account > has no session on any route of its BFF" | The run's own synthetic operator, suspended while signed in: next page -> /staff/sign-in?session_ended=1 with the session-ended message, no restricted content; restored afterwards. |
+| WP01-A77 | Pass | lane-ui runs probe, visitor-aria (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Signed out: 4650 /account -> /sign-in; 4652 /account -> /staff/sign-in; no account facts. |
+| WP01-A78 | Pass | test/unit/web/status-pages.test.ts "the maintenance page > is always the status document, also for a signed-in viewer, with no case data and no control"; test/system/lifecycle.test.ts "admission across the instances > …" | By test, per WP-01.md §3 P-W01 (maintenance on lane-ui waits for P-03). |
+| WP01-A79 | Pass | test/unit/web/status-pages.test.ts "busy: nothing was saved, try again later, no invented wait; \"Try again\" only for a page read"; test/system/capacity-pages.test.ts "T-15-72: …"; test/system/lifecycle.test.ts "the request limit at edge > answers busy at once …" |  |
+| WP01-A80 | Pass | test/unit/web/status-pages.test.ts "core cannot be reached > is one status document for everyone: nothing was sent, do not send again until it is back"; test/unit/bff.test.ts "answers 503, never a sign-in redirect, while core cannot be reached, and sends nothing on" |  |
+| WP01-A81 | Pass | lane-ui runs ta-signin, ta-advanced, timed, staff, enrol, a36 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Refusals A27-A36, A47-A51, A65, A68, A73: each names what happened and what to do next; none echoes a request value in its text (the code step names the typed address by design, S9); no forbidden label; no fallback text, so no reference code was needed. |
+| WP01-A82 | Not proven | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/results.test.ts "operation receipt > accepted: …", "the receipt names no command and no accepted time, and has no live role", "unchecked: the reference and \"The receipt cannot be checked now\", with no acceptance claim"; "receipt location and receipt read > a read that core cannot answer now (an availability failure) gives the unchecked receipt, never accepted" | Status page on lane-ui passes: "Request recorded", "Request [reference] was recorded once.", "Recorded result Group", "Open the result", "Checked at [time] IST". No product page shows the new receipt at 42cb373 (creating a group redirects to the existing group page with ?done=group_created and no receipt; readReceipt has no product caller), so the receipt part cannot be run on lane-ui; it is proven only on the component (partly met until P-02, WP-01.md §3 Q-01). |
+| WP01-A83 | Pass | lane-ui runs a36, enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Rate-limited code request and invalid enrolment code: the reason is in the error summary of the re-rendered form ("Try again later", "Ask a SuperAdmin…"); the address stays; the enrolment code field is empty; no receipt; nothing appears on a status page. |
+| WP01-A84 | Pass | test/unit/web/status-pages.test.ts "while unresolved reads \"Checking the original result\" and offers only \"Check status\", a link to its own address"; test/system/web-shell.test.ts "the operation lookup > says a request is still being processed while it may still commit, then accepted; …" | The system test holds the commit open instead of injecting a lost acknowledgement; the page state is the same. |
+| WP01-A85 | Not proven | test/unit/web/status-pages.test.ts "the operation status route > reads the key it was given and answers what core said" | Same key and address, then the final result, are tested. "The result is the first content after the h1" after the reload is not asserted. |
+| WP01-A86 | Pass | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | syn-ta-2 on syn-ta-1's status link and on an unused key: both 200, identical "Checking the original result … Nothing is recorded for request [reference] so far. It may still be recorded. Check its status again before you do anything else."; no fact of syn-ta-1. |
+| WP01-A87 | Pass | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Signed out, the status link led to /sign-in?next=…; after sign-in as syn-ta-1 the browser landed on the operation status page ("Request recorded"); no "not found" (Q-06). |
+| WP01-A88 | Pass | test/unit/web/status-pages.test.ts "a failed status read: \"Status unavailable\", do not send the request again, check later; no time, no acceptance" | Wording "Status unavailable" states the same fact as "Unavailable". |
+| WP01-A89 | Pass | lane-ui runs staff, a67b (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | SuperAdmin key (from the "Reset second factor" form): /admin/operations/[key] "Request recorded … was recorded once … Recorded result Account, Open the result, Checked at … IST"; an unused key: "Nothing is recorded …" (200). syn-operator-1 on /ops/operations/[key]: 200, identical to an unused key; on /admin/operations/[key]: 404 SH-02 denied; no fact shown. |
+| WP01-A90 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /ta/operations/[key], /ops/operations/[key], /admin/operations/[key]: the path holds only the opaque key; no query, no personal data. |
+| WP01-A91 | Pass | test/unit/web/results.test.ts (error summary, operation receipt, policy boundary notice, operation status banner, one-time code field); test/ui/results.test.ts "result gallery pages > … no overflow, no CSP violation, no serious axe violation" (1440, 390, 320; light and dark) | The "rejected" receipt state was removed by the A83 decision; the code field has no filled/expired/locked renderings because no code is rendered back (A-12). |
+| WP01-A92 | Pass | lane-ui runs ta-signin, visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | No forbidden §11.1 label, no "Core" or "TA Delivery" in a button, no sender address on any WP-01 page read (account addresses on the SuperAdmin account list are account data, not senders). |
+| WP01-A93 | Pass | lane-ui runs kbd-ta (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | At 1440 (syn-ta-1) and 390 px (syn-ta-2), keyboard only: request, "Use a different address", request again, error-summary link to the code field, sign in, account menu, Sign out; no mouse, no hover. |
+| WP01-A94 | Pass | lane-ui runs kbd-op (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | At 1440 and 390 px, keyboard only: email, mailed code, Tab to the authenticator field, Enter -> /ops/work; account menu, "Your account", Sign out. |
+| WP01-A95 | Pass | lane-ui runs ta-signin, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Tab walk at 1440, 390 and 320 px (= 1280 px at 400 %) on sign-in, code step, staff sign-in and the three shells: every focused element has an outline or ring of at least 3:1 against its background; none is covered by the top bar, rail, menu or label (the bot-check checkbox is drawn by its own widget). |
+| WP01-A96 | Pass | lane-ui runs ta-signin, ta-shell, staff, apps (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | At 320 px (the CSS width of 1280 px at 400 %): no horizontal scroll on /sign-in, /sign-in/help, the TA code step, /staff/sign-in, the staff code step, SH-02 on 4650 and 4652, the TA and operation status pages, /account (TA, operator) and one shell page per role; all text and actions reachable. |
+| WP01-A97 | Pass | lane-ui runs ta-signin, staff, enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Every input on every form has a visible label; the bot check has the visible label "Verification". |
+| WP01-A98 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Greyscale: current rail item by weight and indicator; errors carry "Error:" and text; the environment label is text; operation states are words ("Request recorded", "Checking the original result"). |
+| WP01-A99 | Pass | lane-ui runs ta-signin, staff, enrol (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Focus to the summary, links move focus; the typed address stays; the code, authenticator and enrolment fields are empty after every re-render. |
+| WP01-A100 | Not proven | lane-ui runs ta-shell (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/ui/gallery.test.ts "status polling > a final fragment updates the region in place and ends polling" | No WP-01 page updates a result in place at 42cb373: "Check status" reloads the page, and the polite region stays silent. The in-place announcement is proven only on a gallery fixture. |
+| WP01-A101 | Fail | lane-ui runs ta-signin, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Primary buttons and the menu button are 44 px high; axe target-size (24 px) passes everywhere. "Use a different address" is 166 × 21 px (and "Request a new code" 143 × 21 px) on the TA and staff code steps at 390 px, under the required 44 × 44. Finding F-01. |
+| WP01-A102 | Pass | lane-ui runs ta-signin, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/unit/web/contrast.test.ts "contrast pairs meet WCAG 2.2 AA (${theme}, ${surface})" | No axe color-contrast violation on any page; focus indicators measured at 3:1 or more; declared token pairs (rail, environment label, focus, disabled, error) pass by test. |
+| WP01-A103 | Pass | lane-ui runs ta-signin (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | The unavailable actions are disclosures whose §11.3 notice (role=note) follows the control in reading order. |
+| WP01-A104 | Pass | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Reduced motion emulated: no transition or animation on the rail menu, Help panel, top bar or rail (computed durations 0). |
+| WP01-A105 | Pass | lane-ui runs visitor-aria, ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | As A03 (accessibility tree, no screen reader). |
+| WP01-A106 | Not proven | — | Not run: needs TA and operator participants on a phone; an agent cannot stand in for them. |
+| WP01-A107 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in fresh: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A108 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in error summary: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A109 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in S8 (409): 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A110 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in S10: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A111 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in/verify S9: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A112 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in/verify wrong code: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A113 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | not completed in this browser: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A114 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /sign-in/help: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A115 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /staff/sign-in: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A116 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /staff/sign-in/verify (fresh, both empty, refused codes): 3 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A117 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /staff/enrol (fresh, refused code): 2 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A118 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /staff/enrol/setup (harness, no screenshot): 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A119 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA /ta/applications: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A120 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | operator /ops/work: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A121 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | SuperAdmin /admin/monitors: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A122 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | operator /account: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A123 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /ta/operations/:key (accepted): 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A124 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | /ops/operations/:key, /admin/operations/:key: 2 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A125 | Pass | test/ui/gallery.test.ts "gallery pages > … no overflow, no CSP violation, no serious axe violation" (operation-checking, operation-unavailable) | Minor and moderate counts are not recorded by the test. |
+| WP01-A126 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | TA SH-02 denied and not found: 2 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A127 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | operator SH-02 denied: 1 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. "Access changed" variant not reachable on lane-ui (needs a reassignment, see A75). |
+| WP01-A128 | Not proven | none at 42cb373 | Maintenance is by test until P-03 (WP-01.md §3 P-W01), but no test runs axe on the maintenance status document (scripts/dev/gallery/status.ts statusDocumentPages() is not used by any test). |
+| WP01-A129 | Pass | lane-ui runs axe.jsonl (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…) | Help open; rail menu open at 390: 2 state(s) at 1440 and 390 px; serious/critical 0; moderate 0; minor 0. |
+| WP01-A130 | Pass | test/ui/results.test.ts "a background request that is refused is an access change > …: every poller stops, the region's content is removed, main is hidden and the page loads itself again" (404, redirect to sign-in, page without the region); "the reload of a poll redirected to sign-in ends on the sign-in page" |  |
+| WP01-A131 | Pass | lane-ui runs bfcache, enrol, a20, bfcache4 (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); test/ui/results.test.ts "back/forward cache > a private page restored from the cache loads again from the server before anything shows" and "… > a support view page restored from the cache shows nothing of its old document while it loads again"; test/unit/web/sign-in-pages.test.ts "answers sign-out by core's answer, always with Clear-Site-Data" | Full Chromium 153.0.8010.12. (1) JavaScript on: Back after sign-out shows the sign-in page, no private content. (2) Back after enrolment shows the browser's resubmission page; the set-up address redirects; no key. (3) Sign-out answer carries Clear-Site-Data: "cache"; data-reload-on-restore on a signed-in page, /sign-in, /staff/sign-in, /staff/enrol and the set-up page (the status page is a signed-in document; marker by test/unit/web/shell.test.ts). (4) JavaScript off: Back after sign-out showed the sign-in page; nothing private was restored in Chromium 153, so there is no residual to record for it; Firefox and Safari were not tested, and WP-01.md holds no residual record yet. |
+| V23 proof | Not proven | lane-ui runs ta-shell, staff (WP-01 run evidence manifest SHA-256 d01d743b34f2ed47…); tests named in the note | Part A on lane-ui: no rail count or Notices entry shows "0" (syn-ta-1 and syn-operator-1 have nothing pending, so no number shows; zero shows nothing, D7); list pages have no freshness line yet (deferred, WP-01-design §2.1 R12); the status page reads "Request recorded" with "Checked at [time] IST" (A2). Part B by test (WP-01.md §3 P-W01): B1 test/system/ported-pages.test.ts "the audit record behind > refuses privileged actions through staff, keeps containment available, and accepts them again once it is current"; B7 the same test; B2 partly (counts "Unavailable" by test/unit/nav-counts.test.ts; freshness only on the component); B3 deferred to the first package that rebuilds a projection list (WP-01-design §9 V23-2); B4 no test; B5, B6, B8 partly (healthy projections only, or SuperAdmin pages only). Part C by test until P-03: C2, C3, C7 test/system/lifecycle.test.ts "admission across the instances > …"; C2 also test/unit/web/sign-in-pages.test.ts "shows maintenance as the status document even after the session was read: no shell, no account details"; C9 test/ops-tooling/backup-restore.test.ts (run at the 42cb373 export); C4, C5, C6, C8 partly (no mailbox check, no status link or public home page under closure, no "nothing accepted" check after reopening). V23 does not pass until B4 and the partial steps have a test or a lane-ui proof. |
+
+## 7. Findings of the acceptance run
+
+Run of 12 to 13 October 2026 on `lane-ui` at 42cb373 by the Principal Product Manager (Claude Opus subagent). Ranks follow
+PRI-20260930-01. Evidence: the WP-01 run evidence set (scripts, results, axe and fact files, one screenshot), manifest
+SHA-256 d01d743b34f2ed474dd0faebc59baa3643e09c61599cac8e5c0c08580a3ab208, held by the lane for archival at closure. No
+evidence file holds a sign-in code, an enrolment code, an authenticator key or a TOTP value (scanned).
+
+| ID | Item | Rank | Finding | Concrete scenario and likelihood | Proposed disposition |
+|---|---|---|---|---|---|
+| F-01 | WP01-A101 | P2 | On the TA and staff code steps at 390 px, "Use a different address" (166 × 21 px) and "Request a new code" (143 × 21 px) are plain text links. AC-10 requires at least 44 × 44 px for "Use a different address". axe target-size (24 px, with its spacing exception) passes. | A TA on a phone sees that the typed address was wrong and taps "Use a different address"; the 21 px target is easy to miss, and the next target below is "Request a new code". A mis-tap sends a new code to the wrong address and uses one of the three requests per address in 15 minutes. Likelihood: medium on phones (the UAT-02 control); no data harm, recoverable. | Render both as secondary buttons or as links with at least 44 px block size on the code steps (U4). Recheck A101 at 390 px. |
+| F-02 | WP01-A65 | P2 | A reused authenticator code sent again after its sign-in (same 30 s step, 4 s later) gets the combined text "These codes did not work…", not "This authenticator code was already used. Wait for the next code and try again.". Core's step check (`matchTotp` excludes steps not newer than `totp_last_step`) returns an invalid result for a sequential reuse; the "already used" text comes only from the concurrent `stale_revision` race. The reuse also counts as a second-factor failure. | An operator signs out by mistake and signs in again within the same 30 seconds with the same authenticator code. The page says the codes did not work, so the operator retypes the same code; each try counts towards the 10-failure, 24-hour authenticator lock. Likelihood: low; impact: a confusing message and, after repeated tries, a locked second factor until a SuperAdmin acts. | Architect decision: either amend A65 to accept the combined text for a sequential reuse (truthful, discloses nothing; Q-09 line), or raise a Kind 2 request for a distinct Core result for a reused step that does not count as a failure. |
