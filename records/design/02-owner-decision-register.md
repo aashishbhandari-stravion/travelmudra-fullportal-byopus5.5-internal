@@ -87,6 +87,23 @@ Rules for this register:
 
 The B46 items (delivery-send trigger, completion-check trigger and owner, uncertain-email handling) are already reserved to the product owner's UAT decision by the spec; the design shows them as `unresolved_known_limitation` and provides harness-only commands.
 
+### A.3 Kind 2 and acceptance decisions of 12 October 2026 (DECISIONS-2026-10-10 §3.2; execution plan `execution-2026-10-12/`)
+
+Each decision was taken by Max in the lane chat with the proposal and the independent review in front of him,
+reported by the lane, and confirmed by Max to the orchestrator in the orchestrator chat on 12 October 2026 ("Max has
+approved this"). Proposal and review files are cited by lane path at the time of decision; the lane's internal clone
+holds the durable copies.
+
+| ID | Decision | Proposal and review | Conditions and effect |
+|---|---|---|---|
+| OD-X1 (K2-S1) | A set of allowed services per group (UAT-07): ACCEPTED, option 3a. New groups name 1 to 8 selectable services of their country at creation; a TA may add services to an open group and never remove one; additions affect only imports started afterwards; existing groups are grandfathered and unrestricted; every path refuses a service outside the set (`service_not_in_group`) with a Core guard; launch controls are never overridden; read models gain `services[]` and `servicesRestricted`. | Bulk lane `output/proposals/K2-S1-services-per-group.md` revision 2; Codex review of revision 1 (verdict reject; KR-01 to KR-06 P1, KR-07 P2; each answered in §10); no re-review (Max's rule) | Built by the bulk lane under the orchestrator's ownership grant for the Core group and intake-writer files of this change only (SEAM-CONTRACT §5). Seam v2 gains the group services fields. |
+| OD-X2 (K2-R1) | Re-run intake outcomes produced by a faulty version: ACCEPTED. `intake.rerun_by_version {version, scope, reason}` by a SuperAdmin with MFA after a dry-run query; rebuilds every outcome that created no application; never changes a draft; a different result for an existing draft becomes a TA-owned incident; old outcomes superseded, never deleted; runs as a system-started correction attempt per affected chain. | Bulk lane `output/proposals/K2-R1-rerun-by-version.md` revision 2; Codex design review verdict for its section: no P0, DR-04 to DR-07 P1, each answered in §10 | Releases the action `intake.rerun` (P-K1 item 5). The facts `intake.rerun_requested` and `intake.rerun_completed` with their kernel CHECK migration come as their own proposal when the build starts (P-K1c). |
+| OD-X3 (requirements rev 3) | Bulk requirements and acceptance, revision 3: the four changes forced by the design review ACCEPTED: ADM-02 (an uploaded-file start is refused at the kernel work bound `tasks.maxPending`, "system busy, try again"; link starts queue), FAIR-02 (equal share per TA, split across that TA's imports), G5 (excludes pipeline backpressure intervals), REC-10a (bytes refused by the system's own structural check stay in quarantine for re-runs; malware bytes disposed). | Bulk lane internal clone `records/design/bulk-enhancement-2026-10-10/BULK-REQUIREMENTS-AND-ACCEPTANCE.md` revision 3; Codex design review of DESIGN.md revision 1 (2 P0, 22 P1; all answered in revision 2) | The requirements document records Max's acceptance in its §5. |
+
+Reported from the UI lane chat on 12 October 2026 and awaiting Max's confirmation to the orchestrator before entry:
+P-05 (Kind 1 exception for the declared eligibility in the TA offering display), the Core batch (P-04, P-06, P-10 with
+P-12 option C), P-11 (gate-exception evidence list, O1 required, attestation accepted, four review fixes as conditions).
+
 ## Part B — Material engineering choices (input for `ENGINEERING_OVERRIDES.md`)
 
 None of these changes a business rule. Each replaces a prior technical choice of brief revision 2 or contract revision 1.
