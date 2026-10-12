@@ -6,7 +6,7 @@
 | Work package | WP-20 (UI-PLAN §12.2; lane PLAN §3, with UAT-05 and WEB-20260926-01) |
 | Author | Principal Product Manager (Claude subagent), 12 October 2026 |
 | Decision owner | Principal Technical Architect of the lane (LD-12) |
-| Status | Draft. Step 1 of lane PLAN §3. Not run. Input to the UX design review. |
+| Status | Run on `lane-ui` at 9efb379 on 12 October 2026 by the Principal Product Manager. Results, evidence and findings: §6 and §7. The checklist text in §0 to §5 is unchanged from the draft (step 1 of lane PLAN §3). |
 | Product base | lane branch `ui-revamp-2026-10-12` at 102e4c9 |
 | Installation | `lane-ui`: edge http://127.0.0.1:4650 serves the public site. It is a test installation: every public answer carries noindex and `robots.txt` disallows everything. |
 | Production-mode check | `tm seo check` (`src/cli/commands/seo.ts`, `src/cli/seo/check.ts`, assertions A01 to A15 in `src/cli/seo/codes.ts`). It builds the site from `content/public/` with the production public configuration (canonical host `https://b2b.travelmudra.co`, indexable, redirects on), serves it on an ephemeral loopback port with no database, crawls it from `/` and `sitemap.xml`, and renders each page in Chromium with script off and on. Procedure: `docs/operations.md` §8. Stored record: `docs/verification/seo-check.md` and `seo-report.json`. Test: `test/integration/seo-check.test.ts`. |
@@ -261,88 +261,121 @@ inputs.
 
 | Field | Value |
 |---|---|
-| Verified on (date, IST) | |
-| Installation and ref (`uat.py status lane-ui` output: commit or tag) | |
-| Commit of the `tm seo check` run and of the committed `docs/verification/seo-check.md` | |
-| Lane commit of the tests named for `T` items | |
-| Browsers and versions | |
-| Assistive technology used | |
-| V25 result (parts A, B, C) | |
-| UAT-05 result from Max (WP20-A27) | |
-| Open findings (ID, rank, scenario) | |
-| Signed by (role and name) | |
+| Verified on (date, IST) | 12 October 2026. Crawl re-run before the run's pause; browser and HTTP probes 21:16 to 21:25 IST. |
+| Installation and ref (`uat.py status lane-ui` output: commit or tag) | `lane-ui`: ref 9efb379, release `rel_5XXWGB0XZ525PNEXCKVXGHFVV3`, verified yes, all five units active, edge and staff health ok. Edge 4650 serves the public site. |
+| Commit of the `tm seo check` run and of the committed `docs/verification/seo-check.md` | Committed record: `docs/verification/seo-report.json` and `seo-check.md` in lane commit 9efb379 (report `sourceCommit` 5280b9c; 5280b9c..9efb379 changes only those two files). Read-only re-run at 9efb379 on a clean tree, without `--report`: content, renderer and configuration digests equal the committed report (E8). |
+| Lane commit of the tests named for `T` items | 9efb379. Re-run in this acceptance run: `test/unit/public-site.test.ts`, `test/unit/public-content.test.ts`, `test/unit/seo-record.test.ts` (36/36 pass). Cited as green at 9efb379, not re-run here: `test/integration/seo-check.test.ts` (23/23), `test/ui/gallery.test.ts`, `test/system/web-shell.test.ts`. |
+| Browsers and versions | Headless Chromium 153.0.8010.12 (Playwright 1.63.0), `@axe-core/playwright` 4.13.0, Node 24.19.0, `curl`-equivalent raw fetch (no script, no cookie). |
+| Assistive technology used | No screen reader. Keyboard by Playwright key events; landmarks and names from the Chromium accessibility tree (`ariaSnapshot`, E7). A screen-reader pass by a person was not made. |
+| V25 result (parts A, B, C) | Pass. A: pass (E8, committed record). B: pass, with one variant at B1 (see the V25 row). C: pass by test. |
+| UAT-05 result from Max (WP20-A27) | For Max to judge. PM observations are in the WP20-A27 row. |
+| Open findings (ID, rank, scenario) | F-01, P2 (§7). No P0 or P1. |
+| Signed by (role and name) | Principal Product Manager of lane `ui-revamp-2026-10-12` (Claude subagent), for the lane architect (LD-12). |
 
-Result per item (Pass, Fail, Blocked or Not run; evidence reference; note):
+### 6.1 Evidence of the run
+
+The probe scripts and their outputs are lane research material, outside both repositories, in `proofs/wp20/`
+of the lane research folder. Each output is cited by SHA-256. The scripts send GET requests only, except the sign-in
+of `syn-ta-3` through `test/uat/signin-harness.ts` (no code is printed, logged or stored). No case, group or other
+data was created on `lane-ui`.
+
+| Ref | File | SHA-256 | What it holds |
+|---|---|---|---|
+| E1 | `probe-public.json` | `da75aad3db9db55abee0aef26511e71924fc32c18a99d53574c74c6557fbbbe4` | Raw HTTP answers of 18 addresses; text scans (country names, contact, live data, private links, claims); Chromium at 1440 and 390 px on 12 public addresses (label, title, blocks, headings, landmarks, navigation, fonts, requests, axe); keyboard order and focus; script off versus on; reflow at 320 px and at 1280 px with 400% zoom; reduced motion |
+| E2 | `probe-extra.json` | `0ca0fa8f271560a97fd369640de7f0f61844656bf3a1343d06a02a3b02ecbce6` | Text sizes, list columns, target sizes, footer links, axe pass ids, requests before and after axe |
+| E3 | `probe-signedin.json` | `07d8ac220d78dfa7327da0efe801f016690157dc4b2f3c724bbcad2ac5d9534e` | V25 B2 crawl; the catalogue markers `syn-ta-3` sees (8 offering names, 4 prices); marker scan; public searches for the markers; the same public answers with the signed-in session |
+| E4 | `probe-identity.json` | `22b2e4743ac6dc8c47a0eae47dc2a723b12f21412cec823fd6bb7834e957662c` | `lane-ui` answers for `/`, `/countries`, `/how-it-works`, `/about`, `/search`, `robots.txt`, `sitemap.xml`, `/no-such-page`, `/countries/synthetica` are byte-identical to the renderer's output built in process from the committed `content/public/` (test mode) |
+| E5 | `probe-ratelimit.json` | `f837b16fb4caabafdbf60085ecb38437bf7e39274661e2c5e8f6d65cfffce7c6` | Public search limit: 429 at the 49th search in the minute (earlier probe searches used the rest), message text |
+| E6 | `probe-final.json` | `ca5992b8b31de7b7ac50816bf9baf962eb64754493dc7a1511634cc212bbb5e8` | JSON-LD of each page on `lane-ui`; not-found page echo check; no-match links; all link texts; the production `robots.txt` rendered in process |
+| E7 | `probe-aria.json` | `0e8a7085e46f96cb8abd3108271da310da020cc3ce37bac66fd500893cd2010e` | Chromium accessibility tree of `/` and `/search?q=visa` |
+| E8 | `seo-check-rerun.txt`, `seo-check-strict-rerun.txt` | `4670112eecac137ad0dd187d8882eb288e66648ecedbcd95273a7031a0ced286`, `2da3c9f4c2c7c93c3aa3c7313c8d8569a851c98ae0bf12d1f4a4073b80cb83b5` | `node src/cli/main.ts seo check` (exit 0) and `--strict` (exit 1) at 9efb379: A01 to A15 pass, 4 pages, five blockers, digests |
+| R | `docs/verification/seo-report.json`, `seo-check.md` | lane commit 9efb379 | Committed production-mode crawl record (`tm-seo-check/2`) |
+| S | `shots/` | (screenshots, not hashed) | Full-page screenshots at 1440, 390, 320 px and 400% zoom; greyscale views |
+
+axe summary (WP20-A62 to A69, tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`): 24 runs (12 addresses × 2
+widths: `/`, `/countries`, `/how-it-works`, `/about`, `/search`, `/search?q=visa`, `/search?q=zzqxv`, the long-query
+refusal, `/no-such-page`, `/countries/x`, `/countries/france`, `/countries/synthetica`). Violations: 0 critical,
+0 serious, 0 moderate, 0 minor. Incomplete: 0. `color-contrast` and `target-size` are among the passing rules on every
+page (E2). Observation: axe's style-sheet preload requests `/fonts.css`, `/reset.css` and similar paths on the same
+origin after the analysis starts; the page itself makes no such request (E2). It is a tool artefact, not a page request.
+
+Result per item (Pass, Fail, Deferred with the decision, Not proven, or "for Max to judge"; evidence reference; note):
 
 | ID | Result | Evidence | Note |
 |---|---|---|---|
-| WP20-A01 | | | |
-| WP20-A02 | | | |
-| WP20-A03 | | | |
-| WP20-A04 | | | |
-| WP20-A05 | | | |
-| WP20-A06 | | | |
-| WP20-A07 | | | |
-| WP20-A08 | | | |
-| WP20-A09 | | | |
-| WP20-A10 | | | |
-| WP20-A11 | | | |
-| WP20-A12 | | | |
-| WP20-A13 | | | |
-| WP20-A14 | | | |
-| WP20-A15 | | | |
-| WP20-A16 | | | |
-| WP20-A17 | | | |
-| WP20-A18 | | | |
-| WP20-A19 | | | |
-| WP20-A20 | | | |
-| WP20-A21 | | | |
-| WP20-A22 | | | |
-| WP20-A23 | | | |
-| WP20-A24 | | | |
-| WP20-A25 | | | |
-| WP20-A26 | | | |
-| WP20-A27 | | | |
-| WP20-A28 | | | |
-| WP20-A29 | | | |
-| WP20-A30 | | | |
-| WP20-A31 | | | |
-| WP20-A32 | | | |
-| WP20-A33 | | | |
-| WP20-A34 | | | |
-| WP20-A35 | | | |
-| WP20-A36 | | | |
-| WP20-A37 | | | |
-| WP20-A38 | | | |
-| WP20-A39 | | | |
-| WP20-A40 | | | |
-| WP20-A41 | | | |
-| WP20-A42 | | | |
-| WP20-A43 | | | |
-| WP20-A44 | | | |
-| WP20-A45 | | | |
-| WP20-A46 | | | |
-| WP20-A47 | | | |
-| WP20-A48 | | | |
-| WP20-A49 | | | |
-| WP20-A50 | | | |
-| WP20-A51 | | | |
-| WP20-A52 | | | |
-| WP20-A53 | | | |
-| WP20-A54 | | | |
-| WP20-A55 | | | |
-| WP20-A56 | | | |
-| WP20-A57 | | | |
-| WP20-A58 | | | |
-| WP20-A59 | | | |
-| WP20-A60 | | | |
-| WP20-A61 | | | |
-| WP20-A62 | | | |
-| WP20-A63 | | | |
-| WP20-A64 | | | |
-| WP20-A65 | | | |
-| WP20-A66 | | | |
-| WP20-A67 | | | |
-| WP20-A68 | | | |
-| WP20-A69 | | | |
-| V25 proof | | | |
+| WP20-A01 | Pass | E1 | "Test environment. Synthetic data only." is visible on all 12 public addresses at 1440 and 390 px, including search states and not-found pages. The label holds no button or link; it is not `aria-hidden`. |
+| WP20-A02 | Pass | E1 | Every title is "[TEST] " plus the page's own title from `pages.json` (not-found: "[TEST] Page not found — TravelMudra"). |
+| WP20-A03 | Pass | E1 | Every HTML answer has `X-Robots-Tag: noindex, nofollow` and `<meta name="robots" content="noindex,nofollow">`. `robots.txt` and `sitemap.xml` also carry the header. |
+| WP20-A04 | Pass | E1 | `robots.txt` on 4650 is `User-agent: *` / `Disallow: /`. |
+| WP20-A05 | Pass | E8, R, T | A07 and A11 pass in the re-run and in the record. Test: "the production output itself carries no environment label and no "[TEST]" title" (`seo-check.test.ts`). |
+| WP20-A06 | Pass | E1, S | Order on `/`: header (text wordmark, navigation, "Sign in") → h1 and lead → What TravelMudra does → Who TravelMudra serves (with "does not handle") → How it works → Sign in → footer. Destinations and business details are omitted (decisions F-03 and content schema in WP-20.md §3). |
+| WP20-A07 | Pass | E1 | h1 "Visa services for travel agents"; lead "TravelMudra is a business-to-business visa service. Travel agents bring their travellers' visa applications to TravelMudra …". |
+| WP20-A08 | Pass | E1 | States that travel agents bring applications, that TravelMudra checks, prepares and tracks the work, and that each application shows where it stands and who it waits on. No claim outside B01 to B04 found. |
+| WP20-A09 | Pass | E1 | Handles: Indian citizens with an ordinary passport who live in India; tourist and business visas. Does not handle: student, diplomatic and work visas. "Through their travel agent" is stated in the block's first paragraph. |
+| WP20-A10 | Pass | E1, E6 | Home and footer: "Travellers do not have an account; their travel agent works with TravelMudra." About: "It does not offer accounts to travellers." No "Apply now", "Track your visa", applicant portal or applicant link (claims scan). |
+| WP20-A11 | Pass | E1, E3, E8 | Scan against every ISO 3166 region name plus "Synthetica", "Dubai", "Schengen", "UAE", "UK", "USA": only "India" in the population statement on `/` and `/about`. Sitemap, JSON-LD and search results hold no country. No flag, map or "coming soon". Crawl A11 pass. |
+| WP20-A12 | Fail (P2, F-01) | E1 | `/` passes: the six steps include "A TravelMudra operator works on each application"; no processing time, SLA, approval rate, promise or price. `/how-it-works` keeps every absence but does not state that a TravelMudra operator works on the application ("Follow the work" names only who the application waits on). |
+| WP20-A13 | Pass | E1, E2 | "Sign in" is in the header of all 12 addresses (102 × 44 px). The home sign-in block says TravelMudra sets up an account for each travel agency and that accounts cannot be requested on the site. Links go to `/sign-in` on 4650 (answers 200). No registration or "Create account". |
+| WP20-A14 | Pass | E1, E6, E8 | No email address, `mailto:`, `tel:`, WhatsApp link, telephone pattern, postal code, street words, map, support hours or sender address on any page or in JSON-LD. Crawl A10 pass. |
+| WP20-A15 | Pass | E1, E3, E8 | Markers: the 8 offering names and 4 prices that `syn-ta-3` sees on `/ta/catalogue`, all synthetic service codes and the catalogue baseline prices, "₹", "SYN", "Synthetica". No match on any public page or in `sitemap.xml`. Public searches for each offering name answer "No public page matches". Crawl A11 pass. |
+| WP20-A16 | Pass | E3, E4 | Variant: no marker case was created (the run was read-only beside another agent on `lane-ui`). Proof used instead: every public answer is byte-identical to the renderer's output from the committed content files (E4), so no case, group, account or catalogue data can reach a public page. No link under `/ta/`, `/ops/`, `/admin/`, `/accounts/`, `/staff/`; no `@synthetic.test` address; `/search?q=Pubcheck`, `?q=syn-ta-1`, `?q=syn-ta-3` answer no match. `syn-ta-3` has no groups, so no case reference was available to search; whether other accounts held cases during the run was not checked. |
+| WP20-A17 | Pass | E3 | Signed in as `syn-ta-3` (lands on `/ta/applications`): `/`, `/about`, `/countries`, `/how-it-works`, `/search`, `/search?q=visa`, `sitemap.xml`, `robots.txt`, `/no-such-page` are byte-identical to the signed-out answers; no `Set-Cookie`. Rendered text of `/` and `/about` identical. `syn-ta-3` was used instead of `syn-ta-1` on instruction. |
+| WP20-A18 | Pass | E1 | No testimonial, client logo, approval rate, percentage, "fast-track", "within n days", government, embassy, "official" or emblem. "Guarantee" appears only as "estimates, not guarantees". |
+| WP20-A19 | Pass | E1, E2 | No `img`, `picture`, `video`, `canvas`, `iframe` or background image. One SVG: the `aria-hidden` info icon of the test environment label. Text wordmark. One font, Atkinson Hyperlegible Next, self-hosted under `/assets/` (LD-09). No third-party request. |
+| WP20-A20 | Fail (P2, F-01) | E1 | Same absences as `/` (A12, A18). It does not match the home process on one fact: the TravelMudra operator step is missing. |
+| WP20-A21 | Pass | E1 | No founding year, staff count, registration number, address, award or other unsupplied fact. |
+| WP20-A22 | Pass | E1 | Names no country. Lead: "TravelMudra lists a destination here only after it approves the destination for public listing." Block: "No destination is listed yet." The page stays in navigation and the sitemap (decision PM Q-03, WP-20.md §3). |
+| WP20-A23 | Pass | E1, E8 | `/countries/france`, `/countries/x` and `/countries/synthetica` (a slug of the launched synthetic catalogue) answer the public not-found page, 404, noindex. Crawl A07 pass. |
+| WP20-A24 | Pass | E2 | Footer: About, Destinations, How it works, "Sign in for travel agents". No `/privacy`, `/terms` or placeholder legal text. |
+| WP20-A25 | Pass | E1, E8 | `/` links to `/countries`, `/how-it-works`, `/about` in the visible navigation. The current item has `aria-current="page"`, a 3 px underline bar, weight 650 and a tint. On `/` no item is current, because the navigation has no Home item. Crawl A01 pass. |
+| WP20-A26 | Pass | E1, E2, S | 390 px: one column (blocks and lists stacked at x = 16). Wordmark and "Sign in" visible at both widths with no menu button; the navigation wraps to two rows. Body text 16 px; lead 20 px; h1 28, h2 24, h3 20 px. |
+| WP20-A27 | For Max to judge | E1, S | PM observations for Max: `/` now gives a welcome and value statement, what TravelMudra does, who it serves (and does not), the six process steps, and a sign-in section with two "Sign in" entries plus the header link. Still missing because owner inputs are not supplied (input requests, not defects): a verified public contact, so a travel agent without an account has no way to reach TravelMudra (PM Q-01, C02); the approved destination list; legal pages; logo and imagery; copy approval (blocker `public_copy_unapproved`). |
+| WP20-A28 | Pass | E1, E8 | Raw HTML holds the h1, every block and every link; script off and on give identical text and links, equal to the raw links. No executable script; the only `<script>` elements are `application/ld+json` data blocks that A35 requires (CSP `script-src 'none'`). Crawl A02 pass. |
+| WP20-A29 | Pass | E1, E8 | One title and one description per indexable page, all different. Crawl A03 pass. |
+| WP20-A30 | Pass | E1, E8 | Canonicals `https://b2b.travelmudra.co/`, `/countries`, `/how-it-works`, `/about` equal the sitemap `<loc>` values. Crawl A04 pass. |
+| WP20-A31 | Pass | E8 | Crawl A05 pass. On `lane-ui` (test mode) `/about/`, `/About` and `/index.html` answer the not-found page, as designed (redirects only in production). |
+| WP20-A32 | Pass | E8, E6 | Crawl A06 pass. Production `robots.txt` rendered in process: `Allow: /`, disallows exactly `/ta/`, `/ops/`, `/admin/`, `/accounts/`, `/account`, `/sign-in`, `/staff/`, `/search`, names `Sitemap: https://b2b.travelmudra.co/sitemap.xml`. |
+| WP20-A33 | Pass | E8 | Crawl A07 pass. |
+| WP20-A34 | Pass | E1, E8 | `lane-ui` sitemap: valid XML, exactly `/`, `/countries`, `/how-it-works`, `/about` on `https://b2b.travelmudra.co`, no duplicate, no search or private path. Crawl A08 pass. |
+| WP20-A35 | Pass | E6, E8 | `/`: Organization and WebSite; `/about`: Organization; `/countries`, `/how-it-works`: BreadcrumbList. Each parses, `https://schema.org` context, name "TravelMudra", URL `https://b2b.travelmudra.co/` (decision F-04). Crawl A09 pass. |
+| WP20-A36 | Pass | E6, E8 | No `address`, `PostalAddress`, `geo`, `telephone`, `email` or `openingHours`. Crawl A10 pass. |
+| WP20-A37 | Pass | T | `public-site.test.ts`: "carry no address in structured data while the locality is unverified, and the verified address otherwise" (re-run, pass). Also `seo-check.test.ts`: "content with every owner input supplied has no blocker and passes every assertion the crawl runs". |
+| WP20-A38 | Pass | E8, R | Crawl A11 pass in the re-run and the record. |
+| WP20-A39 | Pass | E1, E2, E8 | Every page request is to 127.0.0.1:4650 (HTML, nine style sheets, one font). No third-party request. Crawl A12 pass. See the axe preload observation above. |
+| WP20-A40 | Pass | E1, E3, E8 | CSP has `script-src 'none'` and `connect-src 'none'` on every public answer; no `Set-Cookie`, signed out or signed in. Crawl A13 pass. |
+| WP20-A41 | Pass | E1, E8 | `lang="en-IN"`, `charset="utf-8"`, viewport meta, one h1, no images. HTML 2.9 to 6.2 KB; with style sheets and font about 149 KB transferred. Crawl A14 pass. |
+| WP20-A42 | Pass | E1, E8 | `q=visa`: "4 public pages match “visa”." with links to `/`, `/about`, `/countries`, `/how-it-works`, each with title and description. `q=<b>x</b>`: shown as text in the no-match sentence, not as markup. 101 characters: "Search terms are too long. Use at most 100 characters." Crawl A15 pass. |
+| WP20-A43 | Pass | E6 | "No public page matches “zzqxv”." then "Try other words, or open one of these pages:" with links to Home, Destinations, How it works, About. |
+| WP20-A44 | Pass | E1 | `/search` shows the labelled form only: no result list, no count. |
+| WP20-A45 | Pass | E5 | After the limit: status 429, "Too many searches from this connection in a short time. Wait a minute, then search again." No result list and no "No public page matches". The empty form still answers 200. |
+| WP20-A46 | Pass | E1, E6 | 404, noindex, public header, environment label, link to `/`; the requested path is not echoed. |
+| WP20-A47 | Deferred (decision PM Q-02) | R, E8 | Every check on the record passes: exit 0, A01 to A15, crawled pages exactly the four indexable pages, `contentSha256` `7c2aa22d…` and renderer and configuration digests equal the tree at 9efb379, no file under `content/public/` or `src/web/public/` changed after `sourceCommit` 5280b9c, `seo-check.md` holds every required field, and `seo-record.test.ts` passes. Open: WP-20.md §5 does not yet cite the record by repository and commit ("filled at integration"). The architect closes it at the WP-20 integration commit. |
+| WP20-A48 | Pass | E8 | `--strict` exits 1 with five blockers: the four of this item plus `public_copy_unapproved` (decision PM Q-05, WP-20.md §3). No other blocker. |
+| WP20-A49 | Pass | E1, R | `contentVersion` is `2026-10-12.1` (was `2026-10-05.1`). |
+| WP20-A50 | Pass | E1 | 12 addresses × 2 widths: first Tab reaches "Skip to main content"; Enter moves focus to `main`; Tab order equals DOM reading order and reaches every link and control; no hover-only control. Focus ring 2 px solid ink, contrast 12.0 to 14.4 : 1 with the adjacent background; no focused element covered. |
+| WP20-A51 | Pass | E1, E7, E8 | Each page: one banner, one navigation labelled "Site", one main, one contentinfo, one h1; each block has an h2; no skipped level (h1 → h2 → h3). The search page adds a `search` landmark for its form. Crawl A14 pass. |
+| WP20-A52 | Pass | E1, S | 320 px and 1280 px at 400% zoom (320 × 256 CSS px): `scrollWidth` equals the viewport on 10 addresses; no text, link or control outside the viewport. |
+| WP20-A53 | Pass | E1, E7 | Visible label "Search the public pages", tied to the search field. |
+| WP20-A54 | Pass | S, E1 | Greyscale views: the environment label is text with a bold lead; the current navigation item has a bar and heavier weight; search messages are sentences. |
+| WP20-A55 | Pass | E1, E7 | The count sentence ("4 public pages match “visa”.") is the first element after the form; focus is on the document at load (no focus move). |
+| WP20-A56 | Pass | E2, T | 390 px: no target under 24 × 24 px. "Sign in" (header and home) 102 × 44 px; search button 358 × 44 px. axe `target-size` passes. T: `gallery.test.ts` "… no serious axe violation" covers the public gallery pages. |
+| WP20-A57 | Pass | E1, E2, T | axe `color-contrast` passes on every page at both widths. Focus ring contrast at least 12 : 1. T: `gallery.test.ts` axe runs in light and dark at 1440 and 390 px. |
+| WP20-A58 | Pass | E1 | With reduced motion: largest transition 0.00001 s, no animation, before and during focus and hover. |
+| WP20-A59 | Pass | E7 | The label is a paragraph in the banner ("Test environment. Synthetic data only."); its icon is `aria-hidden`. |
+| WP20-A60 | Pass | E6, E7 | Link names: "Skip to main content", "TravelMudra Visa services for travel agents", Destinations, How it works, About, Search, "Sign in", "Sign in for travel agents", Home, and the page titles in search results. No "click here" or "read more". |
+| WP20-A61 | Not proven | — | Not run: it needs human participants on a phone. No agent substitute. |
+| WP20-A62 | Pass | E1 | `/`: 0 violations at 1440 and 390 px. |
+| WP20-A63 | Pass | E1 | `/countries`: 0 violations at both widths. |
+| WP20-A64 | Pass | E1 | `/how-it-works`: 0 violations at both widths. |
+| WP20-A65 | Pass | E1 | `/about`: 0 violations at both widths. |
+| WP20-A66 | Pass | E1 | `/search` (empty): 0 violations at both widths. |
+| WP20-A67 | Pass | E1 | `/search?q=visa`: 0 violations at both widths. |
+| WP20-A68 | Pass | E1 | `/search?q=zzqxv` and the long-query refusal: 0 violations at both widths. |
+| WP20-A69 | Pass | E1 | `/no-such-page`, `/countries/x` (and `/countries/france`, `/countries/synthetica`): 0 violations at both widths. |
+| V25 proof | Pass | E3, E4, E8, R, T | A1: exit 0, A01 to A15, exactly the four pages (re-run without `--report` on instruction; digests read from the run summary). A2: five blockers (decision Q-05). A3: content, renderer and configuration digests equal the committed report. A4: `--strict` exit 1. B1 variant: no marker case created; catalogue markers taken from `syn-ta-3`; the byte-identity proof (E4) replaces the marker case. B2: crawl reached `/`, `/countries`, `/how-it-works`, `/about`, `/search` (all 200 HTML); `/sign-in` is linked with `rel="nofollow"` and was not followed. B3 to B9: as A15, A16, A11, A42, A01 to A04, A14, A36, A17. C: `public-site.test.ts` verified-address test (A37). |
+
+## 7. Findings of the acceptance run
+
+| ID | Rank | Items | Finding | Scenario and likelihood | Proposed action |
+|---|---|---|---|---|---|
+| F-01 | P2 | WP20-A12 (`/how-it-works` part), WP20-A20 | `/how-it-works` does not state that a TravelMudra operator works on each application. Step 5 on `/` states it ("A TravelMudra operator works on each application."). The "Follow the work" block on `/how-it-works` names only who the application waits on. | A travel agent opens "How it works" from the home page or from search, reads only that page, and does not learn that a TravelMudra operator handles each application. Likelihood: every reader of that page; impact low, because `/` states the fact and the copy is draft until Max approves it (`public_copy_unapproved` keeps the site out of indexes). | Park as a note (P2). Add one sentence to the "Follow the work" block of `content/public/pages.json` in the copy-approval change, then re-run `tm seo check --report` (the content digest changes). |
