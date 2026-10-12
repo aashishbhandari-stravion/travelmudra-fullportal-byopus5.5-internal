@@ -35,12 +35,12 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 
 | Command | Plan row | Kind | Current routes | Target page(s) | WP | Note |
 |---|---|---|---|---|---|---|
-| `cat.approve_transition` | none (§5 group E) | served | `admin.catalogue.transition` | SA-05 (impact assessment sub-page) | WP-13 | Core refuses an item outside the application; route path sits under /admin/applications |
-| `cat.assign_impact_reviewer` | none (§5 group E) | served | `admin.catalogue.impact_reviewer` | SA-05 (impact assessment sub-page) | WP-13 | Reviewer for an impact assessment |
+| `cat.approve_transition` | none (§5 group E) | served | `admin.catalogue.transition` | SA-05t | WP-13 | Core refuses an item outside the application; route path sits under /admin/applications |
+| `cat.assign_impact_reviewer` | none (§5 group E) | served | `admin.catalogue.impact_reviewer` | SA-05m (impact review page) | WP-13 | Reviewer for an impact assessment |
 | `cat.bind_declaration` | none (§5 group E) | served | `admin.catalogue.bind` | SA-05 (definition and binding) | WP-02 | Binds a declaration to an offering |
 | `cat.create_country` | none (§5 group E) | served | `admin.catalogue.country_create` | SA-05 (offering list, country level) | WP-02 | Listing a country approves no route |
 | `cat.create_offering` | none (§5 group E) | served | `admin.catalogue.offering_create` | SA-05 (offering list) | WP-02 | Starts the offering lifecycle |
-| `cat.decide_impact_items` | none (§5 group E) | served | `admin.catalogue.impact_decision` | SA-05 (impact preview); SA-09 | WP-13 | Decides items of an impact assessment |
+| `cat.decide_impact_items` | none (§5 group E) | served | `admin.catalogue.impact_decision` | SA-05n (one page per item) | WP-13 | Decides items of an impact assessment |
 | `cat.draft_declaration` | none (§5 group E) | served | `admin.catalogue.declaration_draft` | SA-05 (definition and binding) | WP-02 | Declaration draft of an offering |
 | `cat.edit_baseline` | CMD-60 | served | `admin.catalogue.baseline_create`, `admin.catalogue.baseline_edit` | SA-05 (effective business values) | WP-02 | Two routes: new baseline and edit of an open one |
 | `cat.preview_baseline` | CMD-60 | served | `admin.catalogue.baseline_preview` | SA-05 (publication impact preview) | WP-02 | Preview before publish |
@@ -48,9 +48,9 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `cat.publish_baseline` | CMD-60 | served | `admin.catalogue.baseline_publish` | SA-05; SA-09 | WP-02 | Publish business values |
 | `cat.publish_declaration` | CMD-60 | served | `admin.catalogue.declaration_publish` | SA-05; SA-09 | WP-02 | Publish business values |
 | `cat.record_owner_approval` | CMD-61 | served | `admin.catalogue.owner_approval` | SA-05 | WP-02 | Structural approval from outside the product |
-| `cat.request_impact_recheck` | none (§5 group E) | served | `admin.catalogue.recheck` | SA-05 (impact preview) | WP-13 | Reruns the impact assessment of an offering |
-| `cat.retire_declaration_draft` | none (§5 group E) | served | `admin.catalogue.declaration_retire` | SA-05 (definition and binding) | WP-13 | Retires an unbound draft |
-| `cat.retire_offering` | none (§5 group E) | served | `admin.catalogue.retire` | SA-05 (offering detail) | WP-13 | Ends the offering lifecycle |
+| `cat.request_impact_recheck` | none (§5 group E) | served | `admin.catalogue.recheck` | SA-05b (offering page) | WP-13 | Reruns the impact assessment of an offering |
+| `cat.retire_declaration_draft` | none (§5 group E) | served | `admin.catalogue.declaration_retire` | SA-05c (declaration page) | WP-13 | Retires an unbound draft |
+| `cat.retire_offering` | none (§5 group E) | served | `admin.catalogue.retire` | SA-05x `/admin/catalogue/offerings/:id/retire` | WP-13 | Ends the offering lifecycle |
 | `cat.set_country_listing` | none (§5 group E) | served | `admin.catalogue.country_listing` | SA-05 (offering list, country level) | WP-02 | Listing gates group creation on TA-13 |
 | `core.apply_held_correction` | none (§5 group B) | served | `ta.applications.reapply_correction` | TA-07 (pending-work panel) | WP-17 | Correction held while a filing was unknown; released by non-filing evidence |
 | `core.assign` | CMD-56 | served | `admin.applications.assign` | SA-03 | WP-06 | Single assignment; Gate 1 must be met or excepted |
@@ -65,7 +65,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.decide_assistance` | CMD-52 | served | `admin.applications.assistance_decision` | SA-09h kinds `assistance_approve`, `assistance_decline`; listed on SA-01, SA-02b | WP-09 | Approve or decline a help request; reason required |
 | `core.decide_deferral` | CMD-54 | served | `admin.deferrals.decide` | SA-02; SA-09 | WP-17 | Review date optional |
 | `core.decide_price_increase` | CMD-14 | served | `ta.applications.price_decision` | TA-07 | WP-17 | Travel agent accepts or declines a proposed price |
-| `core.decide_transition` | none (§5 group B) | served | `ta.applications.transition_decision` | TA-07 (pending-work panel) | WP-13 | Travel agent decides on changed terms after an offering change |
+| `core.decide_transition` | none (§5 group B) | served | `ta.applications.transition_decision` | TA-07t `/ta/applications/:id/changed-terms` (accept and decline) | WP-13 | Travel agent decides on changed terms after an offering change |
 | `core.edit_draft` | CMD-9 | served | `ta.applications.edit` | TA-09 | WP-03 | A section is a subset of fields |
 | `core.edit_travel_dates` | CMD-7 | served | `ta.groups.travel_dates` | TA-13 (edit mode); TA-05 | WP-17 | TA-13 itself is built in WP-03; the recheck preview lands in WP-17 |
 | `core.end_deferral` | none (§5 group C) | served | `ops.applications.end_deferral` | OP-02 | WP-17 | Operator ends a deferral with a note |
@@ -144,14 +144,14 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.close_incident` | CMD-49 | served | `admin.incidents.close`, `ops.incidents.close` | OP-08i, SA-08i (on the incident page; ends every duty; no reopen) | WP-14 | Two routes (ops, admin); follows resolve |
 | `ops.confirm_artifact_association` | CMD-43 | served | `ops.incidents.confirm_association` | OP-05 | WP-08 | Reviewer attests each compared field |
 | `ops.expand_launch_scope` | none (§5 group D) | served | `admin.launch.expand` | SA-05 (launch and admission) | WP-02 | The "expand" half of the plan row "Launch / expand" |
-| `ops.lift_suspension` | CMD-63 | served | `admin.launch.lift` | SA-05; SA-09 | WP-13 | Restores the approved scope only |
+| `ops.lift_suspension` | CMD-63 | served | `admin.launch.lift` | SA-05j kind `lift` | WP-13 | Restores the approved scope only |
 | `ops.link_original` | CMD-51 (§5 group A) | served | `ops.custody.link` | OP-09l `/ops/applications/:id/originals/:org/share` (same operator only; no unlink) | WP-12 | Links an original to another application |
 | `ops.open_incident` | CMD-47 | served | `admin.incidents.open`, `ops.incidents.open` | OP-08o `/ops/applications/:id/incidents/new`; SA-08o `/admin/incidents/new` (`artifact_association` not offered) | WP-14 | Two routes (ops, admin); other incident kinds are WP-14 |
 | `ops.post_disclosure_notice` | CMD-49 | served | `admin.incidents.notice`, `ops.incidents.notice` | OP-08n, SA-08n `…/incidents/:id/notices` (one per account; variant by Core's role of the account) | WP-14 | Two routes (ops, admin) |
 | `ops.record_act_evidence` | CMD-37, CMD-38, CMD-41 | served | `ops.case_work.act_evidence` | OP-04 | WP-07 | K-EXT; filing_unknown is the uncertain path |
 | `ops.record_artifact` | CMD-10 | served | `ops.case_work.artifact` | OP-05 | WP-08 | Multipart; can replace an artifact for an incident |
 | `ops.record_effort_sample` | none (§5 group C) | served | `ops.case_work.effort` | OP-02 | WP-07 | Operator effort; the SuperAdmin observation route D117 is unregistered |
-| `ops.record_existing_work_treatment` | CMD-62 | served | `admin.launch.treatment` | SA-05; SA-09 | WP-13 | K-BATCH |
+| `ops.record_existing_work_treatment` | CMD-62 | served | `admin.launch.treatment` | SA-05j kinds `suspension_treatment`, `withdrawal_treatment` | WP-13 | K-BATCH |
 | `ops.record_incident_evidence` | CMD-49 | served | `admin.incidents.evidence`, `ops.incidents.evidence` | OP-08e, SA-08e `…/incidents/:id/evidence` | WP-14 | Two routes (ops, admin) |
 | `ops.record_launch_plan` | none (§5 group D) | served | `admin.launch.plan` | SA-05 (launch and admission) | WP-02 | Precedes launch |
 | `ops.record_official_result` | CMD-42 | served | `ops.case_work.official_result` | OP-05 | WP-08 | Multipart; optional artifact |
@@ -166,8 +166,8 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.request_packet_build` | CMD-40 (§5 group A) | served | `ops.case_work.packet_build` | OP-04p `/ops/applications/:id/packet` (build and rebuild with `supersedePacketId`) | WP-10 | Builds or rebuilds a packet; release is core.release_packet |
 | `ops.resolve_incident` | CMD-49 (§5 group A) | served | `admin.incidents.resolve`, `ops.incidents.resolve` | OP-08r, SA-08r `…/incidents/:id/resolve` | WP-14 | Two routes (ops, admin); resolve with evidence, then close |
 | `ops.start_work` | none (§5 group C) | served | `ops.case_work.start_work` | OP-02 | WP-07 | Assigned operator starts work on the case |
-| `ops.suspend_offering` | CMD-63 | served | `admin.launch.suspend` | SA-05; SA-09 | WP-13 | Existing-work treatment prompt follows |
-| `ops.withdraw_offering` | CMD-63 | served | `admin.launch.withdraw` | SA-05; SA-09 | WP-13 | Irreversible; acknowledgement required |
+| `ops.suspend_offering` | CMD-63 | served | `admin.launch.suspend` | SA-05j kind `suspend` | WP-13 | Existing-work treatment prompt follows |
+| `ops.withdraw_offering` | CMD-63 | served | `admin.launch.withdraw` | SA-05j kind `withdraw` | WP-13 | Irreversible; acknowledgement required |
 | `ops.withdraw_readiness` | none (§5 group C) | served | `ops.case_work.withdraw_readiness` | OP-02 | WP-07 | Withdraws a recorded readiness |
 | `pay.approve_ceiling_increase` | CMD-71 | served | `admin.finance.increase_approve` | SA-07; SA-09 | WP-07 | Two-person (K-2P); refused while audit is unhealthy |
 | `pay.decline_ceiling_increase` | CMD-71 (§5 group A) | served | `admin.finance.increase_decline` | SA-07; SA-09 | WP-07 | Two-person (K-2P); reason required |
@@ -320,6 +320,7 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-15 | WP-11 commands on the old SuperAdmin case page | The WP-11 commands leave it; SA-04a is rebuilt on the kept path (OP-02 layout without operator actions) and keeps facts and links; one host page per command use (SA-09u, SA-09o, SA-09e, SA-09m); the carried WP-17 forms stay on SA-04a until WP-17. Note: `core.apply_held_correction` has no staff route (edge allowlist only; WP-11 STOP-W11-03). | One host page per command use. | WP-11 |
 | CC-16 | WP-12 commands on the operator case page | The WP-12 commands leave OP-02 "Delivery & originals"; each has one host page (OP-09n, OP-09m, OP-09t, OP-09l) under the application's Originals page OP-09. The rail destination "Originals" stays hidden until Core serves an originals register read (WP-12 STOP-W12-01). | One host page per command. | WP-12 |
 | CC-17 | WP-14 commands on the incident pages, the case page, OP-02 "Delivery & originals" and the documents queue rows | Each command has one host page per surface; close stays on the incident page. The SuperAdmin incident page has no association decision form (S-09). | One host page per command. | WP-14 |
+| CC-18 | WP-13 commands on the launch page, the offering page, the impact assessment page and TA-07 | Launch-control commands become SA-05j decision kinds; retirement gets SA-05x; impact item decisions SA-05n; transitions SA-05t; the travel agent's changed terms TA-07t (accept and decline); recheck (SA-05b), draft discard (SA-05c) and reviewer (SA-05m) stay in place. | One host page per command. | WP-13 |
 
 After these dispositions no served command is without a page.
 
