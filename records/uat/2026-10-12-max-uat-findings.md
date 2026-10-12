@@ -2,7 +2,8 @@
 
 Test plan: `2026-10-12-uat-pass1-test-plan.md` (use its step IDs, for example `E2E-4 4.8`, in the Plan ID
 field). E2E-4 uses real passports: refer to people only as "User 01" to "User 11"; no names, numbers or
-dates of birth here; crop or blur screenshots (plan A.6). Add one finding block per finding. Keep one finding per block. Do not fix anything from this file; the architect
+dates of birth here. Screenshots: Max's rule of 12 October 2026 for this machine only: keep them uncropped in
+`~/.local/share/travelmudra-uat/evidence/2026-10-12-uat-pass1/screenshots/` (outside every repository, never committed); refer to them here by file name. Beta and production keep the strict rules. Add one finding block per finding. Keep one finding per block. Do not fix anything from this file; the architect
 triages it.
 
 ## Header (once)
@@ -68,7 +69,7 @@ Expected:  The sign-in page accepts the corrected address and sends a new code.
 Actual:    Error summary "There is a problem". Field error "Open the page again to start a new
            request." The address field stays filled and red. The page does not say that a reload
            fixes it.
-Evidence:  screenshot from Max (chat, 12 October 2026); personal address not recorded
+Evidence:  UAT-01-signin-back-form-already-used.webp
 Severity:  P2
 Class:     C
 Repeat:    Once
@@ -155,7 +156,7 @@ Steps:     1. Open a group. Start a bulk import. 2. Choose "A public Google Driv
 Expected:  Only the inputs for the chosen source show, and each required input is marked required.
 Actual:    "Public link", "Spreadsheet file" and "Sheet listing the applicants" all show for every
            choice, all marked "(optional)". The Services block shows for every choice.
-Evidence:  screenshot from Max (chat, 12 October 2026); not stored here because it shows a Drive link
+Evidence:  UAT-06-UAT-07-bulk-form-all-fields.png
 Severity:  P2
 Class:     C
 Repeat:    Yes (every time)
@@ -204,6 +205,101 @@ Note:      Architect analysis (probable cause, not yet proven): the bot-check ch
            on submit with a message that does not say why. The edge and core logs hold no line for
            the refusal. Sign-in pages have the same design, but those forms are short. Workaround:
            submit within 5 minutes of opening or reloading the page.
+           Confirmed by Max: the retry within 5 minutes passed.
+           OWNER DECISION (Max, 12 October 2026): no bot check on the bulk import form (the TA is
+           already signed in). Keep the bot check, with its 5-minute challenge, on the sign-in pages.
+           To be implemented later; nothing changed now.
+```
+
+```
+### UAT-09  Single applicant form refuses the passport number
+Role:      TA (syn-ta-3)
+Page:      /ta/groups/<group>/intake/new, "One applicant"   Plan ID: E2E-2 2.3
+Steps:     1. Open a group. Choose "One applicant". 2. Choose SYN Tourist e-visa. 3. Enter the
+           passport number of a real passport (User nn) and issuing country IND. 4. Submit.
+Expected:  The draft is created, or the message says which format is expected.
+Actual:    "The passport number has the wrong format." The application is not created.
+Evidence:  UAT-09-single-applicant-passport-format.webp (shows a real passport number)
+Severity:  P1
+Class:     D
+Repeat:    Once (so far)
+Note:      Architect check (fields.ts passportNumber): for issuing country IND the number MUST be
+           one letter and 7 digits. The value entered has 2 letters and 6 digits. Max to compare
+           the value with the passport. If the passport really shows that form, the rule is wrong
+           (class A, P0 for Indian passports). In both cases the message SHOULD state the expected
+           format (class C).
+```
+
+```
+### UAT-10  Bulk import progress does not refresh and has no progress bar
+Role:      TA (syn-ta-3)
+Page:      /ta/intake/<attempt>   Plan ID: E2E-4 4.14
+Steps:     1. Start a bulk import. 2. Stay on the import page.
+Expected:  (Max) The page updates by itself (about every minute), has a refresh control, and shows
+           a progress bar of what is being processed.
+Actual:    Static page: "Fetching the source", "No rows yet", file "Being checked". It changes only
+           on a manual browser reload.
+Evidence:  UAT-10-bulk-progress-fetching.webp
+Severity:  P2
+Class:     C
+Repeat:    Yes (every time)
+Note:      Rewrite acceptance: auto-refresh while the import runs, a "Refresh" control with an
+           "updated at" time, and a progress bar by stage (fetch, scan, read, rows, drafts).
+```
+
+```
+### UAT-11  No overview of a TA's imports across groups
+Role:      TA
+Page:      /ta/groups/<group>/intake   Plan ID: E2E-4 4.19
+Steps:     1. Start imports in two groups. 2. Look for one page that lists both.
+Expected:  (Max asks) One place where a TA sees every running and finished import.
+Actual:    Each group has its own "Intake" list. "Intake incidents" lists problems only. No page
+           lists all imports of the TA. A TA may run at most 2 imports at the same time.
+Evidence:  none
+Severity:  P2
+Class:     C
+Repeat:    Yes (every time)
+Note:      Rewrite acceptance option: an "Imports" page (or a home-page panel) across groups, with
+           state, group and progress.
+```
+
+```
+### UAT-12  Every Google Drive folder import fails: "The source could not be used"
+Role:      TA (syn-ta-3)
+Page:      /ta/intake/<attempt>   Plan ID: E2E-4 4.13 (blocks 4.13 to 4.18)
+Steps:     1. Start a bulk import with a public Drive folder (with a sheet, or without).
+           2. Wait about 1 minute. Reload.
+Expected:  The folder entries are listed and the import continues.
+Actual:    State "Not started". "The source could not be used. See the reference code. Nothing was
+           created. Fix the source and start a new intake." Folder listing: Checked, 9 KB.
+Evidence:  screenshot from Max (chat, 12 October 2026)
+Severity:  P0
+Class:     A
+Repeat:    Yes (every time, by code analysis)
+Note:      Architect root cause (verified on preview, 12 October 2026): the fetch is correct and the
+           folder is public. The URL builder (src/modules/intake/domain/url.ts) fetches the
+           embedded folder view (embeddedfolderview?id=...), whose page lists entries as
+           "flip-entry" elements (88 found in the stored page). The parser (src/workers/listing.ts)
+           reads only the full Drive page format (window['_DRIVE_ivd']), which the embedded view
+           does not contain, so it refuses with listing_unreadable (edge log:
+           parse.read_folder_listing refused). The tests use fake workers and a fixture of the
+           other format, so they never caught the mismatch. Both folder variants (SRC-3, SRC-4) are
+           blocked. Fix class, not case: the parser and the URL builder MUST agree on one format,
+           with a test fixture captured from a real public folder page (synthetic content).
+```
+
+```
+### UAT-13  Failed import says "See the reference code" but shows none
+Role:      TA (syn-ta-3)
+Page:      /ta/intake/<attempt>   Plan ID: E2E-4 4.13
+Steps:     As UAT-12.
+Expected:  The reference code (for example listing_unreadable) and its plain meaning are visible.
+Actual:    The callout says "See the reference code". No code is on the page.
+Evidence:  screenshot from Max (chat, 12 October 2026)
+Severity:  P1
+Class:     A
+Repeat:    Yes (every time)
+Note:      Without the code the TA cannot fix the source and support cannot triage the failure.
 ```
 
 ## Observations without a finding
@@ -215,6 +311,7 @@ Note:      Architect analysis (probable cause, not yet proven): the bot-check ch
 | E2E-1 1.1 | 5 public pages are reachable signed out on :4610. Content quality: UAT-05. | Pass |
 | E2E-1 1.6 | Mini security check: a code issued to `syn-ta-1` was entered on the `syn-ta-3` code step. Refused with "The code is invalid or has expired. Request a new code." The message does not say whether the account exists. | Pass |
 | E2E-1 1.6 | `syn-ta-3` signed in. | Pass |
+| E2E-4 4.13 | Bulk import with a public Drive folder started after a retry within 5 minutes (UAT-08 workaround). Fetch ok, malware scan clean, then refused (UAT-12). | Fail (UAT-12) |
 
 ## Summary table (fill at the end)
 
@@ -228,5 +325,10 @@ Note:      Architect analysis (probable cause, not yet proven): the bot-check ch
 | UAT-06 | Bulk import form shows every field for every source type | TA | intake/new | P2 | C |
 | UAT-07 | Services are chosen per import, not fixed at group creation | TA | groups/new, intake/new | P1 | B |
 | UAT-08 | Bulk import refused: "The verification did not pass" | TA | intake/new | P1 | A |
+| UAT-09 | Single applicant form refuses the passport number | TA | intake/new | P1 | D |
+| UAT-10 | Bulk import progress does not refresh and has no progress bar | TA | /ta/intake/<attempt> | P2 | C |
+| UAT-11 | No overview of a TA's imports across groups | TA | groups/<group>/intake | P2 | C |
+| UAT-12 | Every Google Drive folder import fails | TA | /ta/intake/<attempt> | P0 | A |
+| UAT-13 | Failed import says "See the reference code" but shows none | TA | /ta/intake/<attempt> | P1 | A |
 
 Counts: P0 __ / P1 __ / P2 __. Class A __ / B __ / C __ / D __.
