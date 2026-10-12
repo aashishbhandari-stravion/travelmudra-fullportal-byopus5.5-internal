@@ -109,7 +109,7 @@ Added to the plan text in this internal clone on 12 October 2026, commit 5ab4626
 | ID | Item | Rank | Status |
 |---|---|---|---|
 | Q-L1 | LD-11 sign-in harness for agent proofs on `lane-ui` | P1 | Answered 12 October 2026: yes, harness allowed |
-| Q-L2 | P-05: an exception to DECISIONS §3.1 point 2 for showing declared eligibility, promise, travel-date rules, dependencies and the authority label to travel agents (UX §3.1 step 1) | P1 | Sent through the orchestrator 12 October 2026; TA-03 shows product-wide scope until decided |
+| Q-L2 | P-05: an exception to DECISIONS §3.1 point 2 for showing declared eligibility, promise, travel-date rules, dependencies and the authority label to travel agents (UX §3.1 step 1) | P1 | **Answered by Max in the lane chat, 12 October 2026: "let travel agents see each offering's declared eligibility."** Read narrowly: the exception covers the declared eligibility; promise, travel-date rules, dependencies and the authority label stay pending until Max extends it. Ownership of the display query and binding: asked of the orchestrator. TA-03 keeps the interim until the read model is served. |
 | Q-L3 | Owner inputs the public site needs: verified contact and locality (C02), approved country list (C03), provider responsibilities beyond the declared label, public copy approval | P1 | Recorded; pages omit the blocks until supplied |
 | Q-L4 | Approved wording of each confirmation statement version (C05) before the first real offering | P1 | Synthetic draft texts meanwhile |
 
