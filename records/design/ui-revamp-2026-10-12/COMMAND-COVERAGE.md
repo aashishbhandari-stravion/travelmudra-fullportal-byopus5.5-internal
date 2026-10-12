@@ -151,7 +151,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.record_act_evidence` | CMD-37, CMD-38, CMD-41 | served | `ops.case_work.act_evidence` | OP-04 | WP-07 | K-EXT; filing_unknown is the uncertain path |
 | `ops.record_artifact` | CMD-10 | served | `ops.case_work.artifact` | OP-05 | WP-08 | Multipart; can replace an artifact for an incident |
 | `ops.record_effort_sample` | none (§5 group C) | served | `ops.case_work.effort` | OP-02 | WP-07 | Operator effort; the SuperAdmin observation route D117 is unregistered |
-| `ops.record_existing_work_treatment` | CMD-62 | served | `admin.launch.treatment` | SA-05j kinds `suspension_treatment`, `withdrawal_treatment` | WP-13 | K-BATCH |
+| `ops.record_existing_work_treatment` | CMD-62 | served | `admin.launch.treatment` | SA-05j kinds `suspension_treatment`, `withdrawal_treatment` | WP-13 | K-STD |
 | `ops.record_incident_evidence` | CMD-49 | served | `admin.incidents.evidence`, `ops.incidents.evidence` | OP-08e, SA-08e `…/incidents/:id/evidence` | WP-14 | Two routes (ops, admin) |
 | `ops.record_launch_plan` | none (§5 group D) | served | `admin.launch.plan` | SA-05 (launch and admission) | WP-02 | Precedes launch |
 | `ops.record_official_result` | CMD-42 | served | `ops.case_work.official_result` | OP-05 | WP-08 | Multipart; optional artifact |
