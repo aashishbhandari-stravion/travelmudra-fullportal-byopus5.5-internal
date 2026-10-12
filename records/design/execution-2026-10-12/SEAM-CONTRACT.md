@@ -49,3 +49,9 @@ widget on those two forms and does not depend on its removal.
    the tests that prove it on the three-instance installation.
 3. Max integrates and pushes. A lane never pushes. A conflict in the shared files of section 1 is resolved
    by the orchestrator on main.
+
+## 5. Request log (orchestrator)
+
+| Request | From | Date | Rank, Kind | Routed to | State |
+|---|---|---|---|---|---|
+| P-01 "attempts of a travel agent across groups" (query, own-TA scope, paged, newest first, with group name and country; for UAT-11, BU-P09 TA-wide or a TA-01 panel). Text: UI lane `output/proposals/P-01-ta-imports-across-groups.md`; lane internal commit 37b2635 | UI lane | 12 Oct 2026 | P1, Kind 1 | Bulk lane, as a read model of capability 5 (prompt §5 item 5), under the six-point criterion | Open. Interim: BU-P09 stays per group; the UI lane does not join per group. Served when a seam version names the query. |
