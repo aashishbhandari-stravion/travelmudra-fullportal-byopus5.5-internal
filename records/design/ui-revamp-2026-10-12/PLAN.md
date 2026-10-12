@@ -147,7 +147,7 @@ Every decision that came up during the lane, with what the architect decided and
 | 24 | 12 Oct 2026 | Evidence on gate exceptions (P-11, Kind 2) | Max: yes to a required evidence list (O1) with the four review fixes as conditions; attestation-only evidence accepted. Built in its own lane. The UI adds evidence rows to the gate-exception forms in the same integration window (S-07). | UX §6.3 requires evidence for an exception; the review found the amended proposal sound. | P-11 |
 | 25 | 12 Oct 2026 | Route to the first-work Gate 1 decision on approved-assistance cases (P-12) | Max: option C narrowed (display-only substitution), with the review's fixes, in the P-10 Kind 1 batch; A and B rejected. The UI adds the SuperAdmin queue view when the seam version serves it. | No new fact; fixes a stuck case with a wrong owner. | P-12 |
 | 26 | 12 Oct 2026 | Government-fee payment while a filing is unknown (UX §5.3 vs BS B23) | Max: hide it (UX reading); the operator pages explain why; Core unchanged. | Max's decision in the lane chat. | WP-07 §3 |
-| 27 | 12 Oct 2026 | Operator "Services" rail item | Removed from the rail; the read-only pages stay reachable by address until Max decides whether to retire them. | UX §5.2 has no operator Services destination. | WP-07 §3 |
+| 27 | 12 Oct 2026 | Operator "Services" pages | Removed from the rail and retired (advisor decision A01, §9). | UX §5.2 has no operator Services destination. | WP-07 §3, §9 A01 |
 
 ## 8. Seam items assigned to the lane
 
@@ -167,3 +167,4 @@ Every decision that came up during the lane, with what the architect decided and
 
 | # | Date | Question | Options | Advisor (Fable 5.1, high, new chat) recommendation | Decision taken | Record |
 |---|---|---|---|---|---|---|
+| A01 | 12 Oct 2026 | Retire the operator "Services" pages (`/ops/catalogue`, `/ops/catalogue/offerings/:id`)? | A retire now; B keep unlinked; C keep and link from the case | **A**: the spec gives operators no Services destination; the pages show published values, which can differ from the version governing a case, so an operator could act on the wrong cost or documents; an unlinked route still costs access checks and tests; reversible. Risk: loss of orientation before assignment; OP-02 shows the governing facts. | A: both routes retired in the WP-07 build (uniform not-found); the WP-02 read-only rebuild of them is removed then. | lane `research/questions/Q-A01-operator-services-pages.md`; WP-07.md §3 |
