@@ -310,6 +310,27 @@ Repeat:    Yes (every time)
 Note:      Without the code the TA cannot fix the source and support cannot triage the failure.
 ```
 
+```
+### UAT-14  Passport pages: exactly two pages, one file or two files
+Role:      TA
+Page:      /ta/groups/<group>/intake/new, TA-09 individual intake, bulk document rules   Plan ID: E2E-2 2.3, E2E-4 4.2
+Steps:     1. Provide a passport for an applicant. 2. Read what the form and the requirement say
+           about pages and files.
+Expected:  (Max, 12 October 2026) A passport is exactly two pages: the front page and the back page.
+           The TA MAY provide them as one file that holds both pages, or as two separate files, one
+           for the front page and one for the back page. Anything else is incomplete or over-supplied.
+Actual:    The current implementation is confusing and misleading about pages and files (Max's
+           words). The product declares a per-requirement page maximum (`pdf_max_pages`) and no
+           front/back structure.
+Evidence:  none
+Severity:  P1
+Class:     B (rule stated by Max on 12 October 2026, therefore now a requirement) + C (the form text)
+Repeat:    Yes (every time)
+Note:      Requirement for the bulk refactor lane (document policy, completeness per applicant) and
+           an acceptance addition for TA-09 and BU-P02/BU-P06 (the rewrite): the form states the
+           two-page rule and the two accepted shapes. See the triage record §2 and §3.
+```
+
 ## Observations without a finding
 
 | Plan ID | Observation | Result |
@@ -338,5 +359,6 @@ Note:      Without the code the TA cannot fix the source and support cannot tria
 | UAT-11 | No overview of a TA's imports across groups | TA | groups/<group>/intake | P2 | C |
 | UAT-12 | Every Google Drive folder import fails | TA | /ta/intake/<attempt> | P0 | A |
 | UAT-13 | Failed import says "See the reference code" but shows none | TA | /ta/intake/<attempt> | P1 | A |
+| UAT-14 | Passport pages: exactly two pages, one file or two files | TA | intake/new, TA-09 | P1 | B+C |
 
-Counts: P0 1 / P1 5 / P2 7. Class A 3 / B 2 / C 6 / D 2. Total 13.
+Counts (12 October 2026, after Max's answers): P0 2 / P1 5 / P2 7. Class A 4 (UAT-08, 09, 12, 13) / B 3 (UAT-04, 07, 14) / C 6 / D 1 (UAT-03, now P2). Total 14. UAT-09 reclassified A, P0 (Max confirmed the 2-letter, 6-digit format from a production passport). UAT-14 added from Max's answers of 12 October 2026 (recorded the same day).

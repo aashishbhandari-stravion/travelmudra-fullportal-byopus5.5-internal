@@ -133,6 +133,24 @@ addition). Acceptance on an installation: E2E-4 4.13 with a form left open for m
 | Q-6 | UAT-12 fixture | Who creates the synthetic public Google Drive folder (and, for E2E, the synthetic sheet) for the parser fixture and the `@external` tests? The folder holds only synthetic documents; its link stays in the local untracked file of E-3. | (a) Max creates it beside the E-3 sources. (b) The implementer asks Max for it when the fix starts. | (a), now, so the fixture exists before the bulk lane starts. |
 | Q-7 | UAT-09 Single applicant form refuses the passport number (P1, class D) | Does the Indian passport on User nn show one letter and 7 digits (today's rule in `fields.ts`), or 2 letters and 6 digits (the value entered)? | Max checks the document. | If the document shows 2 letters and 6 digits, the rule is wrong: class A, P0 for Indian passports, and the fix goes to the bulk refactor with a test on the documented format. In both cases the message MUST state the expected format: class C, TA-09 acceptance addition. |
 
+### 3.1 Max's answers (12 October 2026, late)
+
+| ID | Decision |
+|---|---|
+| Q-1 | Test emails (the synthetic mailbox and helper) are fine for now. UAT-03 is P2. Out of both prompts. |
+| Q-2 | P2. Out of both prompts. |
+| Q-3 | **Yes**: a set of allowed services per group, chosen at group creation; each import and applicant chooses within the set. This is Max's decision on the direction of a Kind 2 change. The bulk refactor lane writes the Kind 2 proposal (DECISIONS 2026-10-10 §3.2 items 1 and 2) and obtains the independent review before the change is built; Max's yes here settles the direction, the proposal settles the shape. |
+| Q-4 | Yes: the bot check is removed from the correction upload form as well (purpose `correction_upload`). Sign-in pages keep it. |
+| Q-5 | Yes: UAT-08, UAT-09, UAT-12 and UAT-13 are worked inside the bulk refactor lane. |
+| Q-6 | Max provided a public Drive folder and a public Sheet (12 October 2026). The links are in the local untracked file `~/.local/share/travelmudra-uat/external-sources.local.json` (mode 600, outside every repository). Max maintains the data security of these sources himself; the system does not. Constraint that stays: a fixture captured from the folder listing is committed to the public repository, so the implementer MUST check the captured file names for personal data and replace any such name in the fixture before committing (structure preserved). |
+| Q-7 | Max: two letters and six digits is a valid Indian passport number format, taken from a production passport. The rule in `fields.ts` (one letter and seven digits for IND) is wrong. **UAT-09 is class A, P0**, worked in the bulk refactor lane. The implementer MUST validate against the documented Indian passport number formats (both shapes at least), with a test per accepted shape, and the message MUST state the expected format. |
+
+New finding from the same answers: **UAT-14** (passport is exactly two pages, front and back; one file with
+both pages or two files, one per page; the current implementation is confusing and misleading). Recorded in
+the findings file. Requirement for the bulk refactor lane (document policy and completeness per applicant)
+and an acceptance addition for TA-09, BU-P02 and BU-P06 (the form states the rule and the two accepted
+shapes).
+
 ## 4. Recorded owner decision (UAT-08)
 
 Max, 12 October 2026: remove the bot check from the bulk import form; keep it, with its 5-minute
@@ -151,5 +169,5 @@ reference specification for the UI-based automation suite, which is written afte
 | Bucket | Items |
 |---|---|
 | Rewrite acceptance additions (class C) | UAT-01, 02, 05, 06, 10, 11, plus the PUB-02 "challenge expired" text derived from UAT-08. Plan gaps: UAT-01, 02, 10, 11 and the derived PUB-02 state. |
-| Post-rewrite fix items (class A) | UAT-12 (P0, parked), UAT-13 (P1), UAT-08 (P1, decision recorded). Proposed owner: the bulk refactor lane (Q-5). |
-| Owner decisions | Q-1 (UAT-03), Q-2 (UAT-04), Q-3 (UAT-07), Q-4 (correction form bot check), Q-5 (ownership), Q-6 (synthetic folder), Q-7 (UAT-09). |
+| Post-rewrite fix items (class A) | UAT-12 (P0, parked), UAT-09 (P0, after Q-7), UAT-13 (P1), UAT-08 (P1, decision recorded). Owner: the bulk refactor lane (Q-5, decided). |
+| Owner decisions | Q-1 to Q-7 answered by Max (§3.1). Requirements that follow: UAT-07 services per group (Kind 2 proposal in the bulk lane), UAT-14 passport pages. |
