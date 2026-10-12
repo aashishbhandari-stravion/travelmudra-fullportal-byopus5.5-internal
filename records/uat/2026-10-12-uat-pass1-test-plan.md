@@ -101,7 +101,7 @@ an Excel workbook that references these documents. This changes how the run is r
 - **After UAT**, Max decides how to remove the real data: delete the uploaded applications' data, or remove
   and recreate `preview` (`uat.py cleanup preview` needs Max's explicit instruction). Restrict or remove
   the Drive link sharing when the run ends.
-- The automated suite (Part E) uses synthetic data only. Real data never enters a repository.
+- Real data never enters a repository. The automated suite's `@external` tests use Max's link-shared Google sources (E.8, E-3); their links and evidence stay outside the repository.
 
 ## Part B. Test data
 
@@ -368,7 +368,7 @@ run live from a Mac, or replay it afterwards step by step.
 | Specs | `e2e-1-sanity.spec.ts` to `e2e-5-governance.spec.ts`, one per manual sequence. Steps use `test.step()` with the plan's step IDs (for example `2.13`), so a report line maps to this plan. |
 | Waiting | Server-rendered pages: wait for the page state in words (for example "Draft created"), never fixed sleeps. Background work (scan, extraction, import) is polled with a bounded wait and a clear timeout message. |
 | Accessibility | An axe check on every page that a spec visits. Violations are reported, not failing, in phase 1. |
-| Bulk sources | Excel and CSV run fully local. Google Sheet and Drive sources need real public Google links: the fetch worker accepts only public internet addresses (SSRF rule), so a local stub cannot stand in. These tests carry the tag `@external` and run only on request. |
+| Bulk sources | Excel and CSV run fully local, with synthetic data. Google Sheet and Drive sources need Max's link-shared Google sources (E-3): the fetch worker accepts only public internet addresses (SSRF rule), so a local stub cannot stand in. These tests carry the tag `@external` and run only on request. |
 | Evidence | Per run: HTML report, trace per test, video and screenshot on failure, a JUnit file. Stored outside the repository under `~/workDirectory/...` and kept or deleted per the evidence rules. |
 
 ### E.5 Watching runs from the MacBook
@@ -415,6 +415,6 @@ orchestrator.
 |---|---|---|
 | E-1 | Installation for the suite | Approved: a third installation `e2e` (ports 4630 to 4633), removed when the campaign ends. No new lane. |
 | E-2 | Where the suite lives | Approved: public repository, `test/e2e/`, synthetic data only. |
-| E-3 | Public Google test data | Max creates the Google Sheets and Drive folders for the suite; they stay public throughout. Conditions: (a) they hold synthetic data only and are separate from the real-passport folders of the manual run; (b) their links stay out of the public repository and are read from a local, untracked file or environment variable. |
-| E-4 | Watching runs | Through Chrome on the MacBook and an SSH tunnel; no remote desktop. Default: HTML report after the run; UI mode when debugging (E.5). |
-| E-5 | When to build | Proposed, to be confirmed by Max: the build starts after the manual UAT. Phase 0 (harness, sign-in fixture, smoke test) does not depend on the page design and can start then. The sequence specs (phases 1 to 4) are written against the rewritten UI, page by page as each rewritten page is accepted, and serve as its acceptance tests. Specs written against the current UI would be rewritten with it. |
+| E-3 | Public Google test data | Max creates the Google Sheets and Drive folders for the `@external` tests. They hold real documents, shared by link only, and Max deletes them manually when the campaign ends. Rules: the links MUST NOT appear in the repository, in commit messages, in findings or in chat; the suite reads them from a local untracked file on the server. Test evidence (traces, screenshots, videos) from these tests contains real data: it stays on the server outside the repository and is deleted with the `e2e` installation. |
+| E-4 | Watching runs | Accepted: Chrome on the MacBook through an SSH tunnel; HTML report after the run, UI mode when debugging (E.5). |
+| E-2, E-5 | When to build | Decided: the suite is written only after the UI rewrite has landed. Until then the five sequences of Part D are the reference specification. The `e2e` installation is created when the build starts, not before. |
