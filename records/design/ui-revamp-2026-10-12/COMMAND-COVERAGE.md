@@ -73,7 +73,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.formal_return` | CMD-32, CMD-33 | served | `ops.applications.return` | OP-03; OP-02 ("Return for TA review") | WP-07 | One command for CMD-32 and CMD-33; WP-07 builds OP-03r with both labels ("Return to TA", "Return for TA review"); WP-09 designs the ending path on OP-02 and the assistance effect text |
 | `core.grant_gate_exception` | CMD-72 | served | `admin.applications.grant_exception` | SA-09 | WP-06 | Gate 1 first; the Gate 2 decision uses the same page in WP-07 |
 | `core.hand_back` | none (§5 group B) | served | `ta.applications.hand_back` | TA-08 (returned submitted case) | WP-03 | Returns a returned submitted case to the operator; no WP names this panel |
-| `core.link_dependency` | none (§5 group B) | served | `ta.applications.link_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
+| `core.link_dependency` | none (§5 group B) | served | `ta.applications.link_dependency` | TA-07l `/ta/applications/:id/dependencies`; TA-07 and TA-09 link to it | WP-10 | WP-10 by title only; TA-07 is not in its page list |
 | `core.propose_deferral` | CMD-35 | served | `ops.applications.propose_deferral` | OP-02 | WP-17 | Justification and proposed review date |
 | `core.propose_price_increase` | none (§5 group D) | served | `admin.applications.price_increase` | SA-04 (decision on SA-09) | WP-17 | SuperAdmin proposes; the travel agent decides (core.decide_price_increase) |
 | `core.reassign` | CMD-57 | served | `admin.applications.reassign` | SA-03c | WP-06 | Reason required; preview then receipt |
@@ -83,7 +83,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.record_forecast` | none (§5 group C) | served | `ops.applications.forecast` | OP-02 | WP-17 | Current forecast stays separate from the original estimate |
 | `core.record_operational_withdrawal` | CMD-17 | served | `admin.applications.operational_withdrawal` | SA-04 (decision on SA-09) | WP-17 | Evidence reference and reason required |
 | `core.record_outcome` | CMD-42 | served | `ops.case_work.cancelled` | OP-05 | WP-08 | Cancelled-outcome path (route ops.case_work.cancelled) |
-| `core.release_packet` | CMD-40 | served | `ops.applications.release_packet` | OP-04 | WP-10 | Available action (LD-05, OC-09); K-BYTE |
+| `core.release_packet` | CMD-40 | served | `ops.applications.release_packet` | OP-04r `/ops/applications/:id/packet/release` (K-STD; the download is K-BYTE) | WP-10 | Available action (LD-05, OC-09); K-BYTE |
 | `core.report_problem` | CMD-13 | served | `ta.applications.report_problem` | TA-07p `/ta/applications/:id/report-problem`; bulk pages link to it and never post it (S-W09-01) | WP-09 | Creates a hold; allowed while assigned, not returned |
 | `core.request_assistance` | CMD-12 | served | `ta.applications.request_assistance` | TA-07; TA-08; TA-09; BU-P06 | WP-03 | Separate from submit |
 | `core.request_withdrawal` | CMD-17 | served | `ta.applications.withdraw` | TA-07 | WP-17 | Travel agent request |
@@ -92,12 +92,12 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.respond_flag` | none (§5 group D) | served | `admin.applications.respond_flag` | SA-09f kind `flag_response` (CC-04); listed on SA-01, SA-02c | WP-09 | Plan SA-02 views and SA-09 decision kinds omit flags |
 | `core.revoke_gate_exception` | CMD-72 (§5 group A) | served | `admin.gate_exceptions.revoke` | SA-09 | WP-06 | SA-09 MUST offer revoke |
 | `core.submit` | CMD-11 | served | `ta.applications.submit` | TA-08; BU-P10 | WP-03 | Carries the confirmations and quoted price shown; WP-04 builds BU-P10 |
-| `core.unlink_dependency` | none (§5 group B) | served | `ta.applications.unlink_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
+| `core.unlink_dependency` | none (§5 group B) | served | `ta.applications.unlink_dependency` | TA-07l `/ta/applications/:id/dependencies`; TA-07 and TA-09 link to it | WP-10 | WP-10 by title only; TA-07 is not in its page list |
 | `dlv.acknowledge_notice` | CMD-15 | served | `admin.notices.acknowledge`, `ops.notices.acknowledge`, `ta.notices.acknowledge` | TA-10; TA-07; OP-10 (operator notices); SA-10 (SuperAdmin notices) | WP-08 | Three routes; recipient only; TA-10 is built in WP-08; SA-10 is in no WP |
 | `dlv.manual_resend` | none (§5 group C) | served | `ops.delivery.resend` | OP-06 | WP-08 | From a failed send only; an uncertain send refuses it |
 | `dlv.queue_document_email` | CMD-44 | deliberate boundary | `ops.delivery.document_email` | OP-06 | WP-08 | Boundary shown as Core answers (LD-04); no form posts it today |
-| `dlv.record_direct_external` | CMD-41, CMD-45 | served | `ops.delivery.direct_external` | OP-04 (provider handoff); OP-06 | WP-10 | Delivery made by an external party; claims no TravelMudra-held result |
-| `dlv.record_handover` | CMD-40, CMD-45 | served | `ops.delivery.handover` | OP-04 (packet handover); OP-06 | WP-10 | Packet handover names the released packet |
+| `dlv.record_direct_external` | CMD-41, CMD-45 | served | `ops.delivery.direct_external` | OP-06e `/ops/applications/:id/direct-external` (a delivery evidence kind of an outcome, not a provider handoff) | WP-10 | Delivery made by an external party; claims no TravelMudra-held result |
+| `dlv.record_handover` | CMD-40, CMD-45 | served | `ops.delivery.handover` | OP-06h `/ops/applications/:id/handovers` (packet and physical) | WP-10 | Packet handover names the released packet |
 | `dlv.record_manual_email` | CMD-46 | served | `ops.delivery.manual_email` | OP-06 | WP-08 | Attributed record; never system-verified |
 | `doc.associate` | none (§5 group B) | served | `ops.documents.associate`, `ta.documents.associate` | TA-09 (required-document slot); TA-07; BU-P06; OP-02 (ops route) | WP-03 | Links an existing group version to a requirement; two routes (ta, ops) |
 | `doc.confirm_classification` | none (§5 group B) | served | `ta.documents.classification` | TA-09 (evidence results); TA-07 (document rows) | WP-03 | Posted today from the document-version page, which the plan lacks |
@@ -163,7 +163,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `ops.record_work_step` | none (§5 group C) | served | `ops.case_work.work_step` | OP-02 (readiness checklist) | WP-07 | Work steps exist as facts; no plan command records them |
 | `ops.reject_artifact_association` | CMD-43 (§5 group A) | served | `ops.incidents.reject_association` | OP-05 | WP-08 | OP-05 MUST offer reject |
 | `ops.report_wrong_recipient` | CMD-50 (§5 group A) | served | `ops.incidents.disclosure` | OP-08; OP-02 | WP-14 | Replaces the dropped Block-version row (CMD-50) |
-| `ops.request_packet_build` | CMD-40 (§5 group A) | served | `ops.case_work.packet_build` | OP-04 | WP-10 | Builds or rebuilds a packet; release is core.release_packet |
+| `ops.request_packet_build` | CMD-40 (§5 group A) | served | `ops.case_work.packet_build` | OP-04p `/ops/applications/:id/packet` (build and rebuild with `supersedePacketId`) | WP-10 | Builds or rebuilds a packet; release is core.release_packet |
 | `ops.resolve_incident` | CMD-49 (§5 group A) | served | `admin.incidents.resolve`, `ops.incidents.resolve` | OP-08; SA-08 | WP-14 | Two routes (ops, admin); resolve with evidence, then close |
 | `ops.start_work` | none (§5 group C) | served | `ops.case_work.start_work` | OP-02 | WP-07 | Assigned operator starts work on the case |
 | `ops.suspend_offering` | CMD-63 | served | `admin.launch.suspend` | SA-05; SA-09 | WP-13 | Existing-work treatment prompt follows |
@@ -316,6 +316,7 @@ package. A disposition that hides a served command would be Max's decision; none
 
 | CC-12 | WP-06 commands on the old SuperAdmin case page | The WP-06 commands leave `admin.applications.detail`: the page keeps the facts and links to SA-03a, SA-03c, SA-09g and SA-09r. Each command has one host page for each use. | One decision page per kind; a second form for the same decision would carry different wording. | WP-06 |
 | CC-13 | WP-08 commands on the operator case page and the incident page | The WP-08 commands leave those pages; the pages keep the facts and link to OP-05 and OP-05r. `ops.open_incident` has no OP-05 control (Core refuses result-file incident kinds for operators) and goes to WP-14. | One host page per command. | WP-08, WP-14 |
+| CC-14 | WP-10 commands on the operator case page, OP-06 and TA-07 | The WP-10 commands leave those pages; each has one host page (TA-07l hosts link and unlink; OP-04p, OP-04r, OP-06h, OP-06e). UI-PLAN's "Record provider handoff" is WP-07's act command for `provider_handoff`; "Record provider filing evidence" has no Core command (WP-10 STOP-W10-02, to Max in P-15). | One host page per command. | WP-10 |
 
 After these dispositions no served command is without a page.
 
