@@ -56,10 +56,10 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.assign` | CMD-56 | served | `admin.applications.assign` | SA-03 | WP-06 | Single assignment; Gate 1 must be met or excepted |
 | `core.assign_selection` | CMD-56 | served | `admin.assignments.round_robin`, `admin.assignments.selection` | SA-03 | WP-06 | K-BATCH; two routes (selection, round robin); confirm carries the previewed plan |
 | `core.authorize_external_act` | CMD-36 | served | `ops.applications.authorize_act` | OP-04 | WP-07 | K-EXT; confirmIrreversible is a real field |
-| `core.authorize_unresolved_completion` | CMD-59 | served | `admin.applications.unresolved_completion` | SA-04 (decision on SA-09) | WP-11 | Records authorization and future owner; does not complete the case |
+| `core.authorize_unresolved_completion` | CMD-59 | served | `admin.applications.unresolved_completion` | SA-09u kind `unresolved_outcome`; linked from SA-04a and SA-01 group 12; records the outcome and closes reconciliation; does not complete the case | WP-11 | Records authorization and future owner; does not complete the case |
 | `core.check_completion` | CMD-48 | deliberate boundary | `admin.delivery.completion_check` | OP-07 | WP-08 | Boundary shown as Core answers (LD-04); route is on the admin surface; no form posts it today |
 | `core.close_group` | none (§5 group B) | served | `ta.groups.close` | TA-05 (CC-02) | WP-17 | Posted today from the group page; TA-05 would be WP-03 |
-| `core.correct_from_evidence` | CMD-58 | served | `admin.applications.correct_from_evidence` | SA-04 (decision on SA-09) | WP-11 | Two shapes (outcome, fields); no WP command list names it |
+| `core.correct_from_evidence` | CMD-58 | served | `admin.applications.correct_from_evidence` | SA-09o kind `correct_outcome`; SA-09e kind `correct_fields` (identity, residence, the served `fields` shape); linked from SA-04a | WP-11 | Two shapes (outcome, fields); no WP command list names it |
 | `core.correct_identity` | none (§5 group B) | served | `ta.applications.correct_identity` | TA-09; TA-07 (returned case) | WP-03 | Needs same-person evidence; the page posts only changed fields |
 | `core.create_group` | CMD-6 | served | `ta.groups.create` | TA-13; TA-04; BU-P01 | WP-03 | Form moves to the TA-13 task page; country must be listed |
 | `core.decide_assistance` | CMD-52 | served | `admin.applications.assistance_decision` | SA-09h kinds `assistance_approve`, `assistance_decline`; listed on SA-01, SA-02b | WP-09 | Approve or decline a help request; reason required |
@@ -88,7 +88,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.request_assistance` | CMD-12 | served | `ta.applications.request_assistance` | TA-07; TA-08; TA-09; BU-P06 | WP-03 | Separate from submit |
 | `core.request_withdrawal` | CMD-17 | served | `ta.applications.withdraw` | TA-07 | WP-17 | Travel agent request |
 | `core.resolve_hold` | none (§5 group C) | served | `ops.applications.resolve_hold` | OP-02r `/ops/applications/:id/holds/:holdId/resolve` | WP-09 | Resolves a problem-report or an answered flag hold; Core refuses a return hold (the travel agent hands it back or submits) |
-| `core.resolve_protection_mark` | none (§5 group D) | served | `admin.protection_marks.resolve` | SA-04 (decision on SA-09) | WP-11 | Mark must belong to the named application; plan has no protection-mark queue |
+| `core.resolve_protection_mark` | none (§5 group D) | served | `admin.protection_marks.resolve` | SA-09m kind `protection_mark` (CC-04; no subject); linked from SA-04a and SA-01 group 15 | WP-11 | Mark must belong to the named application; plan has no protection-mark queue |
 | `core.respond_flag` | none (§5 group D) | served | `admin.applications.respond_flag` | SA-09f kind `flag_response` (CC-04); listed on SA-01, SA-02c | WP-09 | Plan SA-02 views and SA-09 decision kinds omit flags |
 | `core.revoke_gate_exception` | CMD-72 (§5 group A) | served | `admin.gate_exceptions.revoke` | SA-09 | WP-06 | SA-09 MUST offer revoke |
 | `core.submit` | CMD-11 | served | `ta.applications.submit` | TA-08; BU-P10 | WP-03 | Carries the confirmations and quoted price shown; WP-04 builds BU-P10 |
@@ -317,6 +317,7 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-12 | WP-06 commands on the old SuperAdmin case page | The WP-06 commands leave `admin.applications.detail`: the page keeps the facts and links to SA-03a, SA-03c, SA-09g and SA-09r. Each command has one host page for each use. | One decision page per kind; a second form for the same decision would carry different wording. | WP-06 |
 | CC-13 | WP-08 commands on the operator case page and the incident page | The WP-08 commands leave those pages; the pages keep the facts and link to OP-05 and OP-05r. `ops.open_incident` has no OP-05 control (Core refuses result-file incident kinds for operators) and goes to WP-14. | One host page per command. | WP-08, WP-14 |
 | CC-14 | WP-10 commands on the operator case page, OP-06 and TA-07 | The WP-10 commands leave those pages; each has one host page (TA-07l hosts link and unlink; OP-04p, OP-04r, OP-06h, OP-06e). UI-PLAN's "Record provider handoff" is WP-07's act command for `provider_handoff`; "Record provider filing evidence" has no Core command (WP-10 STOP-W10-02, to Max in P-15). | One host page per command. | WP-10 |
+| CC-15 | WP-11 commands on the old SuperAdmin case page | The WP-11 commands leave it; SA-04a is rebuilt on the kept path (OP-02 layout without operator actions) and keeps facts and links; one host page per command use (SA-09u, SA-09o, SA-09e, SA-09m); the carried WP-17 forms stay on SA-04a until WP-17. Note: `core.apply_held_correction` has no staff route (edge allowlist only; WP-11 STOP-W11-03). | One host page per command use. | WP-11 |
 
 After these dispositions no served command is without a page.
 
