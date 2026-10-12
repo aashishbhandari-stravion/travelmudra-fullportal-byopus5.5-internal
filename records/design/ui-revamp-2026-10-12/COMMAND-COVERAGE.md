@@ -62,7 +62,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.correct_from_evidence` | CMD-58 | served | `admin.applications.correct_from_evidence` | SA-04 (decision on SA-09) | WP-11 | Two shapes (outcome, fields); no WP command list names it |
 | `core.correct_identity` | none (§5 group B) | served | `ta.applications.correct_identity` | TA-09; TA-07 (returned case) | WP-03 | Needs same-person evidence; the page posts only changed fields |
 | `core.create_group` | CMD-6 | served | `ta.groups.create` | TA-13; TA-04; BU-P01 | WP-03 | Form moves to the TA-13 task page; country must be listed |
-| `core.decide_assistance` | CMD-52 | served | `admin.applications.assistance_decision` | SA-02; SA-09 | WP-09 | Approve or decline a help request; reason required |
+| `core.decide_assistance` | CMD-52 | served | `admin.applications.assistance_decision` | SA-09h kinds `assistance_approve`, `assistance_decline`; listed on SA-01, SA-02b | WP-09 | Approve or decline a help request; reason required |
 | `core.decide_deferral` | CMD-54 | served | `admin.deferrals.decide` | SA-02; SA-09 | WP-17 | Review date optional |
 | `core.decide_price_increase` | CMD-14 | served | `ta.applications.price_decision` | TA-07 | WP-17 | Travel agent accepts or declines a proposed price |
 | `core.decide_transition` | none (§5 group B) | served | `ta.applications.transition_decision` | TA-07 (pending-work panel) | WP-13 | Travel agent decides on changed terms after an offering change |
@@ -70,7 +70,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.edit_travel_dates` | CMD-7 | served | `ta.groups.travel_dates` | TA-13 (edit mode); TA-05 | WP-17 | TA-13 itself is built in WP-03; the recheck preview lands in WP-17 |
 | `core.end_deferral` | none (§5 group C) | served | `ops.applications.end_deferral` | OP-02 | WP-17 | Operator ends a deferral with a note |
 | `core.flag` | CMD-34 | served | `ops.applications.flag` | OP-03 | WP-07 | Blocks filing and packet release until answered |
-| `core.formal_return` | CMD-32, CMD-33 | served | `ops.applications.return` | OP-03; OP-02 ("Return for TA review") | WP-07 | One command for CMD-32 and CMD-33; merge them; WP-09 adds "Return for TA review" |
+| `core.formal_return` | CMD-32, CMD-33 | served | `ops.applications.return` | OP-03; OP-02 ("Return for TA review") | WP-07 | One command for CMD-32 and CMD-33; WP-07 builds OP-03r with both labels ("Return to TA", "Return for TA review"); WP-09 designs the ending path on OP-02 and the assistance effect text |
 | `core.grant_gate_exception` | CMD-72 | served | `admin.applications.grant_exception` | SA-09 | WP-06 | Gate 1 first; the Gate 2 decision uses the same page in WP-07 |
 | `core.hand_back` | none (§5 group B) | served | `ta.applications.hand_back` | TA-08 (returned submitted case) | WP-03 | Returns a returned submitted case to the operator; no WP names this panel |
 | `core.link_dependency` | none (§5 group B) | served | `ta.applications.link_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
@@ -79,17 +79,17 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `core.reassign` | CMD-57 | served | `admin.applications.reassign` | SA-03c | WP-06 | Reason required; preview then receipt |
 | `core.recheck_travel_dates` | none (§5 group C) | served | `admin.applications.travel_recheck`, `ops.applications.travel_recheck` | OP-02; SA-04 | WP-17 | Same command from ops and admin routes |
 | `core.record_applicant_withdrawal` | CMD-17 | served | `ops.applications.applicant_withdrawal` | OP-02 | WP-17 | Operator records the applicant request; evidence reference required |
-| `core.record_assistance_entry` | CMD-31 | served | `ops.applications.assistance_entry` | OP-02 | WP-09 | Identity changes need same-person evidence |
+| `core.record_assistance_entry` | CMD-31 | served | `ops.applications.assistance_entry` | OP-02a `/ops/applications/:id/assistance-entry` | WP-09 | Identity changes need same-person evidence |
 | `core.record_forecast` | none (§5 group C) | served | `ops.applications.forecast` | OP-02 | WP-17 | Current forecast stays separate from the original estimate |
 | `core.record_operational_withdrawal` | CMD-17 | served | `admin.applications.operational_withdrawal` | SA-04 (decision on SA-09) | WP-17 | Evidence reference and reason required |
 | `core.record_outcome` | CMD-42 | served | `ops.case_work.cancelled` | OP-05 | WP-08 | Cancelled-outcome path (route ops.case_work.cancelled) |
 | `core.release_packet` | CMD-40 | served | `ops.applications.release_packet` | OP-04 | WP-10 | Available action (LD-05, OC-09); K-BYTE |
-| `core.report_problem` | CMD-13 | served | `ta.applications.report_problem` | TA-07; BU-P06 | WP-09 | Creates a hold; allowed while assigned, not returned |
+| `core.report_problem` | CMD-13 | served | `ta.applications.report_problem` | TA-07p `/ta/applications/:id/report-problem`; bulk pages link to it and never post it (S-W09-01) | WP-09 | Creates a hold; allowed while assigned, not returned |
 | `core.request_assistance` | CMD-12 | served | `ta.applications.request_assistance` | TA-07; TA-08; TA-09; BU-P06 | WP-03 | Separate from submit |
 | `core.request_withdrawal` | CMD-17 | served | `ta.applications.withdraw` | TA-07 | WP-17 | Travel agent request |
-| `core.resolve_hold` | none (§5 group C) | served | `ops.applications.resolve_hold` | OP-02; OP-03 | WP-09 | Resolves a problem-report, return or flag hold |
+| `core.resolve_hold` | none (§5 group C) | served | `ops.applications.resolve_hold` | OP-02r `/ops/applications/:id/holds/:holdId/resolve` | WP-09 | Resolves a problem-report or an answered flag hold; Core refuses a return hold (the travel agent hands it back or submits) |
 | `core.resolve_protection_mark` | none (§5 group D) | served | `admin.protection_marks.resolve` | SA-04 (decision on SA-09) | WP-11 | Mark must belong to the named application; plan has no protection-mark queue |
-| `core.respond_flag` | none (§5 group D) | served | `admin.applications.respond_flag` | SA-09 (add a flag-response decision kind); SA-01; SA-02 | WP-09 | Plan SA-02 views and SA-09 decision kinds omit flags |
+| `core.respond_flag` | none (§5 group D) | served | `admin.applications.respond_flag` | SA-09f kind `flag_response` (CC-04); listed on SA-01, SA-02c | WP-09 | Plan SA-02 views and SA-09 decision kinds omit flags |
 | `core.revoke_gate_exception` | CMD-72 (§5 group A) | served | `admin.gate_exceptions.revoke` | SA-09 | WP-06 | SA-09 MUST offer revoke |
 | `core.submit` | CMD-11 | served | `ta.applications.submit` | TA-08; BU-P10 | WP-03 | Carries the confirmations and quoted price shown; WP-04 builds BU-P10 |
 | `core.unlink_dependency` | none (§5 group B) | served | `ta.applications.unlink_dependency` | TA-07; TA-09 | WP-10 | WP-10 by title only; TA-07 is not in its page list |
@@ -105,7 +105,7 @@ Purpose. Decision LD-07 says every served Core command gets a page in the rewrit
 | `doc.requeue_bulk` | none (§5 group D) | served | `admin.documents.requeue_bulk` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Bulk requeue of failed checks; posted today from /admin/documents/queue |
 | `doc.requeue_check` | none (§5 group D) | served | `admin.documents.requeue` | SA-08 "Document checks that could not finish" (CC-01) | WP-14 | Requeue of one failed check; posted today from /admin/documents/queue |
 | `doc.resolve_extraction` | none (§5 group B) | served | `ta.documents.resolve_extraction` | TA-09 (evidence results); TA-07; BU-P06 | WP-03 | Travel agent types the MRZ fields and attests; host page missing in plan |
-| `doc.upload_for_application` | CMD-10 | served | `ops.documents.upload`, `ta.documents.upload` | TA-09; BU-P06; OP-02 (assistance upload, ops route) | WP-03 | Multipart; two routes (ta, ops) |
+| `doc.upload_for_application` | CMD-10 | served | `ops.documents.upload`, `ta.documents.upload` | TA-09; BU-P06; OP-02a (assistance upload, ops route, built in WP-09; OP-02 if the seam overlap is not confirmed) | WP-03 | Multipart; two routes (ta, ops) |
 | `iam.activate_account` | CMD-65 | served | `admin.accounts.activate` | SA-06 | WP-02 | Account status change; reason required |
 | `iam.approve_account` | CMD-64, CMD-65 | served | `admin.accounts.approve` | SA-06 | WP-02 | Second person for a SuperAdmin account (K-2P) |
 | `iam.approve_elevation` | CMD-66 | served | `admin.elevations.approve` | SA-06 (elevations); SA-09 (second approval) | WP-15 | Two-person (K-2P); refused while audit is unhealthy |
