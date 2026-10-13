@@ -6,7 +6,7 @@
 | Work package | WP-02 Offering admission minimum (UI-PLAN §12.1; lane PLAN §3) |
 | Author | Principal Product Manager (Claude subagent), 12 October 2026 |
 | Decision owner | Principal Technical Architect of the lane (LD-12) |
-| Status | Draft. Step 1 of lane PLAN §3. Not run. Input to the UX design review and the independent review. |
+| Status | Run on `lane-ui` at b2a6341 on 13 October 2026 (section 6). Results: 109 Pass, 18 Fail, 10 Not proven, 5 Deferred; V01 Not proven. Findings in section 7. |
 | Product base | lane branch `ui-revamp-2026-10-12` at 102e4c9 |
 | Installation | `lane-ui`: edge http://127.0.0.1:4650 (travel-agent pages TA-02, TA-03); staff http://127.0.0.1:4652 (SuperAdmin pages SA-05, SA-06) |
 | Writing style | ASD-STE100 at about 75% (STY-20261003-01) |
@@ -592,161 +592,196 @@ pages (WP-20); services per group (UAT-07, a Kind 2 change in the bulk lane, Q-1
 
 | Field | Value |
 |---|---|
-| Verified on (date, IST) | |
-| Installation and ref (`uat.py status lane-ui` output: commit or tag) | |
-| Lane commit of the tests named for `T` items | |
-| Run tag and identifiers (internal record reference) | |
-| Browsers and versions | |
-| Assistive technology used | |
-| V01 result (parts A to F; where shown) | |
-| TA participants for B6 (number; results) | |
-| Open findings (ID, rank, scenario) | |
-| Signed by (role and name) | |
+| Verified on (date, IST) | 13 October 2026, 06:00 to 07:35 IST |
+| Installation and ref (`uat.py status lane-ui` output: commit or tag) | `lane-ui`: ref b2a6341, release rel_4NE1RRPC3VDNDBWNAX8C2S0456 (unchanged before and after the run) |
+| Lane commit of the tests named for `T` items | b2a6341 (the cited test files are unchanged up to 101eff1). Pass results as reported by the architect: WP-02 at 228816a, fixes aa154d2, combined tree with WP-03; not re-run in this acceptance run |
+| Run tag and identifiers (internal record reference) | Suffix r1013a. Offering `wp02_r1013a` (off_2GNAD3Z65XDT3XH2E6VD0QYDRR), declaration v1, values v1 to v3, publications no. 1 to 3, launch plans v1 to v7, launch and expansion decisions; accounts `wp02-ta-r1013a`, `wp02-sa-r1013a`, `wp02-decline-r1013a` (declined, then created again); syn-ta-2 group "WP-02 proof group r1013a"; new TA group; 2 drafts of syn-ta-1 (W1013101, W1013102). Identifiers: `research/proofs/wp02/state.json` |
+| Browsers and versions | Chromium 153.0.8010.12 headless (Playwright 1.63.0), at 1440 x 900, 390 x 844 and 320 px; one context with JavaScript off; one with reduced motion |
+| Assistive technology used | None. axe-core 4.13.0 (@axe-core/playwright 4.13.0, tags wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa); keyboard-only driving of every SuperAdmin form step; DOM checks for labels, focus and targets |
+| V01 result (parts A to F; where shown) | Not proven: B6 not run. A, B1-B5, B7, C1-C7, D1-D12, D14 and E1-E5 show their results on `lane-ui` (C3 with the wrong reason text, F-04); D13 failed (A62, F-01) |
+| TA participants for B6 (number; results) | 0; not run (no participant available to this run) |
+| Open findings (ID, rank, scenario) | F-01 P1 (A62); F-02 to F-09 P2. See "Findings of the acceptance run" |
+| Signed by (role and name) | Principal Product Manager (Claude Opus subagent), 13 October 2026 |
 
-Result per item (Pass, Fail, Blocked or Not run; evidence reference; note):
+Result per item (Pass, Fail, Deferred, Not proven; evidence reference; note). Evidence: lane folder
+`research/proofs/wp02/` (manifest `manifest.sha256`, SHA-256 1e69badc492cf4b9e7566daea389ac1debc884a862708ab74631c716079c354a); a script name (for example
+`s1-read`) means that script's run on `lane-ui` at b2a6341, with its log, `results.jsonl`, `axe.jsonl`, `facts.jsonl` and DOM
+dumps in that folder. Test references name the file and the test title at b2a6341. Totals for the 142 items: 109 Pass, 18 Fail, 10 Not proven, 5 Deferred.
 
 | ID | Result | Evidence | Note |
 |---|---|---|---|
-| WP02-A01 | | | |
-| WP02-A02 | | | |
-| WP02-A03 | | | |
-| WP02-A04 | | | |
-| WP02-A05 | | | |
-| WP02-A06 | | | |
-| WP02-A07 | | | |
-| WP02-A08 | | | |
-| WP02-A09 | | | |
-| WP02-A10 | | | |
-| WP02-A11 | | | |
-| WP02-A12 | | | |
-| WP02-A13 | | | |
-| WP02-A14 | | | |
-| WP02-A15 | | | |
-| WP02-A16 | | | |
-| WP02-A17 | | | |
-| WP02-A18 | | | |
-| WP02-A19 | | | |
-| WP02-A20 | | | |
-| WP02-A21 | | | |
-| WP02-A22 | | | |
-| WP02-A23 | | | |
-| WP02-A24 | | | |
-| WP02-A25 | | | |
-| WP02-A26 | | | |
-| WP02-A27 | | | |
-| WP02-A28 | | | |
-| WP02-A29 | | | |
-| WP02-A30 | | | |
-| WP02-A31 | | | |
-| WP02-A32 | | | |
-| WP02-A33 | | | |
-| WP02-A34 | | | |
-| WP02-A35 | | | |
-| WP02-A36 | | | |
-| WP02-A37 | | | |
-| WP02-A38 | | | |
-| WP02-A39 | | | |
-| WP02-A40 | | | |
-| WP02-A41 | | | |
-| WP02-A42 | | | |
-| WP02-A43 | | | |
-| WP02-A44 | | | |
-| WP02-A45 | | | |
-| WP02-A46 | | | |
-| WP02-A47 | | | |
-| WP02-A48 | | | |
-| WP02-A49 | | | |
-| WP02-A50 | | | |
-| WP02-A51 | | | |
-| WP02-A52 | | | |
-| WP02-A53 | | | |
-| WP02-A54 | | | |
-| WP02-A55 | | | |
-| WP02-A56 | | | |
-| WP02-A57 | | | |
-| WP02-A58 | | | |
-| WP02-A59 | | | |
-| WP02-A60 | | | |
-| WP02-A61 | | | |
-| WP02-A62 | | | |
-| WP02-A63 | | | |
-| WP02-A64 | | | |
-| WP02-A65 | | | |
-| WP02-A66 | | | |
-| WP02-A67 | | | |
-| WP02-A68 | | | |
-| WP02-A69 | | | |
-| WP02-A70 | | | |
-| WP02-A71 | | | |
-| WP02-A72 | | | |
-| WP02-A73 | | | |
-| WP02-A74 | | | |
-| WP02-A75 | | | |
-| WP02-A76 | | | |
-| WP02-A77 | | | |
-| WP02-A78 | | | |
-| WP02-A79 | | | |
-| WP02-A80 | | | |
-| WP02-A81 | | | |
-| WP02-A82 | | | |
-| WP02-A83 | | | |
-| WP02-A84 | | | |
-| WP02-A85 | | | |
-| WP02-A86 | | | |
-| WP02-A87 | | | |
-| WP02-A88 | | | |
-| WP02-A89 | | | |
-| WP02-A90 | | | |
-| WP02-A91 | | | |
-| WP02-A92 | | | |
-| WP02-A93 | | | |
-| WP02-A94 | | | |
-| WP02-A95 | | | |
-| WP02-A96 | | | |
-| WP02-A97 | | | |
-| WP02-A98 | | | |
-| WP02-A99 | | | |
-| WP02-A100 | | | |
-| WP02-A101 | | | |
-| WP02-A102 | | | |
-| WP02-A103 | | | |
-| WP02-A104 | | | |
-| WP02-A105 | | | |
-| WP02-A106 | | | |
-| WP02-A107 | | | |
-| WP02-A108 | | | |
-| WP02-A109 | | | |
-| WP02-A110 | | | |
-| WP02-A111 | | | |
-| WP02-A112 | | | |
-| WP02-A113 | | | |
-| WP02-A114 | | | |
-| WP02-A115 | | | |
-| WP02-A116 | | | |
-| WP02-A117 | | | |
-| WP02-A118 | | | |
-| WP02-A119 | | | |
-| WP02-A120 | | | |
-| WP02-A121 | | | |
-| WP02-A122 | | | |
-| WP02-A123 | | | |
-| WP02-A124 | | | |
-| WP02-A125 | | | |
-| WP02-A126 | | | |
-| WP02-A127 | | | |
-| WP02-A128 | | | |
-| WP02-A129 | | | |
-| WP02-A130 | | | |
-| WP02-A131 | | | |
-| WP02-A132 | | | |
-| WP02-A133 | | | |
-| WP02-A134 | | | |
-| WP02-A135 | | | |
-| WP02-A136 | | | |
-| WP02-A137 | | | |
-| WP02-A138 | | | |
-| WP02-A139 | | | |
-| WP02-A140 | | | |
-| WP02-A141 | | | |
-| WP02-A142 | | | |
-| V01 proof | | | |
+| WP02-A01 | Pass | s1-read | h1 "Services"; Synthetica 7 rows, Synthetica Beta 1; mode in words; "Available for new applications" with icon; title links to TA-03; "Synthetic test service"; "Read at … IST". |
+| WP02-A02 | Pass | s1-read | Offering 7 is absent (architect Q-02); no "Information only". |
+| WP02-A03 | Pass | s1-read | Index of two in-page links; Enter on "Synthetica Beta" adds only `#country-1`; next Tab lands in that section; Back drops the fragment; reload shows 8 rows; no count announced. |
+| WP02-A04 | Pass | s1-read; services-pages.test.ts "one country: no index; the section shows", "the travel agent's list and service read their one query each; the address query is ignored and never echoed" | `?country=SYX`, a malformed and an empty value: HTTP 200, 8 rows, nothing echoed, no error. |
+| WP02-A05 | Pass | services-pages.test.ts "no service at all: the empty state, with no promise" | By test. |
+| WP02-A06 | Pass | s3-d10b | After D10, syn-ta-2 sees the 8 seeded rows only: no proof row, count or hint. |
+| WP02-A07 | Not proven | — | No test renders TA-02 with a failed catalogue read (S7, "Try again") or with one unreadable fact ("Unavailable"). |
+| WP02-A08 | Pass | s1-read; shots/ta02-390.png | 390 px: rows become cards (title, mode, availability first); country index visible; no page scroll. |
+| WP02-A09 | Pass | s1-read | No wait list, SLA, deadline, support hours, approval promise or "Pay now" in TA-02. |
+| WP02-A10 | Pass | s3-d13b | After D13: TA-03 "₹3,450" with a new "Read at … IST", no "₹3,300"; TA-02 shows no price for any row. |
+| WP02-A11 | Pass | s1-read | One h1 "SYN Tourist e-visa"; breadcrumb "Services ›" before the h1; identity, availability, eligibility, cost, estimate, documents, process in order; "Read at … IST". |
+| WP02-A12 | Pass | s1-read | "₹3,500 fixed when you submit"; fee paid as a separate step and recovered exactly; relation boundary in §11.3 form, "Owner: product owner"; no sum or zero. |
+| WP02-A13 | Pass | s1-read | "₹3,600"; "TravelMudra pays the government fee when it files the application…" (differs from A12). |
+| WP02-A14 | Pass | s1-read | "5 to 12 calendar days. This is an estimate, not a guarantee." with the note; no computed date. |
+| WP02-A15 | Pass | s1-read | Passport required, PDF/JPEG/PNG, up to 5 MB; Photograph required, JPEG/PNG, up to 2 MB; descriptions shown; sizes in MB. |
+| WP02-A16 | Pass | s1-read | "Preparation only — you file"; ₹1,800; fees not handled; itinerary optional, PDF, 5 MB; withdrawal boundary in §11.3 form with owner. |
+| WP02-A17 | Deferred | s1-read; P-05 (B-05) | Provider naming deferred to P-05. The rest passes: mode label "Filed by a declared provider", ₹4,100, fees not handled, no invented name or route reference. |
+| WP02-A18 | Fail | s1-read; F-03 | Return-of-originals boundary shows with owner; no cancellation boundary on any seeded TA-03 page; availability stays "Available"; no generic text. |
+| WP02-A19 | Deferred | s1-read; P-05 (B-04) | Partly met: the interim product-wide scope and "Offering-specific conditions are not shown on this page yet." show on both pages; no "Not declared". |
+| WP02-A20 | Pass | s1-read | Interim (B-09): "Start an application" opens `/ta/groups`; the line names Synthetica; no preselection claim. The WP-03 target is for WP-03. |
+| WP02-A21 | Deferred | B-09 (WP-03) | Not run in WP-02. Note for WP-03: TA-03 at b2a6341 has neither "Add applicants in bulk" nor "View requirements"; the WP-03 add-one step shows a "View requirements" panel. |
+| WP02-A22 | Pass | s1-read | Offering 7 address and an unknown address: HTTP 404, same h1 and text; no title, price, country, mode or start. |
+| WP02-A23 | Pass | s3-d10b | syn-ta-2 on the proof address (named launch for syn-ta-1): identical to an unknown offering (404). |
+| WP02-A24 | Fail | s3-d10b; services-pages.test.ts "not available: the reasons Core reports and the owner, no start action, and every published value still shows"; F-08 | Suspended proof offering: "Not available for new applications", pause reason, "Owner: TravelMudra", no start or bulk control, cost/estimate/documents shown. The route ("none") is not stated. Other states by test. |
+| WP02-A25 | Pass | services-pages.test.ts "documents: declared values as declared; a requirement that is not declared reads \"Not declared\"…", "boundaries: one policy-boundary notice per action, with its owner…", "cost: …", "not available: the reasons Core reports…" | By test. |
+| WP02-A26 | Pass | s1-read | 8 TA-03 pages: no forbidden promise or fee amount; synthetic label on each. |
+| WP02-A27 | Pass | s1-read; shots/ta03-390.png | 390 px: stacked sections; "Start an application" in the identity block; documents as cards; no page scroll. |
+| WP02-A28 | Pass | services-pages.test.ts "a support view: the same facts, read only, with no action and no start sentence" | By test. |
+| WP02-A29 | Pass | s1-read; s3-d10b | Synthetica group: 7 Synthetica launched offerings; offering 7 and SYX absent. While suspended the proof offering reads "Cannot be chosen now" with its reason and is disabled. |
+| WP02-A30 | Fail | s1-read; integration/launch-control.test.ts "refuses all new work while not launched"; F-04 | Refused (HTTP 409), values kept, counts and SA application list unchanged; the reason reads "This service has no published details at the moment.", not the offering reason. |
+| WP02-A31 | Pass | s3-d10b; launch-control.test.ts "launches for a named audience; others are out of scope" | syn-ta-2: proof offering not offered; the form with its reference is refused "This service is not open for your account yet. Nothing was created."; no draft. |
+| WP02-A32 | Not proven | launch-control.test.ts "refuses all new work while not launched", "launches for a named audience; others are out of scope", "suspension refuses new work…"; catalogue-concurrency.test.ts "no draft is accepted after the suspension commits (50 concurrent attempts)" | Not launched, out of scope and suspended are proven. No test found for draft creation and intake start against a withdrawn offering, a missing binding or incompatible values. |
+| WP02-A33 | Pass | s1-read; catalogue-pages.test.ts "empty: no offering opens the create form…", "launch facts in words: a missing count is \"count unavailable\"…" | 9 seeded rows with separate definition, values, launch and plan facts; 8 "Launched for every active travel agent", offering 7 "Not launched"; countries with listing; "Read at … IST". |
+| WP02-A34 | Fail | s1-read; F-08 | Country text and "It approves no route, provider or launch." show; no country shown as offered. The page does not say that a new offering is unpublished. |
+| WP02-A35 | Fail | s2a-offering; s2a2-server; F-02 | Empty form: summary focused, every field named. Invalid values: the browser check reports only "Please match the requested format." for the code; slug and reason are not flagged; the server answers "This is not in the expected format." Values kept; nothing created. |
+| WP02-A36 | Not proven | system/ported-pages.test.ts "reads every catalogue page and records a country, an offering and new business values end to end"; catalogue-pages.test.ts "the receipt: the country selected by the returned id…"; core/groups-drafts.test.ts "…an unlisted country and invalid dates are refused" | Creation of an unlisted country with a receipt is proven; the TA country choice and the unchanged public page are not asserted. |
+| WP02-A37 | Fail | s2a-offering; F-08 | Code SYN refused (HTTP 409, "A country with this code already exists."); nothing created; no link to the existing country. |
+| WP02-A38 | Pass | integration/catalogue-commands.test.ts "changes a listing only with the current revision and only when it differs"; core/groups-drafts.test.ts "creates a group of a listed country…"; launch-control.test.ts "refuses all new work while not launched" | By test (§0.2: no listing change on lane-ui). |
+| WP02-A39 | Not proven | catalogue-commands.test.ts (listing); core/groups-drafts.test.ts (unlisted country refused) | Refusal of a new group is proven; survival of an existing group and its applications after unlisting is not asserted. |
+| WP02-A40 | Pass | catalogue-pages.test.ts "a stale listing shows the listing asked for beside the current listing, and keeps the reason"; catalogue-commands.test.ts "changes a listing only with the current revision…" | By test. |
+| WP02-A41 | Pass | s2a-offering | Keyboard: receipt names title, country, mode, "Unpublished", "Not launched" and links the offering; syn-ta-1 to -3 TA-02 delta 0. |
+| WP02-A42 | Fail | s2a-offering; s2a2-server; F-02 | Browser check: "Select country" and "Please match the requested format."; server: "Country: Check this value." and "This is not in the expected format."; the code rule is only in the hint. Values kept. |
+| WP02-A43 | Pass | s2a-offering | Two object tabs (design §2.3): "Definition and binding", "Effective business values"; "Readiness evidence", "Launch and admission"; next step stated; labels "group the evidence; they are not stages". |
+| WP02-A44 | Pass | s2b-declaration | Receipt "Version 1, Current status Draft"; the digest shows on the host page under the receipt; 28 items with statuses in words. |
+| WP02-A45 | Fail | s2b-declaration; F-02 | Malformed JSON: "A declared value is not permitted for this service mode or type. (body): …"; preparation-only body: 8 generic item errors, not "The service mode does not match". Body kept; nothing created. |
+| WP02-A46 | Pass | s2b-declaration | No draft form while version 1 is a draft; hand-made post: "This already exists. This offering already has an open declaration draft." with link to version 1. |
+| WP02-A47 | Pass | s2c-approval | Form names "this exact version (digest …)" and "made outside TravelMudra"; receipt: Supported, owner approval, 1 approval; version 1 "Supported" by owner approval. |
+| WP02-A48 | Pass | s2c-approval; catalogue-commands.test.ts "draft, wrong digest refused, exact digest approves…"; catalogue-pages.test.ts "a refused owner approval keeps every typed value; a digest mismatch marks the digest field" | Another version's digest: HTTP 409 "The approved digest does not match this declaration version."; nothing recorded. |
+| WP02-A49 | Not proven | — | Rule exists (declarations.ts lines 154-155); no test found for a real offering with synthetic or missing evidence. |
+| WP02-A50 | Not proven | catalogue-commands.test.ts "an approval cannot supply executable behaviour: a draft with an out-of-population item is refused" | One structure case is refused; a missing release capability and the owner "engineering" are not asserted. |
+| WP02-A51 | Pass | s2c-approval; catalogue-pages.test.ts "a refused approval, binding or preview whose form the current state no longer offers…" | Receipt "Binding registered", 1 of 1 supported under the active release. Second request: the page no longer offers it; the refusal text "This exact binding is already registered." by test. |
+| WP02-A52 | Not proven | — | No test found for a binding request on a draft or an unsupported structure with owner "engineering". |
+| WP02-A53 | Pass | s2d-a57; s3-d7 | Scope, "New cases use them from the publication.", price None → ₹3,300, new maximum 12 days, "No open application is affected.", "Preview computed … IST"; no version numbers; offering still unpublished, no head, not launched. |
+| WP02-A54 | Pass | s3-d7 | Second preview, then publish: receipt "Published", no. 1; host record: "For new cases from the publication", new head, scope; launch "Not launched"; no TA sees it. |
+| WP02-A55 | Pass | s3-d7 | After SA-2 saved the draft, SA-1 published from the older preview: HTTP 409 "The work or the offering changed since the preview. Preview again…"; nothing published. |
+| WP02-A56 | Pass | s2c-approval | Editor lists exactly passport and photo; receipt "Business values draft saved", version 1, Draft, ₹3,300. |
+| WP02-A57 | Fail | s2c-approval; s2d-a57; F-02 | Browser check flags only the empty label; the server flags "documents.0.label" and "processingEstimate.maxDays" in internal names, does not flag the unconfirmed zero price, and answers the high price with "Business values: This is too long or too large."; nothing saved. |
+| WP02-A58 | Pass | s3-d12b | With a draft open the page offers "Continue version 2" only; SA-2's older new-values form: HTTP 409 "This offering already has an open baseline draft. Edit that one." with the link. |
+| WP02-A59 | Fail | s3-d7; F-05 | Edit after preview: draft again; SA-1 then SA-2 from the older form: HTTP 409 "Changed since your review" with current and unsent values, no overwrite. But the declaration page still says "A current preview exists" and the old preview page still offers its publish form. |
+| WP02-A60 | Pass | s3-d12b | ₹3,300 → ₹3,450, "₹150 increase"; estimate; changed fields; classes with units ("Drafts 1 application"); forecast, reductions (count and ₹ total), higher quotes; affected list in a labelled scroll region; "Preview computed … IST"; no version numbers. |
+| WP02-A61 | Fail | s3-d13b; F-06 | No choice preselected; without a choice: "Select an option for existing drafts" (browser) and "Choose what happens to existing drafts and to submitted work." (server). Accepted publication receipt names only number, kind and time: no before/after values, scope counts, continuation or actor. |
+| WP02-A62 | Fail | s3-d13; F-01 | After syn-ta-1 started a second draft, publishing from the older preview was accepted (publication no. 2); its record states 1 affected draft while 2 existed. |
+| WP02-A63 | Pass | s3-d13b | Mistaken price without evidence and with a 16-character reason: both HTTP 409 "A mistaken-price correction needs evidence and a reason of at least 20 characters."; nothing published. |
+| WP02-A64 | Pass | s3-d13b; catalogue-commands.test.ts "replays the same key, refuses changed content, and resolves a lost acknowledgement to the one publication" | Same key: same receipt reference; new key: HTTP 409 "This baseline is already published." |
+| WP02-A65 | Fail | s3-d13b; F-06 | Record shows actor, reason, evidence, time in IST, "For new cases from the publication", preview reference, accountable SuperAdmin; affected scope and before/after are raw JSON (paise, internal ids), no ₹ values. |
+| WP02-A66 | Fail | s3-d12b; F-08 | No field changes gates, cut-offs, checks, retries, security or behaviour; no CMP-10 notice says such a change needs an engineering release or product-owner decision. |
+| WP02-A67 | Pass | s3-d9 | Plan page lists every declared measure, monitor and operating-readiness part with the B32 fields and "Missing"/"Nothing missing when the plan was saved". |
+| WP02-A68 | Pass | s3-d9 | Receipt: "Completeness when saved: Incomplete", version 1, "Missing when the plan was saved: Fallback…"; next step "Blocked". |
+| WP02-A69 | Pass | s3-d9 | Owner choices: active operators and SuperAdmins only; "IST+5": HTTP 422 "Enter a valid time zone name, for example Asia/Kolkata.", value kept; TA owner by hand: "Name an active operator or SuperAdmin account." No suspended staff account exists on lane-ui. |
+| WP02-A70 | Pass | s3-d9; s3-d10; launch-control.test.ts "an incomplete plan, a plan that is not current, … are each refused"; launch-pages.test.ts "unavailable: requirements not met; no form…", "plan completeness" tests | SA-05h: plan item Not met, Fallback listed, "Recorded when the plan was saved: Incomplete"; SA-05j: CMP-10 notice, links, no form, `aria-disabled` button with reason; hand-made post: HTTP 409 `launch_plan_incomplete`; nothing launched. |
+| WP02-A71 | Pass | s3-d10 | Order: scope (head versions, plan version), evidence, effect, hard stops, audience, labelled acknowledgement, evidence, reason, review, "Approve launch". |
+| WP02-A72 | Fail | s3-d10; s3-d10b; F-07 | Launched; syn-ta-1 sees "Available", syn-ta-2 does not. Receipt names "1 named travel agent" and the acknowledged item, not the agent by name. Plan version and head: P-06 (F-U3-01). |
+| WP02-A73 | Pass | s3-d10 | No acknowledgement: "Acknowledge exactly the unavailable actions listed…"; after SA-2's newer plan: "Changed since your review", plan "no longer current" vs "Version 7", "Review current information"; nothing launched. |
+| WP02-A74 | Pass | s1b-a74; s3-d9 | CMP-10 "…until the product owner approves the provider route. Owner: Product owner"; no form; hand-made post refused (HTTP 422, "A launch requirement listed under Evidence is not met now", provider route Not met); still "Not launched". |
+| WP02-A75 | Pass | s2a-offering; launch-control.test.ts "an unpublished offering cannot launch" | Unpublished proof offering: SA-05j has no form and states the missing publication. |
+| WP02-A76 | Pass | s3-d10; launch-pages.test.ts "the head read and the reference list read \"Unavailable\"…"; launch-control.test.ts "…a named non-TA are each refused" | Textarea with hint; reference list is a disclosure (3 TAs, copy buttons, no input); operator reference and a doubled TA: HTTP 409 on the field, text kept; nothing launched. |
+| WP02-A77 | Pass | s3-d10; launch-control.test.ts "two SuperAdmins approving concurrently with different keys leave exactly one current decision" | Both sent at once: one 200, one 409 "This offering is already launched." with "Review current information"; one decision in history. |
+| WP02-A78 | Pass | s3-d10; launch-control.test.ts "launch approval: lost acknowledgement then the same key replays the one decision; changed content conflicts"; status-pages.test.ts "while unresolved reads \"Checking the original result\"…" | Same key resent: 303 to the same receipt; one decision. Lost acknowledgement by test. |
+| WP02-A79 | Pass | s3-d12b; launch-control.test.ts "expands only to a strict superset…"; launch-pages.test.ts "expand: …" | Named syn-ta-2 only: "The new audience must include everyone already approved…; suspension is the narrowing tool", value kept; all active TAs accepted, syn-ta-2 and -3 see it; third visit no form, link to SA-05h; hand-made post refused (expansion not open). |
+| WP02-A80 | Not proven | launch-control.test.ts "suspension refuses new work; expansion is refused while suspended…" | Suspended case proven; an expansion of an offering that is not launched is not asserted at Core. |
+| WP02-A81 | Pass | s3-d10; s3-d12b | Before D10 first row "Refused, This offering is not launched."; after D10 and D12 "Allowed"; "Allowed" explained; no permission of a particular TA. |
+| WP02-A82 | Pass | s3-d13b | After the values publications: "Launched", "Every active travel agent", decisions unchanged; no second approval asked. |
+| WP02-A83 | Pass | s4-accounts; accounts-pages.test.ts "at Core's 200-row limit says the list may be incomplete and claims no total" | Columns name, email, role, status, authenticator, data; waiting rows marked "Needs attention"; SuperAdmin and elevation facts; filters `?role=ta&status=suspended`; S3 text with "Clear filters". |
+| WP02-A84 | Pass | s4-accounts | Labelled fields; eligibility CMP-10 with "Owner: product owner"; "starts as waiting for approval…"; `/register`, `/sign-up`, `/request-account` and staff variants: 404. |
+| WP02-A85 | Fail | s4-accounts; F-02 | Empty: summary focused, four rules. Email "abc" + reason "short": only the email is flagged, by the browser and by the server; the reason rule is not reported. Values kept; nothing created. |
+| WP02-A86 | Pass | s4-accounts | Keyboard at 390 px: receipt "Account created", effect "starts as waiting for approval…", role, next step Approve; listed; no mail. |
+| WP02-A87 | Pass | s4-accounts | HTTP 409 "Another account already uses this address." with "Open the account that uses this address". |
+| WP02-A88 | Pass | s4-accounts | Second SuperAdmin required (page and receipt); SA-1 has no approve control; SA-1 hand-made approve: 409 `second_superadmin_required`; SA-2 approved on `/admin/elevations`; activation review names the enrolment code to the own address; Active. |
+| WP02-A89 | Pass | s4-accounts; accounts-pages.test.ts "with one or no active SuperAdmin it names the two-person rule and the recovery boundary with its owner" | No bypass control. The recovery notice shows only with one or no active SuperAdmin (lane-ui has 3): by test. |
+| WP02-A90 | Pass | accounts-pages.test.ts "while the audit record is behind, approve, activate and restore show their reason; decline and suspend stay available"; system/ported-pages.test.ts "refuses privileged actions through staff, keeps containment available, and accepts them again once it is current" | By test. |
+| WP02-A91 | Pass | s4-accounts | Review "Status becomes Approved. The account still cannot sign in until it is activated."; approved with JavaScript off; code request answers neutrally, no mail. |
+| WP02-A92 | Pass | s4-accounts | Review "…can sign in with codes sent to their address"; activated; the new TA signs in and TA-02 shows 9 rows (8 seeded + proof). |
+| WP02-A93 | Pass | s4-accounts | Review "…not created for use… The address becomes free"; Declined (no actions); same address created again. |
+| WP02-A94 | Pass | s4-accounts | Review lists sessions, codes, address changes, grants; groups and applications stay; the signed-in TA's next page lands on `/sign-in`. |
+| WP02-A95 | Pass | s4-accounts | Review "Grants are not restored."; Active; the TA signs in and finds the group. |
+| WP02-A96 | Pass | s4-accounts; accounts-pages.test.ts "an operator's suspension lists the duties…"; core/assignment-holds.test.ts "keeps the assignment of a suspended operator and shows the wait to the SuperAdmin queue" | Precondition not met (syn-operator-3 holds 0 assigned applications): the suspend review lists the duty types and "Nothing moves automatically"; suspension by test. |
+| WP02-A97 | Pass | accounts-pages.test.ts "suspending the last active SuperAdmin needs the acknowledgement…"; identity/accounts.test.ts "suspending the last active SuperAdmin needs an explicit acknowledgement" | By test. |
+| WP02-A98 | Pass | s4-accounts | Suspend, then "Request restoration": receipt says a second SuperAdmin decides; status Suspended; SA-1 has no approve control; SA-2 approved; Active. |
+| WP02-A99 | Pass | s4-accounts | SA-1 approved; SA-2 declined from the older page: HTTP 409 "Changed since your review" with the current status; Approved, not active. |
+| WP02-A100 | Not proven | s4-accounts; identity/accounts.test.ts "…stale revisions are refused"; accounts-pages.test.ts "a stale revision shows the current status beside the unsent reason…" | Offered actions pass (pending: approve, decline; approved: activate, suspend; active: suspend; suspended: restore; declined: none). Hand-made activate of a pending and restore of an active account are not tested. |
+| WP02-A101 | Pass | s4-accounts | syn-ta-1: no address, credential or sign-in-as control; "Only the travel agent can change this address, with codes sent to the current and the new address." |
+| WP02-A102 | Pass | identity/accounts.test.ts "refuses every privileged elevation while the audit record is behind, and keeps containment available"; ported-pages.test.ts (audit record behind) | By test. |
+| WP02-A103 | Deferred | s2a-offering … s4-accounts; P-02 | Accepted time deferred to P-02. The rest passes: title, request reference linked to the status page, "Recorded: Once…", current facts, event times in IST, focus unmoved, title starts with the receipt; full-page answers, so the polite region stays silent (WP01-A18). |
+| WP02-A104 | Pass | status-pages.test.ts "while unresolved reads \"Checking the original result\" and offers only \"Check status\"…"; bff.test.ts "sends the same envelope again when the first answer is lost…", "reports an unknown outcome when no answer arrives at all…"; launch-control and catalogue-commands lost-acknowledgement tests | By test of the shared BFF path; per-command coverage only for launch approval and values publication. |
+| WP02-A105 | Deferred | P-06 (B-10); launch-control.test.ts and catalogue-commands.test.ts Nth-retry tests | (c) deferred to P-06. (a) and (b) are proven for launch approval and values publication. |
+| WP02-A106 | Pass | s5-a11y | 13 WP-02 reason fields: visible label and the 10-character hint with the audit statement. The carried WP-13 recheck reason on SA-05b lacks the length hint (not a WP-02 form). |
+| WP02-A107 | Fail | s2a-offering … s4-accounts; F-02, F-08 | Most refusals state the reason in words with the reference code as secondary text. Field refusals name no owner or route; some show internal names ("(body)", "documents.0.label") or the browser's "Please match the requested format." |
+| WP02-A108 | Not proven | services-pages.test.ts "an unknown reason code reads the general sentence, never the code" | No test maps every reason code TA-02, TA-03 or the add-applicants step can show to its text. |
+| WP02-A109 | Pass | s1-read | Operator: SA-05/SA-06 addresses 404 with no facts; TA session on staff: sign-in page; every WP-02 page: environment label, "[TEST]" title, current rail item, breadcrumb on object pages, one h1. |
+| WP02-A110 | Pass | s1-read | Keyboard only at 1440 and 390 px: TA-02 → TA-03 → "Start an application" (`/ta/groups`). |
+| WP02-A111 | Pass | s2a … s4-accounts | Every SuperAdmin form step of D1-D14 and E1-E5 sent by keyboard at 1440 px; the D10 launch and the E1 creation at 390 px (the E1 approval at 1440 px). |
+| WP02-A112 | Pass | s5-a11y | 18 page states tabbed at 1440, 390 and 320 px: every focused control shows an indicator, none hidden under a bar. |
+| WP02-A113 | Pass | s1-read; s3-d12b; s5-a11y | 320 px: no page scroll on 17 page states; the one overflow came from the unbroken-name fixture of A121. |
+| WP02-A114 | Pass | s5-a11y | Every input on 18 page states (disclosures open) has a visible label. |
+| WP02-A115 | Pass | s5-a11y | Every status element carries text. |
+| WP02-A116 | Pass | s2a-offering; s2c-approval; s4-accounts | Error summaries take focus (country, offering, values, account forms and the server pages with `autofocus`); summary links move focus to fields; values kept. |
+| WP02-A117 | Pass | s3-d13b; s4-accounts | Native disclosure: Enter opens, Space closes, consequences before the button, "Cancel" link. Task pages: review visible before the button. JavaScript off: publication and approval work. The receipt is first in `main` above the h1 (design "receipt first in main"), and starts the title. |
+| WP02-A118 | Pass | s1-read; s4-accounts; s3-d10b | Unapproved route: `aria-describedby` notice; own SuperAdmin request: no control, reason in reading order; paused offering: no start control, notice in reading order. |
+| WP02-A119 | Pass | s5-a11y; axe target-size; test/ui/gallery.test.ts "… no serious axe violation", "compact stepper: … no unlabelled link is under 24px" | Primary actions at least 44 px. Table title links are 21 px high with spacing; axe target-size (24 px rule with spacing) passes everywhere, as in WP01-A101. |
+| WP02-A120 | Pass | axe color-contrast; s5-a11y; test/unit/web/contrast.test.ts "contrast pairs meet WCAG 2.2 AA…" | No contrast violation; focus indicators at least 3:1. |
+| WP02-A121 | Fail | s4-accounts; s5-a11y; F-09 | A 120-character name with spaces wraps at 1440 and 390 px; a name with a 90-character unbroken run forces page scroll on SA-06c. Reduced motion: transitions 1e-05 s. A 120-character offering title was not created (recipe). |
+| WP02-A122 | Pass | axe.jsonl | TA-02 all countries: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A123 | Pass | axe.jsonl | TA-02 after selecting "Synthetica Beta" in the country index: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A124 | Pass | axe.jsonl | TA-03 SYN Tourist e-visa: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A125 | Pass | axe.jsonl | TA-03 SYN Tourist visa preparation (boundary notices): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A126 | Pass | axe.jsonl | TA-03 not selectable (suspended proof offering): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A127 | Pass | axe.jsonl | add-one-applicant step with the refusal of A30: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A128 | Pass | axe.jsonl | SA-05a offering list with country and offering forms: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A129 | Pass | axe.jsonl | Add-a-country form with the error summary (empty); Add-a-country form with the error summary (invalid values): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A130 | Pass | axe.jsonl | Offering definition and values tab (proof offering, new); Offering readiness and launch tab (proof offering, new): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A131 | Pass | axe.jsonl | Declaration version with the owner-approval form: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A132 | Pass | axe.jsonl | Business values form with the error summary: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A133 | Pass | axe.jsonl | publication impact preview of the ₹3,450 values: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A134 | Pass | axe.jsonl | values publication record (receipt host): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A135 | Pass | axe.jsonl | launch plan form and the incomplete-plan receipt: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A136 | Pass | axe.jsonl | launch decision with acknowledgements and the consequence review: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A137 | Pass | axe.jsonl | SA-05j launch boundary of the unapproved provider route: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A138 | Pass | axe.jsonl | SA-06 list with filters and the S3 state: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A139 | Pass | axe.jsonl | create-account form with the error summary (empty); create-account form with the error summary (invalid email and reason): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A140 | Pass | axe.jsonl | account detail with the approve consequence review open: no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A141 | Pass | axe.jsonl | stale comparison on the business values draft (A59); stale-revision comparison on the account detail (A99): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| WP02-A142 | Pass | axe.jsonl | operator duties page (syn-operator-3; no suspension made): no serious or critical violation at 1440 and 390 px; moderate 0, minor 0. |
+| V01 proof | Not proven | s1-read, s1b-a74, s2a … s4-accounts; launch-control.test.ts, catalogue-concurrency.test.ts (C7) | Part A pass; B1 to B5 and B7 pass; B6 not run (needs TA participants); C1 to C6 pass (C3 refuses with the wrong reason text, F-04); C7 tests pass for not launched, out of scope and suspended (A32); Parts D and E pass except D13: the first publication from the older preview was accepted (A62, F-01). |
+
+## 7. Findings of the acceptance run
+
+Ranked under PRI-20260930-01. Each finding names its items, what the run showed, and a concrete scenario with its
+likelihood. Evidence: lane `research/proofs/wp02/` (manifest SHA-256 1e69badc492cf4b9e7566daea389ac1debc884a862708ab74631c716079c354a).
+
+| ID | Rank | Items | Observation on `lane-ui` at b2a6341 | Scenario and likelihood | Proposed direction |
+|---|---|---|---|---|---|
+| F-01 | P1 | A62 (V01 D13) | Values ₹3,450 were previewed with 1 draft of the proof offering. syn-ta-1 then started a second draft. The SuperAdmin published from the older preview: Core accepted it (publication no. 2, `prv_066JVJTA3TNEW0Q3Z8T4N2KJHH`). Its record states "drafts: 1, affectedCount: 1" while 2 drafts existed. A change of the offering revision or the values is refused as `preview_stale` (A55); a change of existing work is not. | A SuperAdmin previews a price change on a busy offering, reads "0 submitted, unpaid", and publishes 20 minutes later. In between, travel agents submitted 5 unpaid applications. They get the automatic reduction or the continuation the SuperAdmin chose without seeing them, and the publication record and its impact assessment under-report the affected scope. Likelihood: medium for any launched offering with live traffic; the audit record is wrong each time it happens. | Core: a publication checks that the existing-work set of the preview is still current (or records the scope at publication time) and refuses as out of date otherwise (BS B06). Core defect: orchestrator proposal. |
+| F-02 | P2 | A35, A42, A45, A57, A85, A107 | Validation reports do not state the rule in words or miss rules. The browser check shows Chromium's "Please match the requested format." and stops at the first pattern; the server says "This is not in the expected format.", "Check this value.", "This is too long or too large."; values refusals name internal paths ("documents.0.label", "processingEstimate.maxDays", "(body)"); a zero price without confirmation and a 5-character reason are not reported in the same answer; malformed declaration JSON reads "A declared value is not permitted for this service mode or type." | A SuperAdmin types a slug with capitals and a short reason, fixes the one reported field, and is refused again for the next one. Likelihood: high for first-time staff use; staff only, nothing saved wrongly. | Map each field rule to words (CMP-07) on client and server; report every field problem in one answer; never show internal paths or the browser's message. |
+| F-03 | P2 | A18 | No seeded TA-03 page shows "Cancelling an application for this service is not available." Core reports `cancellation: "undeclared"` as a supported declared value (`display.ts` builds boundaries only from action-scoped items that are not supported). The page renders the notice when Core returns the boundary (services-pages.test.ts "boundaries: …"). | A travel agent reads the Business visa page, sees no cancellation statement and tells a customer the application can be cancelled. Likelihood: medium; the customer learns later that no cancellation path exists. | Owner decision: either Core reports "undeclared" cancellation as a boundary, or the checklist §0.3 and A18 drop the expectation. |
+| F-04 | P2 | A30 (V01 C3) | A hand-made add-one form for the unlaunched provider route is refused with "This service has no published details at the moment." (`catalogue_not_published` from `start-individual.ts`, which treats every offering outside the travel agent's snapshot alike). The out-of-scope case reads correctly (A31). | A travel agent submits a page that went stale while a route was being prepared and reads that the service has no published details, which is not true. Likelihood: low (hand-made or stale requests only); nothing is created. | Core returns the offering reason (`offering_not_launched`) for a published, unlaunched offering, within the SH-02 rule. |
+| F-05 | P2 | A59 | After another SuperAdmin saved the previewed values, the declaration page still says "A current preview exists" and the old publication decision page still offers its publish form; the send is then refused (A55). | A SuperAdmin trusts "A current preview exists", opens the decision and fills evidence and reason, then gets "Preview again". Likelihood: medium when two SuperAdmins edit; one wasted step, no wrong publication. | Compare the preview's values and offering revision on read; label it out of date and offer only "Preview again". |
+| F-06 | P2 | A61, A65 | The values publication receipt names only number, kind and time. The publication record shows the affected scope and before/after as raw JSON (paise integers, internal ids) and does not show the continuation chosen. | An auditor or the second SuperAdmin reads publication no. 3 and cannot see the old and new price in rupees or what happened to the 2 drafts without decoding JSON. Likelihood: certain for every publication; staff only. | Render before/after values in ₹, the scope by class with units, and the continuation choices; receipt facts per B-02. |
+| F-07 | P2 | A72, A79 | Named audience members are never shown: the launch receipt, SA-05h and SA-05j kind=expand show "1 named travel agent". The expansion rule asks to "include everyone already approved". (Plan version and head on the receipt: F-U3-01 with P-06.) | A SuperAdmin launched for 3 named agents last month and now wants to add one; the page does not say which 3, so the expansion is refused as narrower until someone finds the earlier list. Likelihood: medium for named launches; the fallback "every active travel agent" widens more than intended. | Return and show the named accounts (name and reference) on SA-05h, the expand page and the receipt. |
+| F-08 | P2 | A24, A34, A37, A66 | Copy facts missing: TA-03 pause notice states reason and owner but not the route ("none"); SA-05a does not say a new offering is unpublished; the duplicate-country refusal has no link to the existing country; the values form has no notice that gate, cut-off or behaviour changes need an engineering release or a product-owner decision. | A SuperAdmin looks for a field to change a cut-off, finds none and no explanation, and asks engineering informally. Likelihood: medium; no data harm. | Add the missing sentences and the link (draft copy, CR-09). |
+| F-09 | P2 | A121 (A113 at 320 px) | A display name with a 90-character unbroken run (fixture `wp02-decline-r1013a`, second account) forces horizontal page scroll on SA-06c at 1440, 390 and 320 px. A 120-character name with spaces wraps. | A SuperAdmin creates an account whose display name is a long unbroken company or e-mail string; the account page scrolls sideways on a phone. Likelihood: low. | `overflow-wrap: anywhere` on names and titles in headings and cells. |
+
+Deferred items (pass rule §0.2): A17 and A19 (P-05), A21 (B-09, WP-03), A103 (P-02), A105 case (c) (P-06). Not proven
+items have no named test for part of their expected result: A07, A32, A36, A39, A49, A50, A52, A80, A100, A108.
+
+Observations outside WP-02, for WP-03 (not ranked here): the WP-03 add-one-applicant step labels "Given names" and "Date of
+birth" optional, but an empty given name is refused as "A name holds other characters than letters, spaces, apostrophes or
+hyphens." and an empty date of birth as "A date is not a real calendar date in the chosen order." (Core requires the birth
+date: `test/intake/individual.test.ts` "refuses … a missing birth date"). The run filled every field to create its drafts.
+
+### WP-01 rechecks
+
+| ID | Result | Evidence | Note |
+|---|---|---|---|
+| WP01-A101 | Pass | `s1-read` (unknown synthetic addresses, no mail sent) | At 390 px on the TA and the staff code steps, "Use a different address" is 166 x 44 px and "Request a new code" 143 x 44 px (`.tap-target`). Finding F-01 of WP-01 is fixed. |
+| WP01-A82 | Pass (partly met until P-02) | `s3-d7` (syn-ta-2 creates "WP-02 proof group r1013a" on the WP-03 page) | A product page shows the new receipt: "Group created", "Request reference" linked to `/ta/operations/[key]`, "Recorded: Once…", current facts; no command name and no accepted time. The status page reads "Request recorded", "was recorded once", "Recorded result Group", "Open the result", "Checked at … IST". The unreadable-operation variant stays by test (`test/unit/web/results.test.ts`). |
