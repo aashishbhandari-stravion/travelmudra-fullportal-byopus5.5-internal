@@ -1,9 +1,9 @@
 # ITEM-16 P-10 (a): the batch assignment result per item with the application id and the operator id
 
 Kind 1 read. Wave 3, worker W11 (Opus, worktree `wave3-assign`; about 239k context for ITEM-16 and ITEM-18 together).
-Commit: LANE_16 (cherry-picked from `168973f`; parent e0b978d on the worker branch). Grants: prompt scope
+Commit: `5ff0553` (cherry-picked from `168973f`; parent e0b978d on the worker branch). Grants: prompt scope
 (`src/modules/core/staff-views.ts`, `src/contracts/core.ts`, `src/core-api/bindings/core.ts`,
-`src/core-api/allowlists.ts`, `test/core/assignment-holds.test.ts`); one register line (D-16 G4); D-16 D-d.
+`src/core-api/allowlists.ts`, `test/core/assignment-holds.test.ts`); one register line (D-16 G4); D-16 D-d. Integration: conflicts in the register (both lines kept), `src/contracts/core.ts` (`core.assignment_batch` placed before the ITEM-20 `core.admin_queue`) and the test imports (the ITEM-19 imports kept; a superset).
 
 ## Read and change
 
@@ -35,4 +35,4 @@ rejects support views; work is bounded by the 200-item command maximum and the 2
 
 ## Checks
 
-CHECKS_16
+`npm run check` at `5ff0553`: typecheck and lint clean; 2625 of 2626; the one failure is the timing test `test/intake/source-structural.test.ts:51` under load (alone 2 of 2; no intake change in the commit). Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).

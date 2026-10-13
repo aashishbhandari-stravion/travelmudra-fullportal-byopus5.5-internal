@@ -1,7 +1,7 @@
 # ITEM-19 P-10 (e): Gate 1 facts for an assignment and for the first operator work
 
 Kind 1 read. Wave 3, worker W10 (Opus, worktree `wave3-gate1`; about 225k context for ITEM-19 and ITEM-20 together).
-Commit: LANE_19 (cherry-picked from `ccf9659`; parent e0b978d on the worker branch). Grants: prompt scope
+Commit: `3897d04` (cherry-picked from `ccf9659`; parent e0b978d on the worker branch). Grants: prompt scope
 (`src/modules/core/controls.ts`, `staff-views.ts`, `store.ts`, `src/contracts/core.ts`, `src/core-api/bindings/core.ts`,
 `test/core/assignment-holds.test.ts`); one register line (D-16 G4).
 
@@ -42,4 +42,4 @@ unchanged. All findings P2, parked:
 
 ## Checks
 
-CHECKS_19
+`npm run check` at `3897d04`: typecheck and lint clean; 2616 of 2616. Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).

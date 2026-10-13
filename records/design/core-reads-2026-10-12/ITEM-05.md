@@ -5,7 +5,8 @@ partial-return rule; logged with the orchestrator). Review follow-up worker W17 
 
 HELD (PLAN D-20). Branch `held/disclosure-correction` in the lane clone, never on the lane branch. Commits `b6f7833`
 (Point R) and `2bcc751` (census and release record), rebased on the lane head `3a81652` (the first build was `2b5a93e`,
-`127c54b` on `e0b978d`). Follow-up commits: FOLLOWUP_05. Reason for the hold: Point R is not releasable alone. Without
+`127c54b` on `e0b978d`). Follow-up commits: `277ccf4` (docs) and `29ee313` (tests), worker W17 (Opus,
+about 178k context). Frozen head: `29ee313`. Reason for the hold: Point R is not releasable alone. Without
 Point D (the recorded "no replacement owed" decision), a disclosure incident that names no file can never be resolved.
 The branch waits for Point D, which waits for Max's answers to Q-1 to Q-3.
 
@@ -71,4 +72,22 @@ and no blocking incident).
 
 ## Checks
 
-CHECKS_05
+Worker, at `29ee313`: tsc and eslint clean; the disclosure tests 15 of 15 (8 repeat runs); `test/static` plus
+`test/operations` 187 of 187. No `npm run check` for the held commits (held until Point D; the combined check runs when
+the branch lands).
+
+Follow-up `277ccf4` (docs only, `docs/operations.md`): the rule MUST NOT be released alone; it ships with the "no
+replacement owed" decision and that decision's new schema head; released alone, an incident that names no file can never
+be resolved, and the rule's own head cannot exclude an old build. The introduction, snapshot-rollback and census text
+were adjusted; the census SQL is unchanged.
+
+Follow-up `29ee313` (tests only, `test/operations/disclosure-correction.test.ts`): both commit orders of a resolve and
+a concurrent invalidation of the replacement; a lost response replayed by its key before and after the replacement became
+ineligible (one resolution fact, one operation, the original result); each of the group, currency and content-safety
+guards alone. Mutations (`evidence/ITEM-05-followup-mutations.txt`): removing any of six (the three guards, the resolve's
+correction check, the open-only incident read, same-key replay) fails its target test; `src/` restored after each.
+Worker deviations: (1) the first race version replaced the file outside the incident and was accepted in 2 of 5 runs,
+because SERIALIZABLE may validly order the resolve first; the race now replaces the file under the incident, so the
+conflict is deterministic (8 of 8); (2) the group and content-safety guards cannot be broken in stored data (the group is
+immutable; canonical implies content-safe), so those two cases use an altered Documents read; (3) the commit subjects are
+80 and 75 characters.

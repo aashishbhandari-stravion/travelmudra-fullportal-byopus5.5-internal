@@ -1,0 +1,52 @@
+ITEM-31 part (b): mutation checks of the two tests that pin the price of applications created after a price change
+Base: 03abf9a plus the two test files (uncommitted at mutation time). Each mutation was applied to product code once, the named test ran, and the file was restored with git checkout.
+
+=== Mutation 1 (T-B1, test/core/submission-price.test.ts): src/modules/core/commands/submission.ts:144, the submission price check disabled ===
+-  if (price !== input.quotedPricePaise) throw new TmError('stale_revision', 'price_changed');
++  if (false && price !== input.quotedPricePaise) throw new TmError('stale_revision', 'price_changed');
+  ✖ quotes a draft created after a routine higher price at the new price, refuses the old price, and leaves earlier submitted work at its quoted price without a notice (2735.175538ms)
+✖ applications created after a routine price change (2739.763558ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+test at test/core/submission-price.test.ts:260:3
+✖ quotes a draft created after a routine higher price at the new price, refuses the old price, and leaves earlier submitted work at its quoted price without a notice (2735.175538ms)
+  Error: expected price_changed, got {"status":"accepted","replayed":false,"operationId":"opr_76ZWJMNDZK9PRRMBX8F5HWWT2A","result":{"resource":{"type":"application","id":"app_1W2M5XFN13VGP514FAN5G1Z70K"},"summary":{"applicationId":"app_1W2M5XFN13VGP514FAN5G1Z70K","submissionId":"sub_1NXS33K4N7S2Z2STN0J64RACFY","priceRecordId":"pri_6P2B8NYC164QQ3940CFBWR9K0B"}}}
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w20-price-tests/test/core/submission-price.test.ts:287:5)
+
+=== Mutation 2a (T-B2, test/intake/bulk-mapping.test.ts): src/modules/catalogue/tasks/impact-recheck.ts:226, the continue_on_head draft policy no longer moves the draft ===
+-    if (choice === 'continue_on_head' && a.after_baseline_id !== null) {
++    if (false && choice === 'continue_on_head' && a.after_baseline_id !== null) {
+  ✔ keeps the attempt baseline with the draft policy continue_current: the draft created after the price change quotes the price of the attempt start (2311.403962ms)
+  ✖ moves the draft to the head with the draft policy continue_on_head: the recheck lets it quote the price of the head (1778.714661ms)
+✖ drafts created by an attempt that spans a routine price change (4093.716898ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+✖ failing tests:
+test at test/intake/bulk-mapping.test.ts:467:3
+✖ moves the draft to the head with the draft policy continue_on_head: the recheck lets it quote the price of the head (1778.714661ms)
+  AssertionError [ERR_ASSERTION]: the recheck moved the draft to the head
+  + actual - expected
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w20-price-tests/test/intake/bulk-mapping.test.ts:475:12)
+    actual: 'bbv_4XWDAY2VF9921PE4DXMH3DMD2F',
+    expected: 'bbv_06GKQHN39QPVG1Z9K5TM0HJD0X',
+
+=== Mutation 2b (T-B2): src/modules/catalogue/tasks/impact-recheck.ts:226, the continue_current draft policy also moves the draft to the head ===
+-    if (choice === 'continue_on_head' && a.after_baseline_id !== null) {
++    if (choice !== 'hold' && a.after_baseline_id !== null) {
+  ✖ keeps the attempt baseline with the draft policy continue_current: the draft created after the price change quotes the price of the attempt start (2025.669354ms)
+  ✔ moves the draft to the head with the draft policy continue_on_head: the recheck lets it quote the price of the head (1983.014386ms)
+✖ drafts created by an attempt that spans a routine price change (4011.302621ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+✖ failing tests:
+test at test/intake/bulk-mapping.test.ts:446:3
+✖ keeps the attempt baseline with the draft policy continue_current: the draft created after the price change quotes the price of the attempt start (2025.669354ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w20-price-tests/test/intake/bulk-mapping.test.ts:455:12)
+    actual: 'bbv_03D6TDA8PVTQ45XKSPF6109YWY',
+    expected: 'bbv_3C3KQMDFFHCMGAJKWCMF6YQDF9',

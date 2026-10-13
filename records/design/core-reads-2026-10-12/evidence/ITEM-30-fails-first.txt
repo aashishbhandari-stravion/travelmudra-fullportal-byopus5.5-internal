@@ -1,0 +1,92 @@
+# Outcome correction notice: fails-first evidence
+Worktree wt/w19-notice, branch outcome-correction-notice, base 03abf9a. Recorded 2026-10-13T18:33:28Z.
+
+## Run 1: the tests before the product change (src/modules/core/commands/admin.ts unchanged)
+Command: node --test --test-global-setup=test/support/global-setup.ts test/delivery/outcome-correction-notice.test.ts test/core/races-and-boundaries.test.ts test/core/withdrawal-dependencies.test.ts test/ops-tooling/restore-reopen.test.ts
+
+ℹ tests 43
+ℹ pass 27
+ℹ fail 16
+
+Failing tests (each with its first assertion message):
+✖ T-CO40 an upstream outcome correction racing the dependent's authorization: one consistent order, never a failed dependent with an act, never retries exhausted (3263.277988ms)
+      AssertionError [ERR_ASSERTION]: race 0
+✖ turns a met dependency incompatible when the upstream outcome is corrected, failing a confirmed-unfiled dependent (2581.176211ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N10: issued to refused fails a dependent with an open price increase and its own dependent; one correction notice plus one price notice (3997.922312ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N11: refused to issued fails the dependent of a relation that requires a refusal; one correction notice (2738.910619ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N1: issued to refused posts one notice to the owning travel agent, keyed by the committed operation id, with one notice-posted fact (904.565555ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N2: refused to issued posts one notice with the reverse direction (622.200825ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N3, N4, N5: a replay posts nothing; a reused key with other evidence and a repeated decision are refused and post nothing (812.17144ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N6: two SuperAdmins who reuse one operation key on two applications of one travel agent commit two notices with two keys (1397.454342ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N7: two SuperAdmins correcting one application at once: one is accepted, the other is stale; one notice (648.71283ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N8: a lost acknowledgement, then the same key: the committed operation is replayed; one notice in total (632.849059ms)
+      AssertionError [ERR_ASSERTION]: the correction and its notice committed together
+✖ N12: a failure of the notice's insert rejects the correction and writes nothing; a resend with the same key commits it with one notice (645.469445ms)
+      AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_7CKRNRB8XTHYX25BN65CQGM464","result":{"resource":{"type":"application","id":"app_4E9MMYDXAZ01G8TPBH6316XS1X"},"summary":{"applica
+✖ N13: a fault before the commit, after the notice was written, rolls the notice back with the correction (731.158325ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ N9: serialization failures on every attempt exhaust the retries; nothing is committed (608.58162ms)
+      AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_450HS0S59JW02CVG3DAF2M4HNY","result":{"resource":{"type":"application","id":"app_6D1EMMAD0DW8KSR72V621765Y3"},"summary":{"applica
+✖ N14: a refused correction posts nothing: no outcome, after a retrieval, after an accepted email, closed (722.528328ms)
+      AssertionError [ERR_ASSERTION]: []
+✖ B3: the restore rebuilt every projection over a log with outcome corrections and posted no notice; the source posted one for this release's correction (15.261388ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ B1, B2: after reopening, an earlier release's correction resent with its key is replayed and backfills no notice; a correction the backup did not hold, recorded again, posts one (55.215887ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+
+## Run 2: after the product change
+Same command.
+ℹ tests 43
+ℹ pass 43
+ℹ fail 0
+
+## Run 3: dedupe key mutation (the committed operation id replaced by the client operation key), then restored exactly
+Mutated line: dedupeKey: `outcome_corrected:${String(tx.ctx.operationKey)}:${app.ta_account_id}`,
+Restore: cp of the saved file; cmp equal. Same command.
+ℹ tests 43
+ℹ pass 30
+ℹ fail 13
+
+Failing tests (each with its first assertion message):
+✖ T-CO40 an upstream outcome correction racing the dependent's authorization: one consistent order, never a failed dependent with an act, never retries exhausted (3525.030826ms)
+      AssertionError [ERR_ASSERTION]: race 0
+✖ N10: issued to refused fails a dependent with an open price increase and its own dependent; one correction notice plus one price notice (4309.349495ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N11: refused to issued fails the dependent of a relation that requires a refusal; one correction notice (2667.458563ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N1: issued to refused posts one notice to the owning travel agent, keyed by the committed operation id, with one notice-posted fact (840.625949ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N2: refused to issued posts one notice with the reverse direction (724.686707ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N3, N4, N5: a replay posts nothing; a reused key with other evidence and a repeated decision are refused and post nothing (784.29909ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N6: two SuperAdmins who reuse one operation key on two applications of one travel agent commit two notices with two keys (1261.575972ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N7: two SuperAdmins correcting one application at once: one is accepted, the other is stale; one notice (702.803483ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N8: a lost acknowledgement, then the same key: the committed operation is replayed; one notice in total (788.778509ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N12: a failure of the notice's insert rejects the correction and writes nothing; a resend with the same key commits it with one notice (710.509397ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N13: a fault before the commit, after the notice was written, rolls the notice back with the correction (784.553423ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ N14: a refused correction posts nothing: no outcome, after a retrieval, after an accepted email, closed (722.507823ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+✖ B1, B2: after reopening, an earlier release's correction resent with its key is replayed and backfills no notice; a correction the backup did not hold, recorded again, posts one (68.92216ms)
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+
+## Notes
+- Assertions that state an absence cannot fail without the product change, by design: N4 and N5 (counts unchanged), the zero-notice
+  refusals of N14, N15 (only the operator's notice; unchanged behaviour, passes in run 1), B1 (zero notices backfilled on a replay).
+  Each sits in a test with a positive assertion that fails in run 1: N4/N5 with N3; N14 with its accepted-correction control;
+  B1 with B2. The N12/N13/N9 "nothing left behind" assertions run after a rejection that run 1 does not produce (accepted).
+- Under the key mutation N3, N6 and N8 fail on the key equality (the key names the client operation key, not the committed
+  operation id). N7 and N12/N13 fail on the same check through the shared helper.

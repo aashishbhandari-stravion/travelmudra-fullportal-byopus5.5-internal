@@ -1,11 +1,11 @@
 # ITEM-18 P-10 (d): the reassignment preview lists every duty Core transfers
 
-Kind 1 read. Wave 3, worker W11 (Opus, worktree `wave3-assign`). Commit: LANE_18 (cherry-picked from `504bbfb`; parent
+Kind 1 read. Wave 3, worker W11 (Opus, worktree `wave3-assign`). Commit: `da8d14b` (cherry-picked from `504bbfb`; parent
 `168973f` on the worker branch). Grants: orchestrator (13 Oct 2026, D-16 G2, G4)
 `src/modules/operations/case-work/incidents.ts`, `facade.ts`, `types.ts`, `src/domain/module-ports.ts`,
 `test/unit/frozen-interfaces.test.ts`, `test/operations/reassignment-preview.test.ts`, one register line; prompt scope
 (`src/modules/core/commands/assignment.ts`, `ports.ts`, `staff-views.ts`, `src/contracts/core.ts`,
-`src/core-api/bindings/core.ts`, `src/core-api/allowlists.ts`, `test/core/assignment-holds.test.ts`, `test/core/fakes.ts`).
+`src/core-api/bindings/core.ts`, `src/core-api/allowlists.ts`, `test/core/assignment-holds.test.ts`, `test/core/fakes.ts`). Integration: one conflict in the `staff-views.ts` imports (both kept).
 
 ## Read and change
 
@@ -46,4 +46,4 @@ schema, acts to 200, incidents fetch 201. All findings P2, parked:
 
 ## Checks
 
-CHECKS_18
+`npm run check` at `da8d14b`: typecheck and lint clean; 2626 of 2627; the one failure is the timing test `test/intake/source-structural.test.ts:51` under load (alone 2 of 2; no intake change in the commit). Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).

@@ -1,10 +1,10 @@
 # ITEM-22 P-17 (2): the exhausted act's future owner, decider, reason and time; the active mark count
 
 Kind 1 read. Wave 3, worker W12 (Opus, worktree `wave3-reads`; about 162k context for ITEM-22 and ITEM-17 together).
-Commit: LANE_22 (cherry-picked from `7b3c7a6`; parent e0b978d on the worker branch). Grants: prompt scope
+Commit: `1793248` (cherry-picked from `7b3c7a6`; parent e0b978d on the worker branch). Grants: prompt scope
 (`src/modules/core/store.ts`, `src/modules/core/staff-views.ts`, `src/contracts/core.ts`,
 `src/core-api/bindings/core.ts`); orchestrator (13 Oct 2026, D-16 G3, G4) `test/operations/protection-mark-filing.test.ts`
-and one line in `docs/verification/read-model-register.md`.
+and one line in `docs/verification/read-model-register.md`. Integration: one conflict in the register (all lines kept).
 
 ## Read and change
 
@@ -40,4 +40,4 @@ above.
 
 ## Checks
 
-CHECKS_22
+`npm run check` at `1793248`: typecheck and lint clean; 2629 of 2629. Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).

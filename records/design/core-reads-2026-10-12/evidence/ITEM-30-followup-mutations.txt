@@ -1,0 +1,310 @@
+ITEM-30 follow-up (R-01): fail-first runs against a deliberately weakened rollback
+=================================================================================
+Date: 14 October 2026. Worktree: lanes/core-reads-2026-10-12/wt/w19-notice, branch outcome-correction-notice, base bf2158d.
+Tests under test: N16 and N17 in test/delivery/outcome-correction-notice.test.ts (real Core, real TA delivery, per-file database).
+Scenario of both tests: an issued tourist application (outcome as a fixture row before the link) with one submitted transit
+dependent linked through Core (dependency unmet_missing_evidence) that has an open price increase proposed through Core.
+The correction to refused fails the dependent (dependency_failed), supersedes the increase (price notice) and posts the
+correction notice. Command run: node --test --test-global-setup=test/support/global-setup.ts --test-name-pattern="N16|N17"
+test/delivery/outcome-correction-notice.test.ts (TMPDIR=/tmp/claude-1000/w21).
+Each product file was restored with `git checkout -- <file>` after its run; `git status` showed only the two test files.
+
+Unmutated product: N16 pass, N17 pass (tests 2, pass 2, fail 0).
+
+---------------------------------------------------------------------------------
+Mutation (a): src/modules/core/commands/admin.ts, the correction's postNotice call wrapped in a try/catch that swallows
+---------------------------------------------------------------------------------
+diff --git a/src/modules/core/commands/admin.ts b/src/modules/core/commands/admin.ts
+index 8acf0b8..c51d952 100644
+--- a/src/modules/core/commands/admin.ts
++++ b/src/modules/core/commands/admin.ts
+@@ -128,11 +128,13 @@ export function adminCommands(deps: CoreDeps) {
+         // (a rolled-back attempt leaves no notice; a replay runs no handler) and the recipient.
+         const operationId = tx.ctx.operationId;
+         if (operationId === null) throw new TmError('internal', 'unexpected');
++        try { // MUTATION (a): swallow the notice failure
+         await deps.delivery.postNotice(tx, {
+           recipientAccountId: app.ta_account_id, applicationId: app.application_id, kind: 'generic_case_update',
+           params: { event: 'outcome_corrected', from: app.outcome, to: input.outcome }, ackRequired: false,
+           dedupeKey: `outcome_corrected:${operationId}:${app.ta_account_id}`,
+         });
++        } catch { /* swallowed */ }
+         return appResult(app);
+       }
+       await requireControls(deps, tx, { action: 'correct_application', actor: tx.ctx.actor, applicationId: app.application_id });
+
+(a1) First version of N16 (only the trigger that N12 uses: RAISE EXCEPTION, SQLSTATE P0001): the mutation SURVIVED.
+     tests 2, pass 2, fail 0.
+     Rejection printed in N16 (temporary debug line, removed):
+       mutated:   {"status":"rejected","error":{"category":"internal","code":"unexpected",...}}
+       unmutated: {"status":"rejected","error":{"category":"internal","code":"unexpected",...}}
+     Cause: PostgreSQL aborts the transaction when the INSERT raises. The swallowed error leaves the transaction in the
+     failed state; the runner's next statement fails (25P02) and the attempt rolls back. A swallowing handler cannot commit
+     after a database-raised insert failure, so that variant cannot detect the mutation.
+
+(a2) Final N16 runs two insert-failure variants, each on its own scenario: raise_exception (as N12) and drop_row (the trigger
+     skips the correction notice row with RETURN NULL: the insert writes no row, the transaction stays usable, and
+     postNotice fails in code with TmError internal/expected_one_row when it reads the row of its key).
+     Result with mutation (a): N16 FAILS on the drop_row variant (raise_exception variant passes, as explained in a1).
+▶ a failed correction with a dependent and a price increase leaves nothing behind
+  ✖ N16: a failure of the correction notice's insert, after the dependent failed and its increase was superseded, rolls everything back; a resend commits once (3510.242477ms)
+  ✔ N17: a fault before the commit, after both notices were written, rolls everything back; a resend commits once (1513.349458ms)
+✖ a failed correction with a dependent and a price increase leaves nothing behind (5027.417855ms)
+ℹ tests 2
+ℹ suites 1
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19560.256691
+✖ failing tests:
+test at test/delivery/outcome-correction-notice.test.ts:341:3
+✖ N16: a failure of the correction notice's insert, after the dependent failed and its increase was superseded, rolls everything back; a resend commits once (3510.242477ms)
+  AssertionError [ERR_ASSERTION]: drop_row: {"status":"accepted","replayed":false,"operationId":"opr_7RN8MYR7A23S0R5K3ZBER6JVTN","result":{"resource":{"type":"application","id":"app_23HN2FYDJT3BVGZ6D05E6FTWG1"},"summary":{"applicationId":"app_23HN2FYDJT3BVGZ6D05E6FTWG1"}}}
+  + actual - expected
+  
+  + 'accepted'
+  - 'rejected'
+  
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w19-notice/test/delivery/outcome-correction-notice.test.ts:352:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1869:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'accepted',
+    expected: 'rejected',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+(a3) Sensitivity of the state comparison alone (temporary test edit: the status assertion of N16 skipped; restored after):
+     the deep comparison of everything before and after fails on drop_row and shows what a swallowing handler commits:
+     upstream refused, dependent dependency_failed, dependency failed_incompatible, increase superseded, the price notice
+     and its notice-posted fact, core.outcome_corrected, core.dependency_state_changed, core.outcome_recorded,
+     core.price_increase_superseded, and the operation row; no correction notice.
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: drop_row
+  + actual - expected
+  +       outcome: 'dependency_failed',
+  +       outcome_at: 2026-03-01T10:00:00.000Z,
+  +       revision: 6n
+  -       outcome: null,
+  -       outcome_at: null,
+  -       revision: 5n
+  +       outcome: 'refused',
+  -       outcome: 'issued',
+  +       revision: 5n
+  -       revision: 4n
+  +       revision: 3n,
+  +       state: 'failed_incompatible'
+  -       revision: 2n,
+  -       state: 'unmet_missing_evidence'
+  +     {
+  +       application_id: 'app_2BNV6FYSZAEHCV4N32Y2HJA9HA',
+  +       fact_type: 'core.outcome_corrected',
+  +       seq: 198n,
+  +       subject_id: 'app_2BNV6FYSZAEHCV4N32Y2HJA9HA'
+  +     },
+  +     {
+  +       application_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R',
+  +       fact_type: 'core.dependency_state_changed',
+  +       seq: 199n,
+  +       subject_id: 'dep_5HYMVSXG4Y46THD6E95FPVSJRS'
+  +     },
+  +     {
+  +       application_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R',
+  +       fact_type: 'core.outcome_recorded',
+  +       seq: 200n,
+  +       subject_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R'
+  +     },
+  +     {
+  +       application_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R',
+  +       fact_type: 'core.price_increase_superseded',
+  +       seq: 201n,
+  +       subject_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R'
+  +     },
+  +     {
+  +       application_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R',
+  +       fact_type: 'dlv.notice_posted',
+  +       seq: 202n,
+  +       subject_id: 'ntc_2E31EZBBRV62F0VH78M4174586'
+  +     }
+  +       application_id: 'app_1AVAFD3Y4FMMNM621QHQM0BB9R',
+  +       dedupe_key: 'price_change:pri_73TM029ZV021WF2KXRY25AYNGQ:superseded',
+  +       kind: 'price_change',
+  +       notice_id: 'ntc_2E31EZBBRV62F0VH78M4174586',
+  +       params: {
+  +         cause: 'superseded',
+  +         priceRecordId: 'pri_73TM029ZV021WF2KXRY25AYNGQ'
+  +       },
+  +       recipient_account_id: 'acc_5JRY9D055V9X5AR2FJ3S1EJEAY'
+  +     },
+  +     {
+  +       operation_id: 'opr_124YPJMG5FR1881ZHDTSJY6ZNC',
+  +       operation_key: '2GWV1QMS1M0YE3KYAK3EJRWCZ4'
+  +     },
+  +     {
+  +       revision: 2n,
+  +       state: 'superseded'
+  -       revision: 1n,
+  -       state: 'open'
+
+---------------------------------------------------------------------------------
+Mutation (b): src/kernel/command.ts, the command.before_commit fault fires only after the commit
+---------------------------------------------------------------------------------
+diff --git a/src/kernel/command.ts b/src/kernel/command.ts
+index ae6a6bc..543de51 100644
+--- a/src/kernel/command.ts
++++ b/src/kernel/command.ts
+@@ -364,11 +364,12 @@ async function attemptOnce<I, R extends CommandResult>(
+       VALUES (${operationId}, ${actorKey}, ${operationKey}, ${def.name}, ${hash}, ${actor.kind === 'account' ? actor.accountId : null},
+         ${actor.kind === 'account' ? actor.sessionId : null}, ${actor.kind === 'system_task' ? actor.taskId : null}, ${tx.now},
+         ${record.type}, ${record.id}, ${result.summary}, ${facts.firstSeq}, ${env.process.releaseId}, ${env.process.writerEpoch})`);
+-    await env.faults.hit('command.before_commit', { command: def.name });
++    // MUTATION (b): the before_commit fault fires only after the commit.
+     // 4h.
+     try {
+       await h.commit();
+       committed = true;
++      await env.faults.hit('command.before_commit', { command: def.name });
+     } catch (e) {
+       // A failure with a SQLSTATE means the server refused the commit (for
+       // example a serialization failure detected at commit): nothing was
+
+Result: N17 FAILS (N16 passes). The fault after the commit returns outcome_unknown; the correction committed.
+▶ a failed correction with a dependent and a price increase leaves nothing behind
+  ✔ N16: a failure of the correction notice's insert, after the dependent failed and its increase was superseded, rolls everything back; a resend commits once (3347.789902ms)
+  ✖ N17: a fault before the commit, after both notices were written, rolls everything back; a resend commits once (1355.16912ms)
+✖ a failed correction with a dependent and a price increase leaves nothing behind (4707.663787ms)
+ℹ tests 2
+ℹ suites 1
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19827.563342
+✖ failing tests:
+test at test/delivery/outcome-correction-notice.test.ts:363:3
+✖ N17: a fault before the commit, after both notices were written, rolls everything back; a resend commits once (1355.16912ms)
+  AssertionError [ERR_ASSERTION]: {"status":"outcome_unknown","operationKey":"668H3HCCFWFE3YNQJHC0NY4DJB"}
+  + actual - expected
+  
+  + 'outcome_unknown'
+  - 'rejected'
+  
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w19-notice/test/delivery/outcome-correction-notice.test.ts:370:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'outcome_unknown',
+    expected: 'rejected',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+(b2) Sensitivity of the state comparison alone (temporary test edit: the status assertion of N17 skipped; restored after):
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +       outcome: 'refused',
+  -       outcome: 'issued',
+  +       revision: 5n
+  -       revision: 4n
+  +       outcome: 'dependency_failed',
+  +       outcome_at: 2026-03-01T10:00:00.000Z,
+  +       revision: 6n
+  -       outcome: null,
+  -       outcome_at: null,
+  -       revision: 5n
+  +       revision: 3n,
+  +       state: 'failed_incompatible'
+  -       revision: 2n,
+  -       state: 'unmet_missing_evidence'
+  +     {
+  +       application_id: 'app_3F8WW2RVX0HNQA93KCEDDXZBZF',
+  +       fact_type: 'core.outcome_corrected',
+  +       seq: 167n,
+  +       subject_id: 'app_3F8WW2RVX0HNQA93KCEDDXZBZF'
+  +     },
+  +     {
+  +       application_id: 'app_464V3BGD7PDDT82G94Q1J313DB',
+  +       fact_type: 'core.dependency_state_changed',
+  +       seq: 168n,
+  +       subject_id: 'dep_216YRC0XWY4TVJ4HJ9NZEVEC89'
+  +     },
+  +     {
+  +       application_id: 'app_464V3BGD7PDDT82G94Q1J313DB',
+  +       fact_type: 'core.outcome_recorded',
+  +       seq: 169n,
+  +       subject_id: 'app_464V3BGD7PDDT82G94Q1J313DB'
+  +     },
+  +     {
+  +       application_id: 'app_464V3BGD7PDDT82G94Q1J313DB',
+  +       fact_type: 'core.price_increase_superseded',
+  +       seq: 170n,
+  +       subject_id: 'app_464V3BGD7PDDT82G94Q1J313DB'
+  +     },
+  +     {
+  +       application_id: 'app_464V3BGD7PDDT82G94Q1J313DB',
+  +       fact_type: 'dlv.notice_posted',
+  +       seq: 171n,
+  +       subject_id: 'ntc_4JNKSFCVYTH0WHER9RFNYGDXFP'
+  +     },
+  +     {
+  +       application_id: 'app_3F8WW2RVX0HNQA93KCEDDXZBZF',
+  +       fact_type: 'dlv.notice_posted',
+  +       seq: 172n,
+  +       subject_id: 'ntc_392N8R5837EGQH2BPMPFBCTQH7'
+  +     }
+  +       application_id: 'app_3F8WW2RVX0HNQA93KCEDDXZBZF',
+  +       dedupe_key: 'outcome_corrected:opr_7NSTH5GW6G5TB4CNK403W67EJP:acc_2Q62S7CMKHMM0VNB8K5ZK88416',
+  +       kind: 'generic_case_update',
+  +       notice_id: 'ntc_392N8R5837EGQH2BPMPFBCTQH7',
+  +       params: {
+  +         event: 'outcome_corrected',
+  +         from: 'issued',
+  +         to: 'refused'
+  +       },
+  +       recipient_account_id: 'acc_2Q62S7CMKHMM0VNB8K5ZK88416'
+  +     },
+  +     {
+  +     {
+  +       application_id: 'app_464V3BGD7PDDT82G94Q1J313DB',
+  +       dedupe_key: 'price_change:pri_64NR7G1T0DA4XD5G58JQTFTK12:superseded',
+  +       kind: 'price_change',
+  +       notice_id: 'ntc_4JNKSFCVYTH0WHER9RFNYGDXFP',
+  +       params: {
+  +         cause: 'superseded',
+  +         priceRecordId: 'pri_64NR7G1T0DA4XD5G58JQTFTK12'
+  +       },
+  +       recipient_account_id: 'acc_2Q62S7CMKHMM0VNB8K5ZK88416'
+  +     }
+  +   operations: [
+  +     {
+  +       operation_id: 'opr_7NSTH5GW6G5TB4CNK403W67EJP',
+  +       operation_key: '0PEYX54ZK4YHJYJNJK2Q0FW0D1'
+  +     }
+  +   ],
+  -   operations: [],
+  +       revision: 2n,
+  +       state: 'superseded'
+  -       revision: 1n,
+  -       state: 'open'
+
+Restoration: `git checkout -- src/modules/core/commands/admin.ts` and `git checkout -- src/kernel/command.ts`; the test file
+restored from its final copy. `git diff --quiet -- src/` passed; `git status --short` showed only test/delivery/kit.ts and
+test/delivery/outcome-correction-notice.test.ts.
+
+Checks on the final tests (unmutated product): tsc --noEmit exit 0; eslint on the two changed files exit 0;
+test/static 76/76, test/core 159/159, test/delivery 55/55 (includes N16 and N17 and every other user of the delivery kit).

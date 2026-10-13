@@ -1,6 +1,6 @@
 # ITEM-17 P-10 (b): `core.operation` names the command and the acceptance time
 
-Kind 1 read. Wave 3, worker W12 (Opus, worktree `wave3-reads`). Commit: LANE_17 (cherry-picked from `107d47b`; parent
+Kind 1 read. Wave 3, worker W12 (Opus, worktree `wave3-reads`). Commit: `03abf9a` (cherry-picked from `107d47b`; parent
 `7b3c7a6` on the worker branch). Orchestrator grant (13 Oct 2026, D-16 G1, G4): `src/contracts/queries.ts`,
 `src/core-api/bindings/kernel.ts`, `test/system/case-rules.test.ts`, one line in
 `docs/verification/read-model-register.md`.
@@ -28,4 +28,4 @@ and that only the caller's own operation is read.
 
 ## Checks
 
-CHECKS_17
+`npm run check` at `03abf9a`: typecheck and lint clean; 2630 of 2630. Before the checks, at the head: tsc, eslint and `test/static` 76 of 76. Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).

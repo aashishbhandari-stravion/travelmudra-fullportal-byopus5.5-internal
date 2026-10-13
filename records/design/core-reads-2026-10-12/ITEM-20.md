@@ -1,6 +1,6 @@
 # ITEM-20 P-12 option C as narrowed: the SuperAdmin queue `first_work_gate1` (display only)
 
-Kind 1 read. Wave 3, worker W10 (Opus, worktree `wave3-gate1`). Commit: LANE_20 (cherry-picked from `baa00e8`; parent
+Kind 1 read. Wave 3, worker W10 (Opus, worktree `wave3-gate1`). Commit: `6b97250` (cherry-picked from `baa00e8`; parent
 `ccf9659` on the worker branch). Grants: prompt scope (`src/modules/core/lists.ts`, `src/contracts/core.ts`,
 `src/core-api/bindings/core.ts`, `test/core/assignment-holds.test.ts`, `test/system/core-pages.test.ts`); one register
 line (D-16 G4).
@@ -39,4 +39,4 @@ kind to it runs the per-candidate reads on every staff page).
 
 ## Checks
 
-CHECKS_20
+`npm run check` at `6b97250`: typecheck and lint clean; 2618 of 2618. Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).
