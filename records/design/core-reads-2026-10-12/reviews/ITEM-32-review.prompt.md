@@ -1,0 +1,11 @@
+You are the independent reviewer (different model family) of one committed change in the TravelMudra product.
+
+Commit: 475a501 on branch held/gate-exception-evidence in the current repository (parent 3a81652). Read it with `git show 475a501` and surrounding code with `git show 475a501:<path>`.
+
+Context: the reviewed proposal is the UI lane's P-11 (/home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/ui-revamp-2026-10-12/output/proposals/P-11-gate-exception-evidence.md, §3, §5, §7 to §9 and the §13 amendments) with its one review (.../ui-revamp-2026-10-12/research/reviews/P-11-12-review.md). Owner decision: option O1, a required list of one to five evidence references on every gate exception grant; an attestation alone is accepted; the four review fixes are conditions. The commit is held: it is merged together with the UI lane's grant forms later, because today's forms send no evidence (several system tests fail without them; that is expected). The migration was renumbered to 1190 (1060 is taken). The worker also added one synthetic evidence item to grant call sites in test/delivery, test/operations, test/documents-association and test/ops-tooling.
+
+Judge: (1) the four review fixes and the §13 amendments are met (legacy replay of committed operations across the release boundary; the migration: NOT NULL without default, legacy rows, recovery and admission; only SuperAdmins read the evidence; attestation-only accepted); (2) the migration: correct, additive, safe on existing data, trigger re-created as before; (3) the handler: 1 to 5 enforced, kinds, normalization, the fact's evidence; (4) the read exceptionRecords on core.admin_case: audience and the policy call; (5) whether any existing caller (outside the UI forms) is left sending no evidence; (6) whether the tests are sufficient and fail without the change.
+
+One-time review; read-only; do not modify files; do not ask questions back.
+
+Output: ranked findings R-01… (P0/P1/P2; file:line; a concrete scenario with likelihood; the smallest fix), then a verdict ("sound as written", "sound with the fixes above", or "not sound") with one paragraph. Concise, no preamble, at most about 450 words.

@@ -53,10 +53,14 @@ alone 2 of 2). `npm run check` at `60fd311` (detached checkout): typecheck and l
 
 ## Later finding (14 Oct 2026, at the Kind 2 integration check)
 
-P2, parked unless the orchestrator assigns it: `test/operations/originals-register.test.ts:193` (R4, review follow-up
+P2; the orchestrator assigned the fix (14 Oct 2026): commit `dfbafaa` (tests only, one line plus a comment). Original note: `test/operations/originals-register.test.ts:193` (R4, review follow-up
 `60fd311`) failed once in a full `npm run check` at `a1cc0a9` (operator 2's register did not list the shared original)
 and passes alone 6 of 6. Probable cause (source reading, not proven): R3 seeds 501 originals readable by operator 2, all
 recorded at the same test-clock time; R4 does not advance the clock, so its shared original can tie on the register's
 order key (`store.ts:230`, recorded time DESC, then original id) and fall below the 500-row cap. Likelihood: rare (a tie
 among about 503 rows). Smallest fix: `kit.clock.advance(60_000)` at the start of R4, or give R4 operators that R3 does not
 use. The register itself behaves as specified (cap, order, truncated flag).
+
+Fix `dfbafaa`: R4 advances the clock before it records its originals. Proof (`evidence/ITEM-24-R4-tie.txt`): a temporary
+fixture that gave R3's seeded originals ids sorting before every random id made R4 fail without the line and pass with it;
+the committed file alone passes 6 of 6 twice; tsc, eslint, `test/static` 76 of 76. `npm run check` at `dfbafaa`: typecheck and lint clean; 2648 of 2649; the one failure is the timing test `test/intake/source-structural.test.ts:51` (alone 2 of 2, with the originals register file 8 of 8). Deployed on `lane-max` (release `rel_16JXFWD39JAW92WHRQ0ZN2GMBK`).

@@ -1,0 +1,18 @@
+# ITEM-24 R4 tie at the 500-row cap: deterministic proof (14 Oct 2026, lane head a1cc0a9)
+## 1. Temporary fixture: R3's seeded ids sort before every random id; R4 WITHOUT the clock advance
+  ✖ R4: an original shared between two applications shows each operator only the application that operator may read (1973.590399ms)
+✖ the originals register shows each reader the originals of the applications they may read (8596.231509ms)
+ℹ tests 6
+ℹ pass 5
+ℹ fail 1
+✖ failing tests:
+✖ R4: an original shared between two applications shows each operator only the application that operator may read (1973.590399ms)
+
+## 2. Same temporary fixture; R4 WITH the clock advance (the fix)
+ℹ tests 6
+ℹ pass 6
+ℹ fail 0
+
+## 3. Temporary fixture removed; the committed change only (the clock advance), file alone, two runs
+ℹ pass 6 ℹ fail 0 
+ℹ pass 6 ℹ fail 0 

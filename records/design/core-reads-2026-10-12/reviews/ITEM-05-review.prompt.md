@@ -1,0 +1,11 @@
+You are the independent reviewer (different model family) of two committed changes in the TravelMudra product (one item).
+
+Commits: 2b5a93e and 127c54b in the current repository's object store (worker branch wave3-disclosure; parent e0b978d). Read them with `git show 2b5a93e`, `git show 127c54b` and surrounding code with `git show 127c54b:<path>`.
+
+Context: the reviewed proposal is the UI lane's K2-P20-1 "disclosure correction evidence" (/home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/ui-revamp-2026-10-12/output/proposals/K2-P20-1-disclosure-correction-evidence.md; §0.2 Point R, §0.5 census, §0.6 release rule, §9 hostile states, §11 tests). Owner decision: "The correction is met only by an eligible replacement of the incident's file or by a recorded 'no replacement owed' decision with business evidence." Only Point R (the replacement must be releasable to the travel agent), the census query and the release rule were built; Point D (the "no replacement owed" decision), S and G wait for the owner. The worker notes that Point R alone leaves a disclosure incident that names no file unresolvable until Point D exists, so R must not be released without D.
+
+Judge: (1) whether releasableReplacement implements Point R exactly (eligibility: verified, available, the TA can receive it; same subject; re-evaluation without relabelling; the R1 to R6 cases), and every caller passes deps consistently (resolve check, incident view, binding); (2) concurrency and staleness: a replacement that becomes ineligible after the incident resolves, retries of the resolve command; (3) the census query: read-only, bounded, correct predicate; (4) the release rule text: accurate and enforceable as written; (5) the consequence of releasing R without D (confirm or refute the worker's note, with a scenario); (6) whether the tests are sufficient and fail without the change.
+
+One-time review; read-only; do not modify files; do not ask questions back.
+
+Output: ranked findings R-01… (P0/P1/P2; file:line; a concrete scenario with likelihood; the smallest fix), then a verdict ("sound as written", "sound with the fixes above", or "not sound") with one paragraph. Concise, no preamble, at most about 450 words.
