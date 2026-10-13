@@ -66,4 +66,4 @@ dependent protection and existing price notices unchanged; positive assertions f
 ## Checks
 
 Worker at `bf2158d`: tsc and eslint clean; `test/static` 76 of 76, `test/core` 159 of 159, `test/delivery` 53 of 53.
-CHECKS_30
+`npm run check` at `bf2158d`: typecheck and lint clean; 2645 of 2645. At `b21f3ff`: 2647 of 2647. Deployed on `lane-max` at `a1cc0a9` (release `rel_47GT0E9AZCHS9T03RRCQS2W053`).
