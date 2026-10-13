@@ -6,10 +6,30 @@
 | Work package | WP-03 Groups, individual intake, submit (UI-PLAN §12.1; lane PLAN §3) |
 | Author | Principal Product Manager (Claude subagent), 12 October 2026 |
 | Decision owner | Principal Technical Architect of the lane (LD-12) |
-| Status | Draft. Step 1 of lane PLAN §3. Not run. Input to the UX design review and the independent review. |
+| Status | Run on `lane-ui` at 0e38a04 on 13 October 2026 (section 7). 180 items: 133 Pass, 15 Fail, 31 Not proven, 1 Deferred; V05 and V02 Pass. Findings in section 8 (no P0; P1: F-01, F-02, F-03). Corrections of 13 October 2026 below. |
 | Product base | lane branch `ui-revamp-2026-10-12` at 102e4c9; internal records at 694e007 |
 | Installation | `lane-ui`: edge http://127.0.0.1:4650 (travel-agent pages); staff http://127.0.0.1:4652 (proof set-up through the existing SuperAdmin and operator pages only, LD-02) |
 | Writing style | ASD-STE100 at about 75% (STY-20261003-01) |
+
+## Corrections of 13 October 2026
+
+The accepted decisions after the code review changed the rows below (`WP-03.md` §6.1, findings R-01 to R-06, and §6.2;
+`WP-03-fixes-notes.md` §2 to §6b; lane commits dc313f6 and 0e38a04). They bind the run of section 7. No other row
+changed. Where an unchanged row names an older receipt title or a precheck rule, this table governs.
+
+| Row | Change | Source |
+|---|---|---|
+| Every form row; A48, A62, A63, A64, A65, A132 | Input is sent whole. A value that the command's contract does not take is refused before any command, at its field, with every value kept. No handler cuts or drops a value. A multipart text field over the field limit is refused whole ("Request too large"), never cut. Open: the shared intake handler still cuts the TA-09c applicant text fields and the bulk service list (S-14, `WP-03.md` §6.1 R-01, P-22 item 3). | R-01; `WP-03.md` §6.2; fixes notes §2; 0e38a04 |
+| A77 to A80, A82, A83 (document detail) | The resolve and classification forms show only while every application the version is in force for allows changes. Otherwise the page shows no form and the reason; a refused decision whose form is no longer offered stays on the page read only. | R-02; fixes notes §3 |
+| A13, A61, A64, A67, A69, A76, A78, A79, A129 | Where the operation summary cannot tell commands apart (group created; details saved; identity corrected; file received, replaced or linked; details resolved; type confirmed), the receipt title is the neutral "Request recorded" with the facts as "Current". The titles "Group created", "Application details saved", "Identity details corrected", "File received" and C-09's "Replacement file received" are superseded. Distinct titles stay: "Travel dates changed", "Drafts created", "Help requested", "Application submitted", "Handed back". | R-03; fixes notes §4 |
+| A06, A108 (navigation count) | A delivery read that is unavailable makes the rail count "Unavailable", never a number. | R-04; fixes notes §5 |
+| A83, A110, A112 (support view); design §2.0 "Support view" | A support view shows no action control at all, not even a disabled one. The owner and the step stay. | R-05; fixes notes §6 |
+| A114, A115, A120, A122; design §5.4 "Checkbox after a refusal" | Every statement is unchecked after every refusal (C1, C2 and C5). | R-06; fixes notes §6 |
+| A42, A48 | Surname, given names and date of birth are required on TA-09c (Core keeps no draft without them). "At least one name part is required" is withdrawn; the earlier optional-names deviation (U5) is reversed. Each empty required detail is named at its field. | `WP-03.md` §6.2; fixes notes §6b |
+| A180 (new, §2.2) | TA-13b with a travel date before today's India date: the page shows a review with the exact dates and an unchecked acknowledgement; nothing is sent until the acknowledgement equals exactly those dates; the acknowledgement never reaches Core. Recorded as **Partly met** by decision: Core itself still accepts past dates on `core.edit_travel_dates` until the Core fix. | `WP-03.md` §6.2 (O-01); fixes notes §6a; WP-17 review R-01 |
+
+Section numbering: this run records the result per item in section 7 ("Sign-off", the table per item) and the
+findings in section 8. Section 6 keeps the questions of the draft.
 
 ## Corrections of 12 October 2026
 
@@ -267,6 +287,7 @@ the item. S5 applies only where a page reads a projection (`views.*`); the `core
 | WP03-A20 | TA | TA-13 edit | Save the same dates. Save a return date before the start date. Open the edit address of a closed group (fixture). | Same dates: C1 "The dates are unchanged." Return before start: C1 on the return date. Closed group: no "Edit travel dates" on TA-05; the edit address shows "The group is closed. Its travel dates cannot change." with the route to its history, and no form. | L (first two) + T (closed) | `core.edit_travel_dates` (`group_dates_invalid`, `group_closed`); PL §5.2 (Unavailable: group closed) |
 | WP03-A21 | TA (`syn-ta-1`), two tabs | TA-13 edit of G1 | Open the edit page in tab 1 and tab 2. In tab 2 save new dates. In tab 1 save other dates. | Tab 1: C5 "Changed since your review" (CMP-14) with the current dates and the unsent dates side by side, and "Review current information". Nothing is overwritten. | L | CMP-14; UX §3.3; `core.edit_travel_dates` (revision) |
 | WP03-A22 | TA | TA-13 edit, the Nth time and a lost acknowledgement (fixtures) | Resend the same form (same key). Inject a lost acknowledgement. | Same key: the same receipt; one change in the group history. Lost acknowledgement: C4 with "Check status"; no second save offered. | T | PL §7 K-STD; BS B35 |
+| WP03-A180 | TA (`syn-ta-1`) | TA-13b of an open group without applications (new, correction of 13 October) | Enter a start date before today (India date). Send. Read the page. Tick the acknowledgement and send. Change one date and send. | The page shows "Check these travel dates: they are before today" with the exact dates and an unchecked acknowledgement of exactly those dates; nothing is sent and the group keeps its dates. With the matching acknowledgement the dates are sent; the acknowledgement is not. Changed dates ask again. Partly met by decision: Core still accepts past dates until the Core fix. | L+T | `WP-03.md` §6.2 (O-01); fixes notes §6a |
 
 ### 2.3 TA-04 Groups list
 
@@ -699,201 +720,287 @@ Not in WP-03 (later packages or other lanes):
 
 | Field | Value |
 |---|---|
-| Verified on (date, IST) | |
-| Installation and ref (`uat.py status lane-ui` output: commit or tag) | |
-| Lane commit of the tests named for `T` items | |
-| Seam contract version and bulk-lane commit integrated (Q-02, Q-03, UAT-09 fix) | |
-| Run tag and identifiers (internal record reference) | |
-| Browsers and versions | |
-| Assistive technology used | |
-| V05 result (parts A to I; where shown) | |
-| V02 result (parts A to G; where shown) | |
-| TA participants for A151 (number; results) | |
-| Open findings (ID, rank, scenario) | |
-| Signed by (role and name) | |
+| Verified on (date, IST) | 13 October 2026, 11:15 to 12:40 IST |
+| Installation and ref (`uat.py status lane-ui` output: commit or tag) | `lane-ui`: ref 0e38a04, release rel_3JEW9KWV588AXDY15QGPRD2ZCR (unchanged before and after the run; data and accounts kept) |
+| Lane commit of the tests named for `T` items | 0e38a04, run in a clean copy (`git archive 0e38a04`; node_modules unchanged). Unit 388 (387 pass, 1 todo); unit/web 965 (964 pass, 1 todo); system 110 pass; database (core, intake, documents, integration) 192 pass; UI gallery and status 1310 pass. All 337 cited tests pass. Logs and the item map: `research/proofs/wp03/tests/` |
+| Seam contract version and bulk-lane commit integrated (Q-02, Q-03, UAT-09 fix) | Not integrated at 0e38a04: passport number rule 4496ee9 (DEP-1) and passport parts (DEP-2). S-14 (shared intake handler cuts) open |
+| Run tag and identifiers (internal record reference) | Tag r1013k. Groups, drafts, versions and operation keys: lane `research/proofs/wp03/state.json`; the writes are listed in section 8.2 |
+| Browsers and versions | Chromium 153.0.8010.12 headless (Playwright 1.63.0) at 1440 x 900, 390 x 844 and 320 px; one page with reduced motion |
+| Assistive technology used | None. axe-core 4.13.0 (@axe-core/playwright 4.13.0, tags wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa); keyboard-only driving; DOM checks for labels, focus, targets, reflow and storage |
+| V05 result (parts A to I; where shown) | Pass: A, B, E, F live on `lane-ui`; C, D, G, H by named tests at 0e38a04 (C and H assert the outcome indirectly, see the V05 row) |
+| V02 result (parts A to G; where shown) | Pass: A, B, C, D (set-up through the existing staff pages), F live; E by named tests |
+| TA participants for A151 (number; results) | 0; not run |
+| Open findings (ID, rank, scenario) | F-01, F-02, F-03 P1; F-04 to F-15 P2; no P0. See section 8 |
+| Signed by (role and name) | Principal Product Manager (Claude Opus subagent), 13 October 2026 |
 
-Result per item (Pass, Fail, Blocked, Partly met or Not run; evidence reference; note):
+Result per item (Pass, Fail, Not proven, Deferred; evidence reference; note). Evidence: lane folder
+`research/proofs/wp03/` (manifest `manifest.sha256`, 196 files, SHA-256 0692f620928ea6d6a4021d22cb992575863e7b9ad95eca19a14c2f4b90e45969). A script name
+(for example `s3b-v05-submit`) means that step's run on `lane-ui` at 0e38a04, with its log, `results.jsonl`,
+`axe.jsonl`, `facts.jsonl`, the DOM dumps in `dom/` and the screenshots in `shots/`. A test reference names the file
+and the test title at 0e38a04 (`tests/map.jsonl`). Totals for the 180 items: 133 Pass, 15 Fail, 31 Not proven, 1 Deferred. "Not proven" names what no
+live check and no test shows. The only Deferred item names its seam item.
 
 | ID | Result | Evidence | Note |
 |---|---|---|---|
-| WP03-A01 | | | |
-| WP03-A02 | | | |
-| WP03-A03 | | | |
-| WP03-A04 | | | |
-| WP03-A05 | | | |
-| WP03-A06 | | | |
-| WP03-A07 | | | |
-| WP03-A08 | | | |
-| WP03-A09 | | | |
-| WP03-A10 | | | |
-| WP03-A11 | | | |
-| WP03-A12 | | | |
-| WP03-A13 | | | |
-| WP03-A14 | | | |
-| WP03-A15 | | | |
-| WP03-A16 | | | |
-| WP03-A17 | | | |
-| WP03-A18 | | | |
-| WP03-A19 | | | |
-| WP03-A20 | | | |
-| WP03-A21 | | | |
-| WP03-A22 | | | |
-| WP03-A23 | | | |
-| WP03-A24 | | | |
-| WP03-A25 | | | |
-| WP03-A26 | | | |
-| WP03-A27 | | | |
-| WP03-A28 | | | |
-| WP03-A29 | | | |
-| WP03-A30 | | | |
-| WP03-A31 | | | |
-| WP03-A32 | | | |
-| WP03-A33 | | | |
-| WP03-A34 | | | |
-| WP03-A35 | | | |
-| WP03-A36 | | | |
-| WP03-A37 | | | |
-| WP03-A38 | | | |
-| WP03-A39 | | | |
-| WP03-A40 | | | |
-| WP03-A41 | | | |
-| WP03-A42 | | | |
-| WP03-A43 | | | |
-| WP03-A44 | | | |
-| WP03-A45 | | | |
-| WP03-A46 | | | |
-| WP03-A47 | | | |
-| WP03-A48 | | | |
-| WP03-A49 | | | |
-| WP03-A50 | | | |
-| WP03-A51 | | | |
-| WP03-A52 | | | |
-| WP03-A53 | | | |
-| WP03-A54 | | | |
-| WP03-A55 | | | |
-| WP03-A56 | | | |
-| WP03-A57 | | | |
-| WP03-A58 | | | |
-| WP03-A59 | | | |
-| WP03-A60 | | | |
-| WP03-A61 | | | |
-| WP03-A62 | | | |
-| WP03-A63 | | | |
-| WP03-A64 | | | |
-| WP03-A65 | | | |
-| WP03-A66 | | | |
-| WP03-A67 | | | |
-| WP03-A68 | | | |
-| WP03-A69 | | | |
-| WP03-A70 | | | |
-| WP03-A71 | | | |
-| WP03-A72 | | | |
-| WP03-A73 | | | |
-| WP03-A74 | | | |
-| WP03-A75 | | | |
-| WP03-A76 | | | |
-| WP03-A77 | | | |
-| WP03-A78 | | | |
-| WP03-A79 | | | |
-| WP03-A80 | | | |
-| WP03-A81 | | | |
-| WP03-A82 | | | |
-| WP03-A83 | | | |
-| WP03-A84 | | | |
-| WP03-A85 | | | |
-| WP03-A86 | | | |
-| WP03-A87 | | | |
-| WP03-A88 | | | |
-| WP03-A89 | | | |
-| WP03-A90 | | | |
-| WP03-A91 | | | |
-| WP03-A92 | | | |
-| WP03-A93 | | | |
-| WP03-A94 | | | |
-| WP03-A95 | | | |
-| WP03-A96 | | | |
-| WP03-A97 | | | |
-| WP03-A98 | | | |
-| WP03-A99 | | | |
-| WP03-A100 | | | |
-| WP03-A101 | | | |
-| WP03-A102 | | | |
-| WP03-A103 | | | |
-| WP03-A104 | | | |
-| WP03-A105 | | | |
-| WP03-A106 | | | |
-| WP03-A107 | | | |
-| WP03-A108 | | | |
-| WP03-A109 | | | |
-| WP03-A110 | | | |
-| WP03-A111 | | | |
-| WP03-A112 | | | |
-| WP03-A113 | | | |
-| WP03-A114 | | | |
-| WP03-A115 | | | |
-| WP03-A116 | | | |
-| WP03-A117 | | | |
-| WP03-A118 | | | |
-| WP03-A119 | | | |
-| WP03-A120 | | | |
-| WP03-A121 | | | |
-| WP03-A122 | | | |
-| WP03-A123 | | | |
-| WP03-A124 | | | |
-| WP03-A125 | | | |
-| WP03-A126 | | | |
-| WP03-A127 | | | |
-| WP03-A128 | | | |
-| WP03-A129 | | | |
-| WP03-A130 | | | |
-| WP03-A131 | | | |
-| WP03-A132 | | | |
-| WP03-A133 | | | |
-| WP03-A134 | | | |
-| WP03-A135 | | | |
-| WP03-A136 | | | |
-| WP03-A137 | | | |
-| WP03-A138 | | | |
-| WP03-A139 | | | |
-| WP03-A140 | | | |
-| WP03-A141 | | | |
-| WP03-A142 | | | |
-| WP03-A143 | | | |
-| WP03-A144 | | | |
-| WP03-A145 | | | |
-| WP03-A146 | | | |
-| WP03-A147 | | | |
-| WP03-A148 | | | |
-| WP03-A149 | | | |
-| WP03-A150 | | | |
-| WP03-A151 | | | |
-| WP03-A152 | | | |
-| WP03-A153 | | | |
-| WP03-A154 | | | |
-| WP03-A155 | | | |
-| WP03-A156 | | | |
-| WP03-A157 | | | |
-| WP03-A158 | | | |
-| WP03-A159 | | | |
-| WP03-A160 | | | |
-| WP03-A161 | | | |
-| WP03-A162 | | | |
-| WP03-A163 | | | |
-| WP03-A164 | | | |
-| WP03-A165 | | | |
-| WP03-A166 | | | |
-| WP03-A167 | | | |
-| WP03-A168 | | | |
-| WP03-A169 | | | |
-| WP03-A170 | | | |
-| WP03-A171 | | | |
-| WP03-A172 | | | |
-| WP03-A173 | | | |
-| WP03-A174 | | | |
-| WP03-A175 | | | |
-| WP03-A176 | | | |
-| WP03-A177 | | | |
-| WP03-A178 | | | |
-| WP03-A179 | | | |
-| V05 proof | | | |
-| V02 proof | | | |
+| WP03-A01 | Pass | s1-groups; s1b-fix | Sign-in lands on `/ta`; `/home` answers `/ta`. Rail (main navigation) starts with "Home", marked current. One h1 "Home". "Read at … IST". |
+| WP03-A02 | Pass | s1-groups; dom/s1-a01-home | Order: "Needs your action" list, then shortcuts "Browse services" and "Create a group"; travel-risk and recent blocks hidden while empty (design §2.1). Each item: applicant, service, reference, reason in words, one action link to its application or task list. No recorded date shown. |
+| WP03-A03 | Pass | s5b-lists | Home: "15 applications need your action", 15 items; TA-06 `view=needs_action`: "15 applications shown", the same 15; rail "Applications 15 need attention". |
+| WP03-A04 | Pass | s6-isolation (syn-ta-3); ta-home.test.ts "teaches the sequence …" | "Start here" with the three steps, "Every application belongs to a group. A group holds one country and one set of travel dates.", links "Browse services" and "Create a group"; no country, number or "0". |
+| WP03-A05 | Not proven | ta-home.test.ts "says 'Nothing needs your action now.' when applications exist and none needs it, and still shows the notices" (pass) | T part passes. L part not run: no travel agent on `lane-ui` holds applications of which none needs action. |
+| WP03-A06 | Pass | ta-home.test.ts "fails the page when the list cannot be read …", "render each on its own when a block cannot be read", "degrades each optional block on its own for an availability failure only"; status-pages.test.ts (pass) | By test (S7 by composition with the shell status page). |
+| WP03-A07 | Pass | s5b-lists; shots/s5b-a07-home-390.png | 390 px: items are cards, name first, then service and reference, then the action; first item within the width; no page scroll. |
+| WP03-A08 | Pass | s1-groups | No forbidden promise on TA-01; the count names its unit. |
+| WP03-A09 | Pass | s1-groups | TA-04 "Create a group" opens `/ta/groups/new`; fields in order Country, Group name, Travel start date, Travel return date; countries Synthetica and Synthetica Beta only; one-country, India-time and applicants-after texts; "Cancel" returns to TA-04, nothing created. No review step (correction A13). |
+| WP03-A10 | Pass | s1-groups; s2a-intake-refusals (A40, A41) | TA-03 "Start an application" opens `/ta/groups`; TA-13a has no country chosen; "Add one applicant" opens TA-09c with no service checked. |
+| WP03-A11 | Pass | s1-groups; s1b-fix | With the page script: summary focused, 4 field messages. Server (hand-made empty post): HTTP 422, "Choose a country.", "Enter a name for the group, at most 120 characters.", start and return date messages; nothing created. |
+| WP03-A12 | Fail | s1-groups; s1b-fix; F-03 | Server: HTTP 422 "The travel start date must be today or later, as an India date.", then "The travel return date must be on the travel start date or later."; values kept; nothing created. With the page script the first send stops in the browser with the browser's own text "Value must be 13/10/2026 or later." at both date fields. |
+| WP03-A13 | Pass | s1-groups; dom/s1-a13-receipt; axe A155 | Keyboard create. Consequence line before the button; no review step. Receipt (neutral title per correction 13 Oct): "Request recorded", reference link, "Recorded: Once …", current group name, country, travel dates, state. Receipt first in `main` and in the title. TA-04 lists G1. |
+| WP03-A14 | Pass | s1-groups; s1b-fix; system/web-shell.test.ts "a valid form runs its one command once …" | (1) double click: one POST, one group. (2) raw identical replay: the same receipt address. (3) same key, changed name: HTTP 409 "This form was already used with different content. Your values are kept …", new key, value kept. (4) Back: TA-13a with a new key (Chromium restores typed values in one case); the send created a second group (accepted, Q-W03-17). (5) refused send: new key; its status page "Nothing was recorded …"; corrected send created one group. |
+| WP03-A15 | Pass | core/unlisted-country-work.test.ts "refuses a new group there …"; groups-pages.test.ts "a country that is no longer listed, a used form and an unknown code" (pass) | By test (no country is unlisted on `lane-ui`: seeded data stays). |
+| WP03-A16 | Pass | system/interrupted-work.test.ts "reports an unknown outcome, never a refusal …"; system/web-shell.test.ts "says a request is still being processed …" (pass) | By test. |
+| WP03-A17 | Not proven | core/groups-drafts.test.ts "creates a group of a listed country on the Asia/Kolkata basis …"; unit/time.test.ts (pass) | No create at 00:30 IST with a clock fixture; no test that the page never shows a UTC date. |
+| WP03-A18 | Pass | s2c-dates | Dates now, country as a fact ("another country needs another group"), recheck and filed-work sentences; no affected list or count; "Cancel" returns to TA-05. |
+| WP03-A19 | Pass | s2c-dates; dom/s2c-a19-receipt | Consequence text before the button. Receipt "Travel dates changed" with the recheck sentence and "Current travel dates"; no earlier dates, no affected list. TA-05 header shows the new date. No draft of group D showed the recheck wait after two changes (nothing to state). |
+| WP03-A20 | Pass | s2c-dates; groups-pages.test.ts "a closed group: no form, the reason and the way back" (pass) | Same dates: "The dates are unchanged. Change at least one date, or cancel." Return before start: at the return field. Closed group by test. |
+| WP03-A21 | Pass | s2c-dates; axe A156; F-14 | Tab 1: HTTP 409 "Changed since your review … Nothing you entered was saved", table field / your unsent value / current value, "Review current information"; nothing overwritten. The unsent value shows as "2026-11-22" beside "21 Nov 2026" (F-14). |
+| WP03-A22 | Not proven | groups-pages.test.ts "the identical acknowledged request sent again is the same request …" (pass) | No test replays `core.edit_travel_dates` with one history change; no lost-acknowledgement test on the dates form. |
+| WP03-A23 | Pass | s1-groups | Columns Group (country below), Travel dates, State, Applications; an empty group reads "No applications yet"; no 200-row line; "Read at … IST". |
+| WP03-A24 | Pass | s1-groups; axe A157 | `?state=closed`: "No group matches this filter. 6 groups are in other states. Clear filters"; reload keeps it; Back restores; Clear resets; unknown value turns the filter off; no country filter. |
+| WP03-A25 | Pass | s6-isolation (syn-ta-3) | "No groups yet", "A group is one trip: one country and one set of travel dates … Each applicant of the trip gets their own application in it.", "Create a group"; no zero count. |
+| WP03-A26 | Not proven | none | No test renders TA-04 with a failed `core.ta_groups` read or an unreadable count. |
+| WP03-A27 | Fail | applications-list.test.ts "says that it shows at most 200 applications …"; groups-pages.test.ts "the at-most-200 line shows only when Core returns its row limit" (pass); F-15 | TA-06 passes. TA-04 says "This list shows at most 200 groups." without how to narrow the list. |
+| WP03-A28 | Pass | s1-groups; shots/s1-a28-ta04-390.png | Cards at 390 px, filter reachable, no page scroll at 390 and 320 px. |
+| WP03-A29 | Pass | s6-isolation | syn-ta-2 sees its own group only; no syn-ta-1 group, count or hint. |
+| WP03-A30 | Pass | s1-groups | h1 group name; breadcrumb "Groups"; country, travel dates "(IST)", "Group Open"; freshness; actions "Add one applicant" (design §2.3 name), "Import a list", "Change travel dates", "Group documents". |
+| WP03-A31 | Pass | s1-groups; s10-final | Closure facts as Core reports them ("Imports still running 0 imports", "Open import issues 1 issue" after the run's intakes); no readiness or date claim. "1 application is not completed" is not a read-model fact (WP-03.md §6, U1). |
+| WP03-A32 | Pass | s1-groups | Sections Applications, Imports, Import issues, Closing the group (rule text, Core facts, carried close form); no tabs. |
+| WP03-A33 | Pass | s5b-lists | Row link carries `from=group`; breadcrumb "Groups › WP03 r1013k G1"; breadcrumb and Back return to TA-05. |
+| WP03-A34 | Pass | s1-groups | No group-level submit, price, consent or outcome control. |
+| WP03-A35 | Not proven | individual-intake.test.ts "shows no form when no service can be chosen, when the group is closed, or in a support view" (pass) | Not run live (no seeded offering may be suspended). The test does not assert the offering's own reason or the route. |
+| WP03-A36 | Not proven | groups-pages.test.ts "a closed group is read only: no close form, no task link, its closed kind in words" (pass) | No test asserts that the applications of a closed group stay reachable. |
+| WP03-A37 | Pass | s1b-fix | "No applications yet. Add the applicants of this trip …" with "Add one applicant"; no zero fact. |
+| WP03-A38 | Pass | s6-isolation | syn-ta-2 on the G1 address and on an address with one changed character: the same HTTP 404 page, no group facts. |
+| WP03-A39 | Not proven | none | No test renders TA-05 with a failed `core.ta_group` read or unreadable closure facts. |
+| WP03-A40 | Pass | s2a-intake-refusals; axe A160 | TA-05 offers "Add one applicant" and "Import a list" (bulk, existing page). TA-09c context band: group, country, travel dates (IST). "View requirements" opens by Enter with documents, formats and sizes; Escape closes it and focus returns to its summary. |
+| WP03-A41 | Fail | s2a-intake-refusals; F-06 | Only Synthetica offerings; provider route and SYX absent; several can be chosen; "each service becomes its own draft". No price beside any service (parked U5 P2). |
+| WP03-A42 | Pass | s2a-intake-refusals | Every field has a visible label; passport number, issuing country, surname, given names and date of birth required (correction 13 Oct); "Nothing is matched by name"; hint "IND for India". |
+| WP03-A43 | Pass | s2a-intake-refusals; s3a-v05-prepare (A66) | Rule text beside the TA-09c passport input, the TA-09f passport row and in "View requirements": "A passport has two pages to send: the front page … and the back page. Send one file that holds the front page and the back page." Formats and size from the declaration. TA-07 carries no upload or replace control now (moved to TA-09f). |
+| WP03-A44 | Pass | s2b-v05-intake; prepare-pages.test.ts "the replacement form names the revision …"; individual-intake.test.ts "states the two pages of a passport beside its one input …" (pass) | Partly met by recorded decision (WP-03.md §3 Q-W03-04, P-08, DEP-2): one-file shape only; every passport sent as one file became the applicant's evidence. |
+| WP03-A45 | Pass | s2a-intake-refusals; axe A161 | HTTP 422; summary focused; at the field "Enter the passport number as one letter and seven digits (A1234567) or two letters and six digits (AB123456)."; value kept; nothing created. Partly met by decision (P-07 d wording; DEP-1 open). |
+| WP03-A46 | Deferred | individual-intake.test.ts "states the passport number shapes …"; prepare-pages.test.ts "drift guard …" (pass); todo test (P-08) | Seam item DEP-1 / P-08: the page states Max's two-shape wording; the test that Core accepts every stated example is a todo until the bulk rule is on main. |
+| WP03-A47 | Pass | s2a-intake-refusals | "PA123456" (IND) refused with the A45 message at lane commit 0e38a04 (UAT-09 fix 4496ee9 not integrated, DEP-1). |
+| WP03-A48 | Fail | s2a-intake-refusals; s2a3-intake; F-04 | "XX" refused "Enter the issuing country as its three-letter code …"; surname with a digit refused in words; date of birth 1990-02-31 (hand-made) refused; typed values kept; "Choose the files again". "India" was not refused: `maxlength="3"` cut it to "Ind", read as IND, and a draft (Kiran) was created. |
+| WP03-A49 | Pass | s2a-intake-refusals; s2a3-intake; s2a4-intake | (1)(2) script: field errors "… is not PDF, JPEG or PNG." and "… is larger than 5 MB." (the requirement's size); server (hand-made): HTTP 422 "The file is not a PDF, JPEG or PNG." and "A file is larger than its document accepts …", "Choose the files again", nothing created. (3) script refuses a PDF photo at the field; without the script the draft is created and the photo row reads "Not valid for this application: a photo must be JPEG or PNG, up to 2 MB" with a replacement input. |
+| WP03-A50 | Pass | s2b-v05-intake; dom/s2b-asha-int1 | INT-1 "Applicant added: ASHA SYNTHREE", receipt "Drafts created" with reference link, service, "Draft created", application reference, "Prepare this application"; passport "Being checked for safety", then "Accepted". No quote, nothing submitted. |
+| WP03-A51 | Fail | s4a-v02; axe A162; F-06 | Receipt "Drafts created … 2 applications", two rows with own references and "Prepare this application" links. No price on the result (parked U5 P2). |
+| WP03-A52 | Pass | s4c-v02 | HTTP 409 "This applicant already has an open application for one of the chosen services in this group. Nothing was created for any service." with the link to A; values kept; no second application. |
+| WP03-A53 | Fail | s2a3-intake; s2a4-intake; F-05 | "Lives in India: No" was accepted: draft created (Uma). Its pages state no population reason. |
+| WP03-A54 | Fail | s2a-intake-refusals; F-07 | Refused (HTTP 409), values kept, no draft; reason "This service has no published details at the moment." (WP-02 F-04, parked). |
+| WP03-A55 | Pass | s2a-intake-refusals | HTTP 422 "A chosen service is not a service of Synthetica. Choose services of this group's country."; values kept; nothing created. |
+| WP03-A56 | Pass | s2b-v05-intake | Form opened 367 s before sending: accepted (Mira); no verification message. |
+| WP03-A57 | Pass | s2a3-intake; s2b-v05-intake; s2c-dates; intake/individual.test.ts "replays the same operation …" (pass) | (1) one POST, one draft. (2) raw identical multipart replay: the same INT-1 address. (3) same key, changed given names: HTTP 409 used-form text, new key, values kept, "Choose the files again". (4) Back: fresh key; send meets the duplicate check with the link. (5) refused C1 then corrected: one draft; refused key "Nothing was recorded …". (6) by test. |
+| WP03-A58 | Pass | s2c-dates | HTTP 409 "This group changed since you opened the form. Nothing was created." with "Choose the files again"; values kept; context band shows current facts; next send created Dina's draft. |
+| WP03-A59 | Pass | s3a-v05-prepare; s10-final; axe A163 | Draft: six sections, closed state set, "Cannot start yet: 3 items stop submission", no percentage, Ready or Complete. Submitted unassigned case: "Not checked here". |
+| WP03-A60 | Pass | s3a-v05-prepare; dom/s3a-a59-ta09t | Context band "About this application": group, country, travel dates (IST), service, "View requirements". "Group and service: Cannot change" with both sentences. No price or estimate here. |
+| WP03-A61 | Pass | s3a-v05-prepare | Labels Passport type, Country of residence, Travel purpose; one "Save". Receipt "Request recorded" (neutral, correction 13 Oct) with "Change: Applied to the application" and the current values; section state "No open item". |
+| WP03-A62 | Pass | s3a-v05-prepare | Exactly the declared field (Travel purpose, one option). Hand-made "business": HTTP 422 "Your details were not saved …"; value unchanged. |
+| WP03-A63 | Pass | s3a-v05-prepare | Hand-made surname: HTTP 422; hand-made nationality GBR: HTTP 422 with a link to the identity correction; nothing changed. |
+| WP03-A64 | Fail | s5a-identity-far; F-11 | Evidence none prechecked with a link; no evidence: "Choose the identity document that shows the corrected details."; no change: "Nothing changed."; accepted: TA-09t receipt "Request recorded" with the identity values now; identical replay: same receipt; same key, other content: HTTP 409. The history shows no correction line. |
+| WP03-A65 | Pass | s5a-identity-far | HTTP 409 "The documents you chose do not show that this is the same person …" and the route "If the passport is wrong, replace it in Documents."; nothing changed. |
+| WP03-A66 | Pass | s3a-v05-prepare | One row per requirement: document, status in words, formats and size, file, whose step, action ("Upload", "Replace this file", "Use a file already in this group …"); passport row with the rule text. |
+| WP03-A67 | Pass | s3a-v05-prepare | Receipt "Request recorded", document "Photo", "Being checked for safety"; after the checks "Accepted"; no row "Accepted" before. |
+| WP03-A68 | Not proven | s3a-v05-prepare; document-detail.test.ts "a running check is TravelMudra's; a refused file names its reason …" (pass) | L part passes (GIF, 6 MB PDF and PDF photo refused at the field and, by hand, HTTP 422). Safety part: no test asserts the row sentence and the absence of a preview. |
+| WP03-A69 | Pass | s3b-v05-submit; s3c-replaced; s4a-v02 (V02 B2); prepare-pages.test.ts; bff-documents.test.ts (pass) | Form carries `_rev.association`; receipt neutral with the pending checks and "Current file in use … Another file". The earlier file stayed in use; the replacement passport (JPEG sample) failed as "Does not match the applicant" and the earlier one stays accepted; photo replacements switched and DOC reads "Replaced by a newer file". Shared version: B kept its photo. Stale by test. |
+| WP03-A70 | Pass | s4b-v02 | Chooser in a labelled region lists G3 files only; choosing D's passport for C: receipt, row "Accepted". Hand-made association of a G2 version: HTTP 404 uniform page, nothing disclosed. |
+| WP03-A71 | Pass | s2b-v05-intake; s2a4-intake; ta-components.test.ts "each status in its own words …" (pass); axe A164 | Live: being checked, accepted, missing, conflict ("Does not match the applicant", "Compare and correct the identity details" and a new upload), validity failure (200 px photo, PDF photo). Other states by test. |
+| WP03-A72 | Pass | s3a-v05-prepare; axe A165 | HTTP 409 comparison Passport type official / ordinary; saved value kept. |
+| WP03-A73 | Not proven | bff-documents.test.ts; integration/identity-correction-replay.test.ts (pass) | No test of a details-section resend, its lost acknowledgement or one history change. |
+| WP03-A74 | Pass | s7a-sweep; shots/s7a-a74-ta09d-390.png | TA-09t and TA-09d at 390 px: one column, one "Save" at the end of the form (D-W03-14), not fixed; no page scroll. |
+| WP03-A75 | Pass | s4b-v02; prepare-pages.test.ts "an assigned application: no form on any section page …" (pass) | TA-09d, TA-09i, TA-09f of assigned A: no form, the A103 notice; hand-made save refused (A104). |
+| WP03-A76 | Pass | s3b-v05-submit | TA-09f after submission: "A change now makes the readiness checks run again."; photo replaced, neutral receipt; quote ₹3,500 and original window unchanged. |
+| WP03-A77 | Pass | s3b-v05-submit; axe A166 | DOC "Passport of SYNTHREE, ASHA": safety check, details read, what it is, for this application, version, stored file, times in IST; breadcrumb Applications › applicant › Documents. |
+| WP03-A78 | Not proven | s2b-v05-intake (Nila); document-detail.test.ts (pass, partly) | Not reachable live: the low-contrast sample was read and accepted. Tests do not assert a label per field or the C2 text of a second send. |
+| WP03-A79 | Not proven | integration/documents-commands.test.ts (pass, partly) | No test asserts the type list, the row move or the C2 page text. |
+| WP03-A80 | Not proven | integration/documents-commands.test.ts (pass, partly) | Stale comparison tested for classification only. |
+| WP03-A81 | Pass | s6-isolation | syn-ta-2: the same 404 page as an unknown version. |
+| WP03-A82 | Not proven | integration/documents-commands.test.ts "waits for the checks to finish …" (pass) | No-form-while-checking and the C2 text not asserted. |
+| WP03-A83 | Pass | document-detail.test.ts "a support view reads the same facts with no form and no step to take"; system/browser.test.ts (pass) | By test (correction 13 Oct: no action control). |
+| WP03-A84 | Pass | s5b-lists | Columns Applicant (reference below), Next, Progress, Outcome, Group (country), Service, Travel; "Outcome not recorded"; freshness. |
+| WP03-A85 | Pass | s5b-lists; axe A167 | `view`, `progress`, `group` in the address; "7 applications shown"; reload, Back, Clear; S3 "No application matches these filters. 17 applications exist without these filters."; unknown value ignored; no country or service filter, no sort. |
+| WP03-A86 | Fail | s5b-lists; F-12 | Row link carries `from=applications` and the filters; breadcrumb and Back return to TA-06 with them. TA-07 has no "Back to the list" link. |
+| WP03-A87 | Pass | s5b-lists; axe A168 | Seal search: results at `/ta/search?r=…`; no address in the history, result link or referrer holds the text; Back and reload show the results (GET, no resend). |
+| WP03-A88 | Pass | s6-isolation | Three identical "No application matches …" answers for syn-ta-2. |
+| WP03-A89 | Pass | applications-list.test.ts "shows the lag of the projection …", "says that search is unavailable …" (pass) | By test. Live results show "Up to date when read at …". |
+| WP03-A90 | Pass | s6-isolation (syn-ta-3) | "No applications yet. Applications start in a group: open a group and add its applicants." with "Go to your groups". |
+| WP03-A91 | Pass | applications-list.test.ts "degrades the delivery facts and the groups on their own, and fails the page when the list cannot be read" (pass) | By test. |
+| WP03-A92 | Pass | s5b-lists; shots/s5b-a92-ta06-390.png | Cards at 390 px; filters visible; no page scroll. |
+| WP03-A93 | Pass | s5b-lists | No checkbox or bulk control on TA-06. |
+| WP03-A94 | Pass | s4a-v02 | Two rows for Ravi, each with its own reference, progress and next action. |
+| WP03-A95 | Pass | s3b-v05-submit | h1 name and reference with copy; group and service; separate rows Progress, Outcome "Outcome not recorded", Next, Stage "Draft", Editing "You can change it", Service payment "Not recorded", Help request, "Problem report and return None"; no badge or percentage; freshness. |
+| WP03-A96 | Pass | s3a-v05-prepare; application-workspace.test.ts (pass) | Before the photo: "A required document is missing", "Continue the application". After: "Check the answers and submit this application." with "Check and submit". Not-allowed fixture by test. |
+| WP03-A97 | Fail | s3b-v05-submit; F-08 | "₹3,500.00 if you submit today, fixed when you submit"; window "18 Oct 2026 to 25 Oct 2026, an estimate, not a guarantee". The price shows paise (convention §0.2: "₹3,500"). |
+| WP03-A98 | Pass | s3b-v05-submit | One row per document with status in words and "View the document". |
+| WP03-A99 | Pass | s3a-v05-prepare; axe A169 | Optional labelled note (2000); separation and decision texts; receipt "Help requested" with reference, "Nothing was submitted. Asking for help is not a submission."; after reload "Help request Requested: TravelMudra decides"; still a draft. |
+| WP03-A100 | Pass | s3a-v05-prepare; s3b-v05-submit | No help control on TA-07, no form on TA-07h; hand-made request: HTTP 409 "A help request is already open. TravelMudra decides on it." |
+| WP03-A101 | Not proven | core/races-and-boundaries.test.ts; application-workspace.test.ts (pass, partly) | Stale and lost-acknowledgement cases of the help request only generic. |
+| WP03-A102 | Pass | s3b-v05-submit | Progress "With TravelMudra"; outcome not recorded; next as Core reports it; quoted ₹3,500 at submission, original window, "No later forecast", payment row separate. |
+| WP03-A103 | Pass | s4b-v02; axe A170 | Assigned A: "This application is with your operator. Report the problem so it can be returned for correction.", owner "Your operator", carried "Report a problem" form; no edit, upload, replace, continue or submit control. |
+| WP03-A104 | Not proven | s4b-v02; s4c-v02; s6-isolation; dom/s6-a104-submit-answer.html | Edit by hand: HTTP 409 with the notice. Upload by hand: HTTP 409 "Photo: The operator owns the application …" and the notice. Submission by hand refused (409 or 422) but not with the notice: no page exposes the assigned case's revision, so a valid envelope could not be built; no test asserts that page. |
+| WP03-A105 | Pass | application-workspace.test.ts "price and timing …"; core/submission-price.test.ts "records a forecast beside the original window …" (pass) | By test (Q-W03-08). |
+| WP03-A106 | Pass | carried-forms-ta.test.ts (pass); s10-final | Carried forms live: close (TA-05), withdraw (draft TA-07), report a problem (assigned TA-07). |
+| WP03-A107 | Pass | s6-isolation | TA-07 and TA-08 of syn-ta-1 applications and an unknown address: identical 404. |
+| WP03-A108 | Pass | application-workspace.test.ts "delivery facts that cannot be read …", "documents that cannot be read now …"; review-submit.test.ts; bff.test.ts (pass) | By test; case-read failure by the shell mapping. |
+| WP03-A109 | Pass | s5b-lists | 390 px order: identity, Next action, Status, sections; no page scroll. |
+| WP03-A110 | Pass | application-workspace.test.ts "renders no form … not even a disabled one"; review-submit.test.ts (pass) | By test (correction 13 Oct). |
+| WP03-A111 | Pass | s3b-v05-submit | History: "Application started", "Help requested from TravelMudra", "Submitted to TravelMudra", "Price fixed", each with IST time. |
+| WP03-A112 | Pass | s3b-v05-submit; review-submit.test.ts "a production installation: draft wording offers no submission …" (pass) | h1 "Check and submit: SYNTHREE, ASHA"; sections in order; change links; price, window "if you submit today … whether or not you have paid", "Filed with"; payment text; statement with "Draft wording"; consequence before "Submit this application"; "Back to the application". "Ask TravelMudra for help instead" absent while a help request is open (shown on B, A126). |
+| WP03-A113 | Fail | s3b-v05-submit; F-09 | Each "Change …" link names its section and opens it; the section page offers only "Back to the task list"; a save returns to TA-09t, not TA-08. |
+| WP03-A114 | Pass | s3b-v05-submit | Statement in words, "Draft wording", never prechecked, unchecked after reload. |
+| WP03-A115 | Pass | s3b-v05-submit; axe A171 | HTTP 422; summary focused "Confirm the statement to submit this application." linked to the checkbox; still a draft. |
+| WP03-A116 | Pass | s3a-v05-prepare; review-submit.test.ts (pass); axe A171 | Blockers with links; notice "Submitting this application is unavailable until the items above are resolved."; no form, no statements; button `aria-disabled` described by the notice; help link separate. Evidence-unavailable by test. |
+| WP03-A117 | Fail | s5a-identity-far; F-10 | Both blocked without a form: "Travel starts too far ahead to submit this service yet. Submit closer to the travel date." and "Travel starts too soon …". The declared window (3 to 90 days) is not stated. |
+| WP03-A118 | Pass | s3b-v05-submit; axe A172 | Receipt "Application submitted": reference, submission id, "Time: Recorded in the application's History" (partly met, P-02), quote ₹3,500, original window, next step. First in `main` and in the title. |
+| WP03-A119 | Pass | s3b-v05-submit | Quoted at submission ₹3,500; original window from the submission date; service payment "Not recorded" separate. |
+| WP03-A120 | Not proven | review-submit.test.ts "a stale revision …"; core/submission-price.test.ts (pass, partly) | End-to-end publish-then-send not asserted. |
+| WP03-A121 | Not proven | core/submission-price.test.ts (pass, partly) | No midnight IST clock fixture. |
+| WP03-A122 | Not proven | core/submission-price.test.ts; review-submit.test.ts (pass, partly) | No TA-08 re-render after a statement version change. |
+| WP03-A123 | Pass | s3b-v05-submit; s4a-v02 | (1) double click: one POST. (2) raw identical replay: the same receipt address. (3) Back: "This application was submitted." with "Open the application", no form. (4) new key: HTTP 409, its status page "Nothing was recorded …". (5) after the refused A115 send the next send submitted once; history one submission line. |
+| WP03-A124 | Not proven | core/submission-price.test.ts; status-pages.test.ts (pass, partly) | The submit route's answer after an unknown outcome not asserted. |
+| WP03-A125 | Not proven | review-submit.test.ts "blocked by a service rule …"; application-workspace.test.ts (pass, partly) | Not run live; refused hand-made send and the route in the notice not asserted. |
+| WP03-A126 | Pass | s4a-v02 | From B's TA-08 "Ask TravelMudra for help instead": receipt "Help requested … Nothing was submitted."; B still a draft with its submission form; A unchanged. |
+| WP03-A127 | Pass | s7a-sweep; shots/s7a-a127-ta08-390.png | 390 px: sections stacked; statement and button at the end, not fixed; summary focused; its link moves focus to the checkbox in view. |
+| WP03-A128 | Pass | s3b-v05-submit | "Submit this application"; no forbidden label; estimates called estimates. |
+| WP03-A129 | Pass | s1-groups … s5a-identity-far; results.test.ts; application-workspace.test.ts (pass) | Every receipt: reference link, "Recorded: Once …", no accepted time, current facts labelled "Current". Edited addresses (submitted with the help key, assistance with the submission key, another application's key): "The receipt cannot be checked now." The receipt is announced by being first in `main` and in the title; no live region at load (WP01-A18 design). |
+| WP03-A130 | Not proven | system/interrupted-work.test.ts; status-pages.test.ts; system/web-shell.test.ts (pass, partly) | Lost acknowledgement tested for create group, create drafts and submit only. A refused key reads "Nothing was recorded for request [ref], and it can no longer be recorded." (live). |
+| WP03-A131 | Not proven | system/web-shell.test.ts; intake/individual.test.ts (pass, partly) | Partly generic; live cases A14, A57, A123 pass. |
+| WP03-A132 | Pass | all scripts; F-04 | Every refusal reached through the pages names its reason in words. Only hand-made sends got generic texts ("Check this value.", "This is longer than accepted. Shorten it."). |
+| WP03-A133 | Not proven | bff-services.test.ts; review-submit.test.ts (pass, partly) | No test checks the text map against the full reason vocabulary. |
+| WP03-A134 | Pass | s8-suspend; s9-signout | (1) fresh synthetic TA (seeded accounts unchanged) suspended while TA-09c held values: the send landed on sign-in, no restricted content, nothing created; restored, the group holds no application. (2) sign out from TA-07, Back: sign-in page. |
+| WP03-A135 | Pass | s7a-sweep | 21 page states: environment label, "[TEST]" title, one h1, breadcrumb, freshness, rail current item. TA-06s marks the top-bar "Search your applications" (design §1.3) and shows freshness with results. |
+| WP03-A136 | Pass | s7a-sweep; s9-signout; system/web-shell.test.ts (pass) | `Cache-Control: no-store` on all 21 pages; localStorage, sessionStorage and IndexedDB empty after TA-09c, TA-09i, TA-07 and DOC. |
+| WP03-A137 | Pass | s7a-sweep | No forbidden label; every time carries IST; counts name their unit. |
+| WP03-A138 | Pass | s2b-v05-intake; s4b-v02 | Identity by passport number and issuing country; nine applicants with the same surname never merged or suggested; Ravi's G3 applications stay separate. |
+| WP03-A139 | Pass | s1-groups (A13); s7b-keyboard-long | Keyboard only: create group, services and fields on TA-09c, create drafts, help request, details save, "Change application details", statement and submission. Choosing a file opens the native dialog (not drivable by the harness). |
+| WP03-A140 | Pass | s7a-sweep | Focus walk on 21 page states: every focus visible, none hidden under a fixed or sticky bar. |
+| WP03-A141 | Pass | s7a-sweep | No two-dimensional scroll at 320 px on 21 page states (long unbroken names: A149). |
+| WP03-A142 | Pass | s7a-sweep | No unlabelled control. |
+| WP03-A143 | Pass | s7a-sweep | States read as text (task list, evidence rows, status rows). The sweep flagged empty wrappers and hidden upload progress elements only. |
+| WP03-A144 | Pass | s7a-sweep | TA-13a (script), TA-09c (server) and TA-08 (server, 390 px): summary focused; its link moves focus to the field; values kept; "Choose the files again". |
+| WP03-A145 | Not proven | none | No screen reader was available to the run (DOM order and labels checked in A135, A142, A143). |
+| WP03-A146 | Pass | s3a-v05-prepare; s5a-identity-far; s4b-v02; individual-intake.test.ts (pass) | Blocked and travel-blocked submit buttons `aria-describedby` the notice; assigned notice in reading order with no forbidden control; offering-unavailable choices by test. |
+| WP03-A147 | Fail | s7a-sweep; F-13 | Named primary actions at least 44 px; small links pass axe target-size (spacing). TA-01 item action ("Continue the application", the page's primary action) is 36 px high. |
+| WP03-A148 | Pass | axe.jsonl (color-contrast); contrast.test.ts (pass) | No contrast violation. |
+| WP03-A149 | Fail | s7b-keyboard-long; s7c-long-diag; F-02 | A 120-character group name and 60-character names: TA-05 h1 and the breadcrumb item on TA-07, TA-09t, TA-08, TA-09f do not wrap: page scroll at 390 px (882 and 1723 px wide). Reduced motion: transitions 1e-05 s. |
+| WP03-A150 | Pass | s7a-sweep | Every table has header cells; no table scrolls outside a labelled region. |
+| WP03-A151 | Not proven | none | No TA participant was available to the run. |
+| WP03-A152 | Pass | axe.jsonl | TA-01 with items: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A153 | Pass | axe.jsonl | TA-01 empty (syn-ta-3): 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A154 | Pass | axe.jsonl | TA-13a error summary: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A155 | Pass | axe.jsonl | TA-13a form and TA-05 receipt: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A156 | Pass | axe.jsonl | TA-13b stale comparison: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A157 | Pass | axe.jsonl | TA-04 S3: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A158 | Pass | axe.jsonl | TA-05 sections: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A159 | Pass | axe.jsonl | TA-05 at 390 px: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A160 | Pass | axe.jsonl | TA-09c with requirements open: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A161 | Pass | axe.jsonl | TA-09c passport refusal: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A162 | Pass | axe.jsonl | INT-1 receipts (one and two applications): 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A163 | Pass | axe.jsonl | TA-09t: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A164 | Pass | axe.jsonl | TA-09f conflict and validity failure: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A165 | Pass | axe.jsonl | TA-09d stale comparison: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A166 | Pass | axe.jsonl | DOC (no resolve form reachable): 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A167 | Pass | axe.jsonl | TA-06 filters: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A168 | Pass | axe.jsonl | TA-06 search results: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A169 | Pass | axe.jsonl | TA-07 help requested: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A170 | Pass | axe.jsonl | TA-07 assigned: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A171 | Pass | axe.jsonl | TA-08 blocked and error summary: 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A172 | Pass | axe.jsonl | TA-07 submission receipt (A120 state by test): 0 violations at 1440 and 390 px (serious, critical, moderate and minor all 0). |
+| WP03-A173 | Not proven | application-workspace.test.ts; review-submit.test.ts (pass, partly) | Receipt Next naming the operator not asserted; not run live (Q-W03-08). |
+| WP03-A174 | Not proven | application-workspace.test.ts; review-submit.test.ts (pass, partly) | Rendered hand-back receipt and unchanged quote and window at Core not asserted. |
+| WP03-A175 | Not proven | review-submit.test.ts (pass, partly) | Core refusal of a stale hand back not asserted. |
+| WP03-A176 | Not proven | review-submit.test.ts (pass, partly) | Hand-back replay and lost acknowledgement only generic. |
+| WP03-A177 | Pass | s4b-v02; prepare-pages.test.ts; bff-documents.test.ts (pass) | Live (setup through the staff pages): TA-09d, TA-09i and TA-09f opened before the assignment: each send HTTP 409, no form, the assigned notice with "Report a problem", "Your unsent changes" read only (TA-09d, TA-09i); "Choose the file again" (TA-09f); nothing changed; browser storage empty. |
+| WP03-A178 | Not proven | prepare-pages.test.ts "approved help in progress …" (pass, partly) | `hold_assistance_in_progress` refusal and its unsent-changes block not asserted; not run live. |
+| WP03-A179 | Not proven | bff-access-change.test.ts; ta-home.test.ts (pass, partly) | TA-08 and DOC with an access-refused optional read not asserted. |
+| WP03-A180 | Fail | s1-groups; s1b-fix; s1c-dates; edge server log; F-01 | Every send of TA-13b with a date before today (three date pairs and a browser click) answers HTTP 500 "An internal error stopped this request … Reference code: unexpected"; the review never shows. Nothing reaches Core. Future dates save normally. The unit tests pass (they call the handler without the server). |
+| V05 proof | Pass | parts A, B, E, F live (s1-groups, s2b, s3a, s3b); C: core/assignment-holds.test.ts, core/submission-price.test.ts "… needs no payment"; D: intake/individual.test.ts, core/groups-drafts.test.ts "creates drafts only …"; G: system/core-pages.test.ts, application-workspace.test.ts; H: core/submission-price.test.ts, core/catalogue-impact.test.ts, integration/catalogue-impact.test.ts (pass) | A: G1 and baseline. B: one draft, help requested, no submission line. E: C1, then one submission with ₹3,500 and the window 18 to 25 Oct 2026. F: photo replaced, quote and window unchanged. C and H are covered by tests that assert the outcome indirectly (no TA-07 render of a paid draft; no P2 submission at the new price). |
+| V02 proof | Pass | parts A, B, C, D, F live (s4a-v02, s4b-v02, s4c-v02, s6-isolation); E: core/withdrawal-dependencies.test.ts, core/groups-drafts.test.ts (pass) | Two applications with own prices (₹3,500 / ₹3,600), details, documents and history; A's photo replaced, B unchanged; A submitted, B still a draft with its own statement; help on B; A paid and assigned (setup), B editable; duplicate refused; G3 independent; no cross-group reuse; syn-ta-2 sees nothing. E rests on a sibling created separately. |
+
+## 8. Findings of the acceptance run
+
+Ranked under PRI-20260930-01. Each finding names its items, what the run showed on `lane-ui` at 0e38a04, and a
+concrete scenario with its likelihood. Evidence: lane `research/proofs/wp03/` (manifest SHA-256
+0692f620928ea6d6a4021d22cb992575863e7b9ad95eca19a14c2f4b90e45969).
+
+**P0:** none.
+
+**P1:**
+
+- **F-01 (A180).** Every travel-date change with a date before today answers HTTP 500 "An internal error stopped this
+  request … Reference code: unexpected". The review with the acknowledgement never shows, so a group whose trip has
+  started cannot change its return date at all. Nothing reaches Core.
+- **F-02 (A149).** A long group name without spaces does not wrap in the TA-05 `h1` and in the breadcrumb of the
+  application pages: the page scrolls sideways at 390 and 320 px (WCAG 1.4.10, the class of WP-02 F-09).
+- **F-03 (A12).** With the page script, a travel date before today on TA-13a stops in the browser with Chromium's text
+  "Value must be 13/10/2026 or later.", not the page's rule (the class of WP-02 F-02, WCAG 3.3.1 and 3.3.3).
+
+| ID | Rank | Items | Observation on `lane-ui` at 0e38a04 | Scenario and likelihood | Proposed direction |
+|---|---|---|---|---|---|
+| F-01 | P1 | A180 (correction of 13 October: travel dates before today) | Four sends to TA-13b with a start date before today (2026-10-11 to 2026-10-18, 2026-10-08 to 2026-10-11, 2026-10-12 to 2026-10-16, and one browser click) answer HTTP 500 `unexpected` (edge log, route `ta.groups.travel_dates`). A future date saves normally (HTTP 303, receipt). Cause at 0e38a04: `src/apps/edge/core/group-routes.ts:56` answers the review with `ctx.page(...)` and no status; `src/apps/shared/server.ts:465` throws `internal`/`unexpected` for every POST page answer with a status below 400. The unit tests of the review pass because they call the handler with a scripted context and never pass `sendResult`. | A travel agent's trip started on 11 October; on 13 October the client extends the stay. TA-13b shows the dates with the start date before today; every save gives "An internal error … Try again". The travel agent cannot change the return date and asks support. A typo of a past date gives the same error instead of the review. Likelihood: certain for every group whose start date has passed. No data harm: nothing is sent. | Answer the review with a refusal status (422, as the other re-rendered forms). Fix the class: a BFF test that sends each POST route's re-render path through the server, or a static check that a POST handler's page answer always carries a status of 400 or more. |
+| F-02 | P1 | A149 (A141) | A group name of 120 characters with a 110-character run without spaces: TA-05 `h1` 1707 px wide; the breadcrumb item on TA-07, TA-09t, TA-08 and TA-09f 848 px wide; page width 882 to 1723 px at 390 px; also at 320 px. TA-04 and TA-06 wrap. Names of 60 characters do not overflow by themselves. | A travel agent names a group "SharmaFamilyDubaiDecember2026" (28 characters, no space) or pastes a booking reference; on a phone at 320 px the group page and every application page of the group scroll sideways. Likelihood: low to medium; certain for such a name. | `overflow-wrap: anywhere` on the page header title and the breadcrumb items in the shared components; design §7.7 (breadcrumb items truncated visually at about 30 characters with the full text in the DOM). |
+| F-03 | P1 | A12 (A11) | TA-13a with the page script: a start date of yesterday stops in the browser; both date fields show "Value must be 13/10/2026 or later." (Chromium's text, date in the browser's own format). The server's message "The travel start date must be today or later, as an India date." shows only without the script. Empty fields use the page's own words ("Enter travel start date"). | A travel agent types yesterday's date; the message does not say "India date" and uses the browser's date format. Likelihood: high for date typos. WP-02 F-02 (the same class) was re-ranked P1 by the architect and fixed on the SuperAdmin pages only. | A page-owned message for `rangeUnderflow` (and the other constraint kinds) in the inline check: the field label and the rule in words. |
+| F-04 | P2 | A48, A132 | `maxlength="3"` on issuing country and nationality cuts typed or pasted text silently: "India" became "Ind", Core read IND and created a draft (Kiran). "Indonesia" would become IND and "Austria" AUS. Hand-made sends get generic texts: a longer code "This is longer than accepted. Shorten it."; a date "1990-02-31" "Check this value." | A travel agent pastes "Austria" from a client sheet; the draft records AUS (Australia) with no message. Likelihood: low (the population is Indian passports; the hint says IND). | Remove `maxlength` from the code fields (the server refuses with the three-letter rule), or check the length in the page's own words; name the rule in the server's length and date messages. |
+| F-05 | P2 | A53 | "Lives in India: No" is accepted on TA-09c: a draft is created (Uma). TA-07 and TA-09t then say only "Nationality, passport type or country of residence is not given yet."; no population reason. | A travel agent adds a client who lives in Dubai, fills the details and documents, and learns only at submission that the service does not apply. Likelihood: medium; wasted work, no wrong submission. | Core intake: refuse `population_out_of_scope` at creation when "Lives in India" is "No", or show the population blocker on the draft. Owner: intake module (orchestrator decision). |
+| F-06 | P2 | A41, A51 | No price beside each service on TA-09c and no price on the INT-1 result (parked U5 P2 "no price on the start and attempt reads"). | A travel agent chooses two services without seeing ₹3,500 and ₹3,600 on the page. Likelihood: certain; low impact (TA-03 and TA-07 show the price). | P-09 fact on the start and attempt reads. |
+| F-07 | P2 | A54 | The unapproved provider route, sent by hand, is refused "This service has no published details at the moment." (WP-02 F-04, parked). | As WP-02 F-04. | As WP-02 F-04. |
+| F-08 | P2 | A97, A102, A112, A118 | TA-07, TA-08, the receipts and the history show "₹3,500.00"; TA-03 shows "₹3,500" (convention §0.2). | A travel agent compares the service page and Check and submit and sees two formats. Certain; cosmetic. | One price format (no paise when zero) in the shared `money` helper. |
+| F-09 | P2 | A113 | "Change identity details", "Change application details" and "Change documents" on TA-08 open their sections; each section offers only "Back to the task list", and a save returns to TA-09t. | A travel agent corrects a detail during the final check and must find "Check and submit" again. Certain; one extra step. | A return link to TA-08 on the section pages when opened from TA-08 (design CMP-05). |
+| F-10 | P2 | A117 | Travel-rule blockers read "Travel starts too far ahead to submit this service yet. Submit closer to the travel date." and "Travel starts too soon to submit this service. Change the travel dates or choose another service."; the declared window (3 to 90 days before the travel start date) is not stated. | A travel agent with travel in 120 days cannot tell when submission opens and asks support. Likelihood: high for early planning. | Show the declared window from `travelDateRules` with the blocker. |
+| F-11 | P2 | A64 | After an accepted identity correction (Mira, passport number), the TA history shows only "Application started": no correction line. | Support or the travel agent cannot see when the passport number changed and why. Certain for every correction. | For WP-08 (history rebuild, Q-W03-15): show identity corrections with the reason. |
+| F-12 | P2 | A86 | TA-07 has no "Back to the list" link; the breadcrumb returns to TA-06 with the filters. | A travel agent looks for "Back to the list" at the end of a long page. Low. | Add the link or correct the checklist row. |
+| F-13 | P2 | A147 | TA-01 item action links ("Continue the application", the page's primary action, design §2.1) are 36 px high at 390 px. Named primary buttons are at least 44 px. | A phone user misses the small action on Home. Low. | Primary size for the first item's action, or a button-sized link. |
+| F-14 | P2 | A21 | TA-13b stale comparison shows the unsent dates as "2026-11-22" beside "21 Nov 2026". | A travel agent compares two date formats in the comparison. Low. | Format the unsent dates as dates. |
+| F-15 | P2 | A27 | TA-04 at the row limit says "This list shows at most 200 groups." without how to narrow the list. | A travel agent with more than 200 groups does not learn that the state filter narrows the list. Low. | Add the narrowing hint. |
+
+Not proven (no live check and no test shows the item, or a part of it): A05 (L part), A17, A22, A26, A35, A36, A39,
+A68 (safety part), A73, A78, A79, A80, A82, A101, A104 (submission part), A120, A121, A122, A124, A125, A130, A131,
+A133, A145 (no screen reader), A151 (no participants), A173, A174, A175, A176, A178, A179. Deferred: A46 (DEP-1, P-08).
+
+Observations (not ranked here):
+
+- Open P1 carried from the code review: the shared intake handler `src/apps/edge/intake/routes.ts` still cuts the
+  TA-09c applicant text fields and the bulk service list at 0e38a04 (S-14, P-22 item 3). Core's own limits are smaller
+  than these cuts, so no cut value was accepted in this run.
+- A replacement passport given as a JPEG image (synthetic sample) was read as "Does not match the applicant"; the
+  earlier passport stayed in use, as C-09 requires. The text-layer PDF samples were read correctly.
+- No draft of group D showed "Draft waiting for a travel-date recheck" after two date changes; the waiting state was
+  not observed (A19 passes on its receipt and header facts).
+- A hand-made submission of an assigned application cannot carry the current revision (no page exposes it), so the
+  submission part of A104 stays Not proven.
+- The receipt is announced by its place (first in `main`) and the title; there is no live region at load (WP01-A18).
+  A118 and A129 pass on that design.
+- G1 shows "Open import issues: 1 issue" after the run's intakes (A31); the issue was not opened in this run.
+
+### 8.1 Run method
+
+One long-lived harness process held each signed-in session in memory (never on disk) and ran the steps in order, so
+that each persona signed in once (the code budget is three per 15 minutes). The harness read sign-in codes through the
+installation's `signin-codes.mjs` exports only; no code, enrolment code, authenticator key or TOTP value is in any
+evidence file (scan of 195 files: 0 matches). Synthetic sample documents were generated in memory from
+`test/fixtures/documents/samples.ts` at 0e38a04 (text-layer passport PDFs, one passport image, PNG photographs of
+600 x 600 and 200 x 200 px, a GIF, a 6 MB PDF, a plain PDF). No real document was used. Tests ran in a clean copy of
+0e38a04; the working tree was not touched.
+
+### 8.2 Proof record for `WP-03.md` §7 (synthetic writes)
+
+| Item | Record |
+|---|---|
+| Acceptance run | 13 October 2026, 11:15 to 12:40 IST, on `lane-ui` at 0e38a04 (release rel_3JEW9KWV588AXDY15QGPRD2ZCR) by the Principal Product Manager. 180 items (A180 added by the corrections of 13 October): 133 Pass, 15 Fail, 31 Not proven, 1 Deferred (A46, DEP-1). V05 Pass, V02 Pass. Results: `WP-03-acceptance.md` §7; findings §8 (F-01 to F-03 P1, F-04 to F-15 P2, no P0). Evidence manifest SHA-256 0692f620928ea6d6a4021d22cb992575863e7b9ad95eca19a14c2f4b90e45969 (196 files; held by the lane); no code or key in the evidence (scanned). |
+| axe | axe-core 4.13.0: 21 rows (A152 to A172) on live pages at 1440 and 390 px: 0 violations of any impact |
+| Tests | Clean copy of 0e38a04: 337 cited tests pass (unit 387 + 1 todo, unit/web 964 + 1 todo, system 110, database 192, UI 1310); map in `research/proofs/wp03/tests/map.jsonl` |
+| Accounts | One new synthetic travel agent `wp03-ta-r1013k@synthetic.test` (created, approved and activated by syn-superadmin-1; suspended and restored once for A134). No seeded account changed (no address change, no status change). |
+| Groups of syn-ta-1 | "WP03 r1013k G1" (V05), "WP03 r1013k D" (double click; dates changed twice: return 19 → 20 → 21 Nov 2026), "WP03 r1013k soon" (start tomorrow), "WP03 r1013k back" (sent after browser Back), "WP03 r1013k far" (start in 120 days), "WP03 r1013k past" (empty; return date changed once to 20 Nov 2026; every past-date send failed with HTTP 500, nothing stored), "WP03 r1013k G2" (V02), "WP03 r1013k G3" (V02 part F), and one group with a 120-character name "WP03 r1013k L Longgroupname…" (A149). Group of wp03-ta-r1013k: "WP03 r1013k K" (empty). |
+| Applications (drafts) | G1: Asha (V05), Mira (typed passport number one digit off; small photograph), Nila (low-contrast passport image), Kiran (created by the A48 "India" send), Tara (A57 part 5), Uma ("Lives in India: No"), Vani (PDF as the photograph, hand-made send), Lata (keyboard path). D: Dina. far: Farah. soon: Sonu. G2: Ravi A (SYN Tourist e-visa) and Ravi B (SYN e-visa, fee paid with submission). G3: Ravi C (SYN Tourist e-visa, no files) and Ravi D (fee paid with submission). L group: one applicant with 60-character names. All SYN Tourist e-visa unless named. Passport numbers P3101301 to P3101315 (synthetic). Identifiers: lane `research/proofs/wp03/state.json`. |
+| Commands on applications | Submitted (3): Asha, Ravi A, Kiran. Help requested (3): Asha, Ravi B, Lata. Details saved: Asha, Ravi A, Ravi B, Farah, Sonu, Kiran. Identity corrected: Mira (passport number P3101302 → P3101312, with her passport as evidence). Documents: Asha photo uploaded, passport replaced (the replacement read as a mismatch; the earlier passport stays in use), photo replaced after submission; Ravi A photo replaced; Ravi C linked to Ravi D's passport (same group). |
+| Set-up through the existing staff pages (architect approval, V02 part D) | syn-superadmin-1 recorded the service payment of Ravi A as received (₹3,500, synthetic reference) and assigned Ravi A to syn-operator-1. |
+| Refused or replayed sends | Refused sends record nothing (status pages checked); replays returned the original results. |
+| Seeded data | Unchanged: no seeded offering, launch, listing, country or account was changed. The WP-01 and WP-02 drafts of syn-ta-1 were read only. |
