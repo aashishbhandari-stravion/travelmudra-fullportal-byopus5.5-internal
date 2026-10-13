@@ -52,4 +52,6 @@ the fixes above (real intake, publication and submission paths; the Q3 comment i
   price publication it relies on and passes when selected alone; the Q3 comment stays. Follow-up: `a1cc0a9` (cherry-picked from `20b525b`; W22, Sonnet): one sequential test that publishes its own 4,000 and 4,500
   prices from the seed 3,500; alone 1 of 1, whole file 17 of 17; tsc, eslint, `test/static` 76 of 76
   (`evidence/ITEM-31-b-followup.txt`).
- Lane checks: CHECKS_31
+ Lane checks: `npm run check` at `acd666e`: typecheck and lint clean; 2650 of 2650. At `a1cc0a9`: 2648 of 2649; the one failure is
+`test/operations/originals-register.test.ts:193` (R4 of ITEM-24, a file this commit does not touch; the file passes alone 6 of 6;
+probable cause recorded in ITEM-24.md). Deployed on `lane-max` at `a1cc0a9` (release `rel_47GT0E9AZCHS9T03RRCQS2W053`).
