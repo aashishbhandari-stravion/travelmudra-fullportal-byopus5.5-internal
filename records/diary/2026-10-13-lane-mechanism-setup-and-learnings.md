@@ -317,3 +317,12 @@ creation module." Done in three places, so a lane carries the rules whether or n
 
 The three running lanes keep their own copies of the project files from 12 October; they got the rules by message
 (§7.2) and the Core lane has the hook (§7.4). Their copies are not edited while they run.
+
+Addendum (13 October 2026, afternoon): Max wants the two instruction files on the remote for his team. Main a7b560c
+tracks a public-fit `CLAUDE.md` and `AGENTS.md` (rules in short form, commands, the context budget, no machine
+detail); the machine notes moved to the untracked `CLAUDE.local.md`, which Claude Code loads by itself and which
+`AGENTS.md` tells a Codex session to read. The global boundary module blocks the two names by default, so it gained
+a per-repository `allowPaths` key (exact names only; the content rules still apply to the allowed files), set for
+this repository. Gate: 38 tests pass. Each running lane must move its untracked copies aside before its next merge
+of main (`mv CLAUDE.md CLAUDE.local.md && rm AGENTS.md`); the Core lane was told, the other two get it with their
+resume messages.
