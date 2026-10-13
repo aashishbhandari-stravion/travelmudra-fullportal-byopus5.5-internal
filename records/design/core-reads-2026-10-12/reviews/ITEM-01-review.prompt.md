@@ -1,0 +1,11 @@
+You are the independent reviewer (different model family) of one committed Core defect fix in the TravelMudra product.
+
+Commit: 9c207a7 in the current repository (branch core-reads-2026-10-12; parent 30ee1c1). Read it with `git show 9c207a7` and read surrounding code with `git show 9c207a7:<path>`.
+
+Defect (P0): `core.edit_travel_dates` accepted a past travel start date while `core.create_group` refused it; a mistyped year ended the group's open applications at the next date check with nothing to reverse it. Fix: `editTravelDates` in `src/modules/core/commands/groups.ts` now calls the existing `checkDates(today, start, ret)` that create uses; a past start is refused `validation_failed`/`group_dates_invalid` with the field error on `travelStartDate`. Ownership constraint (not a finding): only that function may change; `createGroup` and the rest of the file belong to another lane.
+
+One-time review; read-only; do not modify files; do not ask questions back.
+
+Judge: (1) does the fix close the defect class for every path that changes a group's travel dates (search for other writers of `core_groups.travel_start_date` and other entry points such as bindings, BFF routes, intake writers; name any path that still accepts a past start); (2) is the refusal complete (nothing written, no fact, no task, revision unchanged) and is the check order sound (revision, closed group, dates); (3) hostile but valid states: a group whose stored start is already today or in the past and the travel agent edits only the return date (now refused): what is the real consequence, and is refusing correct given what the date check does to open applications (read `src/modules/core/travel-recheck.ts`, the daily date checks and `controls.ts`); the Asia/Kolkata day boundary; replay of an identical edit operation after midnight (operation keys); (4) is the test sufficient and does it fail without the fix; (5) did the changed documents test keep its intent.
+
+Output: ranked findings R-01… (P0/P1/P2; file:line; a concrete scenario with likelihood; the smallest fix), then a verdict ("sound as written", "sound with the fixes above", or "not sound") with one paragraph. Concise, no preamble, at most about 600 words.

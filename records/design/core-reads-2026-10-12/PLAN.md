@@ -59,7 +59,7 @@ Status values: `todo`, `wip`, `review`, `done` (committed, reviewed, disposition
 | ITEM-21 | P-14 (1) as amended | Kind 1 | Recorded basis per gate and act (payment entry, exception, prior commitment, recorded first-work basis) with the read time; never a computed `passed` | none | done bb772e6; follow-up fdd9f03 (wave 3) |
 | ITEM-22 | P-17 (2) | Kind 1 | `possibly_filed` mark flags; exhausted act's future owner, decider, reason, time (join removals) | none | done 1793248 (wave 3) |
 | ITEM-23 | P-17 (3) | Wiring | `core.apply_held_correction` on the staff allowlist (the BFF route is the UI lane's) | none | done: handed over to the UI lane (D-16 D-b) |
-| ITEM-24 | P-18 (4) | Kind 1 | Originals register read for operators (UX §5.2) | none | done f309b23; follow-up 60fd311 (wave 2) |
+| ITEM-24 | P-18 (4) | Kind 1 | Originals register read for operators (UX §5.2) | none | done f309b23; follow-up 60fd311 (wave 2); test fix dfbafaa (14 Oct) |
 | ITEM-25 | P-19 (3) | Kind 1 | Current impact items of an offering across assessments; launch-control effect per existing action on the TA's case read | none | done 6b9b87d, 96bcf5d (wave 2) |
 | ITEM-26 | P-13 (1) | Kind 1, exception OD-X12 | Owning TA's current account email on `dlv.delivery_page`, SuperAdmin variant only | none | done 7ad52b2 (wave 1) |
 | ITEM-27 | P-13 (8) | Kind 1 | Stored subject and version identifiers in `dlv.selection` | none | done 144f18a (wave 1) |
@@ -120,7 +120,7 @@ aggregation (NOTE-01); the P2 notes of prompt §2 (K2-P15-1 N1 to N5 and the UI 
 
 ## 7. Commits in order
 
-Integration on main: wave 2 (`f1a2a2d` to `3a81652`, lane records `66c3725`) merged as `2b468d9` (orchestrator, 13 Oct 2026).
+Integration on main: wave 2 (`f1a2a2d` to `3a81652`, lane records `66c3725`) merged as `2b468d9` (orchestrator, 13 Oct 2026); wave 3 as `b400cae`; the Kind 2 package merged 14 Oct 2026. Lane closed: CLOSURE.md.
 
 | Item | Commit | Checks | Review | Deployed on `lane-max` |
 |---|---|---|---|---|
@@ -153,6 +153,7 @@ Integration on main: wave 2 (`f1a2a2d` to `3a81652`, lane records `66c3725`) mer
 | ITEM-17 | 03abf9a (from 107d47b) | npm run check 2630/2630 | Codex: sound as written; no findings | yes, 03abf9a (release rel_171VQHJEPZCMFK1XXTFDH195BK, 14 Oct 2026; no migration; data kept) |
 | ITEM-30 | bf2158d (worker commit, fast-forward); follow-up b21f3ff | bf2158d: npm run check 2645/2645; b21f3ff: 2647/2647 | Codex: sound with fixes; R-01 P1 fixed in b21f3ff (D-23); R-02 P2 parked | yes, a1cc0a9 (release rel_47GT0E9AZCHS9T03RRCQS2W053, 14 Oct 2026; no migration; data kept) |
 | ITEM-31 (b) | acd666e (from 14f3fa7); follow-up a1cc0a9 (from 20b525b) | acd666e: npm run check 2650/2650; a1cc0a9: 2648/2649 (originals register R4 tie flake, untouched file; alone 6/6) | Codex: sound with fixes; R-01 P1 fixed in a1cc0a9 (D-23) | yes, a1cc0a9 (release rel_47GT0E9AZCHS9T03RRCQS2W053, 14 Oct 2026; no migration; data kept) |
+| ITEM-24 (R4 fix) | dfbafaa (on the lane branch) | npm run check 2648/2649 (intake timing test; alone 2/2) | no review (one-line test fix assigned by the orchestrator; deterministic proof in evidence/ITEM-24-R4-tie.txt) | yes, dfbafaa (release rel_16JXFWD39JAW92WHRQ0ZN2GMBK, 14 Oct 2026; no migration; data kept) |
 
 Commit ids changed on 13 Oct 2026: the body of the ITEM-01 commit named an internal identifier ("seam log row"), so it was
 reworded by a non-interactive rebase from `30ee1c1` before any report. The trees are identical (checked: the head tree
