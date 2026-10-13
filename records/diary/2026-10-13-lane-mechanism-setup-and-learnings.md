@@ -326,3 +326,30 @@ a per-repository `allowPaths` key (exact names only; the content rules still app
 this repository. Gate: 38 tests pass. Each running lane must move its untracked copies aside before its next merge
 of main (`mv CLAUDE.md CLAUDE.local.md && rm AGENTS.md`); the Core lane was told, the other two get it with their
 resume messages.
+
+### 7.10 The week's burn, measured (13 October 2026, 14:20 IST)
+
+Max asked whether the 70 percent weekly reading on the account was real. Two measurements from the transcripts on this
+machine (every assistant turn's usage fields, deduplicated by message and request id; scratch script, not kept):
+
+- The Opus 5.5 build run with the UltraCode workflows (6 to 7 October): 11.69B context tokens, 98.6 percent on Opus,
+  about 3.4B of it inside the 7-day window on 13 October.
+- Since 6 October, all projects: 33,722 turns, 9.60B context tokens (0.1M uncached, 220M cache writes, 9.38B cache
+  reads, 5.5M output). Cache reads are 98 percent. By day: 6 and 7 October 1.9B and 1.4B (UltraCode); 8 to 10 October
+  under 0.2B each; 12 October 3.1B and 13 October 2.7B (the UI and bulk lanes before the rule). By project directory: the
+  UI lane 4.67B in 14,624 turns, the orchestrator chat 3.73B in 15,000 turns, the bulk lane 1.04B in 3,023 turns.
+
+Same cause both times: Opus subagents inheriting the parent model at 300k to 400k context each (§7.5). At API list
+prices the week is in the order of USD 18,000 of Opus-class cache reads; how Anthropic weights cache reads for the plan
+limit is not visible from here, so the account's usage page remains the authority.
+
+On the plan tiers (Max moved from Max 5x to Max 20x): the published multipliers apply to the rolling 5-hour window; the
+weekly cap grows about 1.5 to 2 times between the two tiers (third-party estimates, not Anthropic figures). A heavy
+multi-lane day is volume, which the weekly cap limits, not burst, which the 5-hour cap limits.
+
+Readings at 08:00 to 08:47 UTC (`lane-burn.py 2026-10-13T08`): Core lane main 185 turns, 28.5M, peak 224k; subagents 137
+turns, 18.1M, all Sonnet; guard hook in place, no denial seen yet. UI lane, winding down under the pause of 08:03 UTC
+(running engineers finish, then commit, resume file, closing message): main 88 turns, 10.4M, peak 150k; subagents 48
+turns, 30.2M, Opus (the last engineers launched before the rule). Bulk lane: paused at 08:18 UTC, no subagents since
+07:53. Max is away from 14:20 IST; the Core lane runs on, the other two stay paused, and the orchestrator reports here
+when Core is integrated on main so that Max resumes the bulk lane himself.
