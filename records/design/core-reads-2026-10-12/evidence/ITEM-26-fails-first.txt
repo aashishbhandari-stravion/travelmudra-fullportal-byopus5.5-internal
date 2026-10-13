@@ -1,0 +1,16 @@
+# 'the SuperAdmin page shows the current address, also after it changes; the operator page, the travel agent page and a support view show none' and 'an owner that is not a travel agent gives no address; any other failure of the lookup is not hidden' (test/delivery/email-notices.test.ts) before the change, 2026-10-13
+  ✖ the SuperAdmin page shows the current address, also after it changes; the operator page, the travel agent page and a support view show none (692.171348ms)
+  ✖ an owner that is not a travel agent gives no address; any other failure of the lookup is not hidden (584.95416ms)
+✖ the owning travel agent's account email on the delivery page (1280.175289ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ the SuperAdmin page shows the current address, also after it changes; the operator page, the travel agent page and a support view show none (692.171348ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+    actual: undefined,
+    expected: 'syn-ta-3@synthetic.test',
+✖ an owner that is not a travel agent gives no address; any other failure of the lookup is not hidden (584.95416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+    actual: undefined,
+    expected: null,

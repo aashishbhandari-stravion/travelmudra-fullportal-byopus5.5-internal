@@ -1,0 +1,24 @@
+# incident-duty-end.test.ts: 'the incident rows name the owner and reviewer whose duty is current' (3 of 4 cases fail) before the change, 2026-10-13
+  ✖ after the assignment ends, an open and a resolved incident are owned by the SuperAdmin queue, not by the earlier operator (1109.019194ms)
+  ✖ an incident without a case keeps its SuperAdmin queue owner, and a stand-in reviewer ends with the stand-in duty (1009.285585ms)
+  ✖ a named owner stays the owner while active staff, and the SuperAdmin queue owns the follow-up once the account is deactivated (1382.886484ms)
+✖ the incident rows name the owner and reviewer whose duty is current (4278.239142ms)
+ℹ tests 10
+ℹ pass 7
+ℹ fail 3
+✖ failing tests:
+✖ after the assignment ends, an open and a resolved incident are owned by the SuperAdmin queue, not by the earlier operator (1109.019194ms)
+  AssertionError [ERR_ASSERTION]: open, assignment ended: direct
+  + actual - expected
+    actual: [ 'assigned_operator', 'acc_7E8PDKX3AHP4B86DWFG08ARYCJ', null ],
+    expected: [ 'superadmin', null, null ],
+✖ an incident without a case keeps its SuperAdmin queue owner, and a stand-in reviewer ends with the stand-in duty (1009.285585ms)
+  AssertionError [ERR_ASSERTION]: the operator returned: direct
+  + actual - expected
+    actual: [ 'reviewer', 'acc_3BB6VYEJB1QDNGXBN62BRZFKP7', 'acc_3BB6VYEJB1QDNGXBN62BRZFKP7' ],
+    expected: [ 'superadmin', null, null ],
+✖ a named owner stays the owner while active staff, and the SuperAdmin queue owns the follow-up once the account is deactivated (1382.886484ms)
+  AssertionError [ERR_ASSERTION]: named owner, suspended: direct
+  + actual - expected
+    actual: [ 'assigned_operator', 'acc_4SD2BN1D17HXZ1NRA5CHH13QYP', null ],
+    expected: [ 'superadmin', null, null ],
