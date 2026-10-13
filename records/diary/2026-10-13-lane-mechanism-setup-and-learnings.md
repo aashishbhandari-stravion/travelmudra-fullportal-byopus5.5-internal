@@ -353,3 +353,27 @@ turns, 18.1M, all Sonnet; guard hook in place, no denial seen yet. UI lane, wind
 turns, 30.2M, Opus (the last engineers launched before the rule). Bulk lane: paused at 08:18 UTC, no subagents since
 07:53. Max is away from 14:20 IST; the Core lane runs on, the other two stay paused, and the orchestrator reports here
 when Core is integrated on main so that Max resumes the bulk lane himself.
+
+### 7.11 Worker tier by module (13 October 2026, 17:30 IST)
+
+Max asked why the Core lane's workers are Sonnet when they write code, then for the orchestrator's opinion on whether
+Sonnet writes code of Opus quality under correct directions. Verified first: the lane's main chat is Opus 5.5 on
+every turn (1,339 today); its briefs freeze the design ("The design is decided; implement it exactly", column-level
+migration specs, the grants with line numbers, the files the worker may not touch); every return passes the Opus
+main chat, one Codex review per item and `npm run check`.
+
+The opinion given: equal on a decided, local, pattern-following task; worse at noticing what the brief did not say
+(a second registry, a helper to reuse, a transaction boundary), on long worker runs, and on debugging a failure whose
+cause is elsewhere. The ITEM-03 brief shows the architect compensating by moving discovery into the brief. The trade
+proposed: Sonnet workers plus an Opus brief plus the Codex review for decided designs; Opus workers for a fix whose
+cause is unknown, a cross-module kernel or transaction change, and restore or recovery code; the signal of a wrong
+tier is a Codex review with design-level findings on a Sonnet item. Caveat stated: no measured defect count by tier
+from this lane yet; the per-item Codex reviews will give one.
+
+Max's decision (OD-X22): the Core lane goes back to Opus workers (no risk on Core); the method is approved for
+non-core, non-kernel modules; the Core lane's thresholds rise to 380k (prepare, guard hook) and about 430k
+(automatic compaction, `autoCompactWindow` 463000). The guard hook reads its limit on every call, so the new limit
+is live at once; whether a running session picks up the edited `autoCompactWindow` is not stated in the docs, so
+the lane is told to reopen at its next pause if the automatic trigger is wanted before then. Written into the lane
+rules for future lanes (register entry names the files). Expected cost: Opus workers under the 100k/200k caps cost
+about five times Sonnet per token, not the ten- to twenty-fold of the uncapped workers of 12 to 13 October.
