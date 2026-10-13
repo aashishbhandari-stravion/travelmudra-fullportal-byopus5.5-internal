@@ -63,8 +63,9 @@ subagents finish, commit or `state/RESUME.md`, then wait for Max to compact). A 
 383000. Reason: a rule that lived only in the loaded global defaults was not followed on 12 to 13 October 2026
 (diary 2026-10-13 §7.5).
 
-Worker tier by module (Max, 13 October 2026, OD-X22): the Core lane runs `opus` workers only (Core and kernel work;
-no risk taken there). The UI and bulk lanes run `sonnet` workers that implement a decided design from a written brief
+Worker tier by module (Max, 13 October 2026, OD-X22): Core, kernel and recovery work uses `opus` workers. Amended for
+the Core lane only (OD-X23, Max in the lane chat, confirmed): `opus` for Kind 2 items, `sonnet` for defects and reads, one
+worktree per worker (at most three), waves by code area, partial return before 275k. The UI and bulk lanes run `sonnet` workers that implement a decided design from a written brief
 with the item's Codex review behind every return, and `opus` workers for a fix whose cause is unknown, a change that
 touches kernel or transaction semantics across modules, and restore or recovery code. A Codex review that returns
 design-level findings on a `sonnet` item is the signal to change the tier. Core lane thresholds: prepare at 380,000
