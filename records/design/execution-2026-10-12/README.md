@@ -44,3 +44,7 @@ plan Part D sequences, the Astra evidence summary and handover (bulk backend his
 in the sibling implementation), the 8 October build handover diary, the P2 list in `FINAL-REPORT.md` §6,
 and the three P1 questions of the independent review of 8 October. Never loaded: the withdrawn Goku review
 prompt.
+
+## Communication protocol (Max, 13 October 2026)
+
+Lanes message the orchestrator only when required: a proposal ready for the gate, a package ready for integration, a grant or decision needed, a stop condition, a blocked deploy. One message per milestone, bundling everything it produced. No acknowledgements, no progress notes, no estimates ahead of the reviewed file. The orchestrator sends no acknowledgements (silence means logged) and writes to a lane only to deliver a decision, a grant or an assignment. Reason: every message wakes the orchestrator chat with its whole context.
