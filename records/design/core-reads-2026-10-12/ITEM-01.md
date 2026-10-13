@@ -1,5 +1,7 @@
 # ITEM-01 P-21 (1): a travel-date edit accepted past dates
 
+Commit ids in this record are those before the reword of 13 Oct 2026; the map old → new is in `PLAN.md` §7.
+
 Kind: defect, P0 (orchestrator classification of 13 Oct 2026; UI lane `P-21-wp17-timing-withdrawal.md` item 1, review
 R-01). Commit: `4b4dc3e` (amended before reporting from `9c207a7`, which the review read; see §5).
 

@@ -38,6 +38,7 @@ Status values: `todo`, `wip`, `review`, `done` (committed, reviewed, disposition
 | ITEM-01 | P-21 (1) | Defect, P0 | `core.edit_travel_dates` refuses a past start date with the create field error. Grant: orchestrator 13 Oct 2026 (`editTravelDates` in `src/modules/core/commands/groups.ts` only, one commit) | none | done 4b4dc3e |
 | ITEM-02 | P-15 (1), K2-P15-1 | Kind 2, P0 | Blocker `dependency_not_linked` at control stage 10; rule 19a; one reason code; Q2 wire `ref` widening (`src/contracts/errors.ts:56`); tests I1 to I14, V1 to V4, S1 | Q1 `release_packet` part; Q3 confirmation | todo |
 | ITEM-03 | P-17 (1) Part 1, K2-P17-1 | Kind 2, P0 | Part 1a filing determination at resolution; Part 1b legacy resolutions blocked until an evidenced SuperAdmin disposition; Q-A4, Q-A5, Q-A6 as decided; walk-through with a simulated restore (Max asked for it first) | Part 2 (after the run, OD-X14) | todo |
+| ITEM-33 | OD-X18 and grant P-K1f (orchestrator, 13 Oct 2026; worked after ITEM-03, before ITEM-04) | Owner decision, model change | A draft is created with the surname OR the given names (at least one) plus the date of birth; a one-name applicant carries a non-blocking nudge as a read-model fact on the operator surface (UI-lane file → proposal, fact stays); `applicant_identity_missing` (kernel reason, appended) from `src/domain/module-ports.ts:182` when both name fields or the date of birth are empty; format codes (`:196`) unchanged; tests fail first | UI text of the reason (UI lane, unless the catalogue entry is in a lane-owned file) | todo |
 | ITEM-04 | P-18 (1) guard slice, K2-P18-1 | Kind 2, P0 pre-production | `passport_identity_mismatch` on `ops.link_original`; blast radius inside the physical-originals type, tests show other types unchanged | Q1 to Q8, Q10 and everything beyond the guard slice | todo |
 | ITEM-05 | P-20 (1), K2-P20-1 | Kind 2, P1 pre-launch | Parts that do not depend on Q-1 to Q-3; Q-4 census, Q-5 release rule | Q-1 (SuperAdmin may record), Q-2 (authority rule), Q-3 (point G) | todo |
 | ITEM-06 | P-04 | Defect | Replay path of the sign-in code request normalizes the address as the first call does | none | todo |
@@ -93,11 +94,21 @@ aggregation (NOTE-01); the P2 notes of prompt §2 (K2-P15-1 N1 to N5 and the UI 
 
 | ID | Date | Question | Positions | Taken |
 |---|---|---|---|---|
-| D-01 | 13 Oct 2026 | ITEM-01: the orchestrator's grant named the method "replace with `checkDates`"; the review (R-01) showed it refuses a return-only edit during a trip, which lets open applications end at the old return date | Literal method vs. create rules for the dates the TA sets, an unchanged passed start allowed, return today or later | Architect: the second, in the same function and commit; reported to the orchestrator at the package boundary |
-| D-02 | 13 Oct 2026 | ITEM-02: Q1 (`release_packet`) is open; does a relation that conditions only the release block readiness? | Proposal's enforced set (includes the release) vs. the set without the release | Architect: without the release, as an action and as applicability (`NOT_LINKED_ENFORCED`); Q1 later is a one-line change; orchestrator informed 13 Oct |
+| D-01 | 13 Oct 2026 | ITEM-01: the orchestrator's grant named the method "replace with `checkDates`"; the review (R-01) showed it refuses a return-only edit during a trip, which lets open applications end at the old return date | Literal method vs. create rules for the dates the TA sets, an unchanged passed start allowed, return today or later | Architect: the second, in the same function and commit; reported to the orchestrator at the package boundary. **Max ratified the second, 13 Oct 2026.** |
+| D-02 | 13 Oct 2026 | ITEM-02: Q1 (`release_packet`) is open; does a relation that conditions only the release block readiness? | Proposal's enforced set (includes the release) vs. the set without the release | Architect: without the release, as an action and as applicability (`NOT_LINKED_ENFORCED`); Q1 later is a one-line change; orchestrator informed 13 Oct. **Max approved Q1, 13 Oct 2026: the release is enforced** (second ITEM-02 commit with test I13) |
+| D-03 | 13 Oct 2026 | ITEM-02 Q3: a dependent whose upstream result exists only outside TravelMudra cannot proceed (no evidence-only upstream is declarable) | Confirm the parked B44 boundary vs. build an evidence-only upstream now | **Max: confirmed parked for UAT; decide before a real dependent offering launches** |
+| D-04 | 13 Oct 2026 | ITEM-03 walk-through simulation: a restore mark exists only inside a restore closure | (A) test transcript; (B) `uat.py` checkpoint and restore-drill on `lane-max` now; (C) A now, B later | **Max: C.** The transcript ships with ITEM-03; the drill is a later item after the Core package is integrated and the UI lane renders the `filing` field of the resolution form |
 
 ## 7. Commits in order
 
 | Item | Commit | Checks | Review | Deployed on `lane-max` |
 |---|---|---|---|---|
-| ITEM-01 | 4b4dc3e | groups-drafts, travel-date-rules, documents-association 43/43; views case-projections 17/17; typecheck; eslint | Codex: sound with fixes; R-01 fixed | no |
+| ITEM-01 | b7d0b0f (was 4b4dc3e) | groups-drafts, travel-date-rules, documents-association 43/43; views case-projections 17/17; typecheck; eslint | Codex: sound with fixes; R-01 fixed | no |
+| ITEM-02 | 82ea904 (was 100227f), 1bec743 (was 88a1174), test 4347d83 (was e41d64f) | npm run check 2488/2488 at 100227f; affected 110/110 at 88a1174; work-acts 12/12 | Codex: sound with fixes; R-01 worked (test commit); R-02 P2 parked | no |
+| ITEM-03 | 6ad592e (was d2067af) | npm run check 2541/2541 | Codex: sound with fixes; R-01, R-02 P1 with Max; R-03 P2 parked | no |
+
+Commit ids changed on 13 Oct 2026: the body of the ITEM-01 commit named an internal identifier ("seam log row"), so it was
+reworded by a non-interactive rebase from `30ee1c1` before any report. The trees are identical (checked: the head tree
+before and after is the same). Old to new: 4b4dc3e → b7d0b0f, 100227f → 82ea904, 88a1174 → 1bec743, e41d64f → 4347d83,
+d2067af → 6ad592e. Reviews, evidence and item records written before the rebase cite the old ids; the old ids stay
+readable in the lane clone's reflog until it is pruned.
