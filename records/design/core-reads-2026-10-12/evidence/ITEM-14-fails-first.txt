@@ -1,0 +1,30 @@
+# values publication staleness: 'refuses a preview made before another draft was added', '... travel dates ... changed', '... act state ... changed' before the change, 2026-10-13
+  ✖ refuses a preview made before another draft was added, and publishes nothing (186.096963ms)
+  ✖ refuses a preview made before the travel dates of an existing application changed (86.379513ms)
+  ✖ refuses a preview made before the act state of an existing application changed (88.584138ms)
+✖ values publication staleness (468.854998ms)
+ℹ tests 19
+ℹ pass 16
+ℹ fail 3
+✖ failing tests:
+✖ refuses a preview made before another draft was added, and publishes nothing (186.096963ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + null
+  - 'preview_stale'
+    actual: null,
+    expected: 'preview_stale',
+✖ refuses a preview made before the travel dates of an existing application changed (86.379513ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + null
+  - 'preview_stale'
+    actual: null,
+    expected: 'preview_stale',
+✖ refuses a preview made before the act state of an existing application changed (88.584138ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + null
+  - 'preview_stale'
+    actual: null,
+    expected: 'preview_stale',

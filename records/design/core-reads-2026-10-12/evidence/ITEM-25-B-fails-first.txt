@@ -1,0 +1,11 @@
+# the current impact items of an offering across its assessments > lists each current item with its assessment, treatment, decision facts and transition state, the applicant and the travel agent; others are refused (test/core/offering-impact-items.test.ts) before the change, 13 October 2026
+  ✖ lists each current item with its assessment, treatment, decision facts and transition state, the applicant and the travel agent; others are refused (4.178983ms)
+✖ the current impact items of an offering across its assessments (6.56727ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ lists each current item with its assessment, treatment, decision facts and transition state, the applicant and the travel agent; others are refused (4.178983ms)
+  AssertionError [ERR_ASSERTION]: cat.admin_offering_impact_items
+    actual: false,
+    expected: true,

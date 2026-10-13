@@ -1,0 +1,11 @@
+# 'an open incident resting on a reference is missing its correction; a closed one keeps its row; the census lists both and no corrected one' (test/operations/disclosure-correction.test.ts, the release boundary) before the change, 2026-10-13 (worktree wave3-disclosure at b86a285, amended to 2b5a93e by a test-title restore only; test only changed)
+  ✖ an open incident resting on a reference is missing its correction; a closed one keeps its row; the census lists both and no corrected one (6811.910435ms)
+✖ the release boundary (6816.069231ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ an open incident resting on a reference is missing its correction; a closed one keeps its row; the census lists both and no corrected one (6811.910435ms)
+  AssertionError [ERR_ASSERTION]: the release record states the census query
+    actual: false,
+    expected: true,

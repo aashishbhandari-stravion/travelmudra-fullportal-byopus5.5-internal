@@ -1,0 +1,33 @@
+# Fails first: test/core/launch-withdrawal-pending.test.ts at parent 60fd311 (product code unchanged), 2026-10-13T21:53:00+05:30
+  ✖ sends every draft to the SuperAdmin to close, while submitted work continues (3967.967468ms)
+  ✖ puts a withdrawal before a suspension: a continuing withdrawal leaves the suspension's treatment, a holding one asks for the close (1292.388363ms)
+  ✖ states the limitation when the operational withdrawal cannot close the held work, with the SuperAdmin to follow up (1248.001951ms)
+✖ who work under an offering withdrawal is pending on (6512.404138ms)
+ℹ tests 3
+ℹ pass 0
+ℹ fail 3
+✖ failing tests:
+✖ sends every draft to the SuperAdmin to close, while submitted work continues (3967.967468ms)
+  AssertionError [ERR_ASSERTION]: app_2M6DBHBNQBC42QSMMWEM6T2QSS
+    actual: [ 'ta', 'acc_7D3AFHCSG526H43ZMBSK9N54NP', 'draft_incomplete', 'complete_draft', 173n ],
+    expected: [ 'superadmin', null, 'offering_withdrawn', 'record_outcome', 223n ],
+✖ puts a withdrawal before a suspension: a continuing withdrawal leaves the suspension's treatment, a holding one asks for the close (1292.388363ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: [ 'superadmin', null, 'existing_work_hold', 'record_existing_work_treatment', 249n ],
+    expected: [ 'superadmin', null, 'withdrawal_continuation_not_permitted', 'record_outcome', 252n ],
+✖ states the limitation when the operational withdrawal cannot close the held work, with the SuperAdmin to follow up (1248.001951ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: [ 'superadmin', null, 'withdrawal_continuation_not_permitted', 'record_outcome', 279n, null ],
+    expected: [ 'unresolved_known_limitation', null, 'withdrawal_continuation_not_permitted', 'none', 279n, { kind: 'superadmin', accountId: null } ],
+
+# Mutation: the change applied except the outcome guard on the assisted-draft rule, 2026-10-13T21:56:16+05:30
+  ✖ sends every draft to the SuperAdmin to close, while submitted work continues (4189.238549ms)
+✖ who work under an offering withdrawal is pending on (6838.792693ms)
+ℹ tests 3
+ℹ pass 2
+ℹ fail 1
+✖ failing tests:
+✖ sends every draft to the SuperAdmin to close, while submitted work continues (4189.238549ms)
+  AssertionError [ERR_ASSERTION]: app_70Q12N4JR9B7SAS2G5P3HJH406
+    actual: 'record_outcome',
+    expected: 'completion_check_pending',

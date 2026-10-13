@@ -1,0 +1,81 @@
+# Gate exception evidence: new tests run before the change (worktree w15-gex-evidence, branch held/gate-exception-evidence, base e0b978d, 2026-10-13T17:32Z)
+# Command: node --test --test-global-setup=test/support/global-setup.ts test/core/gate-exception-evidence.test.ts test/core/gate-exception-evidence-migration.test.ts
+# Filter: grep -E '^ℹ (tests|pass|fail)|✖|AssertionError|expected|actual|error: |ENOENT' | head -80
+  ✖ an interruption before the migration commits leaves the earlier schema, rows and ledger (2.819202ms)
+  ✖ applies, keeps every earlier row as written, and gives each an empty evidence list (20.085746ms)
+  ✖ refuses a write that does not name the evidence, and evidence that is not an array of at most five references (2.549875ms)
+  ✖ still consumes and revokes an earlier exception, and the trigger refuses a change of each identity column (5.79545ms)
+✖ the gate exception evidence migration over exceptions an earlier release granted (88.119291ms)
+  ✖ refuses a grant without evidence, with an empty list and with six references, and records nothing (1244.231806ms)
+  ✖ refuses a kind outside the reference and the statement, and an unknown kind, on the item (1036.699192ms)
+  ✖ refuses a note with a mail address or a link, and records nothing (966.813503ms)
+  ✖ requires evidence for every gate and action before any other check (1012.884894ms)
+✖ a gate exception grant requires its evidence (4265.225705ms)
+  ✖ stores the same normalized list on the row and on the grant fact; the operator notice carries none; nothing records a payment (1117.75633ms)
+  ✖ accepts a grant that rests on a statement alone (1086.609426ms)
+  ✖ keeps the key meaning: the same key and content replay, other evidence or another order under the key conflicts, a new key while granted is a duplicate (993.777434ms)
+  ✖ never changes the evidence of a row (1004.492792ms)
+✖ an accepted grant records its evidence (4204.354012ms)
+  ✖ replays a grant the earlier release committed without evidence, under its key, with the same result and no second row or fact (1119.840735ms)
+  ✖ refuses a request of the earlier shape that never committed, and records nothing (1179.444616ms)
+  ✖ keeps an exception granted before usable: an assignment consumes it, and a SuperAdmin can revoke another (1227.946399ms)
+  ✖ binds a wire request without evidence to the same module input and content hash as the earlier release, and maps evidence rows unchanged (4.867142ms)
+  ✖ the wire contract accepts the earlier shape and up to five rows, and refuses a sixth row and an unknown key (1.344714ms)
+✖ a grant of the earlier shape across the change (3534.636858ms)
+  ✖ gives the SuperAdmin each exception with its evidence, grantor, time and reason, and an empty list for an exception granted before (1118.38564ms)
+  ✖ gives the assigned operator no evidence, reason or grantor of any exception (1115.826101ms)
+  ✖ gives a support view no record, and the SuperAdmin case read refuses it (1015.136289ms)
+  ✖ answers a replay after the grantor lost access with the current read access answer and no data of the grant (1066.523043ms)
+✖ who reads the evidence of an exception (4316.904694ms)
+ℹ tests 22
+ℹ pass 1
+ℹ fail 21
+✖ failing tests:
+✖ an interruption before the migration commits leaves the earlier schema, rows and ledger (2.819202ms)
+  Error: ENOENT: no such file or directory, open '/home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w15-gex-evidence/migrations/1190_core_gate_exception_evidence.sql'
+    code: 'ENOENT',
+✖ applies, keeps every earlier row as written, and gives each an empty evidence list (20.085746ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: undefined,
+    expected: '1190_core_gate_exception_evidence',
+✖ refuses a write that does not name the evidence, and evidence that is not an array of at most five references (2.549875ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+    actual: undefined,
+✖ still consumes and revokes an earlier exception, and the trigger refuses a change of each identity column (5.79545ms)
+  error: column "evidence" does not exist
+✖ refuses a grant without evidence, with an empty list and with six references, and records nothing (1244.231806ms)
+  Error: expected input_invalid, got {"status":"accepted","replayed":false,"operationId":"opr_5AY6469X4HWSBH6VJSX7K6A5D2","result":{"resource":{"type":"application","id":"app_3D8H6K71HJHY0DWDMZKW5ZQTPR"},"summary":{"applicationId":"app_3D8H6K71HJHY0DWDMZKW5ZQT
+✖ refuses a kind outside the reference and the statement, and an unknown kind, on the item (1036.699192ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ { field: '(input)', code: 'unrecognized_keys' } ],
+    expected: [ { field: 'evidence.1.kind', code: 'kind_not_allowed' } ],
+✖ refuses a note with a mail address or a link, and records nothing (966.813503ms)
+  AssertionError [ERR_ASSERTION]: Sent by agent@synthetic.test
+  + actual - expected
+    actual: [ '(input)' ],
+    expected: [ 'evidence.0.note' ],
+✖ requires evidence for every gate and action before any other check (1012.884894ms)
+  Error: expected input_invalid, got {"status":"accepted","replayed":false,"operationId":"opr_112D8DQ6J1C93CX4BY6C4GEKF0","result":{"resource":{"type":"application","id":"app_2JB3R9XP1GVXB2XSYB0CFQV7VN"},"summary":{"applicationId":"app_2JB3R9XP1GVXB2XSYB0CFQV7
+✖ stores the same normalized list on the row and on the grant fact; the operator notice carries none; nothing records a payment (1117.75633ms)
+✖ accepts a grant that rests on a statement alone (1086.609426ms)
+✖ keeps the key meaning: the same key and content replay, other evidence or another order under the key conflicts, a new key while granted is a duplicate (993.777434ms)
+✖ never changes the evidence of a row (1004.492792ms)
+✖ replays a grant the earlier release committed without evidence, under its key, with the same result and no second row or fact (1119.840735ms)
+  Error: not accepted: {"status":"rejected","error":{"category":"internal","code":"unexpected","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}
+✖ refuses a request of the earlier shape that never committed, and records nothing (1179.444616ms)
+  Error: expected input_invalid, got {"status":"accepted","replayed":false,"operationId":"opr_7WJ9TGCAQ7P93BP3YNZVN6QC29","result":{"resource":{"type":"application","id":"app_3Q12P0V4ST8HH1K8ATAY3QR4MR"},"summary":{"applicationId":"app_3Q12P0V4ST8HH1K8ATAY3QR4
+✖ keeps an exception granted before usable: an assignment consumes it, and a SuperAdmin can revoke another (1227.946399ms)
+  Error: not accepted: {"status":"rejected","error":{"category":"internal","code":"unexpected","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}
+✖ binds a wire request without evidence to the same module input and content hash as the earlier release, and maps evidence rows unchanged (4.867142ms)
+✖ the wire contract accepts the earlier shape and up to five rows, and refuses a sixth row and an unknown key (1.344714ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+    actual: false,
+    expected: true,
+✖ gives the SuperAdmin each exception with its evidence, grantor, time and reason, and an empty list for an exception granted before (1118.38564ms)
+  Error: not accepted: {"status":"rejected","error":{"category":"internal","code":"unexpected","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}
+✖ gives the assigned operator no evidence, reason or grantor of any exception (1115.826101ms)
+✖ gives a support view no record, and the SuperAdmin case read refuses it (1015.136289ms)
+✖ answers a replay after the grantor lost access with the current read access answer and no data of the grant (1066.523043ms)
+  Error: not accepted: {"status":"rejected","error":{"category":"internal","code":"unexpected","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}

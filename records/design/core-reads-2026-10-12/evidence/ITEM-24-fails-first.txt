@@ -1,0 +1,21 @@
+# R1, R2 and R3 (test/operations/originals-register.test.ts) before the change, 13 October 2026 (worktree wave2-custody at 0e130d1)
+  ✖ R1: the assigned operator sees their originals with the linked applicants; another operator none; a grantee the group's; the SuperAdmin all (2697.581301ms)
+  ✖ R2: the most recent custody change comes first (1524.863977ms)
+  ✖ R3: at most 500 rows, with the truncation flag set when more exist (992.881234ms)
+✖ the originals register shows each reader the originals of the applications they may read (5219.73354ms)
+ℹ tests 3
+ℹ pass 0
+ℹ fail 3
+✖ failing tests:
+✖ R1: the assigned operator sees their originals with the linked applicants; another operator none; a grantee the group's; the SuperAdmin all (2697.581301ms)
+  AssertionError [ERR_ASSERTION]: the ops.originals query is served
+    actual: false,
+    expected: true,
+✖ R2: the most recent custody change comes first (1524.863977ms)
+  AssertionError [ERR_ASSERTION]: the ops.originals query is served
+    actual: false,
+    expected: true,
+✖ R3: at most 500 rows, with the truncation flag set when more exist (992.881234ms)
+  AssertionError [ERR_ASSERTION]: the ops.originals query is served
+    actual: false,
+    expected: true,

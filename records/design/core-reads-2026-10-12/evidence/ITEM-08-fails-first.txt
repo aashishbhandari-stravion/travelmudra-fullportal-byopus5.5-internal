@@ -1,0 +1,9 @@
+# test/payments/service-entries.test.ts 'a correction that changes only the event date is a change: a new date or an omitted date is accepted, the same date is refused' before the change, 13 October 2026
+  ✖ a correction that changes only the event date is a change: a new date or an omitted date is accepted, the same date is refused (846.404307ms)
+✖ recording service payment (851.708618ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ a correction that changes only the event date is a change: a new date or an omitted date is accepted, the same date is refused (846.404307ms)
+  Error: expected acceptance, got {"status":"rejected","error":{"category":"validation_failed","code":"correction_no_change","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}
