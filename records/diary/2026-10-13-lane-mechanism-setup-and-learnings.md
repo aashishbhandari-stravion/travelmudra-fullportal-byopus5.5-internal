@@ -169,3 +169,58 @@ carries a capability-level map (use case, module files, ingress points, tests) s
 - Lane installations are deployed by the lanes themselves through `uat.py`; the project instructions still say the
   orchestrator runs deploys. Align the text with the practice.
 - A capability-level module map for the handover (L15).
+
+## 7. Lane efficiency experiment: context thresholds (started 13 October 2026)
+
+Max runs this experiment while the product is delivered. It records what the lanes cost, the rule applied, and
+what to measure next. Numbers come from the session transcripts under `~/.claude/projects/` (per assistant turn:
+input, cache read, cache creation and output tokens), summed with a one-file Python script in the orchestrator's
+scratchpad; the account usage card is the cross-check.
+
+### 7.1 Measurement before the rule (26 hours to 13 October, 07:40 UTC)
+
+| Session | Context tokens sent | Turns | Subagents | Average main-chat context per turn | Peak |
+|---|---|---|---|---|---|
+| UI lane (Opus 5.5) | 8.29 billion | 25,782 | 118 | 515k | 967k |
+| Bulk lane (Opus 5.5) | 1.96 billion | 5,588 | 23 | 594k | 958k |
+| Orchestrator (Fable 5.1), 3 days | 0.59 billion | 2,851 | 0 | 208k | 468k |
+| Core lane (Opus 5.5), first hour | 0.01 billion | 58 | 0 | 134k | 169k |
+
+Reading. Cost is context size per turn multiplied by turns, not the number of lanes. The lane main chats grew
+towards the 1M window because auto-compaction fires only at 97 percent. The UI lane's 118 subagents, each 200 to
+500 turns at 300k to 400k context, were about 7 of its 8.3 billion tokens: subagents inherited Opus and ran long
+with unbounded scopes. The account card agreed: the all-models week at 69 percent after one day on the 20x plan,
+the Fable week at 11 percent, so the orchestrator was not the spender.
+
+### 7.2 The rule (final form, Max, 13 October 2026)
+
+1. Main-chat threshold 220k tokens, checked at boundaries (before a subagent launch, after a subagent return, after a
+   commit) with the session usage tool in the same turn. Above it: nothing new, running subagents finish, a coherent
+   unit is committed or the edits stay on disk with `state/RESUME.md`, compact, re-read only what the resume file
+   names. Hard limit 350k.
+2. One subagent per bounded task with a self-contained brief and a return limit; under 100k context per subagent
+   turn; partial return before 200k; none kept alive across tasks.
+3. Model per subagent passed explicitly: Haiku mechanical, Sonnet evidence, Opus only design judgment and package
+   review (the shared working agreement's defaults, which the lanes had not followed).
+4. No re-reads of unchanged files, no polling, targeted tests until the package check.
+
+Iterations the same day: 200k (orchestrator's proposal), 300k (Max), 220k with the boundary workflow (Max). Two
+pushbacks accepted: a five-minute timer check is replaced by boundary checks, because every timed check costs a
+full-context turn; a forced work-in-progress commit is replaced by edits-on-disk plus the resume file, because
+files survive a compaction and a WIP commit would reach `main` at integration.
+
+### 7.3 Hypothesis and what to measure
+
+Expected: the same work at roughly a third of the 7.2 rate (main chat from about 515k to about 150k average per
+turn; subagents from about 350k to under 100k and mostly on Sonnet or Haiku). Measure after the next 24 hours with
+the same script: context tokens per lane, average and peak main context, subagent count and model mix, number of
+compactions, and any failure attributed to a compaction (a lost finding, a repeated unit, a wrong resume). The rule
+is adjusted on evidence; a compaction-caused failure outranks the saving.
+
+### 7.4 Candidate next step (not yet done)
+
+A deterministic hook instead of a remembered check: a `PreToolUse` hook receives the transcript path, can read the
+last assistant turn's usage, and can refuse the next subagent launch with the instruction to finish, write the
+resume file and compact. That removes the dependence on the lane remembering rule 1. To be tried on one lane first,
+after Max's go, because it changes the lane's local settings.
+
