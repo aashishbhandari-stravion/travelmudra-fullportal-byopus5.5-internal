@@ -279,3 +279,41 @@ compacts about once an hour); the automatic window stays only as insurance at ab
 280k. Reason: an automatic trigger at the working threshold compacts mid-unit; a human compaction lands at a clean
 boundary. The experiment measures this variant.
 
+
+### 7.8 First reading on the Core lane (13 October 2026, 13:50 IST)
+
+`internal/tools/lane-burn.py` (context tokens per UTC hour, main chat and subagents apart) on the three lanes:
+
+| Lane, UTC hour | Main chat | Subagents |
+|---|---|---|
+| UI lane 00:00 to 07:59 (before the rule) | 22M to 81M per hour, peak context 967k | 471 to 2,253 turns per hour, 163M to 670M per hour, all Opus |
+| Bulk lane 00:00 to 06:59 (before the rule) | 2M to 35M per hour, peak context 947k | 147 to 335 turns per hour, 29M to 137M per hour, mostly Opus |
+| Core lane 07:00 (rule sent, compaction at 303k) | 174 turns, 34.6M, peak 303k | 71 turns, 10.2M, all Sonnet |
+| Core lane 08:00 (after the compaction) | 96 turns, 11.3M, peak 161k | 84 turns, 11.7M, all Sonnet |
+
+The Core lane runs at about 23M context tokens per hour against 500M to 750M per hour on the UI lane at its peak:
+about 25 times less. Its subagents are all Sonnet and small (about 140k per turn on average, which is still above
+the 100k target of the subagent rule). What is still open: a full hour under the guard hook (installed 13:28
+IST), the number of compactions, and any failure attributed to a compaction. Re-read with
+`python3 -I internal/tools/lane-burn.py 2026-10-13T07` at the next lane message. The UI and bulk lanes are paused,
+so the comparison stays clean: one lane, one rule, one hook.
+
+### 7.9 The rules in the lane creation module (13 October 2026)
+
+Max: "Ensure that the subagent rule and parent agent rule on context management gets stored into our lane
+creation module." Done in three places, so a lane carries the rules whether or not a prompt restates them:
+
+- Global `projectctl lane create` (`/home/max-stravion/agent-guidance/projectctl.py`): the lane brief it writes as
+  `CLAUDE.md` and `AGENTS.md` now ends with a "Context budget" section (subagent rule, parent rule, numbers); it
+  writes `.claude/settings.local.json` with the `context_guard.py` hook at 280,000 and `autoCompactWindow`
+  383000, excludes `.claude/` and exempts it at closure. `WORKSPACES-AND-EVIDENCE.md` names the rules in its
+  "Lanes" section and states that the prompt MUST restate them. Gate: `test_projectctl.py`, 37 tests pass (two
+  added: the brief and settings content; the guard denies above the limit, allows below, ignores other tools).
+  Pre-images in `agent-guidance/backups/context-budget-20261013/`. `CORE.md` is unchanged (its worker defaults
+  stand); no sync needed, `sync.py --check` in sync.
+- This project (hand-made lanes): the same section at the end of the local `CLAUDE.md` and `AGENTS.md`, which every
+  hand-made lane copies; the execution folder README names the prompt requirement.
+- Memory: `lane-prompt-must-carry-budget-rules` (feedback).
+
+The three running lanes keep their own copies of the project files from 12 October; they got the rules by message
+(§7.2) and the Core lane has the hook (§7.4). Their copies are not edited while they run.

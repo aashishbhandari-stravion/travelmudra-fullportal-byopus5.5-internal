@@ -51,3 +51,14 @@ Lanes message the orchestrator only when required: a proposal ready for the gate
 
 Amendment (Max, 13 October 2026, afternoon): the orchestrator answers its own questions about a lane from the lane's files (read only: the lane clone, `output/`, `research/`, `state/`) and never wakes a lane for a status or a fact that is on disk. When the orchestrator must ask a lane something, the lane's main chat delegates the answer to a subagent with a self-contained question and relays the result, so the lane's own context is not spent on it. The same rule applies in the other direction: a lane asks the orchestrator only for a decision, a grant or an assignment, never for a fact that is in the seam contract, the register or the prompts.
 
+## Lane prompt requirements (Max, 13 October 2026)
+
+Every lane prompt MUST restate the context budget with its numbers (project `CLAUDE.md`, section "Context budget";
+global `projectctl` writes the same section into every lane brief it creates): the subagent rule (one task per
+subagent with a brief and a return limit; under 100k context per turn, partial return before 200k; `model` passed
+explicitly on every Agent call: `haiku` mechanical, `sonnet` evidence, `opus` judgment and package review only) and
+the parent rule (context checked at every boundary; above 280,000 tokens no new command or subagent, running
+subagents finish, commit or `state/RESUME.md`, then wait for Max to compact). A hand-made lane also gets
+`.claude/settings.local.json` with the `internal/tools/context-guard.py` hook at 280,000 and `autoCompactWindow`
+383000. Reason: a rule that lived only in the loaded global defaults was not followed on 12 to 13 October 2026
+(diary 2026-10-13 §7.5).
