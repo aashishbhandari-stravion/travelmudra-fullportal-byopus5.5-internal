@@ -48,3 +48,6 @@ prompt.
 ## Communication protocol (Max, 13 October 2026)
 
 Lanes message the orchestrator only when required: a proposal ready for the gate, a package ready for integration, a grant or decision needed, a stop condition, a blocked deploy. One message per milestone, bundling everything it produced. No acknowledgements, no progress notes, no estimates ahead of the reviewed file. The orchestrator sends no acknowledgements (silence means logged) and writes to a lane only to deliver a decision, a grant or an assignment. Reason: every message wakes the orchestrator chat with its whole context.
+
+Amendment (Max, 13 October 2026, afternoon): the orchestrator answers its own questions about a lane from the lane's files (read only: the lane clone, `output/`, `research/`, `state/`) and never wakes a lane for a status or a fact that is on disk. When the orchestrator must ask a lane something, the lane's main chat delegates the answer to a subagent with a self-contained question and relays the result, so the lane's own context is not spent on it. The same rule applies in the other direction: a lane asks the orchestrator only for a decision, a grant or an assignment, never for a fact that is in the seam contract, the register or the prompts.
+
