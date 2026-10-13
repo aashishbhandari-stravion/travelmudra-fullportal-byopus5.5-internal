@@ -1,0 +1,31 @@
+# 'lists assigned work with no recorded Gate 1 basis for the first work while no payment is received and no exception can be used, with those facts' and 'reads one more candidate than its limit and says when the scan stopped there, for every kind; the oldest assignment first' (test/core/assignment-holds.test.ts, describe 'the first-work Gate 1 queue'), and 'are made by core itself: allowlists by service, the support-view-only TA reads at staff, and the surface of each page' (test/system/core-pages.test.ts, whole file run) before the change, 13 October 2026, worktree wave3-gate1 at ccf9659 (source unchanged, final test text)
+## test/core/assignment-holds.test.ts --test-name-pattern='first-work Gate 1 queue'
+  ✖ lists assigned work with no recorded Gate 1 basis for the first work while no payment is received and no exception can be used, with those facts (2482.471962ms)
+  ✖ reads one more candidate than its limit and says when the scan stopped there, for every kind; the oldest assignment first (2499.807057ms)
+✖ the first-work Gate 1 queue (4985.980473ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ lists assigned work with no recorded Gate 1 basis for the first work while no payment is received and no exception can be used, with those facts (2482.471962ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ undefined, undefined ],
+    expected: [ 2026-03-01T10:00:10.002Z, false ],
+✖ reads one more candidate than its limit and says when the scan stopped there, for every kind; the oldest assignment first (2499.807057ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: undefined,
+    expected: false,
+## test/system/core-pages.test.ts
+  ✖ are made by core itself: allowlists by service, the support-view-only TA reads at staff, and the surface of each page (118.223917ms)
+✖ refusals (1758.64363ms)
+ℹ tests 18
+ℹ pass 17
+ℹ fail 1
+✖ failing tests:
+✖ are made by core itself: allowlists by service, the support-view-only TA reads at staff, and the surface of each page (118.223917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: 'validation_failed',
+    expected: 'unauthenticated',

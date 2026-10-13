@@ -1,0 +1,47 @@
+# test/payments/gate2-superadmin.test.ts 'shows the real Gate 2 state of a TravelMudra-filed application to a SuperAdmin, not unknown' before the change, 13 October 2026
+  ✖ shows the real Gate 2 state of a TravelMudra-filed application to a SuperAdmin, not unknown (886.968599ms)
+✖ Gate 2 on the SuperAdmin payments page (891.074837ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ shows the real Gate 2 state of a TravelMudra-filed application to a SuperAdmin, not unknown (886.968599ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+    actual: 'unknown',
+    expected: 'unknown',
+
+# test/payments/gate2-superadmin.test.ts (all five tests) with the source at 263dce9 (before the change), 13 October 2026
+  ✖ shows the real Gate 2 state of a TravelMudra-filed application to a SuperAdmin, not unknown (990.305053ms)
+  ✖ is blocked before the service payment and passed after it; Gate 1 reads the same way (651.366154ms)
+  ✖ shows a granted Gate 2 exception as excepted, as the assigned operator's own evaluation states it; the operator still cannot read the page (950.517617ms)
+  ✖ authorizes nothing: the SuperAdmin's own authorization of the act is still refused, by the evaluator and by the command (857.820994ms)
+  ✖ Core's gate read refuses an actor without a read relation as not found, not with a gate state (714.240339ms)
+✖ Gate 2 on the SuperAdmin payments page (4169.236181ms)
+ℹ tests 5
+ℹ pass 0
+ℹ fail 5
+✖ failing tests:
+✖ shows the real Gate 2 state of a TravelMudra-filed application to a SuperAdmin, not unknown (990.305053ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+    actual: 'unknown',
+    expected: 'unknown',
+✖ is blocked before the service payment and passed after it; Gate 1 reads the same way (651.366154ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: { gate1: 'blocked', gate2: 'unknown' },
+    expected: { gate1: 'blocked', gate2: 'blocked' },
+✖ shows a granted Gate 2 exception as excepted, as the assigned operator's own evaluation states it; the operator still cannot read the page (950.517617ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: 'unknown',
+    expected: 'blocked',
+✖ authorizes nothing: the SuperAdmin's own authorization of the act is still refused, by the evaluator and by the command (857.820994ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: 'unknown',
+    expected: 'passed',
+✖ Core's gate read refuses an actor without a read relation as not found, not with a gate state (714.240339ms)
+  AssertionError [ERR_ASSERTION]: another operator
+  + actual - expected
+    actual: 'unknown/unknown',
+    expected: 'not_found_or_forbidden/access_denied',

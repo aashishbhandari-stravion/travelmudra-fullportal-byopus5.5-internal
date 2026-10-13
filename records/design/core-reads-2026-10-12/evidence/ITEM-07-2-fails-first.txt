@@ -1,0 +1,16 @@
+# launch plan replay: 'returns the recorded result for the identical form, and a conflict for another form with the same key' before the change, 2026-10-13
+  ✖ returns the recorded result for the identical form, and a conflict for another form with the same key (1337.841743ms)
+✖ a launch plan form sent again after the head changed its required measures (1447.392517ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+✖ failing tests:
+✖ returns the recorded result for the identical form, and a conflict for another form with the same key (1337.841743ms)
+  AssertionError [ERR_ASSERTION]: {"status":"rejected","error":{"category":"conflict_operation_key","code":"operation_key_reused","retryable":false,"blockers":[],"boundary":null,"fieldErrors":[],"existing":null}}
+  + actual - expected
+  +   'rejected',
+  +   undefined
+  -   'accepted',
+  -   true
+    actual: [ 'rejected', undefined ],
+    expected: [ 'accepted', true ],

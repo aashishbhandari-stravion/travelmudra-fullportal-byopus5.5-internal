@@ -1,0 +1,21 @@
+# assignment-holds.test.ts 'reassigns: duties move, ...' (preview assertions added) and reassignment-preview.test.ts 'lists the incidents the reassignment moves, ...' before the change, 13 October 2026 (worktree wave3-assign at 168973f; final test files, source changes stashed)
+  ✖ reassigns: duties move, the previous operator is denied, readiness becomes the previous operator’s, acts and custody stay (1916.387143ms)
+✖ assignment (1920.903109ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ reassigns: duties move, the previous operator is denied, readiness becomes the previous operator’s, acts and custody stay (1916.387143ms)
+  AssertionError [ERR_ASSERTION]: core.reassignment_preview
+    actual: false,
+    expected: true,
+  ✖ lists the incidents the reassignment moves, by the same rule, with each effect; the others are neither listed nor moved (2095.724632ms)
+✖ the reassignment preview of incidents (2100.542314ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ lists the incidents the reassignment moves, by the same rule, with each effect; the others are neither listed nor moved (2095.724632ms)
+  AssertionError [ERR_ASSERTION]: core.reassignment_preview
+    actual: false,
+    expected: true,

@@ -1,0 +1,16 @@
+# L1 and L2 (test/operations/original-link-identity.test.ts) before the change, 13 October 2026 (worktree wave2-custody at 7ad52b2)
+  ✖ L1: with 50 originals on an application, the 51st receipt and a share into it are refused and write nothing; the read at 50 encodes (2369.781504ms)
+  ✖ L2: an original linked to 50 applications is not shared with a 51st; the read at 50 links encodes (2149.522834ms)
+✖ an application holds at most 50 originals and an original is linked to at most 50 applications (4523.217385ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ L1: with 50 originals on an application, the 51st receipt and a share into it are refused and write nothing; the read at 50 encodes (2369.781504ms)
+  AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_56EWS80K0MW962H6K1TYS2WQYT","result":{"resource":{"type":"application","id":"app_5J5N051BVFDP03K6MFSQ4687TR"},"summary":{"applicationId":"app_5J5N051BVFDP03K6MFSQ4687TR","originalId":"org_2A15WXNZTQP2YZKRJGJE5G2ADK"}}}
+    actual: false,
+    expected: true,
+✖ L2: an original linked to 50 applications is not shared with a 51st; the read at 50 links encodes (2149.522834ms)
+  AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_0EBT7BCDA39TQ0G6YDN8A9NK63","result":{"resource":{"type":"original","id":"org_7C76XY9DNJDFBBXSV317XQC013"},"summary":{"originalId":"org_7C76XY9DNJDFBBXSV317XQC013","applicationId":"app_7G5YKQ0C5WTSA0ZQW3W6MY7V2R"}}}
+    actual: false,
+    expected: true,

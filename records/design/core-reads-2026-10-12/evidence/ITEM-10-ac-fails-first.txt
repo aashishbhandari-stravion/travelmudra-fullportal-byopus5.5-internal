@@ -1,0 +1,15 @@
+# test/core/catalogue-impact.test.ts 'returns the item of a declined transition to the SuperAdmin queue as pending, counted, and the assessment needs review again' and 'refuses an approval whose assessment no longer reviewed the head' before the change, 2026-10-13
+  ✖ returns the item of a declined transition to the SuperAdmin queue as pending, counted, and the assessment needs review again (1866.012342ms)
+  ✖ refuses an approval whose assessment no longer reviewed the head (1944.049077ms)
+✖ structural transitions of Core's applications (5699.825571ms)
+ℹ tests 4
+ℹ pass 2
+ℹ fail 2
+✖ failing tests:
+✖ returns the item of a declined transition to the SuperAdmin queue as pending, counted, and the assessment needs review again (1866.012342ms)
+  AssertionError [ERR_ASSERTION]: pending, owned by the SuperAdmin queue
+  + actual - expected
+    actual: [ 'imi_48PXK1XY6PQRYJ2S0Q6QDVJ4YF', 'transition', null ],
+    expected: [ 'imi_48PXK1XY6PQRYJ2S0Q6QDVJ4YF', 'pending', null ],
+✖ refuses an approval whose assessment no longer reviewed the head (1944.049077ms)
+  Error: expected impact_item_not_current, got {"status":"accepted","replayed":false,"operationId":"opr_4H6X4A1FYWSGP3X7HXF5YE72T9","result":{"resource":{"type":"application","id":"app_37S27C3VTF0AGHC5DV4EW0WWBQ"},"summary":{"transitionId":"stt_3K2PNRGEDYN7DX6GP690FD9W94","taAuthorityRequired":true}}}

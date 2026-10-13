@@ -1,0 +1,16 @@
+# 'serves the recorded facts Gate 1 reads for the first operator work and for a new assignment, and the evaluator decides as they say in each state' and 'encodes the facts through the SuperAdmin case contract; the assigned operator’s and the travel agent’s case reads do not carry them' (test/core/assignment-holds.test.ts, describe 'Gate 1 facts on the SuperAdmin case read') before the change, 13 October 2026, worktree wave3-gate1 at e0b978d
+  ✖ serves the recorded facts Gate 1 reads for the first operator work and for a new assignment, and the evaluator decides as they say in each state (1550.996565ms)
+  ✖ encodes the facts through the SuperAdmin case contract; the assigned operator’s and the travel agent’s case reads do not carry them (1326.980093ms)
+✖ Gate 1 facts on the SuperAdmin case read (2880.897517ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ serves the recorded facts Gate 1 reads for the first operator work and for a new assignment, and the evaluator decides as they say in each state (1550.996565ms)
+  AssertionError [ERR_ASSERTION]: the SuperAdmin reads the Gate 1 facts of an open application
+    actual: false,
+    expected: true,
+✖ encodes the facts through the SuperAdmin case contract; the assigned operator’s and the travel agent’s case reads do not carry them (1326.980093ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+    actual: false,
+    expected: true,

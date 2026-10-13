@@ -1,0 +1,11 @@
+# assignment-holds.test.ts 'reads a batch result per item for the SuperAdmin who ran it: ...' before the change, 13 October 2026 (worktree wave3-assign at e0b978d, test only)
+  ✖ reads a batch result per item for the SuperAdmin who ran it: each assigned item’s assignment, application and operator, a refused item’s code (3985.495721ms)
+✖ assignment (3989.964001ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ reads a batch result per item for the SuperAdmin who ran it: each assigned item’s assignment, application and operator, a refused item’s code (3985.495721ms)
+  AssertionError [ERR_ASSERTION]: core.assignment_batch
+    actual: false,
+    expected: true,

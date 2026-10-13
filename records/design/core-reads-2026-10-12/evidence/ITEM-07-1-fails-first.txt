@@ -1,0 +1,22 @@
+# launch and scope expansion check the reviewed offering revision: 'a launch reviewed at an earlier offering revision is refused ...', 'a scope expansion reviewed at an earlier offering revision is refused ...' before the change, 2026-10-13 (the strict input schema refuses the unknown field expectedOfferingRevision as input_invalid; the control test 'a form without an offering revision still launches and widens, as before' passes before and after)
+  ✖ a launch reviewed at an earlier offering revision is refused after a new head was published, and launches at the current one (195.651198ms)
+  ✖ a scope expansion reviewed at an earlier offering revision is refused after a new head was published, and widens at the current one (96.535375ms)
+✖ launch and scope expansion check the reviewed offering revision (634.836549ms)
+ℹ tests 20
+ℹ pass 18
+ℹ fail 2
+✖ failing tests:
+✖ a launch reviewed at an earlier offering revision is refused after a new head was published, and launches at the current one (195.651198ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + 'input_invalid'
+  - 'stale_revision'
+    actual: 'input_invalid',
+    expected: 'stale_revision',
+✖ a scope expansion reviewed at an earlier offering revision is refused after a new head was published, and widens at the current one (96.535375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + 'input_invalid'
+  - 'stale_revision'
+    actual: 'input_invalid',
+    expected: 'stale_revision',

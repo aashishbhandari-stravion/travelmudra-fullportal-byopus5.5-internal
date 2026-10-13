@@ -1,0 +1,17 @@
+# V2 (exhausted act fields on both staff reads, no reason on the travel agent's read) and V3 (active mark count) in test/operations/protection-mark-filing.test.ts before the change, 13 October 2026 (worktree w12-reads, head e0b978d)
+  ✖ V2: an exhausted act carries its future owner, who exhausted it, why and when on both staff reads; the travel agent's read has no reason (1401.090263ms)
+  ✖ V3: the case read counts the active marks: none, one, two after a second restore, and one once a mark is resolved (1110.762139ms)
+✖ the staff case read (10841.747865ms)
+ℹ tests 3
+ℹ pass 1
+ℹ fail 2
+✖ failing tests:
+✖ V2: an exhausted act carries its future owner, who exhausted it, why and when on both staff reads; the travel agent's read has no reason (1401.090263ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ undefined, undefined, undefined, undefined ],
+    expected: [ null, null, null, null ],
+✖ V3: the case read counts the active marks: none, one, two after a second restore, and one once a mark is resolved (1110.762139ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+    actual: undefined,
+    expected: 0,
