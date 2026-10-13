@@ -10,6 +10,7 @@ opens its chat with its prompt. Max decides, integrates and pushes.
 | `BULK-REFACTOR-PROMPT.md` | Prompt for the bulk upload redesign lane (`bulk-refactor-2026-10-12`). Opus 5.5 is the lane's Principal Technical Architect. |
 | `SEAM-CONTRACT.md` | The seam between the lanes: ownership, the bulk read models and commands the UI lane builds against, the change rule, the integration order, the request log (§5) and seam versions (§6). |
 | `CORE-TASK-PROMPT.md` | Prompt for the Core task lane (`core-reads-2026-10-12`): Core defect fixes and Kind 1 read models approved as one batch. Launch after Max confirms to the orchestrator. |
+| `AFTER-LANES.md` | Tracker of the work that waits for the completion of the three lanes (opened 13 October 2026 at Max's request): the restore drill, Max's walk-throughs and UAT pass 2, the open decisions, the parked P2 findings, lane closure. |
 
 ## Lanes
 
