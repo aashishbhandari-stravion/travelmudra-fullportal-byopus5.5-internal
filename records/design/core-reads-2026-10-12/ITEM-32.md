@@ -6,7 +6,7 @@ logged with the orchestrator).
 
 HELD (PLAN D-18). Branch `held/gate-exception-evidence` in the lane clone, never on the lane branch. Commit `3265989`
 (rebased on the lane head `3a81652` as `475a501`, then reworded only, same tree; the first build was `172a97b` on
-`e0b978d`). Review follow-up (tests only): FOLLOWUP_32 (worker W18, Opus). The UI lane merges it with its two
+`e0b978d`). Review follow-up (tests only): `6a39fd3` (worker W18, Opus; about 265k context). Frozen head: `6a39fd3`. The UI lane merges it with its two
 grant forms; the combined `npm run check` runs in the UI lane, then on main. Deviation accepted by the orchestrator: no
 green per-commit check for this commit alone. Public-fit choices (architect): the branch name is not `held/item-32`, and
 the commit body carries no internal ids. Migration renumbered 1060 to 1190 (1060 is taken on main).
@@ -68,3 +68,18 @@ positive grant caller remains without evidence; operator responses omit the priv
 At `475a501` after the rebase: `test/static` 76 of 76. The commit body said the value-import cycle check "fails the
 same way on the parent commit"; that held for the first parent `e0b978d` only. The body was reworded to `3265989` (tree
 unchanged) before the follow-up. Targeted suites after the rebase: 101 of 101. No `npm run check` for this commit alone (D-18).
+
+Follow-up `6a39fd3` (`test/ops-tooling/gate-exception-evidence-recovery.test.ts`, new; no product or kit change): test 1
+starts on head 1180 with the prior release active, accepts a grant of the earlier shape, closes, checkpoints, applies the
+real 1190, activates, then runs the closed-cutover snapshot rollback: the prior ledger (no 1190 row) and schema (no
+`evidence` column), the prior release active, admission closed, every operation accepted before the closure unchanged.
+Test 2 (continues from test 1's state): the cutover again, admission reopened, an evidence grant accepted; after an
+emergency closure the code rollback to the prior release is refused `schema_incompatible` and changes nothing; a repair
+release on head 1190 activates, verifies and opens, keeps the grant's row and fact, and refuses a grant without evidence
+with `evidence/required`; an insert without the column fails 23502. Mutations (`evidence/ITEM-32-followup-mutations.txt`,
+each file restored and checked by sha256): (a) skip the restore in `rollbackSnapshot`: test 1 fails; (b) the prior
+manifest names 1190 (fixture): test 2 fails; (b') `headCompatible` accepts any head (product): test 2 fails; (c) the
+handler's evidence rule removed: test 2 fails; (d) 1190 keeps its column default: test 2 fails. Deviations: the earlier
+release is simulated (current code on the 1180 schema with an earlier-shape grant handler, as the core migration test
+does); test 2 depends on test 1's state. Checks at `6a39fd3`: tsc, eslint clean; new tests 2 of 2; `test/static` 76 of
+76; `test/ops-tooling` 153 of 153.

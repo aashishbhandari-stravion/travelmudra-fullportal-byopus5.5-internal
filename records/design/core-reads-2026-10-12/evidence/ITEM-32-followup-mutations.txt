@@ -1,0 +1,133 @@
+Mutation record: recovery tests of the gate exception evidence migration
+Date: 2026-10-13T18:25Z. Worktree wt/w15-gex-evidence, branch held/gate-exception-evidence, head 3265989.
+Test file: test/ops-tooling/gate-exception-evidence-recovery.test.ts, sha256 f8ace57bcc3a0ea0a04770c2a3f34e96610d65027d6156aa495fa82d285c6c01 (uncommitted at the time of the runs).
+Command per run: node --test --test-global-setup=test/support/global-setup.ts test/ops-tooling/gate-exception-evidence-recovery.test.ts
+Test 1 = 'a failure before admission reopens' (declared at :259). Test 2 = 'a failure after admission reopened' (declared at :301); it continues from the state test 1 leaves.
+
+Unmutated: tests 2, pass 2, fail 0.
+
+== (a) The snapshot rollback does not restore the checkpoint (product: src/platform/release-rollback.ts) ==
+diff --git a/src/platform/release-rollback.ts b/src/platform/release-rollback.ts
+index 83d6529..ccbbe87 100644
+--- a/src/platform/release-rollback.ts
++++ b/src/platform/release-rollback.ts
+@@ -290,7 +290,7 @@ export async function rollbackSnapshot(owner: OwnerPool, checkpointId: Checkpoin
+   await d.writeReleaseEnv(owner, ck.releaseIdBefore);
+ 
+   // From here the database is replaced. The caller's pool is closed first.
+-  await replaceDatabase(d, intent);
++  await d.closeOwner(); // MUTATION (a): the checkpoint is not restored
+   return completeRollback(d.openOwner(), intent, d, false);
+ }
+ 
+-- output --
+  ✖ a failure before admission reopens: the snapshot rollback restores the prior schema, ledger and release, and every operation accepted before the closure (544.097577ms)
+  ✖ a failure after admission reopened: the code rollback is refused schema_incompatible; a repair release keeps the evidence and its rule (329.771757ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+  AssertionError [ERR_ASSERTION]: the ledger before 1190
+      at TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:287:14)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+      at TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:305:12)
+   actual ledger ends:   migration_id: '1190_core_gate_exception_evidence'
+   expected ledger ends: migration_id: '1180_intake_applicant_identity_missing'
+Result: test 1 FAILS at :287 ('the ledger before 1190': the 1190 row remains). Test 2 fails as a consequence (1190 already applied, :305).
+Restore: git checkout -- src/platform/release-rollback.ts; sha256sum -c: src/platform/release-rollback.ts: OK
+
+== (b) The prior manifest names the new head in compatibleSchemaHeads (fixture: the prior release's registration in the test file) ==
+A product mutation of the manifest is not possible: the prior release's manifest is the test's registration. The fixture is mutated as the brief names it; (b') below adds a product mutation of the same rule.
+79c79
+< const relA = await registerTestRelease(i, { tag: 'prior-release', compatibleSchemaHeads: [] });
+---
+> const relA = await registerTestRelease(i, { tag: 'prior-release', compatibleSchemaHeads: [EVIDENCE_MIGRATION] });
+-- output --
+  ✔ a failure before admission reopens: the snapshot rollback restores the prior schema, ledger and release, and every operation accepted before the closure (2085.234422ms)
+  ✖ a failure after admission reopened: the code rollback is refused schema_incompatible; a repair release keeps the evidence and its rule (1299.912306ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:326:5)
+Result: test 2 FAILS at :326 (the code rollback to the prior release is no longer refused: 'Missing expected rejection').
+Restore: copy of the original file put back; sha256sum -c: test/ops-tooling/gate-exception-evidence-recovery.test.ts: OK
+
+== (b') Product variant: every ledger head counts as compatible (src/kernel/releases.ts headCompatible) ==
+diff --git a/src/kernel/releases.ts b/src/kernel/releases.ts
+index 5b0fccb..aa5fc2b 100644
+--- a/src/kernel/releases.ts
++++ b/src/kernel/releases.ts
+@@ -161,7 +161,7 @@ export async function registerRelease(owner: OwnerPool, reg: ReleaseRegistration
+ 
+ /** Whether a release can run against a ledger head: its own schema head or one it declares compatible. */
+ export function headCompatible(release: Pick<ReleaseRow, 'schemaHead' | 'compatibleSchemaHeads'>, head: string | null): boolean {
+-  return head !== null && (head === release.schemaHead || release.compatibleSchemaHeads.includes(head));
++  return head !== null; // MUTATION (b'): every head counts as compatible
+ }
+ 
+ /**
+-- output --
+  ✔ a failure before admission reopens: the snapshot rollback restores the prior schema, ledger and release, and every operation accepted before the closure (2100.701121ms)
+  ✖ a failure after admission reopened: the code rollback is refused schema_incompatible; a repair release keeps the evidence and its rule (1248.116135ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:326:5)
+Result: test 2 FAILS at :326.
+Restore: git checkout -- src/kernel/releases.ts; sha256sum -c: src/kernel/releases.ts: OK
+
+== (c) Extra: the handler's evidence rule removed (src/modules/core/commands/gates.ts) ==
+diff --git a/src/modules/core/commands/gates.ts b/src/modules/core/commands/gates.ts
+index 599cecd..80b9d82 100644
+--- a/src/modules/core/commands/gates.ts
++++ b/src/modules/core/commands/gates.ts
+@@ -43,9 +43,7 @@ const GRANT_EVIDENCE_KINDS: readonly EvidenceKind[] = ['external_reference', 'at
+ 
+ /** The evidence of a new grant: one to five references of the allowed kinds, or a field refusal. */
+ function grantEvidence(evidence: readonly EvidenceRef[] | undefined): readonly EvidenceRef[] {
+-  if (evidence === undefined || evidence.length === 0) {
+-    throw new TmError('validation_failed', 'input_invalid', { fieldErrors: [{ field: 'evidence', code: 'required' }] });
+-  }
++  if (evidence === undefined || evidence.length === 0) return []; // MUTATION (c): no evidence required
+   const errors = evidence.flatMap((e, i) => (GRANT_EVIDENCE_KINDS.includes(e.kind) ? [] : [{ field: `evidence.${i}.kind`, code: 'kind_not_allowed' }]));
+   if (errors.length > 0) throw new TmError('validation_failed', 'input_invalid', { fieldErrors: errors });
+   return evidence;
+-- output --
+  ✔ a failure before admission reopens: the snapshot rollback restores the prior schema, ledger and release, and every operation accepted before the closure (1824.608595ms)
+  ✖ a failure after admission reopened: the code rollback is refused schema_incompatible; a repair release keeps the evidence and its rule (1941.356779ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_1PFWEB6TEQW191WM591ZY7DPDE","result":{"resource":{"type":"application","id":"app_24JRQB6J4MVDA1FYM8S11YPWEW"},"summary":{"applicationId":"app_24JRQB6J4MVDA1FYM8S11YPWEW"
+      at TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:346:12)
+Result: test 2 FAILS at :346 (the grant without evidence is accepted).
+Restore: git checkout -- src/modules/core/commands/gates.ts; sha256sum -c: src/modules/core/commands/gates.ts: OK
+
+== (d) Extra: migration 1190 keeps its default (migrations/1190_core_gate_exception_evidence.sql) ==
+diff --git a/migrations/1190_core_gate_exception_evidence.sql b/migrations/1190_core_gate_exception_evidence.sql
+index 50226c4..8b35f48 100644
+--- a/migrations/1190_core_gate_exception_evidence.sql
++++ b/migrations/1190_core_gate_exception_evidence.sql
+@@ -23,7 +23,7 @@ ALTER TABLE core_gate_exceptions
+   ADD COLUMN evidence jsonb NOT NULL DEFAULT '[]'::jsonb
+     CONSTRAINT core_gate_exceptions_evidence CHECK (jsonb_typeof(evidence) = 'array' AND jsonb_array_length(evidence) <= 5);
+ 
+-ALTER TABLE core_gate_exceptions ALTER COLUMN evidence DROP DEFAULT;
++-- MUTATION (d): the default is kept
+ 
+ DROP TRIGGER core_gate_exceptions_identity_immutable ON core_gate_exceptions;
+ CREATE TRIGGER core_gate_exceptions_identity_immutable BEFORE UPDATE ON core_gate_exceptions
+-- output --
+  ✔ a failure before admission reopens: the snapshot rollback restores the prior schema, ledger and release, and every operation accepted before the closure (1855.598828ms)
+  ✖ a failure after admission reopened: the code rollback is refused schema_incompatible; a repair release keeps the evidence and its rule (1886.826225ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (test/ops-tooling/gate-exception-evidence-recovery.test.ts:356:5)
+Result: test 2 FAILS at :356 (the earlier release's insert, which does not name the evidence, succeeds).
+Restore: git checkout -- migrations/1190_core_gate_exception_evidence.sql; sha256sum -c: migrations/1190_core_gate_exception_evidence.sql: OK
+
+git status after all restores: ?? test/ops-tooling/gate-exception-evidence-recovery.test.ts 
+Committed as 6a39fd3 on held/gate-exception-evidence; the committed test file is the one whose sha256 is recorded above. Checks before the commit: tsc --noEmit exit 0; eslint on the test file exit 0; test/static 76 of 76; test/ops-tooling 153 of 153 (the new file included).

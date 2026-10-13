@@ -1,0 +1,130 @@
+# Mutation checks of the disclosure correction follow-up tests, 2026-10-13T18:43Z
+# Worktree branch held/disclosure-correction, base 277ccf4, test file test/operations/disclosure-correction.test.ts sha256 d414c2bc6f90f1c6 (uncommitted at the time of the runs; committed unchanged).
+# Each mutation removes one guard or rule, runs the whole file, and is restored with git checkout -- src/.
+# Command: node --test --test-global-setup=test/support/global-setup.ts test/operations/disclosure-correction.test.ts | grep -E '^ℹ (tests|pass|fail)|✖|AssertionError|expected|actual|timed out' | head -40
+#
+# Note on a first run (superseded): the first version of the 'ineligible before the resolution commits' test replaced the
+# replacement outside the incident. It was accepted in 2 of 5 unmutated full-file runs: with no row both commands read and write,
+# SERIALIZABLE may order the resolution before the replacement (a valid serial order, the outcome of the 'after' test). The test now
+# records the file under the incident (the file's command reads the incident row the resolution writes); 8 of 8 unmutated full-file
+# runs then passed.
+
+## Mutation: group
+group: src/modules/operations/case-work/incidents.ts: -'if (scope === undefined || v === undefined || v.groupId !== scope.groupId) return undefined;' +'if (scope === undefined || v === undefined) return undefined;'
+  ✖ a version of another group, a version that is not current, and a version that is not content-safe (2863.039117ms)
+✖ each file condition alone keeps a replacement from meeting the correction (2865.376034ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+✖ a version of another group, a version that is not current, and a version that is not content-safe (2863.039117ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_55WVKCREZ335WA5R451MV90RZF' ],
+    expected: [ 'correction', 'notice:acc_55WVKCREZ335WA5R451MV90RZF' ],
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: currency
+currency: src/modules/operations/case-work/incidents.ts: -"if (v.currency !== 'current' || v.bytesState !== 'canonical' || !v.contentSafe) return undefined;" +"if (v.bytesState !== 'canonical' || !v.contentSafe) return undefined;"
+  ✖ a version of another group, a version that is not current, and a version that is not content-safe (2870.068879ms)
+✖ each file condition alone keeps a replacement from meeting the correction (2872.525134ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+✖ a version of another group, a version that is not current, and a version that is not content-safe (2870.068879ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_0MVK2XCSXQY18WAE04ZJYXWXFB' ],
+    expected: [ 'correction', 'notice:acc_0MVK2XCSXQY18WAE04ZJYXWXFB' ],
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: content_safe
+content_safe: src/modules/operations/case-work/incidents.ts: -"if (v.currency !== 'current' || v.bytesState !== 'canonical' || !v.contentSafe) return undefined;" +"if (v.currency !== 'current' || v.bytesState !== 'canonical') return undefined;"
+  ✖ a version of another group, a version that is not current, and a version that is not content-safe (2772.064623ms)
+✖ each file condition alone keeps a replacement from meeting the correction (2774.2469ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+✖ a version of another group, a version that is not current, and a version that is not content-safe (2772.064623ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_0M98NK39EV4F1THFHR3ZM04GWC' ],
+    expected: [ 'correction', 'notice:acc_0M98NK39EV4F1THFHR3ZM04GWC' ],
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: resolve_correction_check
+resolve_correction_check: src/modules/operations/case-work/commands/incidents.ts: -'const missing = await missingEvidence(d, tx, i, evidence);' +"const missing = (await missingEvidence(d, tx, i, evidence)).filter((m) => m !== 'correction');"
+  ✖ a reference, recorded on the incident or sent with the resolution; the incident read offers no resolution (2100.39433ms)
+✖ what never meets the correction (13362.505433ms)
+  ✖ the replacement becomes ineligible before the resolution commits: the resolution is refused and records nothing (2622.247128ms)
+✖ the resolution racing the replacement, and retried (8284.849933ms)
+ℹ tests 15
+ℹ pass 13
+ℹ fail 2
+✖ failing tests:
+✖ a reference, recorded on the incident or sent with the resolution; the incident read offers no resolution (2100.39433ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: 'accepted',
+    expected: 'incident_evidence_insufficient',
+✖ the replacement becomes ineligible before the resolution commits: the resolution is refused and records nothing (2622.247128ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+    actual: 'accepted',
+    expected: 'incident_evidence_insufficient',
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: resolved_not_reevaluated
+resolved_not_reevaluated: src/modules/operations/case-work/incidents.ts: -'missingEvidence: isOpen(i) ? await missingEvidence(deps, tx, i) : [],' +'missingEvidence: await missingEvidence(deps, tx, i),'
+  ✖ the replacement becomes ineligible after the resolution commits: the resolution stands and its history is unchanged (2345.61033ms)
+✖ the resolution racing the replacement, and retried (6928.799613ms)
+  ✖ an open incident resting on a reference is missing its correction; a closed one keeps its row; the census lists both and no corrected one (2821.841667ms)
+✖ the release boundary (2822.590772ms)
+ℹ tests 15
+ℹ pass 13
+ℹ fail 2
+✖ failing tests:
+✖ the replacement becomes ineligible after the resolution commits: the resolution stands and its history is unchanged (2345.61033ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'resolved', [ 'correction' ] ],
+    expected: [ 'resolved', [] ],
+✖ an open incident resting on a reference is missing its correction; a closed one keeps its row; the census lists both and no corrected one (2821.841667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'closed', [ 'correction' ] ],
+    expected: [ 'closed', [] ],
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: same_key_replay
+same_key_replay: src/kernel/command.ts: -'if (existing !== undefined) {' +'if (existing !== undefined && Date.now() < 0) {'
+  ✖ a resolution whose response is lost is replayed by its key, also after the replacement became ineligible: one resolution fact, one operation record (1805.288877ms)
+✖ the resolution racing the replacement, and retried (6187.120105ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+✖ a resolution whose response is lost is replayed by its key, also after the replacement became ineligible: one resolution fact, one operation record (1805.288877ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: { status: 'rejected', error: { category: 'control_blocked', code: 'incident_not_open', retryable: false, blockers: [], boundary: null, fieldErrors: [], existing: null } },
+    expected: { status: 'accepted', replayed: true, operationId: 'opr_7080AFYKAJ1D4ARJZK55EP10M1', result: { resource: [Object], summary: [Object] } },
+restored:  M test/operations/disclosure-correction.test.ts 
+
+## Mutation: resolve_case_lock
+resolve_case_lock: src/modules/operations/case-work/commands/incidents.ts: -'const by = actingAccount(tx);\n      await lockIncidentCase(d, tx, input.incidentId);\n      const i = await openIncidentRow(tx, input.incidentId, input.expectedRevision);\n      const evidence = evidenceRefs(input.evidence);\n      await checkEvidenceRefs(d, tx, i.group_id, evidence);\n      const missing' +'const by = actingAccount(tx);\n      const i = await openIncidentRow(tx, input.incidentId, input.expectedRevision);\n      const evidence = evidenceRefs(input.evidence);\n      await checkEvidenceRefs(d, tx, i.group_id, evidence);\n      const missing'
+  ✖ the replacement becomes ineligible after the resolution commits: the resolution stands and its history is unchanged (16914.08821ms)
+✖ the resolution racing the replacement, and retried (21608.277438ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+✖ the replacement becomes ineligible after the resolution commits: the resolution stands and its history is unchanged (16914.08821ms)
+  Error: timed out waiting until the first transaction is paused before its commit and holds its locks
+restored:  M test/operations/disclosure-correction.test.ts 
+
+# resolve_case_lock is informational, not a guard of the rule: without the application lock the resolution no longer blocks the
+# file's command, so the 'after' order cannot be forced (harness timeout). The 'before' order still passes: the incident row lock
+# orders it and the serializable check refuses the resolution.

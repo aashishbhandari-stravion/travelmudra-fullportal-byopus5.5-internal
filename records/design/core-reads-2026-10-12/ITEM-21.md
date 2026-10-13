@@ -2,7 +2,7 @@
 
 Kind 1 read (PLAN §3; the orchestrator's overnight list names it with the Kind 2 items; it exposes recorded facts only).
 Wave 3, worker W14 (Opus, worktree `wave3-gatebasis`, built on the ITEM-19 and ITEM-20 worker commits; about 206k
-context). Commit: LANE_21 (cherry-picked from `8c73b60`; parent `baa00e8` on the worker branch; integrate after
+context). Commit: `bb772e6` (cherry-picked from `8c73b60`; parent `baa00e8` on the worker branch; integrate after
 ITEM-19 and ITEM-20). Grants: prompt scope (`src/modules/core/controls.ts`, `staff-views.ts`, `src/contracts/core.ts`,
 `src/core-api/bindings/core.ts`, `test/core/recorded-gate-basis.test.ts`); one register line (D-16 G4).
 
@@ -42,7 +42,7 @@ above. Gate keys, exception selection and freshness inputs otherwise match; paym
 
 - R-01, P1: a case whose Gate 2 does not apply (service mode, or the declaration's `gate2: not_applicable`) still showed
   payment, commitment and exception fields. **Orchestrator (13 Oct 2026, under OD-X26; PLAN D-19): fix now.** Review
-  follow-up commit LANE_21F: the read mirrors the evaluator's applicability condition; `gate2` is null with the recorded
+  follow-up commit `fdd9f03` (cherry-picked from `f9c1da4`): the read mirrors the evaluator's applicability condition; `gate2` is null with the recorded
   reason; tested.
 - R-02, P1: after a readiness exception is granted, the readiness record can go stale while `failure` stays null, which
   reads as "usable". **Orchestrator (D-19): fix now.** Same follow-up: the contract states that `failure` is the
@@ -54,4 +54,4 @@ No re-review of the follow-up (lane rule).
 
 ## Checks
 
-CHECKS_21
+`npm run check` at `bb772e6`: typecheck and lint clean; 2623 of 2623. At `fdd9f03` (follow-up): 2624 of 2625; the one failure is the timing test `test/intake/dispatch-credits.test.ts:61` under load (alone 2 of 2; no intake change in the commit). Deployed on `lane-max` at `03abf9a` (release `rel_171VQHJEPZCMFK1XXTFDH195BK`).
