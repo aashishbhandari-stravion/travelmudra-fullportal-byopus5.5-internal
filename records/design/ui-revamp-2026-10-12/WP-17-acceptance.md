@@ -3,56 +3,88 @@
 | Field | Value |
 |---|---|
 | Lane | `ui-revamp-2026-10-12` |
-| Work package | WP-17 Group end, withdrawal, deferral, timing (UI-PLAN §12.2: TA-05, TA-07, OP-02, SA-02, SA-04, with the SA-09 kinds of CC-04 and WP-06 §2.7.5; done when V19 passes; lane PLAN §3) |
+| Work package | WP-17 Group end, withdrawal, deferral, timing (UI-PLAN §12.2: TA-05, TA-07, OP-02, SA-02, SA-04, with the SA-09 kinds of CC-04 and CC-21; done when V19 (group-end part) passes; lane PLAN §3) |
 | Author | Principal Product Manager (Claude subagent), 13 October 2026 |
 | Decision owner | Principal Technical Architect of the lane (LD-12) |
-| Status | Draft. Step 1 of lane PLAN §3, written before the design. Not run. Page ids, paths and hosts follow the page list of the UX design draft written in parallel (`WP-17-design.md` §1.3 and §1.5, read on 13 October 2026 at 06:46 IST); the content of this checklist is not yet aligned to that design. Where the design names a page, a path or a word differently, the design governs the name and this checklist keeps the observable result. |
-| Product base | Lane branch `ui-revamp-2026-10-12` at b2a6341. The Core modules of the 13 commands, their contracts, bindings, BFF handlers and the pages that carry their forms are the same in the working tree (the uncommitted files are a queue component, its gallery and test, and a staff admin-context helper; none of them touches a WP-17 handler or page). Internal records at 3283bd2 |
-| Installation | `lane-ui`: edge http://127.0.0.1:4650 (TA-04, TA-05, TA-06, TA-07 and the TA task pages under test; set-up through the travel-agent pages); staff http://127.0.0.1:4652 (OP-02 and its task pages, SA-02d, SA-04a, SA-04g, the SA-09 kinds under test; set-up through SA-06, SA-07a, SA-03a) |
+| Status | Aligned on 13 October 2026 with `WP-17-design.md`, the architect's decisions (`WP-17.md` §3), amendments O-01 to O-13 (`WP-17.md` §4.1, which bind), the amendments D-23, F-39, I-17, G-12, E-30 and the orchestrator's P-21 dispositions (`PROPOSALS.md`, internal 1c98aaf). See the corrections below. Not run. Where the design names a page, a path or a word differently from an unchanged row, the design governs the name and this checklist keeps the observable result; where an amendment differs from the design, the amendment governs. |
+| Product base | Lane branch `ui-revamp-2026-10-12` at b2a6341 (the design and the review read b2a6341). Internal records at 1c98aaf |
+| Installation | `lane-ui`: edge http://127.0.0.1:4650 (TA-04, TA-05, TA-05c, TA-06, TA-07, TA-07d, TA-07w, TA-07c, TA-13b under test; set-up through the travel-agent pages); staff http://127.0.0.1:4652 (OP-02 and its task pages, SA-02d, SA-04a, SA-04g, the SA-09 kinds under test; set-up through SA-06, SA-07a, SA-03a, OP-02, OP-04) |
 | Writing style | ASD-STE100 at about 75% (STY-20261003-01) |
 
-## Corrections
+## Corrections of 13 October 2026
 
-None yet. This is the first version. The alignment to the WP-17 design, to the architect's decisions (`WP-17.md`
-§3) and to the independent review (LD-13 applies: WP-17 commands change money facts (price) and filing state
-(withdrawal stops new filing)) will be recorded here as a table of changed rows, as in `WP-14-acceptance.md` and
-`WP-16-acceptance.md`.
+The UX design (`WP-17-design.md`), the architect's decisions (`WP-17.md` §3) and the independent design review (lane
+`research/reviews/WP-17-design-review.md`, R-01 to R-13, with amendments O-01 to O-13 in `WP-17.md` §4.1, which bind)
+changed the rows below. The amendments D-23 (WP-06), F-39 (WP-07), I-17 (WP-11), G-12 (WP-09) and E-30 (WP-08) apply
+as O-06 corrects their words. The orchestrator's P-21 dispositions apply (item 1 a Core defect in the Core batch; item
+2 policy to Max; item 3a a surface repair in the Core batch; item 3b parked, the admin end-deferral surface is the
+route; item 4 exceptions to Max). Rows not listed changed only their page ids, step references and draft words to the
+design's. Section 6 is kept as asked; its lead names the answers. Items keep their numbers; new items are A152 to A168.
+The first version's steps map to the design's §6 steps (O-12): G-1 → V19G-1, V19G-2; G-2 → V19G-7, V19G-7a; W-1 →
+V19G-3, V19G-3a; W-2 → V19G-3b; Q-1 to Q-4 → V19G-10a to V19G-10e; F-1, F-2 → V19G-10f, V19G-10g; D-1 to D-6 →
+V19G-10h to V19G-10n; R-1 → V19G-10q; W-3 → V19G-10r; W-4 → V19G-9 (on W, under possible filing); W-5 → V19G-10s;
+V19-1 → V19G-6; V19-2 → V19G-10u; V19-3 to V19-6 → V19G-10v to V19G-10x. The first version's groups G1, G2, G3 and
+applications A to H are replaced by the design's groups and applications D, U, W, with C as a lettered addition (§0.3).
+
+| Row | Finding or decision | Change |
+|---|---|---|
+| Status, §0.1 | Design; `WP-17.md` §3, §4.1; review R-01 to R-13; D-23, F-39, I-17, G-12, E-30; P-21 dispositions | Inputs add the design, the record, the review, the amendments and P-21. Verified facts corrected: `timing_risk` is posted with `ackRequired: false` (O-07); the staff deferral read returns only an open deferral, so an ended one leaves the read (O-05); deferral decisions carry no expected revision (O-11); an approved deferral holds readiness, authorization and packet release until it is ended (O-06) |
+| A11, A152 (new), A153 (new), A138 | **O-01** (R-01, P0); PM Q-01; P-21 item 1 | A past travel date sends nothing until a BFF-only acknowledgement of the exact dates is given after a review that states what the next date check ends; tests for a missing acknowledgement, changed dates, a stale revision, replay and future dates sent directly; the live step acknowledges; a raw post without the acknowledgement is refused by the BFF; Core's own refusal is "Unmet: waits for P-21 item 1" (a Core defect in the Core batch) |
+| §0.2 "Money", A75 to A78, A76, A147, A168 (new) | **O-02** (R-02); Q-W17-03 | Paise throughout (`400000` for ₹4,000; the field stays `newPricePaise`); over-limit input refused whole; the proposed amount shown converted to rupees in a review before the send |
+| A22 to A30, A154 (new) | **O-03** (R-03) | "Decline the increase; keep the current price ₹[current]"; the original quote labelled separately; a fixture with a reduction between proposal and decision |
+| A34, A165 (new) | **O-04** (R-04); P-21 item 4 | The held values are not available on TA-07c; `held_correction_conflict` (category stale) routes to the conflict explanation; "cannot be applied to the current details"; readable values Unmet pending P-21 item 4 |
+| A46, A53, A54, A71, A162 (new) | **O-05** (R-05) | With no open deferral the pages say "No deferral is currently open" (no invented history); verified receipts and POST refusal rendering kept apart; no early absence check blocks replay |
+| §0.2 "Words", A33, A46, A47, A50, A53, A66, A67, A73, A159 (new) | **O-06** (R-06); D-23, F-39, E-30 as corrected | "Review on [date]; readiness, authorization and packet release remain held until the deferral is ended." everywhere |
+| A32, A40, A42 | **O-07** (R-07) | No acknowledgement promise for `timing_risk`; the items assert the recorded flag |
+| §0.2 "Receipts", A49, A53, A68, A97, A105, A160 (new) | **O-08** (R-08) | "Request recorded" for the shared deferral summary (proposal, decision, end) and for every unchecked receipt; tests with proposal and end keys at the decision receipt address and with another actor's key |
+| A54, A112 | **O-09** (R-09) | OP-02e in the body-limit set; a real HTTP maximum-input test |
+| A04, A18, A51, A79 | **O-10** (R-10) | An unchanged saved envelope with a new key is a stale test (`stale_revision`); a fresh-revision duplicate is a separate test (`outcome_already_recorded`, `deferral_active`, `price_increase_open`, `group_closed`) |
+| A01, A13, A33, A66, A69, A70 | **O-11** (R-11); G-12; D-23 | A01 admits the design's qualified listed-row line; TA-07's aside always links TA-07w and the return link sits on TA-07w; A33 asks for no notices read; SA-02d links from the row's pending reason; deferral decisions carry no expected revision, a state-based refusal is not CMP-14, and competing extensions can both succeed |
+| §0.3, §0.4, §3, §5, A89 to A95, A155 to A158 (new) | **O-12** (R-12); design §6; Q-W17-06 | One recipe: the design's V19G steps with a fresh travel agent per run and lettered additions; isolated fixtures for each V19 exclusion (possible filing, held original, pending delivery, outstanding money) with UI assertions; no waiver of V19's exclusions or of the live end; the intake test cited by its assertion |
+| §1.2, A159 to A164 (new), §5, §6 | **O-13** (R-13); P-21 items 2, 3b | Items for the admin end-deferral surface on SA-04a (no Core change); the Kind 2 and policy items recorded "Unmet" pending P-21 |
+| Page ids, paths, hosts and words everywhere | Design §1.3, §1.5, §2.0 to §2.15 (T1 to T9) | TA-05c, TA-07d, TA-07w, TA-07c, OP-02f, OP-02d, OP-02e, OP-02w, SA-09d kinds `deferral_approve`, `deferral_decline`, `deferral_extend`, SA-09p, SA-09w, SA-04g; the recheck in place on OP-02 and SA-04a; receipts on the task pages; "Ended with the group (not an outcome)"; the T1 to T9 word tables |
+| A02, A05, A06, A09, A14 to A16, A21, A23, A25, A29, A30, A37, A38, A41, A45, A48, A56 to A61, A63, A67, A75, A77, A83, A84, A89 to A93, A108 | Design §2.1 to §2.14 | The design's anatomy, states, refusal sentences and words |
+| §6 lead; Q-18 (new) | `WP-17.md` §3, §4.1; P-21 dispositions | Answers named; Q-18 asks for the writes of the lettered additions |
 
 ## Lessons applied from the WP-01 to WP-16 corrections
 
 | Lesson | Source | Where this checklist applies it |
 |---|---|---|
-| Identical replay, changed-content conflict, browser Back, rejected-form refresh and lost acknowledgement are five separate cases; a business duplicate with a new key and a raw stale envelope are two more | WP-01 A-02, A-03, A-06; WP-03 R-12; WP-06 D-12 | §0.2 "Replay terms"; one "Nth time" item per host (A04, A15, A25, A42, A49, A53, A58, A78, A86); the matrix A110 |
-| A replay step MUST NOT change the state that later steps observe | WP-16 M-07 | §3 G-2, W-1, F-1, D-6 (each replay sends the accepted content again) |
+| Identical replay, changed-content conflict, browser Back, rejected-form refresh and lost acknowledgement are five separate cases; a business duplicate with a new key and a raw stale envelope are two more | WP-01 A-02, A-03, A-06; WP-03 R-12; WP-06 D-12 | §0.2 "Replay terms"; one "Nth time" item per host (A04, A15, A25, A42, A49, A53, A58, A78, A86, A160); the matrix A110 |
+| An unchanged saved envelope reaches the revision check first; a duplicate guard is tested with a fresh revision | WP-17 O-10 | A04, A18, A51, A79 |
+| A replay step MUST NOT change the state that later steps observe | WP-16 M-07 | §3 V19G-3a, V19G-7a, V19G-10f, V19G-10n (each replay sends the accepted content again) |
 | A refused command leaves no operation record; the refusal shows only on the re-rendered form | WP-01 A-08; WP06-A104 | §0.2 "Refused sends"; every refusal item checks by delta |
-| A BFF refusal sends no command; it is tested apart from a direct Core contract test | WP-16 M-06 | A20, A43, A48, A60, A72, A76, A88, A111 |
-| A receipt names the command only when the operation's resource, returned id and summary (or a record selected by a returned id) establish it; otherwise "Request recorded"; no accepted time; no result from the address | WP-01 A-04, P-02; WP-03 C-03 and code review R-03; WP-06 D-02; WP-13 L-05; WP-14 K-07 | §0.2 "Receipts" (the per-command table); A03, A49, A78, A97, A105 |
+| A BFF refusal sends no command; it is tested apart from a direct Core contract test | WP-16 M-06 | A11, A20, A43, A48, A60, A72, A76, A88, A111, A152 |
+| A receipt names the command only when the operation's resource, returned id and summary (or a record selected by a returned id) establish it; otherwise "Request recorded"; an unchecked receipt is neutral; no accepted time; no result from the address | WP-01 A-04, P-02; WP-03 C-03; WP-06 D-02; WP-14 K-07; WP-17 O-08 | §0.2 "Receipts"; A03, A49, A53, A68, A78, A97, A105, A160 |
 | An accepted command whose recorded result is not the requested effect never shows as a success | WP-15 (class of WP-01 A-04, A-07) | A16, A58, A59, A86 (a refused withdrawal assessment); A63 (a recheck whose rules could not answer) |
-| Recorded facts in a receipt come only from stored summary fields and records selected by its ids; later facts are "Current"; another person's receipt opens unchecked | WP-12 J-08, J-09 | §0.2 "Receipts"; A24, A105 |
+| A page asserts only what a read returns after the event; a missing record is "not currently open", never an invented history | WP-17 O-05 | A46, A53, A54, A71, A162 |
+| A word for a hold never implies that it ends by itself | WP-17 O-06 | §0.2 "Words"; A33, A47, A53, A67, A73 |
+| A notice's acknowledgement is asserted from its recorded flag, never promised | WP-17 O-07 | A32, A42 |
 | No page, status read or receipt instructs anyone to perform an act | WP-07 F-01, F-33 (P0 class fix) | A15, A58, A106 |
-| Money facts stay separate; no page adds them unless Core returns the sum; no page computes an amount "due"; unknown is never zero | WP-07 §0.2 "Money"; WP-16 Q-W16-01 | §0.2 "Money"; A22 to A24, A28, A75 |
-| A value that a read returns is not shown where its presentation misleads its audience; the truthful fact stays where it is explained | WP-16 M-01, M-02 | A12, A37, A38 (progress words of ended and withdrawn applications) |
-| A page shows only facts that a named read returns; each additional read is named; a fact no read returns is qualified or the item is "Partly met" | WP-02 B-06; WP-14 K-14; WP-16 M-03 | §0.1 "Facts no read returns"; §0.2 "Facts"; A23, A32, A33, A44, A60, A78, A86, A91 |
-| A page MUST NOT block a command that Core accepts and MUST NOT offer a choice that Core always refuses | WP-07 D-W07-16; WP-10 H-02, H-03 | A13 (§6 Q-13), A28, A71, A80 (the price cause Core always refuses) |
+| Money facts stay separate; no page adds them unless Core returns the sum; no page computes an amount "due"; amounts in a test use the unit of the field | WP-07 §0.2 "Money"; WP-16 Q-W16-01; WP-17 O-02 | §0.2 "Money"; A22 to A24, A28, A75, A76 |
+| A choice is named by the fact it keeps, never by an earlier value it may not keep | WP-17 O-03 | A23, A24, A29, A30, A154 |
+| A value that a read returns is not shown where its presentation misleads its audience | WP-16 M-01, M-02 | A06, A12, A37, A38 (words of ended and withdrawn applications) |
+| A page shows only facts that a named read returns; a fact no read returns is qualified, "Partly met" or "Unmet" | WP-02 B-06; WP-14 K-14; WP-16 M-03 | §0.1 "Facts no read returns"; A23, A32, A33, A34, A44, A60, A78, A86, A91, A165 |
+| A page MUST NOT block a command that Core accepts and MUST NOT offer a choice that Core always refuses | WP-07 D-W07-16; WP-10 H-02, H-03 | A13, A28, A71, A80 |
 | A request that Core refuses is shown as Core answers it; the page does not change the input to force acceptance | WP-06 D-09 | A76, A77 |
 | On GET assert the blocker and the absence of the form; a refusal of a removed form is tested with a saved envelope | WP-09 G-05 | A18, A51, A52, A54, A79, A81 |
-| No semantic duplicate guard is claimed where Core has none; existing records show before the form | WP-08 Q-W08-15; WP-09 G-03 | A16 (a second withdrawal request after a refused one), A44 (a second forecast), A110 (6) |
-| The refusal summary and the submitted values render independently of current eligibility; an unsent block keeps values when the form no longer applies | WP-02 code review R-01, R-03 | A26, A29, A69 |
-| A stale comparison shows the unsent value and the current value; it never invents what the person saw before | WP-16 M-09 | A26, A69 |
+| No semantic duplicate guard is claimed where Core has none | WP-08 Q-W08-15; WP-09 G-03 | A16, A44, A70, A110 (6) |
+| The refusal summary and the submitted values render independently of current eligibility; an unsent block keeps values when the form no longer applies | WP-02 code review R-01, R-03 | A18, A26, A29, A54, A69 |
+| A stale comparison shows the unsent value and the current value; a state-based refusal is not a stale comparison | WP-16 M-09; WP-17 O-11 | A26, A69 |
 | Revisions are asserted as advanced on a fresh read, never by a fixed increment | WP-16 M-12 | A03, A68 |
-| No BFF handler truncates, slices or drops a field; the largest valid form reaches Core over real HTTP | LD-17; WP-14 K-10; WP-16 PM Q-14 | §0.1 "BFF today"; A20, A72, A111, A112 |
-| Optional reads never hide an access change | LD-14 | A33, A113 |
-| An outage of the evidence that a consequential form needs removes the form with a notice; optional information degrades | WP-07 F-04; WP-10 H-05; WP-14 K-02 | A10, A93, A113 |
-| A list at its read's cap says so; no total, "none" or all-clear beyond the returned slice | WP-08 E-10; WP-14 K-05 | A10, A93 |
+| No BFF handler truncates, slices or drops a field; the largest valid form reaches Core over real HTTP | LD-17; WP-16 PM Q-14; WP-17 O-09 | §0.1 "BFF today"; A20, A54, A72, A111, A112 |
+| An irreversible effect from a typing error needs a review and an exact acknowledgement before the send | WP-17 O-01 | A11, A152 |
+| Optional reads never hide an access change | LD-14 | A10, A113 |
+| A list at its read's cap says so; no total, "none" or all-clear beyond the returned slice | WP-08 E-10; WP-14 K-05 | A01, A10, A93 |
 | A state is labelled for the fact it establishes | WP-06 D-05; WP-14 K-11 | §0.2 "Words"; A06, A12, A37, A91 |
-| A boundary names its owner and route; an action that does not exist gets no notice; a parked policy names the product owner and no date | LD-04; WP-08 Q-W08-03; WP-16 design §2.0 | A21, A28, A75, A80, A83 |
+| A boundary names its owner and route; an action that does not exist gets no notice | LD-04; WP-08 Q-W08-03; WP-16 design §2.0 | A21, A28, A75, A80, A83 |
 | Audit facts show only as fields recorded on that subject, with time and source | WP-11 I-10; WP-14 K-14 | A70, A107 |
-| UI acceptance is separate from Core behaviour: a Core gap is recorded "Unmet" or "Partly met" with its owner | WP-10 H-01; WP-14 K-01; WP-16 A15 | §0.2 "Pass rule"; A36, A80 |
-| Proofs follow one ordered recipe with a run tag, a fresh synthetic travel agent and deltas; set-up writes are labelled | WP-02 B-13; WP-14 K-13; WP-16 M-08 | §0.4; §3 |
+| UI acceptance is separate from Core behaviour: a Core gap is recorded "Unmet" or "Partly met" with its owner | WP-10 H-01; WP-14 K-01; WP-16 A15 | §0.2 "Pass rule"; A36, A80, A153, A163 to A165 |
+| A scenario's defining states are proven by isolated fixtures with UI assertions; no general deferral waives them | WP-17 O-12 | A155 to A158; §3 proof split |
+| Proofs follow one ordered recipe (the design's, with a fresh travel agent per run and lettered additions), with a run tag and deltas; set-up writes are labelled | WP-02 B-13; WP-14 K-13; WP-16 M-08; WP-17 O-12 | §0.4; §3 |
 | Real refusal shapes from the code | WP-06 D-11; WP-10 H-07 | §0.5 |
-| One host page per command use; every rendered form action is a registered route; carried test entries leave | CC-12 to CC-20 | A102, A103 |
+| One host page per command use; every rendered form action is a registered route; carried test entries leave | CC-12 to CC-21 | A102, A103 |
 | A support view shows no target-user action; admin pages answer the support-view page | WP-03 code review R-05; WP14-A89 | A114 |
-| Conditions that `lane-ui` cannot show are proven by named tests | WP-01 P-W01 | §3 steps T-*, §5 "Deferred" |
 | Copy states no configuration value that the page does not read, and no package or record id | WP-01 Q-13; WP-07 F-22 | A09, A90, A108 |
 | Kind 1 notes record whether criterion point 2 is demonstrated | WP-09 G-11; WP-16 M-11 | §6 Q-06 to Q-09 |
 
@@ -62,352 +94,302 @@ None yet. This is the first version. The alignment to the WP-17 design, to the a
 
 | Ref | Source | Identity | Sections used |
 |---|---|---|---|
-| UX | `TARGET_PRODUCT_UX_SPEC.md` (2026-10-05) | SHA-256 b45186887cdc37f6… | §2.1 (Group; Incident/follow-up), §2.2 (lifecycle, outcome, next action, deferral line), §2.3, §3.1 (estimate and forecast), §3.2 (Group end; Completed case with continuing duty; Unknown external execution), §3.3, §4.1 to §4.4 (Groups; travel-date edit; corrections and pricing; timing alert), §5.3 (manual filing: "removes … ordinary withdrawal options"), §6.1 to §6.3 (Exception; Manual money record), §7.4, §7.5, §8.3, §12 V19 |
-| BS | `BUILD_SPEC.md` (r2) | SHA-256 4a6fd90657b0723f… | B14 to B17 (group context, attempts, submission and price, timing notice), B21 (deferral), B23 (no ordinary withdrawal while filing may have occurred), B24 (withdrawal), B25 (group end), B26, B29, B33, B35; B18 (price, withdrawal wait for a formal return), B44 (no generic cancellation) |
-| PL | `../ui-plan-from-specs-2026-10-10/UI-PLAN.md` | SHA-256 75256bfd7e6d929a… | §A (AD-06, AD-13), §3.2 TA-05, TA-07, §3.3 OP-02, §3.4 SA-02, SA-04, SA-09, §4.2 (Group end; Completed case with continuing duty), §5.2 TA-04/TA-05, TA-07, §5.3 OP-02, §5.4 SA-02, SA-04, SA-09, §6 (Group detail, Application case), §7 (K-STD rows), §8 (CMP-01, -03, -07, -08, -09, -10, -12, -13, -14, -16, -24, -25), §10, §11, §12.2 WP-17 |
-| DE | `../ui-plan-from-specs-2026-10-10/DECISIONS-2026-10-10.md` | SHA-256 a2c935f72cd4f5e9… | §3.1 (criterion point 2) |
-| CC | `COMMAND-COVERAGE.md` (this folder) | SHA-256 0cab0de1f44eca96… | §3 rows of the 13 WP-17 commands; §5.1; §5.3; §5.4; §6 CC-02, CC-04, CC-06, CC-15; §6.1 |
-| LP | `PLAN.md` (this folder) | SHA-256 8cb2774a01597f50… | §3, §4 (LD-02 to LD-04, LD-07, LD-08, LD-11 to LD-14, LD-17), §7, §9 |
-| PR | `PROPOSALS.md` | SHA-256 0547640ae48459e7… | P-02, P-09, P-17 item 3 |
-| W3 | `WP-03.md`; `WP-03-acceptance.md` | SHA-256 c6f00aaa4e7c5562…; 13ad0770af3f6c42… | Q-W03-08, Q-W03-09; §6 (U1 close test, U4 "Being checked"); WP03-A18 to A22 (TA-13b), A23, A30 to A32 (TA-05), A95, A102, A105 (TA-07 timing), A106 (carried forms) |
-| W6 | `WP-06.md`; `WP-06-design.md` | SHA-256 f116d1e60cbed1af… | D-02, D-05, D-09, D-12; design §2.2.4 (SA-02d), §2.1 group 6, §2.7.5 (SA-09 kinds `deferral`, `price_increase`, `operational_withdrawal`); WP06-A20, A110 |
-| W7 | `WP-07.md`; `WP-07-design.md` | SHA-256 eb7ecefe91d4e083… | F-01, F-05, F-07, F-09, F-33; design §1.5 (carried WP-17 sections of OP-02), §2.4.6 (D-W07-15); WP07-A37, A66, A165 |
-| W9 | `WP-09.md` | SHA-256 97074922067b5db7… | Q-W09-10 (`purpose=withdraw` on TA-07p); WP09-A08 |
-| W11 | `WP-11.md`; `WP-11-design.md` | SHA-256 ac694c837c9c2ac2… | CC-15; I-06; STOP-W11-03; design §1.5 (carried WP-17 forms on SA-04a), §2.1 action panel rows 6 and 8; WP11-A50 |
-| W13 | `WP-13.md` | SHA-256 412ff9e096446a8d… | Offering withdrawal versus application withdrawal (words); L-04 |
-| W16 | `WP-16.md`; `WP-16-acceptance.md` | SHA-256 523e76257e9bce70…; 659081969aceefd9… | AM-W16-05; STOP-W16-06; M-01 to M-12; Q-W16-08; WP16-A07, A110; §3 V19 split |
-| W8–W15 | `WP-08.md` to `WP-15.md` §3 and §4 | internal 3283bd2 | Neutral receipts; one host page per command; LD-14; LD-17; J-08, J-09; K-05, K-11, K-14; TA-10 notices and acknowledgement (WP-08 Q-W08-02); SA-08s (WP-14) |
+| UX | `TARGET_PRODUCT_UX_SPEC.md` (2026-10-05) | SHA-256 b45186887cdc37f6… | §2.1, §2.2 (deferral line; next action), §2.3, §3.1, §3.2 (Group end; Completed case with continuing duty; Unknown external execution), §3.3, §4.1 to §4.4, §5.3, §6.1 to §6.3, §7.4, §7.5, §8.3, §12 V19 |
+| BS | `BUILD_SPEC.md` (r2) | SHA-256 4a6fd90657b0723f… | B06, B14 to B17, B18, B21, B23, B24, B25, B26, B29, B33, B35, B44 |
+| PL | `../ui-plan-from-specs-2026-10-10/UI-PLAN.md` | SHA-256 75256bfd7e6d929a… | §A (AD-06, AD-13), §3.2 TA-05, TA-07, §3.3 OP-02, §3.4 SA-02, SA-04, SA-09, §4.2, §5.2 to §5.4, §6, §7, §8, §10, §11, §12.2 WP-17 |
+| DE | `../ui-plan-from-specs-2026-10-10/DECISIONS-2026-10-10.md` | SHA-256 a2c935f72cd4f5e9… | §3.1 (criterion point 2), §3.2 |
+| W17 | `WP-17-design.md`; `WP-17.md`; lane `research/reviews/WP-17-design-review.md` | SHA-256 eb14f3d6d6b48776…; 6d58fb1321c59794…; ef85dc80b9e6ecad… | design §0 to §9 (§1.2 Core facts, §1.3 pages, §1.5 commands, §1.6 forms that leave, §1.8 amendments, §2.0 to §2.15, §3 interims, §4 hostile states, §6 proof, §7 units and tests, §9 findings, questions, deviations, STOP items); record §3 (Q-W17-01 to -09, PM Q-01 to -03), §4.1 (O-01 to O-13); review R-01 to R-13 |
+| AM | `WP-06.md` §4.8 (D-23); `WP-07.md` §4.12 (F-39); `WP-08.md` §4.10 (E-30); `WP-09.md` §4.2 (G-12); `WP-11.md` §4.6 (I-17) | SHA-256 879fb2ad057f1d59…; 2024be9a4ab63838…; 3cad004c02b69eff…; 8f97ddb3f9826391…; 635116c36360fbac… | The amendments, with O-06's words |
+| PR | `PROPOSALS.md`; lane `output/proposals/P-21-wp17-timing-withdrawal.md` | SHA-256 1ef7bd9a4eb98a85…; cb923fff269d1e1b… | P-21 items 1 to 4 and the orchestrator's disposition (internal 1c98aaf); P-02; P-17 item 3 |
+| CC | `COMMAND-COVERAGE.md` | SHA-256 8dd78a291b0ea06b… | §3 rows of the 13 WP-17 commands; §6 CC-02, CC-04, CC-06, CC-15, CC-21 |
+| LP | `PLAN.md` | SHA-256 8cb2774a01597f50… | §3, §4 (LD-02 to LD-04, LD-07, LD-08, LD-11 to LD-14, LD-17), §7, §9 |
+| W3 | `WP-03.md`; `WP-03-acceptance.md` | SHA-256 c6f00aaa4e7c5562…; 13ad0770af3f6c42… | Q-W03-09; WP03-A18 to A23, A30 to A32, A95, A102, A105, A106 |
+| W6, W7, W9, W11, W13, W16 | `WP-06.md`, `WP-07.md`, `WP-09.md`, `WP-11.md`, `WP-13.md`, `WP-16.md` and their checklists | internal 1c98aaf | D-02, D-05, D-09, D-12, WP06-A20, A110; F-01, F-05, F-07, F-09, F-33, D-W07-15, WP07-A37, A66, A165; Q-W09-10, WP09-A08; CC-15, I-06, STOP-W11-03, WP11-A50; WP-13 words; AM-W16-05, STOP-W16-06, Q-W16-08, WP16-A07, A110 |
 | W14A, W16A | `WP-14-acceptance.md`; `WP-16-acceptance.md` | SHA-256 341d2c25c392b88d…; 659081969aceefd9… | Format, corrections tables, lessons, §0.5 |
-| Code | lane repository | b2a6341 | `src/modules/core/commands/{groups,withdrawal,submission,drafts,common}.ts`; `src/modules/core/{tasks,travel-recheck,derived,controls,staff-views,model,store}.ts`; `src/modules/payments/writers.ts` (`outstandingMoney`); `src/modules/identity/policy.ts` (rows 148 to 219); `src/contracts/core.ts` (commands, `zWireTaCase`, `zWireStaffCase`, `core.ta_group`, `core.admin_group`, `core.admin_queue`, `core.ops_work`); `src/contracts/delivery.ts` (`dlv.notices`); `src/core-api/bindings/core.ts` (lines 437 to 520); `src/apps/edge/core/{group-routes,routes}.ts`; `src/apps/staff/core/{ops,admin}.ts`; `src/apps/shared/core/ta.ts`; `src/apps/shared/pages/groups.ts`; `src/web/route-inventory.ts` (T07, T08, T34, T35, T48, T61, O23, O24, O42, O43, O60, D07, D22, D24, D30, D101, D128); `src/platform/config.ts` (`core.dateCheckEveryMs`, `sweepPageSize`); tests `test/core/{completion-group-end,groups-drafts,withdrawal-dependencies,submission-price,acts}.test.ts`, `test/system/core-pages.test.ts` |
+| Code | lane repository | b2a6341 | As the first version: `src/modules/core/commands/{groups,withdrawal,submission,drafts,common}.ts`; `src/modules/core/{tasks,travel-recheck,derived,controls,staff-views,model,store}.ts`; `src/modules/payments/writers.ts` (`outstandingMoney`); `src/modules/identity/policy.ts`; `src/contracts/core.ts`; `src/contracts/delivery.ts`; `src/core-api/bindings/core.ts`; `src/core-api/allowlists.ts`; `src/apps/edge/core/{group-routes,routes}.ts`; `src/apps/staff/core/{ops,admin}.ts`; `src/apps/shared/core/ta.ts`; `src/apps/shared/pages/groups.ts`; `src/web/route-inventory.ts`; `src/platform/config.ts`; tests `test/core/{completion-group-end,groups-drafts,withdrawal-dependencies,submission-price,acts}.test.ts`, `test/system/core-pages.test.ts` |
 
-Verified facts of the code at b2a6341 that the items rely on (read by the author):
+Verified facts of the code at b2a6341 that the items rely on (read by the author; the design §1.2 and the review agree
+unless stated):
 
-- **`core.close_group`** (travel agent of the group; policy `group.close`). Input `groupId`; the group revision comes
-  from the envelope (`_rev.group`). Order: revision (`stale_revision`); state open (`group_closed`); then the open
-  conditions: applications in `draft` or `submitted`, open intake incidents, active import attempts. A refusal is
-  `control_blocked` with the first code and a `blockers` list that names every code that applies. Accepted: state
-  `closed`, `closed_kind = ordinary`, fact `core.group_closed`; summary `{groupId}` (the same shape as
-  `core.create_group`). A withdrawn application keeps its lifecycle (`draft` or `submitted`) and so holds ordinary
-  closure until it ends with the group (B25). Completion runs only in tests (LD-04). An accepted live closure needs a
-  group with no application, or one whose applications all ended.
-- **`core.edit_travel_dates`** (WP-03, TA-13b). Core checks "return on or after start" and "unchanged". It does not
-  compare the dates with today (`core.create_group` refuses a start before today). TA-13b sets no minimum date. Effect:
-  the material revision of every open application advances (its readiness goes stale); the fact records
-  `openApplications`; the task `core.travel_date_recheck` rechecks each open application. Summary `{groupId,
-  datesRevision}`. No read previews the affected applications.
-- **`core.recheck_travel_dates`** (assigned operator or SuperAdmin, routes O60 and D128). Refusals
-  `application_not_open`, `travel_date_recheck_not_pending` (the current dates are checked). Accepted summary
-  `{applicationId, result, retryAt}`: `rechecked`, `travel_rule_unknown` (stays pending; a failed country check reruns by
-  itself at most 5 times), `historical_or_held`. The staff case read carries `travelRecheck {answer: not_run |
-  travel_rule_unknown, codes, retryAt}` while a recheck is pending. Pending answer `travel_date_recheck_pending` /
-  `run_travel_recheck`, owner the assigned operator, else a SuperAdmin.
-- **Group end** (`tasks.ts` `core.group_end_sweep`, `derived.ts` `groupEndEligibility`). A periodic job (interval
-  `core.dateCheckEveryMs`, default 60 minutes) enqueues one sweep a day per open group whose return date is strictly
-  before today (Asia/Kolkata); nothing runs while the clock check fails. Reasons that hold an application open:
-  `application_not_open`, `group_end_pending`, `service_payment_received`, `operator_work_authorized` (set at
-  assignment), `filing_possibly_occurred` (any act), `original_held`, `custody_evidence_missing`, `delivery_pending`,
-  `money_outstanding`, `protection_mark_active`. An eligible application gets lifecycle `ended_with_group` (completion
-  kind `ended_with_group`, actor the task); an open price increase is superseded. The group closes (`closed_kind =
-  group_end`) when nothing is open and intake holds nothing. No command reverses either. `core.admin_group`
-  (SuperAdmin, `/admin/groups/:groupId`): group, `today`, `clockHealthy`, items (at most 500) with `eligible` and
-  `reasons`. The wire item has no lifecycle (the internal view has one), so a completed and an ended application both
-  read `application_not_open`. The codes behind `money_outstanding` are not on the read (STOP-W16-06).
-- **Withdrawal** (`commands/withdrawal.ts`): three commands, one assessment. Eligibility refusals record nothing:
-  the travel agent's path first `awaiting_formal_return` (assigned) and `hold_assistance_in_progress`; then, for all
-  three, `application_not_open`, `outcome_already_recorded`, `protection_mark_active`. The applicant and operational
-  paths need business evidence (through the wire: one external reference; a blank reference sends none and fails the
-  input check). The operational path needs a reason of 10 to 1,000 characters. Then Core records the request either
-  way, with an assessment: `refused` with `filing_possibly_occurred` (an act possibly filed), `withdrawal_cutoff_passed`
-  or `declared_cutoff_passed` (filing evidenced), `withdrawal_cutoff_undeclared` (preparation-only, or the offering's
-  cut-off is undeclared or unsupported in this release); otherwise `accepted` (a draft is always accepted). Accepted:
-  outcome `withdrawn`, an open price increase superseded, a notice `generic_case_update` to the assigned operator. Both
-  results: a `withdrawal_decision` notice to the travel agent. The lifecycle does not change. Summary `{applicationId,
-  withdrawalId, result, code?}`. The TA case read carries `withdrawal {state, reason_code}` and `withdrawalPreview
-  {result, code}` (Core's assessment at read time). The staff case read carries neither.
-- **Deferral.** Propose (assigned operator): justification 20 to 2,000 characters, review date after today, lifecycle
-  `submitted`, no outcome, no act `authorized` or `filing_unknown`, no open (proposed or approved) deferral
-  (`conflict_duplicate` / `deferral_active`). Decide (SuperAdmin): `approve`, `decline` or `extend`; reason 10 to
-  1,000; review date optional (default: the proposed date); no expected revision: an approve or decline of a deferral
-  that is not `proposed`, or an extend of one that is not `approved`, is `stale_revision`; a review date not after
-  today is `date_invalid` at `reviewOn`. Approve and extend: the application revision advances, a `deferral` notice
-  with the review date goes to the travel agent, a review task waits for 00:00 IST of the review date. Decline: no
-  notice. Core does not check that the application is still open. End (assigned operator, route O43; the SuperAdmin
-  policy row has no route): note 1 to 1,000; only an `approved` deferral (else `stale_revision`); a
-  `generic_case_update` notice `deferral_ended` to the travel agent. Review due: notices to the assigned operator and
-  the approver; `core.ops_work.reviewsDue`; SA-01 `deferralReviewsDue`. An approved deferral blocks readiness, the
-  authorization of every external act and the packet release, and nothing else. A proposed one blocks nothing. All
-  three return `{applicationId, deferralId}`. The staff case read carries `deferral {deferral_id, state, justification,
-  proposed_review_on, review_on}` (no proposer, approver, decision reason or due flag). The TA case read carries no
-  deferral; the travel agent's `deferral` notice carries the review date. `core.admin_queue {deferrals}` returns
-  application rows only.
-- **Price.** Propose (SuperAdmin): cause `mistaken_price` or `material_scope_change`; new price in paise; reason 10 to
-  1,000; lifecycle `submitted`; no outcome. `material_scope_change` needs an applied correction id: the wire contract and
-  the binding carry no `correctionId` (and no evidence), so Core refuses that cause every time. One open increase at a
-  time (`price_increase_open`); the new price must be higher (`not_higher`). Core does not check the service payment.
-  Effect: a price record `open`, a `price_change` notice that needs acknowledgement, the application revision advances.
-  Summary `{applicationId}` only. Decide (travel agent): `accept` or `decline`; the record is looked up first, then the
-  revision, the outcome, the lifecycle, an accepted withdrawal, the editor state (`awaiting_formal_return` while assigned
-  or while assistance is in progress), then the record must be an open increase. Accept takes the proposed amount;
-  decline keeps the price in effect (B17). Summary `{applicationId, priceRecordId}` (`core.submit` returns
-  `priceRecordId` together with `submissionId`). Pending answer: unassigned → travel agent `price_decision_pending` /
-  `decide_price_increase`; assigned → operator `price_decision_awaits_return` / `return_to_ta`. TA case read: `prices`
-  (kind, cause, state, amount, effective and previous price; no reason), `currentPricePaise`, `submission.
-  quoted_price_paise`, `servicePayment`. Staff case read: `price {effectivePricePaise, openIncrease}` (the record id
-  only).
-- **Forecast** (assigned operator, route O42; the SuperAdmin policy row has no route). Window start on or after the
-  submission date, end on or after start (`forecast_window_invalid` at `windowStart`); basis `operator_judgement`,
-  `authority_notice` or `external_delay`; note up to 500; lifecycle `submitted`; no outcome; no expected revision (a later
-  forecast becomes current; earlier ones stay as history). A timing check posts a `timing_risk` notice to the travel
-  agent once per window and dates revision: `threatened` when the expected end is on or after the travel start,
-  `elapsed` after the expected end. Summary `{applicationId, forecastId}`. TA and staff case reads: `timing
-  {estimate, forecast}` (dates only: no basis, note or time).
-- **Held correction** (`core.apply_held_correction`, travel agent route T48 only; no staff route, STOP-W11-03, P-17
-  item 3). Core: the correction belongs to the application; revision; state `released_for_reapply`; the role matches
-  the correction's kind; the `correct_application` controls; the editor state; the changed values are still the ones the
-  correction was made against (`held_correction_conflict`); same-person evidence for identity fields; the stage is not
-  held again (`filing_possibly_occurred`). Summary `{applicationId, correctionId}`. TA case read: `released
-  [{correction_id, fields}]`. A released correction exists only after an act was authorized, a correction was held and
-  evidence of non-filing was recorded: `lane-ui` cannot show it inside the approved writes.
-- **Progress** (`model.ts` `deriveProgress`): Core derives "completed" for `ended_with_group` as for `completed`, and
-  "delivery_closure_pending" for an open application with any outcome (for example a withdrawn application waiting for
-  its group end).
-- **BFF today** (replaced by WP-17): TA-07 carries withdrawal, price decision and re-application as disclosures with
-  flashes; TA-05 carries "Close the group" (answer `?done=closed`); OP-02 carries forecast, deferral, end, recheck
-  and the applicant withdrawal (WP-07 §1.5, relabelled under possible filing by D-W07-15); SA-04a carries the price
-  increase, the operational withdrawal, the deferral decision and the recheck (WP-11 CC-15). Handlers slice fields:
-  forecast `basisCode` (40); deferral decision `decision` (20) and `reviewOn` (10); price increase `cause` (40) and
-  `newPricePaise` (24) (LD-17). Body limits: 4,096 bytes (deferral decision, price increase, operational withdrawal,
-  recheck, close, re-application), 8,192 (forecast, deferral proposal, deferral end, applicant withdrawal), 16,384
-  (travel agent's withdrawal, price decision). One Devanagari character takes 9 bytes after form encoding, so the
-  largest valid reason (1,000 characters), justification or note (2,000) does not fit seven of these forms.
-- **Facts no read returns** (each item that needs one is "Partly met" with §6): the review date of a deferral on the
-  TA case read (only on the travel agent's notice); the SuperAdmin's reason for a price increase on the TA read; the
-  proposed amount on the staff read; the basis, note and time of a forecast on any case read; a withdrawal record or
-  preview on the staff read; the lifecycle of an application on the SuperAdmin group-end read.
+- **`core.close_group`** (the owning travel agent). Input `groupId`; `_rev.group`. Order: revision; `group_closed`;
+  then every open condition together (`group_has_open_applications`, `group_intake_incidents_open`,
+  `attempt_in_progress`), the first as the error code and all in `blockers`. Accepted: `closed_kind = ordinary`; summary
+  `{groupId}` (as `core.create_group`). A withdrawn application keeps its lifecycle and holds closure until it ends.
+- **`core.edit_travel_dates`** (WP-03, TA-13b). Core checks "return on or after start" and "unchanged" only; it does
+  not compare the dates with today (P-21 item 1: a Core defect in the Core batch). The lane's interim (O-01): a browser
+  minimum and a BFF-only acknowledgement of the exact past dates after a review; the acknowledgement is never sent to
+  Core. Effect: every open application's material revision advances; a recheck task runs; summary `{groupId,
+  datesRevision}`.
+- **`core.recheck_travel_dates`** (assigned operator or SuperAdmin; routes O60, D128). Refusals `application_not_open`,
+  `travel_date_recheck_not_pending`. Summary `{applicationId, result, retryAt}`. Staff case read `travelRecheck` while a
+  recheck is pending.
+- **Group end.** A periodic job (`core.dateCheckEveryMs`, default 60 minutes) enqueues one sweep a day per open group
+  whose return date is before today (IST), never while the clock check fails. Reasons that hold an application open:
+  `application_not_open`, `group_end_pending`, `service_payment_received`, `operator_work_authorized`,
+  `filing_possibly_occurred` (any authorization), `original_held`, `custody_evidence_missing`, `delivery_pending`,
+  `money_outstanding`, `protection_mark_active`. Intake work holds only the group closure, not the ending of
+  applications. `core.admin_group` items carry no lifecycle.
+- **Withdrawal.** Eligibility refusals record nothing (TA: `awaiting_formal_return`, `hold_assistance_in_progress`
+  first; all: `application_not_open`, `outcome_already_recorded`, `protection_mark_active`; a blank reference fails the
+  contract at field `evidence`). Otherwise Core records the request with an assessment (`accepted`; or `refused` with
+  `filing_possibly_occurred`, `withdrawal_cutoff_passed`, `declared_cutoff_passed`, `withdrawal_cutoff_undeclared`).
+  Every path advances the application revision. The TA read carries `withdrawal` and `withdrawalPreview`; the staff
+  read carries neither.
+- **Deferral.** Propose (assigned operator; revision; guards as §0.5). Decide (SuperAdmin; **no expected revision**;
+  approve and decline need `proposed`, extend needs `approved`, else `stale_revision`; two extensions of one approved
+  deferral both succeed, the later date stands). End (policy: assigned operator or SuperAdmin; the binding and the staff
+  allowlist exist; today only the operator route O43; WP-17 adds the admin surface on SA-04a, O-13). An approved
+  deferral holds readiness, authorization of external acts and packet release **until it is ended**; nothing ends it
+  by itself, also not an outcome (P-21 item 3b parked). The staff read returns only an open (proposed or approved)
+  deferral (`openDeferral`): an ended or declined deferral leaves the read (O-05). All three commands return
+  `{applicationId, deferralId}`. The travel agent's `deferral` notice carries the review date; the TA case read carries
+  no deferral.
+- **Price.** Propose (SuperAdmin; field `newPricePaise` in paise; cause `mistaken_price` only through the wire, P-21
+  item 3a; one open increase; higher than the price in effect; no payment check, P-21 item 2). Decide (travel agent;
+  accept takes the proposed amount; **decline keeps the current price in effect**, also a reduction applied while the
+  increase was open, O-03). Summaries `{applicationId}` and `{applicationId, priceRecordId}`.
+- **Forecast** (assigned operator; route O42). No expected revision. The timing check posts a `timing_risk` notice
+  with **`ackRequired: false`** (O-07). Summary `{applicationId, forecastId}`. No read returns the basis.
+- **Held correction** (TA route T48 only). `held_correction_conflict` has category `stale_revision` (O-04). No read
+  returns the held values (P-21 item 4).
+- **BFF today** (replaced by WP-17): the carried forms on TA-05, TA-07, OP-02 and SA-04a; six field slices (LD-17);
+  results from `?done=` flashes; body limits of 4,096, 8,192 and 16,384 bytes, below the largest valid Devanagari input
+  on seven routes, among them OP-02e (O-09).
+- **Facts no read returns** (each item that needs one is "Partly met" or "Unmet" with §6): the deferral review date on
+  the TA case read (the notice holds it, STOP-W17-01); the SuperAdmin's reason on the TA read; the proposed amount on
+  the staff read; the forecast basis on any read (P-21 item 4); the held-correction values (P-21 item 4); a withdrawal
+  record on the staff read; the lifecycle on the group-end read; an ended or declined deferral on the staff read.
 
 ### 0.2 Conventions
 
 - **Personas.** Travel agent: Y, `wp17-ta-[stamp]`, a fresh synthetic travel agent per run (created and activated by
-  SA1 on SA-06). `syn-ta-2` for isolation only. SuperAdmins: `superadmin-1` (SA1: set-up, the price increase, the
-  operational withdrawal, the losing tab of the deferral decision), `superadmin-2` (SA2: approves and extends the
-  deferral). Operators: `operator-1` (OP1: the assigned operator of C), `operator-2` (OP2: isolation; never assigned).
-  They stand for `syn-superadmin-1`, `-2` and `syn-operator-1`, `-2`. Keyboard-only user. Screen-reader user. Phone
-  user (390 px wide). No step suspends a seeded account or changes a seeded offering.
+  SA1 on SA-06; O-12). `syn-ta-2` for isolation only. SuperAdmins: `superadmin-1` (SA1: set-up, the price increase,
+  the operational withdrawal, the admin end of a deferral, the losing decline tab), `superadmin-2` (SA2: approves and
+  extends). Operators: `operator-1` (OP1: the assigned operator of W and C), `operator-2` (OP2: isolation and the
+  read-grant view). They stand for `syn-superadmin-1`, `-2` and `syn-operator-1`, `-2`. Keyboard-only user.
+  Screen-reader user. Phone user (390 px wide). No step suspends a seeded account or changes a seeded offering.
 - **Where.** `L`: a person or the LD-11 harness shows it on `lane-ui`. `T`: an automated test in the lane repository
-  shows it at the same commit; the run record names the test (the design's §7 names the files). `L+T`: both are
-  required. "Gallery" is the design's gallery state.
+  shows it at the same commit; the run record names the test (design §7 names: `timing-words.test.ts`,
+  `group-close.test.ts`, `application-decisions.test.ts`, `operator-timing.test.ts`, `decision-kinds.test.ts`,
+  `timing-decisions.test.ts`, `group-end-status.test.ts`, `bff-timing-forms.test.ts`, `timing-host-pages.test.ts`,
+  `test/system/group-end-view.test.ts`, and the existing tests named per item). `L+T`: both are required. "Gallery" is
+  the design's gallery state.
 - **Sign-in codes (rule C).** As WP-01 §0.2. The LD-11 harness signs in. Nobody prints, logs, screenshots or stores a
   code or an authenticator key.
-- **Copy.** Quoted text is draft copy (CR-09); the design's word tables govern. Draft copy passes when the page states
-  the same facts. Staff boundary notices: "[Action] is unavailable until [policy or evidence]. Owner: [owner].
-  [Route]." TA notices: "Owner: TravelMudra." (Q-W16-08). An action that does not exist gets no notice. An unknown value
-  shows "Unrecognised: [code]"; an unknown refusal code shows the category text and "Reference code: [code]". No page
-  shows a package id or a lane record id.
-- **Words (draft).**
-  - Lifecycle: "Draft", "Submitted", "Processing completed", "Ended with its group" (meaning line: "It ended with its
-    group after the travel return date. TravelMudra did not process it further. This is not a visa result."). Outcome:
-    the glossary words (PL §11.2); "Withdrawn" is an outcome, never a lifecycle.
-  - Group state: "Open"; "Closed" (`ordinary`); "Closed after the travel return date" (`group_end`) (WP03-A23).
-  - Withdrawal: accepted "Withdrawn: no further filing happens"; refused "Withdrawal request recorded and refused:
-    [reason]". Reasons: `filing_possibly_occurred` "a filing may have happened"; `withdrawal_cutoff_passed` "the
-    government submission is already evidenced"; `declared_cutoff_passed` "the service's declared cut-off has passed";
-    `withdrawal_cutoff_undeclared` "this service has no withdrawal cut-off that TravelMudra can apply in this release".
-    Requesters (staff): "Travel agent's request", "Applicant's request, recorded by the operator", "Operational
-    request, recorded by a SuperAdmin". Never "Cancelled", "Deleted", "Closed", "Completed" or "Refunded" for a
-    withdrawn application; never "withdrawn" for a service that is no longer offered (WP-13 words).
-  - Deferral (staff): "Proposed: waiting for a SuperAdmin decision"; "Approved: review on [date]"; "Declined"; "Ended".
-    Travel agent: "Paused by TravelMudra until a review on [date]" (from the notice only). Never "On hold" without the
-    review point, never an SLA.
-  - Price: causes "Correction of a mistaken price" (`mistaken_price`), "Change of service scope"
-    (`material_scope_change`); record states "Waiting for your decision" (TA) / "Waiting for the travel agent's
-    decision" (staff), "Accepted", "Declined: the communicated price stays", "No longer open" (`superseded`).
-  - Timing: "Original estimate", "Current forecast (separate from the estimate)"; basis (staff) "Operator's
-    judgement", "Notice from the authority", "External delay".
-- **Money.** Every amount is a Core field rendered by `money()`. "Quote: ₹[n], fixed at submission" and "Price in
-  effect: ₹[n]" are separate rows. No page shows an amount "due", a difference of prices, a total or an all-clear. The
-  SuperAdmin enters a new price in rupees; the BFF converts it exactly to paise and refuses a value it cannot convert, at
-  the field; it never rounds.
-- **Dates and times.** Every time carries "IST". Business dates (travel, review, forecast) show as dates in India time.
-  Event time and recorded time both show where a read returns both.
-- **Freshness (LD-08).** Every WP-17 read is authoritative: "Read at [time] IST". SA-01 and the monitor counts keep the
-  lag form.
+- **Copy.** Quoted text is draft copy (CR-09); the design's §2.11 (T1 to T9), §2.13 and §2.14 tables govern, as O-03,
+  O-04, O-05 and O-06 correct them. Draft copy passes when the page states the same facts. TA boundary notices end
+  "Owner: TravelMudra." (Q-W16-08). An unknown value shows "Unrecognised: [code]"; an unknown refusal code shows the
+  category text and "Reference code: [code]". Forbidden on WP-17 pages (design §2.0): "Cancel" as the name of a
+  withdrawal, "Undo", "Reopen", "Delete", "Expired" or "Late" for a passed date, "Overdue" (except Core's "review due"),
+  "Approved" for a price, "Something went wrong", "Override", "Force close". No page shows a package or record id.
+- **Words.**
+  - Lifecycle `ended_with_group`: "Ended with the group (not an outcome)"; it is never called an outcome, a success or a
+    completion of processing. Pending `group_end_pending`: owner "TravelMudra", "Ends with the group after the travel
+    return date".
+  - Group closed kinds (T9): `ordinary` "You closed this group. Its history is kept." (TA) / "Closed by the travel
+    agent" (staff); `group_end` "Closed after the travel return date. Applications that were still open and eligible
+    ended with the group. Nothing was deleted."
+  - Withdrawal (T1): TA `accepted` "Withdrawn. No further filing happens."; refused "Refused: a filing may have happened,
+    so the application stays protected until your operator checks it." / "Refused: the application was already filed
+    with the authority." / "Refused: this service cannot be withdrawn after submission." / "Refused: the service's
+    withdrawal deadline has passed."; staff words of T1.
+  - Deferral (O-06, everywhere: OP-02, SA-04a, SA-02d, SA-09d, OP-01 banner of F-39, the `deferral` notice of E-30,
+    T2): proposed "Proposed: a SuperAdmin decides"; approved "Review on [date]; readiness, authorization and packet
+    release remain held until the deferral is ended."; no page says that filing "waits until" a date or that a deferral
+    ends by itself. With no open deferral: "No deferral is currently open" (O-05).
+  - Price (T3, as O-03 corrects): TA kinds "Quoted when you submitted", "Lower price applied", "New price proposed";
+    states "In effect", "Waits for your decision", "You accepted it", "You declined it; the current price stayed",
+    "Lapsed: the application ended". The choice reads "Decline the increase; keep the current price ₹[current]".
+  - Group-end reasons (T5): `group_end_pending` "The travel return date has not passed yet"; `application_not_open`
+    "No longer open: completed or ended"; `service_payment_received` "The service payment is recorded as received";
+    `operator_work_authorized` "TravelMudra work was authorized on it"; `filing_possibly_occurred` "An external act was
+    authorized for it (filed, not filed or unknown)"; `original_held` "A physical original is held";
+    `custody_evidence_missing` "An original's holder is uncertain"; `delivery_pending` "A result email is queued, sending
+    or uncertain"; `money_outstanding` AM-W16-05's sentence; `protection_mark_active` "A protection mark from a system
+    restore holds it".
+  - Recheck results (T8): "Rechecked against the current dates"; "The rules still cannot answer: the recheck stays
+    pending"; "Not rechecked: a filing may have happened, so the filed facts stay as they were".
+- **Money (O-02).** Every amount is a Core field rendered by `money()`; no difference, total or amount due. SA-09p takes
+  the new price in paise in the field `newPricePaise` (Q-W17-03): digits only, for example `400000` for ₹4,000. The page
+  shows the price in effect in rupees and paise. Before the command is sent, a review shows the entered amount
+  converted ("New price: ₹4,000 (400000 paise)"); nothing reaches Core until the SuperAdmin confirms from the review. A
+  value that is not digits is refused at the field with the value kept; a value over the contract limit is refused whole
+  at the field (never cut); nothing is rounded.
+- **Dates and times.** Every date reads "[d Month yyyy]" with "(IST)" once per block; times carry "IST".
+- **Freshness (LD-08).** Every WP-17 read is authoritative: "Read at [time] IST". SA-01 and OP-01 counts keep their
+  forms.
 - **Facts (K-14).** A page shows only facts that its reads return. A count that cannot be read is "Unavailable", never
-  "0". A list at its cap says so. Additional reads (named per item): `dlv.notices` (optional, TA-07 deferral and timing
-  notices); `views.audit_subject` (SA-08s links for `deferral`, `withdrawal`, `group`, `forecast`).
-- **Receipts.** No accepted time, no command name (P-02, S-08), no result from the address (`?done=` flashes go).
-  Another person's receipt address opens unchecked with current authorized facts (J-09). The receipt of each command
-  follows this table:
+  "0". A list at its cap says so. Additional reads (named per item): `core.ta_groups` (opt., TA-05c counts);
+  `pay.application_payments` (opt., SA-09p); `ops.case_work` (opt., OP-02w, SA-09w); `core.ops_work` (OP-01);
+  `views.audit_subject` (SA-08s).
+- **Receipts (design §2.13 as O-08 corrects).** No accepted time, no command name (P-02, S-08), no result from the
+  address (`?done=` flashes go). An unchecked receipt (another actor's operation key) reads "Request recorded" with
+  current authorized facts only. Recorded facts come only from the summary and records selected by its ids; later
+  facts are "Current".
 
-| Command | Summary | Receipt |
-|---|---|---|
-| `core.close_group` | `{groupId}` (as `core.create_group`) | Neutral "Request recorded"; Current: the group state |
-| `core.recheck_travel_dates` | `{applicationId, result, retryAt}` | "Travel-date recheck recorded" with the result words; `travel_rule_unknown` reads "The rules could not answer: the recheck is still pending", never a pass |
-| `core.request_withdrawal`, `core.record_applicant_withdrawal`, `core.record_operational_withdrawal` | `{applicationId, withdrawalId, result, code?}` (one of them per surface) | Accepted: "Withdrawal recorded" with "Withdrawn: no further filing happens"; refused: "Withdrawal request recorded" with "Refused: [reason]" |
-| `core.propose_deferral`, `core.end_deferral` | `{applicationId, deferralId}` (the same shape on the operator surface) | Neutral "Request recorded"; Current: the deferral state |
-| `core.decide_deferral` | `{applicationId, deferralId}` (the only admin command with `deferralId`) | "Deferral decision recorded"; the decision is not in the summary: Current: the deferral state and review date |
-| `core.propose_price_increase` | `{applicationId}` | Neutral "Request recorded"; Current: price in effect, "A price change is waiting for the travel agent's decision" |
-| `core.decide_price_increase` | `{applicationId, priceRecordId}` | "Price decision recorded" only when the summary has no `submissionId` and the record selected by `priceRecordId` is a decided increase; recorded: "Accepted: ₹[n] is the price in effect" or "Declined: ₹[n] stays" (a decided record does not change later) |
-| `core.record_forecast` | `{applicationId, forecastId}` | "Forecast recorded"; Current: the current forecast dates |
-| `core.apply_held_correction` | `{applicationId, correctionId}` (the correction commands add `stage`) | "Held correction applied" only when the summary has no `stage` and the TA read no longer lists the correction as released; otherwise "Request recorded" |
+| Command | Host | Summary | Receipt |
+|---|---|---|---|
+| `core.close_group` | TA-05 | `{groupId}` (as `core.create_group`) | "Request recorded"; Current: "Group closed (You closed this group)" or "Group open" |
+| `core.request_withdrawal`, `core.record_applicant_withdrawal`, `core.record_operational_withdrawal` | TA-07w, OP-02w, SA-09w | `{applicationId, withdrawalId, result, code?}` | "Application withdrawn" (`accepted`) / "Withdrawal request recorded: refused" with the reason (T1 by audience) |
+| `core.decide_price_increase` | TA-07d | `{applicationId, priceRecordId}` (no `submissionId`; the record selected is decided) | "Price decision recorded": "You accepted ₹[amount]" or "You declined the increase; the current price ₹[effective] stayed" (O-03) |
+| `core.propose_price_increase` | SA-09p | `{applicationId}` | "Request recorded"; Current: "Price increase open, waiting for the travel agent" |
+| `core.apply_held_correction` | TA-07c | `{applicationId, correctionId}` (no `stage`; equals the path id) | "Held correction applied" |
+| `core.record_forecast` | OP-02f | `{applicationId, forecastId}` | "Forecast recorded"; Current: the current forecast |
+| `core.propose_deferral`, `core.decide_deferral`, `core.end_deferral` (operator and SuperAdmin) | OP-02d; SA-09d; OP-02e and SA-04a | `{applicationId, deferralId}` (shared) | "Request recorded" (O-08); Current: the open deferral's state words, or "No deferral is currently open" |
+| `core.recheck_travel_dates` | OP-02, SA-04a (top of the tab) | `{applicationId, result, retryAt}` | "Travel-date recheck run" with T8 words |
 
 - **Replay terms** (as WP-16 §0.2): 1 identical replay; 2 changed-content conflict ("This form was already used with
-  different content. Your values are kept: check them and send again."); 3 browser Back (a fresh form with current
-  facts; sends nothing); 4 rejected-form refresh (the refused form gets a new key; the corrected send is recorded once);
-  5 lost acknowledgement (C4 "Checking the original result", "Check status"; no new send of the same intent). Two more
-  belong to the matrix (A110): a business duplicate and a raw stale envelope. A replay step on `lane-ui` MUST NOT
-  change what later steps observe.
+  different content. Your values are kept: check them and send again."); 3 browser Back (a fresh page with current
+  facts; sends nothing); 4 rejected-form refresh (a new key; the corrected send is recorded once); 5 lost
+  acknowledgement (C4 "Checking the original result", "Check status"). Two more belong to the matrix (A110): a business
+  duplicate with a fresh revision and a raw stale envelope (O-10). A replay step on `lane-ui` MUST NOT change what later
+  steps observe.
 - **Refused sends leave no record.** The status page of a refused key reads "Nothing is recorded for request
-  [reference] so far". Refusal items check by delta: groups (state, revision), applications (outcome, lifecycle,
-  revision), withdrawal records, deferrals, price records, forecasts, notices, operations.
-- **Paths (LD-03).** Kept: TA-05 `/ta/groups/:groupId` (section "Closing the group" with the link to TA-05c); TA-13b
-  `/ta/groups/:groupId/travel-dates` (WP-03); TA-07 `/ta/applications/:applicationId` (sections `#withdraw`, `#price`,
-  `#pending-work`, `#next-action`); OP-02 `/ops/applications/:applicationId`; SA-04a
-  `/admin/applications/:applicationId`; SA-02d `/admin/queues/deferrals`; SA-04g `/admin/groups/:groupId` (D30,
-  rebuilt). New GET task pages beside the kept POSTs (design §1.3): TA-05c `/ta/groups/:groupId/close` (T08); TA-07w
-  `…/withdraw` (T34); TA-07d
-  `…/price-decision` (T35); TA-07c `…/corrections/:correctionId/reapply` (T48); OP-02f `/ops/applications/:id/forecast`
-  (O42); OP-02d `…/deferral` (O24); OP-02e `…/deferrals/:deferralId/end` (O43); OP-02w `…/applicant-withdrawal` (O23);
-  SA-09d `/admin/applications/:id/decide/deferral_approve`, `…/deferral_decline`, `…/deferral_extend` (POST D24; one
-  decision per kind page, design §1.3); SA-09p
-  `…/decide/price_increase` (D101); SA-09w `…/decide/operational_withdrawal` (D22). The recheck (O60, D128) has no
-  input: its host is an in-place form in the "Travel-date recheck" section of OP-02 Work and of SA-04a Overview (design
-  §1.5 rows 10, 11). Set-up and observation pages: SA-06 (WP-02); TA-04,
-  TA-06, TA-08, TA-09, TA-13a (WP-03); SA-07a, SA-03a, SA-01 (WP-06); OP-01, OP-04 (WP-07); TA-07p (WP-09); TA-10,
-  TA-01 notices (WP-03, WP-08); TA-11 (WP-16); SA-08s (WP-14).
+  [reference] so far". Refusal items check by delta: groups, applications (outcome, lifecycle, revision), withdrawal
+  records, deferrals, price records, forecasts, notices, operations.
+- **Paths (LD-03; design §1.3).** Kept, amended: TA-05 `/ta/groups/:groupId`; TA-13b `…/travel-dates`; TA-07
+  `/ta/applications/:applicationId`; OP-02 `/ops/applications/:applicationId?tab=work`; SA-04a
+  `/admin/applications/:applicationId`; SA-02d `/admin/queues/deferrals`; SA-04g `/admin/groups/:groupId`. New GET task
+  pages beside the kept POSTs: TA-05c `/ta/groups/:groupId/close` (T08); TA-07d `…/price-decision` (T35); TA-07w
+  `…/withdraw` (T34); TA-07c `…/corrections/:correctionId/reapply` (T48); OP-02f `/ops/applications/:id/forecast`
+  (O42); OP-02d `…/deferral` (O24); OP-02e `…/deferrals/:deferralId/end` (O43); OP-02w `…/applicant-withdrawal` (O23).
+  SA-09 kinds on WP-06's route `/admin/applications/:id/decide/:kind`: `deferral_approve`, `deferral_decline`,
+  `deferral_extend` (POST D24 with the hidden BFF-only `applicationId`), `price_increase` (D101),
+  `operational_withdrawal` (D22). The recheck stays in place on OP-02 Work and SA-04a Overview (O60, D128). The admin
+  end of a deferral (O-13): a new registered admin route that sends `core.end_deferral`, hosted on SA-04a (path and id
+  as the build names them).
 - **Pass rule.** WP-17 passes when every `L` item passes on `lane-ui` at the integrated ref, every `T` item has a named
   passing test at that commit, every axe item passes, and the proofs of §3 pass, except the deferred items of §5.
-  Recorded, not failed: A80 "Unmet: no request can name the applied correction (surface defect, §6 Q-03)"; A36
-  "Unmet: waits for STOP-W11-03 and P-17 item 3" (as WP11-A50); "Partly met" where §0.1 "Facts no read returns" names
-  the missing fact (A23, A32, A33, A44, A60, A78, A86, A91). A failed item becomes a finding ranked P0, P1 or P2 with its
-  scenario (PRI-20260930-01).
-- **Preconditions on `lane-ui`.** WP-01 to WP-03, WP-06, WP-07, WP-09 and WP-11 are integrated (SA-06 creates
-  accounts; TA pages create groups and submit; SA-07a records payments; SA-03a assigns; OP-02 starts work; TA-07p
-  exists; SA-04a is rebuilt); WP-08 (TA-10) and WP-14 (SA-08s) for observation. Where a package is not integrated, the
-  step runs on the existing page and the run record says so.
-- **Data hygiene (to be approved, §6 Q-14).** Approved writes per run: Y (created and activated); groups G1, G2, G3;
-  drafts A and E; submissions B, C, D, F, H; "Payment received" for C and H; the assignment of C to OP1 and its start
-  of work; one price increase on B and its acceptance; one forecast on C; one deferral on C (proposal, approval,
-  extension, end); withdrawal requests for A (Y), F (Y), C (OP1) and D (SA1); the change of G2's dates into the past;
-  the closure of G3. Refused sends record nothing. The run MUST NOT touch another run's or a seeded group,
-  application, offering, ceiling or account. G1 (C) and G2 (H) stay open at the end; later runs exclude them by the run
-  tag. Notes, references and reasons carry the run tag. Identifiers stay in the internal run record only.
+  Recorded, not failed: A153 "Unmet: waits for P-21 item 1"; A164 "Unmet: waits for P-21 item 2"; A80 "Unmet: waits for
+  P-21 item 3a"; A163 "Unmet: waits for P-21 item 3b"; A165 "Unmet: waits for P-21 item 4"; A36 "Unmet: waits for
+  STOP-W11-03 and P-17 item 3"; "Partly met" where §0.1 "Facts no read returns" names the missing fact (A23, A32, A33,
+  A44, A60, A78, A86, A91). The V19 exclusion fixtures (A155 to A158) and the live group end (V19G-10w) are never
+  deferred. A failed item becomes a finding ranked P0, P1 or P2 with its scenario (PRI-20260930-01).
+- **Preconditions on `lane-ui`.** WP-01 to WP-03 (with the WP-03 fixes of O-01), WP-06 to WP-09 and WP-11 are
+  integrated (SA-06, TA pages, SA-07a, SA-03a, OP-02, OP-04, TA-07p, SA-04a); WP-08 (TA-10) and WP-14 (SA-08s) for
+  observation; WP-13 (`changed-terms.ts`) for TA-07d. Where a package is not integrated, the step runs on the existing
+  page and the run record says so.
+- **Data hygiene (Q-W17-06; §6 Q-18 for the lettered additions).** Approved writes per run (design §6.2 with a fresh
+  travel agent, O-12): Y (created and activated); groups G and G0; D (draft, then withdrawn); U (submitted); W (submitted,
+  paid, assigned to OP1, work started, readiness, the authorization of its government submission, its execution
+  recorded as uncertain); the applicant's withdrawal request of W; the closure of G0; the change of G's dates into the
+  past (Q-W17-06, with the O-01 acknowledgement). Lettered additions (pending §6 Q-18): C (submitted, paid, assigned to
+  OP1, work started); one forecast on C; two deferrals on C (the first proposed, approved, extended and ended by OP1; the
+  second proposed, approved and ended by SA1 on SA-04a); the price increase of U and its acceptance; Y's withdrawal
+  request of U; SA1's operational withdrawal request of C. Refused sends record nothing. The run MUST NOT touch another
+  run's or a seeded group, application, offering, ceiling or account. G (W, C) stays open at the end; later runs exclude
+  it by the run tag. Notes, references and reasons carry the run tag. Identifiers stay in the internal record only.
 
-### 0.3 Synthetic data used by WP-17
+### 0.3 Synthetic data used by WP-17 (design §6.2, with a fresh travel agent and lettered additions)
 
 | Item | Value | Use |
 |---|---|---|
 | Travel agent | Y, `wp17-ta-[stamp]`, fresh per run (SA-06) | Every TA step |
-| G1 | `wp17-[stamp]-work` in Synthetica; travel start today + 30 days, return today + 40 days | C; the refused closure |
-| G2 | `wp17-[stamp]-end` in Synthetica; created with travel start today + 30, return today + 40; changed at V19-2 to start today − 3, return today − 1 | A, B, D, E, F, H; the group end (V19) |
-| G3 | `wp17-[stamp]-empty`; no application | The accepted closure |
-| A | "SYNDRAFT, ASHA", draft on "SYN Tourist e-visa", never submitted | The travel agent's withdrawal of a draft (always accepted); then ends with G2 |
-| B | "SYNPRICE, BINA", submitted on "SYN Tourist e-visa" (₹3,500), unpaid, unassigned | SA1's price increase to ₹4,000 (`mistaken_price`); Y's acceptance in two tabs; then ends with G2 |
-| C | "SYNDEFER, CHAND", submitted in G1; "Payment received" (`SYN-W17-[stamp]-PAY-C`); assigned to OP1; work started | Forecast (start today + 5, end today + 32, basis "External delay"); deferral (review today + 7; extended to today + 14; ended); recheck refusal; the applicant's withdrawal request (`SYN-W17-[stamp]-WDR-C`) |
-| D | "SYNOPWD, DEV", submitted, unpaid, unassigned | SA1's operational withdrawal request (`SYN-W17-[stamp]-OPS-D`); then ends with G2 |
-| E | "SYNEND, ESHA", draft, untouched | Ends with G2 |
-| F | "SYNEND, FARAH", submitted, unpaid, unassigned | Y's withdrawal request of a submitted application (either assessment); then ends with G2 |
-| H | "SYNSTAY, HARI", submitted; "Payment received" (`SYN-W17-[stamp]-PAY-H`); unassigned | Stays open past G2's return date ("Service payment is recorded as received") |
+| G | `wp17-[stamp]` in Synthetica; travel start today + 30, return today + 40; changed at V19G-10u to start today − 3, return today − 1 (acknowledged, O-01) | D, U, W, C; closure refusals; the live group end |
+| G0 | `wp17e-[stamp]`; no application | The accepted closure |
+| D | "SYNDRAFT, MIRA", draft on "SYN Tourist e-visa"; withdrawn by Y at V19G-3 | Withdrawal of a draft (always accepted); ends with G |
+| U | "SYNUNPAID, RAVI", submitted (₹3,500 = 350000 paise), unpaid, unassigned | SA1's price increase to `400000` paise; Y's decision in two tabs; Y's withdrawal request (branch); ends with G |
+| W | "SYNWORK, ASHA", submitted; SA1 records "Payment received" (`SYN-UTR-[stamp]`); assigned to OP1; work started; readiness; authorization of the government submission; execution recorded as uncertain | TA-07w with the operator; OP-02w "Record the applicant's request only" (`SYN-LETTER-[stamp]`, refused); OP-02d possible-filing state; stays open after the group end |
+| C (lettered addition) | "SYNDEFER, CHAND", submitted in G; "Payment received" (`SYN-W17-[stamp]-PAY-C`); assigned to OP1; work started | Forecast (today + 5 to today + 32, basis "An external delay"); deferral 1 (review today + 7; extended to today + 14; ended on OP-02e); deferral 2 (review today + 10; ended on SA-04a); recheck refusal; SA1's operational withdrawal request (`SYN-W17-[stamp]-OPS-C`, branch); stays open after the group end |
 | Passports, photographs | As WP-14 §0.3 | Intake |
 | Reasons, notes, justifications | "WP17 [stamp] …", at least 10 characters (20 for a justification) | Every text field |
-| Fixtures (tests, gallery) | A group with an open intake incident and one with a running import; a group closed after its return date with a completed application that keeps an open payment follow-up; every group-end reason, alone and together; 500 group-end items; clock unhealthy; an application assigned with an open price increase; a paid application with an open increase; a superseded increase; a released held correction of each kind and its conflict; an act `authorized` and one `filing_unknown` (withdrawal, deferral and correction cases); a withdrawal preview that changes between load and send; a deferral whose proposed date passed; an approved deferral whose review came due; a deferral of an application withdrawn meanwhile; recheck answers `not_run`, `travel_rule_unknown` with and without `retryAt`, `historical_or_held`; a lost acknowledgement of each command; the largest valid form of each page with Devanagari text | T items and the gallery |
+| Fixtures (tests, gallery) | As the first version, plus: one isolated fixture per V19 exclusion (an unpaid, never-assigned application in a group past its return date with exactly one of: an external-act authorization; a held original; a queued result email; an open payment follow-up item), each beside a control application with nothing held; a catalogue reduction between a price proposal and its decision; two SuperAdmins extending one approved deferral; a deferral approved after an outcome; an approved deferral of a completed application with no operator; a past-date edit without, with a changed and with an exact acknowledgement | T items and the gallery |
 
-### 0.4 Run recipe (rerunnable; one recipe)
+### 0.4 Run recipe (rerunnable; one recipe, O-12)
 
 - Run tag `wp17-[yyyymmddhhmm]`. First checks: the harness can create, activate and sign in Y; SA1, SA2, OP1, OP2
   and `syn-ta-2` sign in; "SYN Tourist e-visa" admits Y (TA-03). The run record states the date-check interval of the
-  installation (`core.dateCheckEveryMs` in its configuration; no page shows it). Fallback when Y cannot be created:
-  `syn-ta-1` with the run-tagged groups, and the run record says so.
-- **Withdrawal branch (first check after Setup 1).** Y reads TA-07 of F (submitted, unassigned). Core's preview is
-  "accepted" or "refused: `withdrawal_cutoff_undeclared`" (the seeded offering's cut-off support decides). The run
-  record names the branch. Both branches are valid results for W-3 to W-5; the accepted path of a submitted
-  application then runs as tests (A16 and step T-W) when the branch is "refused".
-- Baseline (step P-0): SA-02d rows and SA-01 group 6 lines ("Proposed, to decide", "Reviews due"); OP-01 views of
-  OP1 (counts of "Action now" and "Waiting"); the TA-04 and TA-06 row counts of `syn-ta-2`. Every later count check is
-  a delta from it.
-- Setup (labelled; pages of other packages): Setup 0: SA1 creates and activates Y. Setup 1: Y creates G1, G2 and G3
-  (TA-13a); Y creates drafts A and E in G2 (TA-09); Y submits B, D, F and H in G2 and C in G1 (TA-08). Setup 2: SA1
-  records "Payment received" for C and H (SA-07a); SA1 assigns C to OP1 (SA-03a); OP1 starts work on C (OP-02).
-- Order (§3): P-0, Setup 0, Setup 1, the withdrawal branch, Setup 2, G-1, G-2, W-1, W-2, Q-1 to Q-4, F-1, F-2, D-1 to
-  D-6, R-1, W-3 to W-5, V19-1 to V19-6, X-1, then the test steps T-G, T-W, T-Q, T-K, T-F, T-D, T-R, T-V19, T-X, then
-  X-2 to X-4. Every harness send uses the fields of a freshly loaded page unless the step says "raw".
+  installation (from its configuration; no page shows it).
+- **Withdrawal branch (first check after Setup 1).** Y reads TA-07w of U: Core's check now is "accepts" or "refuses:
+  this service cannot be withdrawn after submission" (the seeded offering's cut-off support decides). The run record
+  names the branch. Both are valid results for V19G-10r and V19G-10s; the other branch runs as tests (A16, A59).
+- Baseline (step P-0): SA-02d rows and SA-01 group 6 lines; OP-01 views of OP1; the TA-04 and TA-06 row counts of
+  `syn-ta-2`. Every later count check is a delta from it.
+- Setup (labelled; pages of other packages): Setup 0: SA1 creates and activates Y. Setup 1: Y creates G and G0
+  (TA-13a); Y creates D (TA-09); Y submits U, W and C (TA-08). Setup 2: SA1 records "Payment received" for W and C
+  (SA-07a) and assigns both to OP1 (SA-03a); OP1 starts work on W and C (OP-02); OP1 records readiness on W, requests the
+  authorization of W's government submission and records W's execution as uncertain (OP-04).
+- Order (§3): P-0, Setup 0, Setup 1, the withdrawal branch, Setup 2, V19G-1 to V19G-10, V19G-10a to V19G-10x, X-1, the
+  test steps V19G-11 to V19G-15 and V19G-11a to V19G-11d, T-1 to T-9, then V-A, X-2, X-3. Every harness send uses the
+  fields of a freshly loaded page unless the step says "raw". The run does not end before V19G-10w passes: if the date
+  check has not run, the run waits for it.
 
 ### 0.5 Refusal shapes in the code at b2a6341 (category / code)
 
-Every command below also answers `not_found_or_forbidden` / `access_denied` for a caller without its policy action
-(the route answers the uniform not-found page first for a person of another surface) and `conflict_operation_key` /
+Every command below also answers `not_found_or_forbidden` / `access_denied` for a caller without its policy action (the
+route answers the uniform not-found page first for a person of another surface) and `conflict_operation_key` /
 `operation_key_reused` for a reused key with other content. Input refusals are `validation_failed` / `input_invalid`
 with the field and Zod's code. A support view runs no command: `/admin` pages and posts answer 409
-`support_view_active`; TA pages in a support view show no form. The BFF refusals of the design send no command.
+`support_view_active`; TA task pages in a support view show no form. The BFF refusals of design §2.12 and the TA-13b
+acknowledgement (O-01) send no command.
 
 | Command | Refusals the items assert (in Core's order) |
 |---|---|
-| `core.close_group` | `stale_revision` / `stale_revision` (`_rev.group`); `control_blocked` / `group_closed`; `control_blocked` / `group_has_open_applications`, else `group_intake_incidents_open`, else `attempt_in_progress`, each with `blockers` that name every code that applies (control `group_open`, `exceptionEligible: false`); `stale_revision` on the guarded update |
-| `core.edit_travel_dates` (WP-03; asserted for set-up and the WP-17 part) | `input_invalid` on the date format; `stale_revision`; `control_blocked` / `group_closed`; `validation_failed` / `group_dates_invalid` at `travelReturnDate` (return before start) or at `travelStartDate` with code `unchanged`. No refusal for dates in the past |
+| `core.close_group` | `stale_revision` / `stale_revision` (`_rev.group`); `control_blocked` / `group_closed`; `control_blocked` / `group_has_open_applications`, else `group_intake_incidents_open`, else `attempt_in_progress`, each with `blockers` that name every code that applies; `stale_revision` on the guarded update |
+| `core.edit_travel_dates` (WP-03; the O-01 interim) | BFF: a past date without the acknowledgement of the exact dates → the review, no command. Core: `input_invalid` on the date format; `stale_revision`; `control_blocked` / `group_closed`; `validation_failed` / `group_dates_invalid` at `travelReturnDate` or at `travelStartDate` with code `unchanged`. No Core refusal for past dates (A153) |
 | `core.recheck_travel_dates` | `control_blocked` / `application_not_open`; `control_blocked` / `travel_date_recheck_not_pending` |
-| `core.request_withdrawal` | `input_invalid` on `note` (over 2,000); `stale_revision` (`_rev.application`); `control_blocked` / `awaiting_formal_return`; `control_blocked` / `hold_assistance_in_progress`; `control_blocked` / `application_not_open`; `control_blocked` / `outcome_already_recorded`; `control_blocked` / `protection_mark_active`. Not refusals (accepted command, `result: refused`): `filing_possibly_occurred`, `withdrawal_cutoff_passed`, `declared_cutoff_passed`, `withdrawal_cutoff_undeclared` |
-| `core.record_applicant_withdrawal` | `input_invalid` on `evidence` (none: a blank reference), on `evidenceRef` (over 120, the contract) and on `note`; `stale_revision`; `control_blocked` / `withdrawal_evidence_missing`; `application_not_open`; `outcome_already_recorded`; `protection_mark_active`. Assessments as above |
-| `core.record_operational_withdrawal` | `input_invalid` on `reason` (10 to 1,000) and `evidence`; `stale_revision`; `control_blocked` / `withdrawal_evidence_missing`; `application_not_open`; `outcome_already_recorded`; `protection_mark_active`. Assessments as above |
-| `core.propose_deferral` | `input_invalid` on `justification` (20 to 2,000) and `proposedReviewOn` (format); `stale_revision`; `control_blocked` / `application_not_submitted`; `control_blocked` / `outcome_already_recorded`; `control_blocked` / `filing_possibly_occurred` (an act `authorized` or `filing_unknown`); `validation_failed` / `date_invalid` at `proposedReviewOn` (`not_after_today`); `conflict_duplicate` / `deferral_active` |
-| `core.decide_deferral` | `input_invalid` on `decision` (`approve`, `decline`, `extend`), `reason` (10 to 1,000), `reviewOn` (format); `not_found_or_forbidden` / `access_denied` (an unknown deferral); `stale_revision` / `stale_revision` (approve or decline of a deferral that is not `proposed`; extend of one that is not `approved`); `validation_failed` / `date_invalid` at `reviewOn` (`not_after_today`, also when the proposed date applies and has passed); `stale_revision` on the guarded update |
-| `core.end_deferral` | `input_invalid` on `note` (1 to 1,000); `not_found_or_forbidden` / `access_denied` (an unknown deferral; not the assigned operator); `stale_revision` / `stale_revision` (the deferral is not `approved`) |
-| `core.propose_price_increase` | `input_invalid` on `cause`, `newPricePaise` (digits) and `reason`; `stale_revision`; `control_blocked` / `application_not_submitted`; `control_blocked` / `outcome_already_recorded`; `validation_failed` / `input_invalid` at `correctionId` with code `correction_not_applied` (every `material_scope_change`); `conflict_duplicate` / `price_increase_open`; `validation_failed` / `input_invalid` at `newPricePaise` with code `not_higher`; `control_blocked` / `application_not_submitted` (no price in effect) |
-| `core.decide_price_increase` | `input_invalid` on `priceRecordId` and `decision`; `not_found_or_forbidden` / `access_denied` (a record of another application, before the revision); `stale_revision`; `control_blocked` / `outcome_already_recorded`; `application_not_open`; `withdrawal_accepted`; `awaiting_formal_return` (assigned, or assistance in progress); `stale_revision` (the record is no longer an open increase) |
-| `core.record_forecast` | `input_invalid` on `windowStart`, `windowEnd`, `basisCode`, `note` (over 500); `control_blocked` / `application_not_submitted`; `control_blocked` / `outcome_already_recorded`; `validation_failed` / `forecast_window_invalid` at `windowStart`; `stale_revision` (a concurrent forecast) |
-| `core.apply_held_correction` | `input_invalid` on `correctionId`; `not_found_or_forbidden` / `access_denied` (a correction of another application; a role that the correction's kind does not permit); `stale_revision`; `stale_revision` (not `released_for_reapply`); `control_blocked` with the `correct_application` blockers; `awaiting_formal_return`; `hold_assistance_in_progress`; `stale_revision` / `held_correction_conflict`; the same-person evidence refusals of an identity correction (WP-03 §0.5); `control_blocked` / `filing_possibly_occurred` |
-| Asserted as set-up answers (owned elsewhere) | `core.create_group`, `core.submit` (WP-03); `pay.record_service_status` use `record`, `core.assign` (WP-06); `ops.start_work` (WP-07) |
+| `core.request_withdrawal` | `input_invalid` on `note`; `stale_revision`; `control_blocked` / `awaiting_formal_return`; `hold_assistance_in_progress`; `application_not_open`; `outcome_already_recorded`; `protection_mark_active`. Not refusals (accepted command, `result: refused`): `filing_possibly_occurred`, `withdrawal_cutoff_passed`, `declared_cutoff_passed`, `withdrawal_cutoff_undeclared` |
+| `core.record_applicant_withdrawal` | `input_invalid` on `evidence` (a blank reference), on `evidenceRef` (over 120) and on `note`; `stale_revision`; `application_not_open`; `outcome_already_recorded`; `protection_mark_active`. Assessments as above |
+| `core.record_operational_withdrawal` | `input_invalid` on `reason` (10 to 1,000) and `evidence`; `stale_revision`; `application_not_open`; `outcome_already_recorded`; `protection_mark_active`. Assessments as above |
+| `core.propose_deferral` | `input_invalid` on `justification` (20 to 2,000) and `proposedReviewOn`; `stale_revision`; `control_blocked` / `application_not_submitted`; `outcome_already_recorded`; `filing_possibly_occurred`; `validation_failed` / `date_invalid` at `proposedReviewOn` (`not_after_today`); `conflict_duplicate` / `deferral_active` |
+| `core.decide_deferral` | `input_invalid` on `decision`, `reason` (10 to 1,000), `reviewOn`; `not_found_or_forbidden` / `access_denied` (an unknown deferral); `stale_revision` / `stale_revision` (approve or decline of a deferral that is not `proposed`; extend of one that is not `approved`; no expected revision exists); `validation_failed` / `date_invalid` at `reviewOn` (`not_after_today`) |
+| `core.end_deferral` (operator route O43; the admin route of O-13) | `input_invalid` on `note` (1 to 1,000); `not_found_or_forbidden` / `access_denied` (an unknown deferral; an operator not assigned); `stale_revision` / `stale_revision` (the deferral is not `approved`) |
+| `core.propose_price_increase` | `input_invalid` on `cause`, `newPricePaise` (digits; over 24 digits by the contract) and `reason`; `stale_revision`; `control_blocked` / `application_not_submitted`; `outcome_already_recorded`; `input_invalid` at `correctionId` (`correction_not_applied`, every `material_scope_change`); `conflict_duplicate` / `price_increase_open`; `input_invalid` at `newPricePaise` (`not_higher`) |
+| `core.decide_price_increase` | `input_invalid` on `priceRecordId` and `decision`; `access_denied` (a record of another application, before the revision); `stale_revision`; `control_blocked` / `outcome_already_recorded`; `application_not_open`; `withdrawal_accepted`; `awaiting_formal_return`; `stale_revision` (the record is no longer an open increase) |
+| `core.record_forecast` | `input_invalid` on `windowStart`, `windowEnd`, `basisCode`, `note`; `control_blocked` / `application_not_submitted`; `outcome_already_recorded`; `validation_failed` / `forecast_window_invalid` at `windowStart`; `stale_revision` (a concurrent forecast) |
+| `core.apply_held_correction` | `input_invalid` on `correctionId`; `access_denied`; `stale_revision`; `stale_revision` (not `released_for_reapply`); `control_blocked` with the `correct_application` blockers; `awaiting_formal_return`; `hold_assistance_in_progress`; `stale_revision` / `held_correction_conflict`; the same-person evidence refusals; `control_blocked` / `filing_possibly_occurred` |
+| Asserted as set-up answers (owned elsewhere) | `core.create_group`, `core.submit` (WP-03); `pay.record_service_status`, `core.assign` (WP-06); `ops.start_work`, `ops.record_readiness`, `core.authorize_external_act`, `ops.record_act_evidence` (WP-07) |
 
 ## 1. Scope
 
-### 1.1 Pages
+### 1.1 Pages (design §1.3)
 
 | Page | Host and path | Part in WP-17 |
 |---|---|---|
-| TA-05 Group detail | 4650 `/ta/groups/:groupId` (WP-03 page) | Section "Closing the group" (rule, Core's facts, the link to TA-05c); the closure receipt; ended and withdrawn rows; the group closed after its return date |
-| TA-05c Close the group | 4650 `/ta/groups/:groupId/close` (new GET beside T08) | Host of `core.close_group` (CC-02) |
-| TA-13b Change travel dates | 4650 `/ta/groups/:groupId/travel-dates` (WP-03) | The affected-work part: rows after a change; the past-date consequence (§6 Q-01) |
+| TA-05 Group | 4650 `/ta/groups/:groupId` (WP-03 page, amended) | "Closing the group" (rule, Core's facts, the qualified listed-row line, the link to TA-05c); row and closed words; the closure receipt |
+| TA-05c Close the group | 4650 `/ta/groups/:groupId/close` (new GET beside T08) | Host of `core.close_group` |
+| TA-13b Change the travel dates | 4650 `…/travel-dates` (WP-03 page; WP-03 fixes) | The past-date review and acknowledgement (O-01); effect text |
 | TA-04, TA-06 | 4650 (WP-03 pages) | Words of ended and withdrawn rows |
-| TA-07 Application workspace | 4650 `/ta/applications/:applicationId` (WP-03 page) | Sections "Withdraw", "Price and timing", "Pending work"; the deferral and ended states; next action |
-| TA-07w Withdraw this application | 4650 `…/withdraw` (new GET beside T34) | Host of `core.request_withdrawal` |
-| TA-07d Decide on the price change | 4650 `…/price-decision` (new GET beside T35) | Host of `core.decide_price_increase` |
-| TA-07c Apply a held correction | 4650 `…/corrections/:correctionId/reapply` (new GET beside T48) | Host of `core.apply_held_correction` |
-| OP-02 Application workspace | 4652 `/ops/applications/:applicationId` (WP-07 page) | Work sections "Timing", "Deferral", "Travel-date recheck", "Ending the case" |
-| OP-02f, OP-02d, OP-02e, OP-02w | 4652 new GETs beside O42, O24, O43, O23 | Hosts of `core.record_forecast`, `core.propose_deferral`, `core.end_deferral`, `core.record_applicant_withdrawal` |
-| OP-02 and SA-04a "Travel-date recheck" | 4652 in-place forms posting O60 and D128 | Host of `core.recheck_travel_dates` per surface |
-| SA-02d Deferrals | 4652 `/admin/queues/deferrals` (WP-06 page) | The "Decide" link to SA-09d |
-| SA-04a Application (SuperAdmin) | 4652 `/admin/applications/:applicationId` (WP-11 page) | Sections "Price and timing", "Ending the case", "Deferral", "Travel-date recheck" become facts and links |
+| TA-07 Application | 4650 `/ta/applications/:applicationId` (WP-03 page, amended) | Status rows, action panel rows, "Price and timing", "Waiting for your decision", the aside link "Withdraw this application" |
+| TA-07d, TA-07w, TA-07c | 4650 new GETs beside T35, T34, T48 | Hosts of `core.decide_price_increase`, `core.request_withdrawal`, `core.apply_held_correction` |
+| OP-02 Work | 4652 `/ops/applications/:applicationId?tab=work` (WP-07 page, F-39) | Sections "Travel-date recheck" (in-place form), "Timing", "Deferral", "Ending the case" |
+| OP-02f, OP-02d, OP-02e, OP-02w | 4652 new GETs beside O42, O24, O43, O23 | Hosts of `core.record_forecast`, `core.propose_deferral`, `core.end_deferral` (operator), `core.record_applicant_withdrawal` |
+| SA-02d Deferrals | 4652 `/admin/queues/deferrals` (WP-06 page, D-23) | Row words and links |
+| SA-04a Application | 4652 `/admin/applications/:applicationId` (WP-11 page, I-17) | Sections "Deferral" (with the admin end, O-13), "Travel-date recheck" (in-place admin form), "Ending the case", "Price and timing"; Decisions list rows |
 | SA-09d, SA-09p, SA-09w | 4652 SA-09 kinds `deferral_approve`, `deferral_decline`, `deferral_extend`, `price_increase`, `operational_withdrawal` | Hosts of `core.decide_deferral`, `core.propose_price_increase`, `core.record_operational_withdrawal` |
-| SA-04g Group end | 4652 `/admin/groups/:groupId` (D30, kept, rebuilt) | `core.admin_group`: eligibility and reasons per application |
+| SA-04g Group | 4652 `/admin/groups/:groupId` (D30; I-17 d) | `core.admin_group`: group-end status and reasons |
 | Set-up and observation pages | SA-06, TA-13a, TA-09, TA-08, SA-07a, SA-03a, SA-01, OP-01, OP-04, TA-07p, TA-10, TA-01, TA-11, SA-08s | Set-up and observation only |
 
-Reads: `core.ta_group` (TA-05); `core.ta_groups` (TA-04); `core.ta_applications` (TA-06); `core.ta_application`
-(TA-07 and its task pages); `core.ops_case` (OP-02 and its task pages); `core.ops_work` (OP-01, observation);
-`core.admin_case` (SA-04a, SA-09d, SA-09p, SA-09w); `core.admin_queue {deferrals}` (SA-02d);
-`core.admin_group` (SA-04g); opt. `dlv.notices` (TA-07 deferral and timing notices); `core.operation` (receipts and
-status pages); `views.audit_subject` (SA-08s, observation).
+Reads: `core.ta_group`, opt. `core.ta_groups` (TA-05, TA-05c, TA-13b); `core.ta_applications` (TA-06);
+`core.ta_application` (TA-07 and its task pages); `core.ops_case` (OP-02 and its task pages); opt. `ops.case_work`
+(OP-02w, SA-09w); `core.ops_work` (OP-01); `core.admin_case` (SA-04a, SA-09 kinds); opt. `pay.application_payments`
+(SA-09p); `core.admin_queue {deferrals}` (SA-02d); `core.admin_group` (SA-04g); `core.operation` (receipts, status
+pages); `views.audit_subject` (SA-08s, observation).
 
-### 1.2 Command coverage (CC §5.1: 13 WP-17 commands; CC-02, CC-04, CC-06, CC-15)
+### 1.2 Command coverage (CC §5.1: 13 WP-17 commands; CC-02, CC-04, CC-06, CC-21)
 
 | # | Command | Route id (POST path) | Host page | Items |
 |---|---|---|---|---|
-| 1 | `core.close_group` (CC-02) | `ta.groups.close` (T08) | TA-05c (linked from TA-05 "Closing the group") | A01 to A05, A07 |
-| 2 | `core.edit_travel_dates` | `ta.groups.travel_dates` (T07) | TA-13b (WP-03: WP03-A18 to A22; not repeated) | A11 (affected work; past dates) |
-| 3 | `core.recheck_travel_dates` | `ops.applications.travel_recheck` (O60); `admin.applications.travel_recheck` (D128) | OP-02 Work and SA-04a Overview, section "Travel-date recheck" (in place) | A61 to A65 |
+| 1 | `core.close_group` | `ta.groups.close` (T08) | TA-05c (linked from TA-05) | A01 to A05, A07 |
+| 2 | `core.edit_travel_dates` | `ta.groups.travel_dates` (T07) | TA-13b (WP-03; WP03-A18 to A22 not repeated) | A11, A152, A153 |
+| 3 | `core.recheck_travel_dates` | `ops.applications.travel_recheck` (O60); `admin.applications.travel_recheck` (D128) | OP-02 Work and SA-04a Overview, in place | A61 to A65 |
 | 4 | `core.request_withdrawal` | `ta.applications.withdraw` (T34) | TA-07w | A13 to A21 |
 | 5 | `core.record_applicant_withdrawal` | `ops.applications.applicant_withdrawal` (O23) | OP-02w | A56 to A60 |
 | 6 | `core.record_operational_withdrawal` | `admin.applications.operational_withdrawal` (D22) | SA-09w | A83 to A88 |
 | 7 | `core.propose_deferral` | `ops.applications.propose_deferral` (O24) | OP-02d | A46 to A52 |
-| 8 | `core.decide_deferral` | `admin.deferrals.decide` (D24) | SA-09d (list on SA-02d) | A66 to A73 |
-| 9 | `core.end_deferral` | `ops.applications.end_deferral` (O43) | OP-02e | A53, A54 |
-| 10 | `core.propose_price_increase` (CC-04 SA-09 kind) | `admin.applications.price_increase` (D101) | SA-09p | A74 to A82 |
-| 11 | `core.decide_price_increase` | `ta.applications.price_decision` (T35) | TA-07d | A22 to A31 |
+| 8 | `core.decide_deferral` | `admin.deferrals.decide` (D24) | SA-09d kinds (links on SA-02d, SA-04a) | A66 to A73 |
+| 9 | `core.end_deferral` | `ops.applications.end_deferral` (O43); the new admin route (O-13) | OP-02e; SA-04a | A53, A54, A159 to A162 |
+| 10 | `core.propose_price_increase` | `admin.applications.price_increase` (D101) | SA-09p | A74 to A82 |
+| 11 | `core.decide_price_increase` | `ta.applications.price_decision` (T35) | TA-07d | A22 to A31, A154 |
 | 12 | `core.record_forecast` | `ops.applications.forecast` (O42) | OP-02f | A39 to A45 |
-| 13 | `core.apply_held_correction` (CC-06) | `ta.applications.reapply_correction` (T48) | TA-07c | A34 to A36 |
-| ref | Group end (no command; Core's task) | — | SA-04g; TA-05; TA-07 | A06, A08, A09, A12, A37, A89 to A95 |
-| ref | `dlv.acknowledge_notice` | — (WP-08, TA-10) | — | A31 (separate from the price decision) |
+| 13 | `core.apply_held_correction` | `ta.applications.reapply_correction` (T48) | TA-07c | A34 to A36 |
+| ref | Group end (Core's task; no command) | — | SA-04g; TA-05; TA-07 | A06, A08, A09, A12, A37, A89 to A95, A155 to A158 |
+| ref | P-21 Kind 2, policy and exception items | — | — | A153, A163 to A165 |
 
 All of them also: A96 to A115. Commands outside WP-17 that the proof touches only as set-up or observation:
 `iam.create_account`, `iam.approve_account`, `iam.activate_account`; `core.create_group`, `intake.start_individual`,
-`core.submit`; `pay.record_service_status`; `core.assign`; `ops.start_work`.
+`core.submit`; `pay.record_service_status`; `core.assign`; `ops.start_work`, `ops.record_readiness`,
+`core.authorize_external_act`, `ops.record_act_evidence`.
 
 ### 1.3 State coverage
 
@@ -415,236 +397,257 @@ S1 does not apply (server-rendered). S5 applies only to the SA-01 and OP-01 coun
 
 | Page | Page states | C1 validation | C2 rejected | C3 accepted | C4 unresolved | C5 stale |
 |---|---|---|---|---|---|---|
-| TA-05, TA-05c | Open with conditions A01, A02; empty A03; ended rows A06; closed after return date A08; S7, support view A10 | — | A02, A05, A07 | A03 | A04 (5) | A04 (4) |
-| TA-07 sections | Withdraw states A13; price A22; timing A32; deferral A33; pending work A34; ended A37; withdrawn waiting A38 | — | — | — | — | — |
-| TA-07w | Form A14; outcome recorded, assigned A18; stale, support view A19 | A20 | A18, A19 | A15, A16, A17 | A110 | A19 |
-| TA-07d | Form A23; assigned A27; paid A28; superseded A29 | A29 | A29 | A24 | A110 | A26 |
-| TA-07c | Form, conflict, held again A34 | A34 | A34 | A34 | A110 | A34 |
-| OP-02 sections | Timing A39; deferral A46; recheck A61; ending A56 | — | — | — | — | — |
-| OP-02f | Form A40; draft, outcome, support view A45 | A43 | A41, A45 | A42 | A110 | — (no revision; A44) |
-| OP-02d, OP-02e | Form A47, A53; open deferral A51; hard stops A52 | A48 | A48, A51, A52 | A49, A53 | A110 | A52, A54 |
-| OP-02w | Form A56; possible filing A59 | A57 | A57, A60 | A58 | A110 | A60 |
-| SA-09d | Form A67; proposed date passed, ended meanwhile A71 | A71 | A71 | A68, A70 | A110 | A69 |
-| SA-09p | Form A75; open change A79; assigned, paid A75 | A76, A77 | A77, A79, A80 | A78 | A110 | A81 |
-| SA-09w | Form A84; possible filing A87 | A85 | A85, A87 | A86 | A110 | A87 |
-| SA-04g | Before date A89; eligible A90; ended A91; future return date A92; clock unhealthy, cap, S7 A93 | — | — | — | — | — |
+| TA-05, TA-05c | Open with conditions A01, A02; group-end line A09; empty A03; ended rows A06; closed after the return date A08; S7, support view, cap A10 | — | A02, A04 (4), A05, A07 | A03 | A04 (6) | A04 (3) |
+| TA-13b (WP-17 part) | Past-date review A11 | A152 | A152 | A11 | A152 | A152 |
+| TA-07 | Aside link A13; price A22; timing A32; deferral A33; pending work A34; ended A37; withdrawn and waiting A38 | — | — | — | — | — |
+| TA-07w | Form A14; with the operator, refused now A13; outcome recorded A18; support view A19 | A20 | A17, A18 | A15, A16 | A110 | A18, A19 |
+| TA-07d | Form A23; with the operator A27; paid A28; nothing waits, superseded A29 | A29 | A29 | A24, A154 | A110 | A26 |
+| TA-07c | Form, conflict, held again, with the operator A34 | — | A34 | A34 | A110 | A34 |
+| OP-02 Work | Timing A39; deferral A46; recheck A61, A62; ending A56 | — | A61 | A63 | — | — |
+| OP-02f | Form A40; draft, outcome, read grant A45 | A43 | A41, A45 | A42 | A110 | — (no revision; A44) |
+| OP-02d, OP-02e | Form A47, A53; open deferral A51; possible filing A52; no open deferral A54 | A48 | A48, A51, A52, A54 | A49, A53 | A110 | A51, A52, A54 |
+| OP-02w | Form A57; possible filing A56 | A57 | A58, A60 | A58 | A110 | A60 |
+| SA-09d | Form A67; wrong state, no deferral, outcome warning A71 | A71 | A69, A71 | A68, A70 | A110 | — (state-based, A69) |
+| SA-09p | Form and review A75; open increase A79; with the operator, paid A75 | A76, A77 | A77, A79, A80 | A78 | A110 | A81 |
+| SA-09w | Form A84; possible filing A83 | A85 | A85, A87 | A86 | A110 | A87 |
+| SA-04a deferral end | Section A159; after an outcome or completion A161 | A162 | A162 | A160 | A110 | — (state-based, A162) |
+| SA-04g | Before the date A89; eligible A90; ended A91; reasons A92; clock, cap, S7 A93; exclusions A155 to A158 | — | — | — | — | — |
 
 ### 1.4 Specification scenarios
 
 | Scenario | What WP-17 shows | Items |
 |---|---|---|
-| V19 (group-end part; WP-16 the financial follow-up, WP-14 the disclosure part) | Only eligible unpaid, never-worked applications end with the group after the return date; a paid one stays open with its reason; unknown filing, held originals, pending delivery and outstanding money exclude the date path (tests); "Ended with its group" never reads as success; the group stays open while one application is open; a closed group keeps its history | A06, A07, A08, A12, A37, A89 to A95; §3 V19 steps |
-| UX §3.2 Group end; BS B25; CC-02 | Ordinary closure names each missing condition; Core decides; a withdrawn application holds closure until it ends | A01 to A05, A09, A38 |
-| UX §2.2 deferral line; BS B21 | Operator justification, SuperAdmin approval, TA notice, review point; the deferral pauses only what Core pauses | A33, A46 to A55, A66 to A73 |
+| V19 (group-end part; WP-16 the financial follow-up, WP-14 the disclosure part, WP-12 originals) | Only unpaid, never-worked applications end after the return date (D, U live); W and C stay open with their reasons; each exclusion (possible filing, held original, pending delivery, outstanding money) holds an isolated fixture open, with UI assertions; "Ended with the group (not an outcome)" never reads as success; the group stays open while one application is open | A06, A07, A08, A09, A12, A37, A89 to A95, A155 to A158; §3 |
+| UX §3.2 Group end; BS B25; CC-02 | Closure on TA-05c names each missing condition; Core decides; a withdrawn application holds closure until it ends | A01 to A05, A09, A38 |
+| UX §4.2 travel-date edit; BS B06; O-01 | A past date needs a review and an exact acknowledgement; affected applications are rechecked | A11, A152, A153 |
+| UX §2.2 deferral line; BS B21 | Justification, SuperAdmin approval, TA notice, review point; the hold stays until the deferral is ended; the admin end exists | A33, A46 to A55, A66 to A73, A159 to A163 |
 | BS B24, B23, B18; UX §5.3 | Three withdrawal paths, one assessment recorded either way; no ordinary withdrawal while filing may have occurred; the TA waits for a formal return | A13 to A21, A56 to A60, A83 to A88 |
-| BS B17; UX §4.3 | Prior and proposed price, cause and the TA's choice; a declined mistaken increase keeps the communicated price; paid amounts and refunds stay separate | A22 to A31, A74 to A82 |
-| BS B17; UX §3.1, §4.4 | Original estimate and later forecast stay separate; the timing notice reaches the TA | A32, A39 to A45 |
-| UX §4.2 Groups (travel-date edit and its recheck); BS B06 | Affected unfiled applications rechecked; filed facts unchanged; recheck answers truthfully | A11, A61 to A65 |
-| BS B23 (held correction) | Released correction applied again by the person permitted | A34 to A36 |
+| BS B17; UX §4.3 | Quote, current price and proposed price; the TA's choice keeps the current price on decline; paid amounts and refunds stay separate | A22 to A31, A74 to A82, A154, A164 |
+| BS B17; UX §3.1, §4.4 | Estimate and forecast stay separate; the timing notice is recorded without an acknowledgement request | A32, A39 to A45 |
+| BS B23 (held correction) | Released correction applied by the TA; values not on the page | A34 to A36, A165 |
 | BS B35 | Replay and matrices | A04, A110 |
 | V24 | Keyboard, screen reader, phone | A116 to A128 |
 
 ## 2. Acceptance checklist
 
-### 2.1 TA-05 Group detail: closing and group end (travel agent)
+### 2.1 TA-05 and TA-05c: closing and group end (travel agent)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A01 | Travel agent (Y) | TA-05 of G1 after Setup 2 (§3 G-1) | Read the section "Closing the group". | The B25 rule as text (draft): "A group closes when every application in it has ended and no import or import issue of the group is open. A withdrawn application stays in the group until it ends with the group after the travel return date." Core's two counts with units ("Imports still running: 0 imports"; "Open import issues of this group: 0 issues"; WP-03 U1). No count of open applications computed by the page; no sentence that the group is ready to close or closes on a date. The link "Close the group" → TA-05c shows because the group is open (Q-W03-09); no close form on TA-05. | L | CC-02; BS B25; WP03-A31, A32 |
-| WP17-A02 | Travel agent (Y) | TA-05c of G1 (§3 G-1) | Read TA-05c. Select "Close the group". | TA-05c: `h1` "Close the group: [group]"; the rule and Core's facts as A01; the effect (draft) "A closed group stays readable with its history. You cannot add applicants or change its travel dates."; "Close the group", "Cancel" → TA-05. The send is refused (`group_has_open_applications`): TA-05c re-renders at the POST address with an error summary that names every condition in Core's `blockers`, in words: "Some applications of this group are still open. Each ends when its processing completes, or with the group after the travel return date." (and, when present, "Import issues of this group are open." with the issues link, "An import of this group is still running." with the imports link). No code alone. Group revision and state unchanged (delta 0); operations delta 0. | L | CC-02; `groups.ts` `closeGroup`; PL §4.2 (Group end) |
-| WP17-A03 | Travel agent (Y) | TA-05 of G3 → TA-05c (§3 G-2) | Follow "Close the group"; select "Close the group". | Accepted: 303 to TA-05; the receipt reads "Request recorded" (the summary has only the group id, as a created group's; §0.2 "Receipts") with "Current: State: Closed". TA-05 then is read only: no "Add applicants", no "Edit travel dates", no close link; the history stays. TA-04 row "Closed". A fresh read shows the group revision advanced. No `?done=closed` flash. | L | CC-02; WP-03 C-03; M-12 class |
-| WP17-A04 | Travel agent (Y); harness; test | TA-05c of G3, the Nth time (§3 G-2; test) | (1) Harness: resend the accepted POST (same `_op`). (2) Press Back. (3) Harness raw: a new key with the group's earlier revision. (4) Test: two tabs of TA-05c of one group; tab 2 closes; tab 1 sends. (5) Test: lost acknowledgement. | (1) The same 303 and receipt; one `core.group_closed` fact. (2) TA-05c shows "The group is closed." with no form; nothing sent. (3) `stale_revision`: CMP-14 "Group: open when you opened the page / now Closed"; nothing recorded. (4) As (3). (5) C4 "Checking the original result", "Check status"; no second close offered; the status page links TA-05. | L ((1) to (3)) + T ((4), (5)) | BS B35; §0.2 "Replay terms" |
-| WP17-A05 | Test (`group-close` unit and HTTP tests) | TA-05 refusal render | Render each of `group_has_open_applications`, `group_intake_incidents_open`, `attempt_in_progress` alone and all three together; `group_closed`; `stale_revision`; an unknown code; access, session, maintenance and support-view refusals. | Each code has its sentence and link; with several blockers every one shows (not only Core's first code); `group_closed` reads "The group is closed already." with the closed state; unknown: category text and "Reference code: [code]"; access refusals go to the shell (LD-14). The page never decides closure itself: the form shows whenever the group is open. | T | CC-02; Q-W03-09; WP-01 A-08 |
-| WP17-A06 | Travel agent (Y) | TA-05 of G2 after the date check (§3 V19-4) | Read the page. | State "Open" (H is still open). "Ended with the group: 5 applications" (WP03-A31 line). Rows A, B, D, E, F show "Ended with its group" as their stage (not "Completed" alone; §6 Q-05) with their outcome as recorded ("Withdrawn" for A, and for D and F when accepted; else "Outcome not recorded"). Row H shows "Submitted" and its next step from Core. No text that the group "finished", "succeeded" or "will close". | L | BS B25; PL §4.2 ("Ended with group", never success); V19 |
-| WP17-A07 | Travel agent (Y) | TA-05c of G2 (§3 V19-5) | Select "Close the group". | Refused `group_has_open_applications` as A02; nothing recorded. | L | CC-02; BS B25 |
-| WP17-A08 | Test; gallery | TA-05 of a group closed after its return date (`closed_kind = group_end`), with one completed application that keeps an open payment follow-up | Render. | State "Closed after the travel return date"; read only with history; rows with "Ended with its group" or "Processing completed"; the completed row keeps its link, and TA-07 shows the continuing payment facts (WP16-A110); no "Add applicants", "Edit travel dates" or close form. | T + gallery | BS B25 ("closed group may retain … financial follow-up"); V19 |
-| WP17-A09 | Travel agent (Y); test | TA-05 of G2 after V19-4; TA-07 of H | Read. | TA-05 states the B25 exclusions as rule text, without a per-application verdict (no TA read returns one): "An application ends with the group only if it was never paid, never assigned to an operator, never sent to the authority, holds no original or pending delivery, and no money is outstanding on it. Other applications stay open until their processing completes." (draft). TA-07 of H shows its own next step from Core (for example "TravelMudra: assign an operator"). No page states the date-check interval. | L + T | BS B25; §0.1 "Facts no read returns"; WP-01 Q-13 |
-| WP17-A10 | Test | TA-05 states | The group read unavailable; the closure counts unavailable; a support view; 200 applications (the read's cap). | Unavailable read: S7, never an empty group. A count that cannot be read: "Unavailable", never "0". Support view: the facts, no close form. At 200 rows: "This page lists the first 200 applications of this group." | T | D7; LD-14; K-05 |
-| WP17-A11 | Travel agent (Y); test | TA-13b of G2 (§3 V19-2) and TA-05 after it | Change the dates of G2 to start today − 3 and return today − 1. Read TA-05. Test: a return date before today. | WP-03 behaviour as WP03-A19 (not repeated). WP-17 part: after the change TA-05 lists each open application with its recheck state from Core's pending answer ("Being checked", WP-03 U4) until Core records the recheck; the page lists no "affected" set and computes no count. Per §6 Q-01: the design adds a minimum of today to TA-13b's date controls (a browser check only); TA-13b also states before "Save travel dates", on every render (draft): "If the new return date is before today, TravelMudra's next date check ends each application of this group that can end with the group. That cannot be reversed." Core decides: a raw post with past dates is accepted, and the BFF adds no rule of its own. | L + T | PL §5.2 (Edit travel dates); BS B06, B25; §6 Q-01 |
-| WP17-A12 | Travel agent (Y); test | TA-04, TA-06 after V19-4; test of the row words | Read the G2 rows. Test: rows of each lifecycle with and without an outcome. | TA-06 rows of A, B, D, E, F: "Ended with its group" (lifecycle words) and the outcome as recorded; never "Completed" alone and never a success tone (§6 Q-05). A withdrawn open application (before V19-4): Outcome "Withdrawn" and the stage "Draft" or "Submitted"; never "Closed" or "Cancelled". TA-04 G2 row "Open" with "[open] open of [total] applications" from Core. | L + T | PL §4.2; BS B21, B25; §6 Q-05 |
+| WP17-A01 | Travel agent (Y) | TA-05 of G after Setup 2 (§3 V19G-1) | Read the section "Closing the group". | `h2`; the rule text (WP-03 `CLOSE_RULE`); Core's two facts with units ("Imports still running: 0 imports"; "Open import issues of this group: None"); when a listed row has pending `group_end_pending`, the design's line "[n] of the applications listed wait for the travel return date. TravelMudra ends each of them with the group on the day after [return date] (IST), when it is unpaid and has no TravelMudra work. Until then the group cannot close." (counted from listed rows by Core's pending reason; "At least [n] …" at the 200-row cap); the link "Close the group" → TA-05c (secondary, never the page's primary action). No close form and no "can close" verdict on TA-05. | L | CC-02; design §2.1; **O-11** |
+| WP17-A02 | Travel agent (Y) | TA-05c of G (§3 V19G-2) | Read; select "Close the group". | `h1` "Close [group]"; "What closing means" ("A closed group takes no new applications, no imports and no change of travel dates. Nothing is deleted… A closed group cannot be opened again."); "What TravelMudra checks when you close it" (three checks; Core's facts; "Applications still open: 3 of 3 applications" from this group's `core.ta_groups` row, or the listed-row count when the row is absent; "TravelMudra checks again when you close the group."); the review line; "Close the group" (destructive) and "Cancel". Refused: CMP-07 "The group was not closed" with one item per blocker code, in the design's §2.14 words; the facts re-read; the form stays; group revision and state unchanged; operations delta 0. | L | Design §2.2, §2.14; BS B25 |
+| WP17-A03 | Travel agent (Y) | TA-05c of G0 (§3 V19G-7) | Select "Close the group". | 303 to TA-05; receipt "Request recorded" with "Current: Group closed (You closed this group)"; TA-05 shows the closed sentence, no close link, no "Add applicants", no "Edit travel dates"; TA-13b of G0 shows "The group is closed. Its travel dates cannot change."; TA-04 row "Closed". A fresh read shows the group revision advanced. No `?done=closed`. | L | Design §2.1 item 4, §2.13; O-08 |
+| WP17-A04 | Travel agent (Y); harness; test | TA-05c of G0, the Nth time (§3 V19G-7a; test) | (1) Harness: resend the accepted POST (same `_op`). (2) Press Back. (3) Harness raw: the unchanged saved envelope with a new key. (4) Harness raw: a new key with the group's current revision. (5) Test: two tabs of one group; tab 2 closes; tab 1 sends. (6) Test: lost acknowledgement. | (1) The same 303 and receipt; one `core.group_closed` fact. (2) TA-05c Closed state, no form; nothing sent. (3) `stale_revision`: CMP-14 rows (Travel dates; Applications listed); nothing recorded. (4) `group_closed`: the Closed state with "This group was closed meanwhile."; nothing recorded (O-10). (5) As (3) for tab 1. (6) C4; no second close offered; the status page links TA-05. | L ((1) to (4)) + T ((5), (6)) | BS B35; **O-10**; design §2.2 |
+| WP17-A05 | Test (`group-close.test.ts`) | TA-05c refusal render | Each blocker code alone and all three together; `group_closed`; `stale_revision`; an unknown code; access, session, maintenance and support-view refusals. | One summary item per blocker in the design's §2.14 words (not only Core's first code); `group_closed` → Closed state; CMP-14 for stale; unknown: category text and "Reference code: [code]"; access refusals reach the shell (LD-14). The form shows whenever the group is open (Core decides, Q-W03-09). | T | Design §2.2, §2.14; CC-02 |
+| WP17-A06 | Travel agent (Y) | TA-05 of G after the date check (§3 V19G-10w) | Read. | State "Open" (W and C are open). Rows D and U: "Ended with the group (not an outcome)" with their outcome as recorded (D "Withdrawn"; U "Withdrawn" or "Outcome not recorded" by the branch); rows W and C: their stage and Core's next step. "Ended with the group: 2 applications" (WP03-A31). No text that the group finished, succeeded or will close. | L | BS B25; design §2.1 item 3; V19 |
+| WP17-A07 | Travel agent (Y) | TA-05c of G after the date check (§3 V19G-10x) | Select "Close the group". | Refused `group_has_open_applications` as A02; nothing recorded. | L | CC-02; BS B25 |
+| WP17-A08 | Test (`test/system/group-end-view.test.ts`, V19G-12); gallery | TA-05 of a group closed after its return date (`closed_kind = group_end`) | Render. | "Closed after the travel return date. Applications that were still open and eligible ended with the group. Nothing was deleted."; rows "Ended with the group (not an outcome)"; read only with history; no close link, no "Add applicants", no "Edit travel dates". A completed application with an open payment follow-up keeps its row (WP16-A110). | T + gallery | BS B25; design §2.1 item 4 |
+| WP17-A09 | Travel agent (Y) | TA-05 of G after V19G-3 (§3 V19G-4) | Read D's row and the closing section. | D's row: owner "TravelMudra", next "Ends with the group after the travel return date" (never "Nothing to do"); the A01 line "1 of the applications listed wait for the travel return date…". No per-application group-end verdict for W, U or C (no TA read returns one); no date-check interval stated. | L | Design §2.1 items 2, 3; WP-01 Q-13 |
+| WP17-A10 | Test | TA-05 and TA-05c states | The group read unavailable; the closure counts unavailable; the optional `core.ta_groups` read unavailable or without the row; a support view; 200 listed applications. | S7 on the group read; "Unavailable", never "0", for a count; without the `core.ta_groups` row: "[o] of the [n] listed applications are still open" ("At least …" at the cap); support view: facts, no link or form; at 200: "This list shows at most 200 applications." and "Closing the group checks every application, also those not listed." | T | D7; LD-14; K-05; design §2.1, §2.2 |
+| WP17-A11 | Travel agent (Y); harness | TA-13b of G (§3 V19G-10u) | Enter start today − 3 and return today − 1 (the date controls carry Core's today as a minimum; the harness posts the TA-13b fields as the page names them, labelled set-up). Read the review. Give the acknowledgement of the exact dates. Send. Read TA-05. | First send: no command (operations delta 0; group revision unchanged); the review page states the exact dates, "Today (IST) is [date]", and what the next date check ends ("Each open application of this group that is unpaid and has no TravelMudra work ends with the group. This cannot be reversed."), with an acknowledgement for these dates (never prechecked; BFF-only, never sent to Core). After the acknowledgement: Core accepts; receipt "Travel dates changed" (WP03-A19); TA-05 rows show "Being checked" until Core records the recheck. | L | **O-01** (R-01, P0); PM Q-01; Q-W17-06 |
+| WP17-A12 | Travel agent (Y); test | TA-04, TA-06 after V19G-10w; test of the row words | Read the G rows. Test: rows of each lifecycle with and without an outcome. | TA-06 rows of D and U: "Ended with the group (not an outcome)" and the outcome as recorded; never "Completed" alone and never a success tone (§6 Q-05). A withdrawn open application: outcome "Withdrawn" and the stage; never "Closed" or "Cancelled". TA-04 G row "Open" with "[open] open of [total] applications" from Core. | L + T | Design §2.1 item 3; BS B21, B25 |
 
 ### 2.2 TA-07 and TA-07w Withdraw (`core.request_withdrawal`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A13 | Travel agent (Y); test | TA-07 of A, section "Withdraw" (§3 W-1); test: each preview and editor state | Read the section. | From Core's facts only: preview `accepted` and the travel agent may act → link "Withdraw this application" → TA-07w. Assigned and not returned → no withdraw link; the WP-09 link "Ask your operator for a return" → TA-07p `?purpose=withdraw` (WP09-A08). Preview `refused` → CMP-10: the reason in words, the owner and the route (filing possibly occurred: "Owner: your operator"; undeclared cut-off: "Owner: TravelMudra"), no link (§6 Q-13). An outcome recorded → no section, the status row shows the withdrawal (WP-03 rows). Support view: facts, no link. | L (A) + T | PL §5.2 TA-07 (Withdraw application); BS B18, B23, B24; WP09-A08 |
-| WP17-A14 | Travel agent (Y) | TA-07w of A (§3 W-1) | Read the page from the top. | `h1` "Withdraw this application: [applicant]"; breadcrumb back to TA-07; "Read at". Scope: application, group, service, stage. Current facts: stage, outcome ("Outcome not recorded"), service payment (TA words), price in effect (none for a draft: "Fixed when you submit"). "TravelMudra's answer now: Accepted" from the preview, with "TravelMudra checks it again when you send." Effect (draft): "No further filing happens. The application, its history, documents and money records are kept. A withdrawal cannot be reversed. The application stays in the group; after the group's travel return date it ends with the group if nothing holds it open." When the service payment is "Recorded as received": "Recording a refund is unavailable in this release. Owner: TravelMudra." (WP16-A07 TA variant). "Note for TravelMudra" optional (up to 2,000). Hidden revision. "Withdraw the application" and "Cancel" → TA-07. No checkbox. | L | BS B24, B25; UX §3.3; WP16-A07 |
-| WP17-A15 | Travel agent (Y); harness | TA-07w of A (§3 W-1) | Give a note; send. Harness: resend the same `_op`. | 303 to the host's receipt address (design §1.5); receipt "Withdrawal recorded": "Withdrawn: no further filing happens" (summary `result: accepted`); Current: Outcome "Withdrawn", Stage "Draft", Next per Core. TA-05 of G2 still lists A with "Withdrawn". Y's notices +1 (`withdrawal_decision`, observe TA-10). The receipt gives no instruction to act. The resend: the same 303 and receipt; one withdrawal record. | L | BS B24, B35; WP-07 F-33 |
-| WP17-A16 | Travel agent (Y); test | TA-07w of F (§3 W-3, branch "refused"); test: a submitted application before its declared cut-off | Send (live branch); test: the accepted path. | Refused branch: the receipt reads "Withdrawal request recorded" with "Refused: this service has no withdrawal cut-off that TravelMudra can apply in this release" (never "Withdrawn"); Current: outcome unchanged; TA-07 status row "Withdrawal request refused: [reason]"; Y's notices +1. Core records each new request (no duplicate guard is claimed): the section stays as Core's preview allows. Accepted path (test, or live in the "accepted" branch): as A15 with Stage "Submitted". | L (branch) + T | BS B24; WP-15 lesson (accepted command, refused effect); WP-09 G-03 |
-| WP17-A17 | Test | TA-07w race | The preview reads accepted at load. Before the send: (a) the application is assigned (fixture); (b) a fact that changes Core's assessment is recorded (fixture: a declared cut-off step on a formally returned case). | (a) Refused `awaiting_formal_return`; nothing recorded; TA-07w re-renders with the note kept and the TA-07p link. (b) Core records `refused` / `declared_cutoff_passed`; the receipt shows the recorded result, never the preview. | T | BS B18, B24; `withdrawal.ts` |
-| WP17-A18 | Travel agent (Y); harness; test | TA-07w of A after W-1 (§3 W-2); tests | GET TA-07w of A. Harness: send the saved W-1 envelope with a new key. Test: `awaiting_formal_return` (assigned after load), `hold_assistance_in_progress`, `application_not_open` (ended), `protection_mark_active`. | GET: no form; "This application already has an outcome: Withdrawn. Withdrawing it is not possible." with the link to TA-07. The saved envelope: `outcome_already_recorded`, nothing recorded (withdrawal records delta 0). Each test refusal: TA-07w re-rendered at the POST address with the note kept and Core's reason in words; `awaiting_formal_return` adds the TA-07p `?purpose=withdraw` link. | L (GET, envelope) + T | WP-09 G-05; §0.5 |
-| WP17-A19 | Test | TA-07w stale and access | A stale revision (the application changed after load); another TA's application; a support view; a session that ended. | Stale: CMP-14 with the changed facts and the note kept; nothing recorded. Another TA: the uniform not-found page. Support view: no form. Session: sign-in. | T | UX §3.3; LD-14 |
-| WP17-A20 | Test (BFF, HTTP) | TA-07w handler | A note of 2,001 characters; the largest valid note (2,000 Devanagari characters) over real HTTP. | 2,001: refused at the field, the note kept whole, no command call. 2,000 Devanagari: the body fits the route limit and reaches Core; accepted (§0.1 "BFF today": 16,384 bytes is too small today). | T | LD-17; WP-16 PM Q-14; M-06 |
-| WP17-A21 | Test (`case-words`) | Withdrawal words, both audiences | Every assessment code, requester kind and state; an unknown code. | §0.2 "Words"; `withdrawal_cutoff_undeclared` on TA pages: "Withdrawing a submitted application of this service is unavailable in this release. Owner: TravelMudra."; no TA page says "cancelled", "deleted", "refunded" or "closed" for a withdrawn application; no page uses "withdrawn" for a service that is no longer offered (WP-13). | T | BS B24; WP-13 words; Q-W16-08 |
+| WP17-A13 | Travel agent (Y); test | TA-07 aside of D (§3 V19G-3), of W (§3 V19G-8); test: each state | Read the aside. Follow the link on W. | "Withdraw this application" → TA-07w shows for every open application with no outcome, outside a support view, whatever Core's preview says (G-12). On TA-07w of W (assigned): "This application is with your operator. To withdraw it, ask your operator to return it to you first." and the link "Ask your operator for a return" → TA-07p `?purpose=withdraw` (WP-09; the link is on TA-07w, not on TA-07); no form. Refused preview (test): the reason in T1 words with its owner line (`filing_possibly_occurred` "Owner: your operator, who checks whether the filing happened."; cut-off codes "Owner: TravelMudra."); no form (Q-W17-04). An application with an outcome: no link; the status row shows the withdrawal. | L (D, W) + T | **O-11**; **G-12**; design §2.4 item 5, §2.6 |
+| WP17-A14 | Travel agent (Y) | TA-07w of D (§3 V19G-3) | Read the page from the top. | `h1` "Withdraw [applicant]"; meta; "Read at". "What withdrawing means" (records and checks the request; if accepted no further filing, history, documents, originals and money records kept, cannot be reversed); for an unpaid application with no TravelMudra work: "It stays in the group until the day after the travel return date, then ends with the group."; for a submitted one the refund line "A payment you made is not refunded by a withdrawal. Refunds are not decided here. Owner: TravelMudra." "TravelMudra's check now": "If you request it now, TravelMudra accepts it." and "TravelMudra checks again when you send the request." Note (optional, up to 2,000); review line; "Withdraw the application" (destructive); "Cancel". | L | Design §2.6; BS B24, B25 |
+| WP17-A15 | Travel agent (Y); harness | TA-07w of D (§3 V19G-3, V19G-3a) | Give a note; send. Harness: resend the same `_op`. Press Back. | 303 to TA-07w; receipt "Application withdrawn" with "Withdrawn. No further filing happens." Current: outcome, stage "Draft". TA-07 of D: Withdrawal row "Withdrawn. No further filing happens."; Group end row "This application ends with the group after the travel return date: unpaid, with no TravelMudra work."; action panel owner "TravelMudra", no action. Y's notices +1 (`withdrawal_decision`). No instruction to act. Resend: the same receipt; one request record. Back: the Withdrawn state, no form. | L | BS B24, B35; WP-07 F-33; design §2.6, §2.13 |
+| WP17-A16 | Travel agent (Y); test | TA-07w of U (§3 V19G-10r, by branch); test: the other branch and a hand-made post | Send (accepted branch) or read (refused branch). | Accepted branch: as A15 with stage "Submitted" and the refund line shown before the form. Refused branch: no form (Q-W17-04); in the test a hand-made post records a refused request: receipt "Withdrawal request recorded: refused" with "Refused: this service cannot be withdrawn after submission." (never "withdrawn"); TA-07 row "Your withdrawal request was refused: …"; the "Earlier request refused" line on TA-07w. Core records each new request; no duplicate guard is claimed. | L (branch) + T | BS B24; WP-15 lesson; design §2.6, §4.1 |
+| WP17-A17 | Test | TA-07w race | Preview accepted at load; before the send (a) the application is assigned; (b) a fact changes Core's assessment (a declared cut-off step on a formally returned case). | (a) `awaiting_formal_return`: "This application went to your operator meanwhile. Ask for a return to withdraw it." with the With-the-operator state and the unsent text block; nothing recorded. (b) Core records `refused` / `declared_cutoff_passed`; the receipt shows the recorded result, never the preview. | T | Design §2.6, §2.14 |
+| WP17-A18 | Travel agent (Y); harness; test | TA-07w of D after V19G-3 (§3 V19G-3b); tests | (a) GET TA-07w of D. (b) Harness raw: the unchanged saved V19G-3 envelope with a new key. (c) Harness raw: a new key with D's current revision. Test: `awaiting_formal_return`, `hold_assistance_in_progress`, `application_not_open`, `protection_mark_active`. | (a) Withdrawn state, no form. (b) `stale_revision`: CMP-14 (Stage, Editing, TravelMudra's check now) with the note in its field; nothing recorded. (c) `outcome_already_recorded`: the Withdrawn state and the unsent text block with the note; nothing recorded (withdrawal records delta 0). Tests: each re-renders TA-07w with Core's reason and the note kept; `protection_mark_active` reads the design's restore sentence. | L ((a) to (c)) + T | **O-10**; WP-09 G-05; design §2.6 |
+| WP17-A19 | Test | TA-07w stale and access | The application changed after load; another TA's application; a support view; a session that ended. | Stale: CMP-14 with the note kept; nothing recorded. Another TA: the uniform not-found page. Support view: items 2 to 4 and "Read-only view: the travel agent takes this step."; no form. Session: sign-in. | T | UX §3.3; LD-14; design §2.0 |
+| WP17-A20 | Test (BFF, HTTP) | TA-07w handler | A note of 2,001 characters; the largest valid note (2,000 Devanagari characters) over real HTTP. | 2,001: sent unchanged, refused at the field by the contract, the note kept whole. 2,000 Devanagari: the body fits the route limit (24,576 bytes) and reaches Core; accepted. | T | LD-17; Q-W17-09 |
+| WP17-A21 | Test (`timing-words.test.ts`) | T1 words, both audiences | Every assessment code and state; an unknown code. | Design T1 words; no TA page says "cancelled", "deleted", "refunded", "closed" or "completed" for a withdrawn application; no page uses "withdrawn" for a service that is no longer offered (WP-13); unknown: "Unrecognised: [code]". | T | Design §2.11 T1; WP-13 words |
 
 ### 2.3 TA-07 price section and TA-07d Decide on the price change (`core.decide_price_increase`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A22 | Travel agent (Y) | TA-07 of B after Q-1 (§3 Q-2) | Read the action panel and "Price and timing". | Action panel (Core's pending `price_decision_pending`): "Decide on the price change" → TA-07d. Rows: "Quote: ₹3,500, fixed at submission"; "Price in effect: ₹3,500"; "Price change waiting for your decision: ₹4,000 (correction of a mistaken price)"; original estimate; current forecast. No "Amount due", no difference, no total. | L | PL §5.2 TA-07 (Decide price increase); BS B17 |
-| WP17-A23 | Travel agent (Y) | TA-07d of B (§3 Q-2) | Read the page from the top. | `h1` "Decide on the price change: [applicant]"; "Read at". Evidence: "Price before the change: ₹3,500" (`previous_price_paise`); "Proposed price: ₹4,000"; cause words; "Service payment: Not recorded yet" (TA words). The SuperAdmin's reason does not show (no TA read returns it): "Partly met" (§6 Q-06). Effects: Accept → "₹4,000 becomes the price in effect." Decline → "TravelMudra keeps the price it communicated: ₹3,500." Radio group "Your decision" (Accept, Decline), none preselected; hidden record id and revision; "Record my decision"; "Cancel" → TA-07. | L | UX §4.3; BS B17; §6 Q-06 |
-| WP17-A24 | Travel agent (Y), tab 2 | TA-07d of B (§3 Q-3) | Choose "Accept"; send. | 303 to the host's receipt address (design §1.5); receipt "Price decision recorded" (named per §0.2) with "Accepted: ₹4,000 is the price in effect"; Current: "Quote: ₹3,500, fixed at submission" and "Price in effect: ₹4,000" as two rows; no open change; no "Amount due". TA-11 shows "Price in effect: ₹4,000" (observe WP-16). | L | BS B17; WP-16 Q-W16-01 |
-| WP17-A25 | Travel agent (Y); harness | TA-07d after Q-3 (§3 Q-3) | Harness: resend tab 2's POST (same `_op`). Press Back on tab 2. | The same 303 and receipt; one decision (price records delta 0 after the first). Back: TA-07d answers "This price change is decided: Accepted, ₹4,000." with no form. | L | BS B35 |
-| WP17-A26 | Travel agent (Y), tab 1 | TA-07d of B, opened before Q-3 (§3 Q-3) | Choose "Decline"; send after tab 2's acceptance. | `stale_revision`: CMP-14 "Your decision: your unsent choice Decline / now Accepted, ₹4,000 in effect"; "Nothing was recorded. This price change is decided."; no form; the unsent choice stays as text. Price records delta 0. | L | UX §3.3; M-09 class |
-| WP17-A27 | Test; gallery | TA-07 and TA-07d of an assigned application with an open increase | Render. Send a saved envelope. | TA-07 shows the open change and "You can decide after your operator returns the application to you." with the link to TA-07p; Next from Core ("Your operator: return the application for your price decision"); TA-07d shows the same line and no form; the envelope: `awaiting_formal_return`, nothing recorded. | T + gallery | BS B18; `submission.ts` decide order; §6 Q-04 |
-| WP17-A28 | Test; gallery | TA-07d of a paid application ("Recorded as received") with an open increase | Render. | The decision form shows (Core accepts it) with the line "Adjusting an amount you already paid, or a refund, is unavailable in this release. Owner: TravelMudra." No amount due, no difference of ₹500, no "pay the rest" (§6 Q-02). | T + gallery | UX §4.3; BS B17, B29; PL §5.2 (Paid amount adjustment) |
-| WP17-A29 | Test (`price-decision` unit and BFF tests) | TA-07d refusals and states | No choice; a record id that is not a price record; a superseded increase (the application was withdrawn or ended); `outcome_already_recorded`; `application_not_open`; `withdrawal_accepted`; a decided record (`stale_revision`); a support view. | No choice: "Choose Accept or Decline." at the field, no command. Superseded: "This price change is no longer open: [the application ended / has an outcome]." with no form. Each Core refusal: its sentence, nothing recorded, the choice kept as unsent text where the form no longer applies. Support view: no form. | T | §0.5; WP-02 R-01, R-03 |
-| WP17-A30 | Travel agent (Y); test | TA-07 of B after Q-3, "Price history" | Read. Test: every kind and state. | Oldest first, every record stays: "Quote at submission: ₹3,500"; "Price change proposed: ₹4,000 (correction of a mistaken price): Accepted"; test: "Reduced automatically to ₹[n]" (`reduction_auto`), "Declined: the communicated price stays", "No longer open". No recorder or reason on TA pages. | L + T | BS B17, B33; UX §4.2 |
-| WP17-A31 | Travel agent (Y) | TA-10 after Q-1 and Q-3 (observe WP-08) | Read the price-change notice. | The notice "needs your acknowledgement" (Core: `ackRequired`); recording the price decision does not acknowledge it and no page acknowledges it for the travel agent; the decision and the acknowledgement stay two facts (§6 Q-16). | L | UX §4.2 Notices; WP-08 Q-W08-02 |
+| WP17-A22 | Travel agent (Y) | TA-07 of U after V19G-10a (§3 V19G-10c) | Read the action panel, the status rows and "Price and timing". | Action panel (Core's `decide_price_increase`): "Decide on the new price: accept it or keep the current price." → TA-07d. Status row "Price change": "A new price waits for your decision". "Price and timing": "Quoted at submission ₹3,500"; "Price in effect ₹3,500"; "Proposed new price ₹4,000 (price correction)" with the link "Decide on the price change". No "Amount due", difference or total. | L | Design §2.4; **O-03** |
+| WP17-A23 | Travel agent (Y) | TA-07d of U (§3 V19G-10c) | Read the page from the top. | `h1` "Price change: [applicant]"; "The change": "Price you were quoted at submission: ₹3,500" (labelled separately), "Price in effect now: ₹3,500", "Proposed new price: ₹4,000", "Why: TravelMudra corrects a mistake in the published price." The SuperAdmin's reason does not show ("Partly met", §6 Q-06). "Your decision" radio, none preselected: "Accept the new price" (hint "The price in effect becomes ₹4,000. A payment you already made does not change; TravelMudra records payments separately.") and "Decline the increase; keep the current price ₹3,500" (hint "The price in effect stays ₹3,500. TravelMudra honours the price it communicated."). Review line; "What this page cannot do: Refunds and payment adjustments are not decided here. Owner: TravelMudra."; "Record my decision"; "Cancel". | L | **O-03**; design §2.5; UX §4.3 |
+| WP17-A24 | Travel agent (Y), tab 2 | TA-07d of U (§3 V19G-10d) | Choose "Accept the new price"; send. | 303 to TA-07d; receipt "Price decision recorded": "You accepted ₹4,000"; Current: "Price in effect ₹4,000"; the quote ₹3,500 stays labelled as the quote; then the Nothing-waits state. TA-11 shows "Price in effect: ₹4,000" (observe WP-16). No amount due. | L | BS B17; design §2.13 |
+| WP17-A25 | Travel agent (Y); harness | TA-07d after V19G-10d | Harness: resend tab 2's POST (same `_op`). Press Back on tab 2. | The same receipt; one decision. Back: "No price change waits for your decision." with the price records table; no form. | L | BS B35; design §2.5 |
+| WP17-A26 | Travel agent (Y), tab 1 | TA-07d of U, opened before V19G-10d | Choose "Decline the increase…"; send after tab 2's acceptance. | `stale_revision`: CMP-14 "Price change: your choice Decline / now Accepted"; "Price in effect: ₹4,000"; no form and "This price change was decided meanwhile: You accepted it."; nothing recorded. | L | Design §2.5, §2.15 |
+| WP17-A27 | Test; gallery | TA-07 and TA-07d of an assigned application with an open increase | Render. Send a saved envelope. | TA-07: owner "Your operator", "A new price waits for your decision. Your operator returns the application to you first."; TA-07d With-the-operator state, no form; the envelope: `awaiting_formal_return`, nothing recorded. | T + gallery | BS B18; design §2.4, §2.5 |
+| WP17-A28 | Test; gallery | TA-07d of a paid application with an open increase | Render. | The form shows (Core accepts it); the accept hint names that a payment made does not change; the "What this page cannot do" line shows; no difference of prices, no "pay the rest" (A164). | T + gallery | UX §4.3; BS B17, B29; P-21 item 2 |
+| WP17-A29 | Test (`application-decisions.test.ts`, BFF) | TA-07d refusals and states | No choice; a record id not a price record; a superseded increase; `outcome_already_recorded`, `withdrawal_accepted`, `application_not_open`; `awaiting_formal_return`; a support view. | No choice: "Choose whether to accept the new price or keep the current price." at the radio group, no command. Ended: "This application ended meanwhile. The price stays ₹[current]. Your decision was not recorded." Assigned meanwhile: the With-the-operator state with "Your decision was not recorded." Outcome on GET: "This application has the outcome [words]. No price change waits for a decision. The price in effect stays ₹[current]." Support view: no form. Each records nothing; the choice kept as unsent text where the form no longer applies. | T | Design §2.5, §2.14; O-03 |
+| WP17-A30 | Travel agent (Y); test | TA-07 of U after V19G-10d, "Price records"; test: every kind and state | Read. | Oldest first by `seq_no`, every record stays, T3 TA words with O-03: "Quoted when you submitted · In effect"; "New price proposed · Price correction · You accepted it"; columns amount and "Price in effect after it" from Core's fields; test: "Lower price applied", "You declined it; the current price stayed", "Lapsed: the application ended". No arithmetic, no recorder, no reason. | L + T | Design §2.4 item 3, §2.11 T3; **O-03** |
+| WP17-A31 | Travel agent (Y) | TA-10 after V19G-10a and V19G-10d (observe WP-08) | Read the price-change notice. | The notice needs acknowledgement (Core: `ackRequired`); the decision does not acknowledge it; TA-10n links TA-07d, which shows the decided state (E-30; STOP-W17-14). | L | UX §4.2; E-30 |
+| WP17-A154 (new) | Test (`submission-price.test.ts` and `application-decisions.test.ts`) | TA-07d with a reduction between proposal and decision | Quote 350000; increase proposed 400000; a catalogue reduction to 300000 recorded while open. Render; decline; accept (separate fixtures). | TA-07d: quote ₹3,500, "Price in effect now: ₹3,000", proposed ₹4,000; the decline choice reads "Decline the increase; keep the current price ₹3,000". Decline: price in effect ₹3,000; receipt "You declined the increase; the current price ₹3,000 stayed" (never "the quoted price ₹3,500"). Accept: ₹4,000. Core test "takes an increase decided after a reduction at the decision…" passes. | T | **O-03** (R-03) |
 
 ### 2.4 TA-07 timing, deferral, held correction and ended states
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A32 | Travel agent (Y) | TA-07 of C after F-1 (§3 F-2); TA-01 | Read "Price and timing" and TA-01 "Travel-date notices". | "Original estimate: [dates]" unchanged; "Current forecast: [today + 5] to [today + 32] (separate from the estimate)"; the group's travel dates. Where the optional notices read returns C's `timing_risk` notice: "The current forecast may affect your travel date." with its time. The page compares no dates itself. The forecast's basis does not show (no read returns it: "Partly met", §6 Q-07). TA-01 lists the notice (WP-03). | L | UX §3.1, §4.4; BS B17; WP03-A105 |
-| WP17-A33 | Travel agent (Y) | TA-07 of C during the deferral (§3 D-4, D-5) | Read the action panel and status facts. | Next from Core (`deferral_active`): "Your operator: review the deferral" with no TA action. Where the optional notices read returns the `deferral` notice: "Paused by TravelMudra until a review on [date]" with the latest notice's date (today + 14 after D-5); otherwise "Review point: not shown here" ("Partly met", §6 Q-06). No justification, approver or "On hold" without a date. | L | UX §2.2; BS B21; §6 Q-06 |
-| WP17-A34 | Test; gallery | TA-07 "Pending work" and TA-07c with a released travel-agent correction | Render; send; render the refusals `held_correction_conflict`, `filing_possibly_occurred`, `awaiting_formal_return`, `stale_revision` (not released), access. | TA-07: "A correction you made while a filing was uncertain was held. Evidence now shows that the filing did not happen. You can apply it again." with the changed field names and a link to TA-07c. TA-07c: the fields, the effect ("Your corrected details become current. TravelMudra checks the identity documents again when an identity detail changes."), "Apply the correction", "Cancel". Accepted: the receipt per §0.2. `held_correction_conflict`: "The details changed after this correction was made. Make the correction again from the current details." with no form. Each refusal records nothing. | T + gallery | BS B23; CC-06; `drafts.ts` CMD-D4 |
-| WP17-A35 | Test | TA-07 pending work by owner | A released correction of an operator's assistance entry and of a SuperAdmin correction. | TA-07 offers no re-application; Next from Core names the operator or "TravelMudra". | T | `derived.ts` rule 8 |
-| WP17-A36 | — | Staff re-application of a held correction | Record. | "Unmet: waits for STOP-W11-03 and P-17 item 3" (as WP11-A50); no WP-17 staff page posts `core.apply_held_correction`. | T | WP-11 I-06; CC-15 |
-| WP17-A37 | Travel agent (Y) | TA-07 of E and F after the date check (§3 V19-5) | Read the page. | Stage "Ended with its group" with its meaning line (§0.2 "Words"); Outcome as recorded; no action panel step and no form (withdraw, price, help or submit); the history keeps every earlier event; Core's progress word shows only beside the lifecycle words (§6 Q-05). | L | BS B25; PL §4.2; V19 |
-| WP17-A38 | Travel agent (Y) | TA-07 of A after W-1 (§3 W-1) | Read the status facts. | Outcome "Withdrawn"; Stage "Draft"; Next from Core in words (for example "No step for you. The application ends with its group after the travel return date if nothing holds it open."); no "Completed", "Closed" or "Delivery pending" headline (Core's `delivery_closure_pending` progress for an open application with an outcome shows only as a labelled row, §6 Q-05). | L | BS B24, B25; §6 Q-05 |
+| WP17-A32 | Travel agent (Y) | TA-07 of C after V19G-10f (§3 V19G-10g); TA-01; TA-10 | Read. | "Original estimate: [dates]" ("an estimate, not a guarantee") unchanged; "Current forecast: [today + 5] to [today + 32]" with "A forecast is TravelMudra's current expectation. Your original estimated window stays as it was."; the basis does not show ("Partly met", A165). TA-01 and TA-10 list the `timing_risk` notice ("The current forecast may affect your travel dates."); its recorded flag reads `ackRequired: false`: no "Needs your acknowledgement", no acknowledgement control, and no page promises one. | L | UX §3.1, §4.4; **O-07**; design §2.4 item 3 |
+| WP17-A33 | Travel agent (Y) | TA-07 of C during deferral 1 (§3 V19G-10l) | Read the status rows and the action panel. | Deferral row from Core's pending reason only (no notices read): proposed "The operator proposed to wait before filing. TravelMudra decides."; approved "Readiness, authorization and packet release remain held until the deferral is ended. The review date is in your notice." Action panel owner "Your operator", no action. TA-10's `deferral` notice reads "Review on [date]; readiness, authorization and packet release remain held until the deferral is ended." (E-30 with O-06). No justification, approver, "waits until" or "On hold" without that sentence. | L | **O-06**; **O-11**; design §2.4 item 1; STOP-W17-01 |
+| WP17-A34 | Test; gallery | TA-07 "Waiting for your decision" and TA-07c with a released TA correction | Render; send; render `held_correction_conflict`, `filing_possibly_occurred`, `awaiting_formal_return`, `stale_revision` (applied in another tab), identity evidence codes, a path id not released. | TA-07: "A held correction of [field words] can be applied now." with the link. TA-07c: "What happened"; "What it changes: Details: [field words]. The held values are not available on this page." (no History claim); "Effect"; "Apply the correction". Accepted: receipt "Held correction applied" on TA-07c's path. `held_correction_conflict` (category `stale_revision`) → the conflict explanation (not CMP-14): "The details this correction changes were changed in another way since. TravelMudra did not apply it: it cannot be applied to the current details. Check the application and correct it again if needed." with the design's residual line; no form. `filing_possibly_occurred`: "A filing may have happened again, so the correction stays held. Nothing changed." Not released: uniform 404. Each refusal records nothing. | T + gallery | **O-04** (R-04); design §2.7 |
+| WP17-A35 | Test | TA-07 pending work by owner | A released correction of an operator's assistance entry and of a SuperAdmin correction. | No re-application offered on TA-07; Next names the operator or "TravelMudra". | T | `derived.ts` rule 8 |
+| WP17-A36 | — | Staff re-application of a held correction | Record. | "Unmet: waits for STOP-W11-03 and P-17 item 3" (as WP11-A50); no WP-17 staff page posts `core.apply_held_correction`. | T | WP-11 I-06; STOP-W17-08 |
+| WP17-A37 | Travel agent (Y) | TA-07 of D and U after the date check (§3 V19G-10x) | Read. | Lifecycle "Ended with the group (not an outcome)"; outcome as recorded; no action panel step and no form or aside link (withdraw, price, help, submit); history kept. | L | BS B25; design §2.4 item 1 |
+| WP17-A38 | Travel agent (Y) | TA-07 of D after V19G-3 | Read. | Outcome "Withdrawn"; stage "Draft"; Group end row and the action panel as A15; no "Completed", "Closed" or "Delivery pending" headline (Core's progress shows only as a labelled row, §6 Q-05). | L | BS B24, B25; design §2.4 |
 
 ### 2.5 OP-02 Timing and OP-02f Record a forecast (`core.record_forecast`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A39 | Operator (OP1) | OP-02 of C, Work, "Timing" (§3 F-1) | Read. | "Original estimate: [dates]"; "Current forecast: none recorded"; the group's travel dates; link "Record a forecast" → OP-02f. No form on OP-02. | L | PL §3.3 OP-02; WP-07 §1.5 |
-| WP17-A40 | Operator (OP1) | OP-02f of C (§3 F-1) | Read the page. | `h1` "Record a forecast: [applicant]"; "Read at". Evidence: original estimate; current forecast; travel start and return. Effect (draft): "The travel agent sees the forecast beside the original estimate; the estimate does not change. When the forecast ends on or after the travel start date, TravelMudra posts a travel-date notice to the travel agent. A later forecast becomes the current one; earlier forecasts stay in the history." Fields: window start, window end (dates), basis (radio, three values, none preselected), note (optional, up to 500). "Record the forecast", "Cancel" → OP-02. | L | UX §3.1, §4.4; BS B17 |
-| WP17-A41 | Operator (OP1) | OP-02f of C (§3 F-1) | Send an end date before the start date. | Refused `forecast_window_invalid` at the start date: "The forecast must start on or after the submission date and end on or after its start."; values kept; OP-02f re-rendered at the POST address; forecasts delta 0. | L | §0.5 |
-| WP17-A42 | Operator (OP1); harness | OP-02f of C (§3 F-1) | Send start today + 5, end today + 32, basis "External delay", a note. Harness: resend the same `_op`. Press Back. | 303 to the host's receipt address (design §1.5); receipt "Forecast recorded"; Current: "Current forecast: [today + 5] to [today + 32]"; original estimate unchanged. The resend: the same receipt; one forecast. Back: a fresh OP-02f showing the current forecast; nothing sent. Y's notices +1 `timing_risk` (`threatened`; observe TA-01, TA-10). | L | BS B17, B35 |
-| WP17-A43 | Test (BFF) | OP-02f handler | A basis of 41 characters; a basis outside the three; a note of 501 characters; dates that are not dates; the largest valid form (500 Devanagari characters) over real HTTP. | Each refused at its field with every value kept whole; no `.slice`; no command call. The largest valid form is accepted. | T | LD-17; M-06 |
-| WP17-A44 | Test | OP-02f with two tabs | Tab 2 records a forecast; tab 1 records another. | Both accepted (Core has no expected revision); the later is current; the earlier stays as history. OP-02f shows the current forecast at load; no page claims a stale comparison (§6 Q-10). The basis, note and time of the current forecast do not show on OP-02 after the receipt ("Partly met", §6 Q-07). | T | `submission.ts` `recordForecast` |
-| WP17-A45 | Test | OP-02f states | A draft; an application with an outcome; an operator not assigned; a read grant; a support view; a SuperAdmin. | Draft: no link; OP-02f "A forecast is recorded after submission." with no form. Outcome: "This application has an outcome. No forecast is recorded." with no form. Not assigned: not-found. Read grant, support view: no form. SuperAdmin: no forecast page (no route; §6 Q-11). | T | §0.5; WP-09 G-05 |
+| WP17-A39 | Operator (OP1) | OP-02 Work of C, "Timing" (§3 V19G-10f) | Read. | "Original estimated window: [start] to [end] (IST), an estimate, not a guarantee"; "No later forecast"; link "Record a forecast" → OP-02f. No form on OP-02. | L | F-39; design §2.8.1 item 2 |
+| WP17-A40 | Operator (OP1) | OP-02f of C (§3 V19G-10f) | Read. | `h1` "Record a forecast: [applicant]"; "Now" (estimate, forecast, travel dates); "Effect": "The forecast is recorded beside the original estimated window, which never changes. The earlier forecast stays in the history. TravelMudra tells the travel agent when the forecast puts the travel dates at risk." (no acknowledgement promise, O-07); fields "Expected from", "Expected by" (hint with the submission date), "What the forecast rests on" (radio, three values, none preselected), "Note (optional)"; review; "Record the forecast"; "Cancel". | L | **O-07**; design §2.8.2 |
+| WP17-A41 | Operator (OP1) | OP-02f of C (§3 V19G-10f) | Send an end date before the start date. | `forecast_window_invalid` at "Expected from": "The forecast must start on or after the submission date ([date]) and end on or after its start."; values kept; re-rendered at the POST address; forecasts delta 0. | L | Design §2.14 |
+| WP17-A42 | Operator (OP1); harness | OP-02f of C (§3 V19G-10f) | Send start today + 5, end today + 32, "An external delay", a note. Harness: resend. Back. | 303 to OP-02f; receipt "Forecast recorded"; Current: "Current forecast: [today + 5] to [today + 32]"; estimate unchanged. Resend: same receipt; one forecast. Back: a fresh page with the current forecast. Y's notices +1 `timing_risk` (`threatened`), recorded with `ackRequired: false`. | L | BS B17, B35; **O-07** |
+| WP17-A43 | Test (BFF) | OP-02f handler | Basis empty; basis of 41 characters; a basis outside the three; a note of 501 characters; dates that are not dates; the largest valid note (500 Devanagari) over real HTTP. | Empty basis: "Choose what the forecast rests on." (BFF, no command). Empty date: "Enter the date." Other values sent whole and refused by Core's contract at the field; values kept; no `.slice`. Largest form accepted. | T | LD-17; design §2.12 |
+| WP17-A44 | Test | OP-02f with two tabs | Tab 2 records; tab 1 records another. | Both accepted (no expected revision); the later is current; no stale comparison claimed (Q-W17-08). The basis of the current forecast does not show after the receipt ("Partly met", A165). | T | Design §4.1 |
+| WP17-A45 | Test | OP-02f states | A draft; an outcome; a read-grant reader (OP2 with a grant); a support view; a SuperAdmin. | Draft or outcome: "A forecast applies only to a submitted application with no outcome." with no form. Read grant: the frame and "Only the assigned operator takes this step. You can read this application." with no form. Support view: no form. SuperAdmin: no forecast page (no route; §6 Q-11). | T | Design §2.0, §2.8.2 |
 
 ### 2.6 OP-02 Deferral: OP-02d Propose (`core.propose_deferral`) and OP-02e End (`core.end_deferral`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A46 | Operator (OP1) | OP-02 of C, "Deferral", in each state (§3 D-1, D-4, D-6) | Read. | None: "No deferral." and link "Propose a deferral" → OP-02d. Proposed: "Proposed: waiting for a SuperAdmin decision. Review proposed for [date]." Approved: "Approved: review on [date]" and link "End the deferral" → OP-02e. Ended or declined: shown in the history only. The justification shows (staff read). | L | UX §2.2; BS B21 |
-| WP17-A47 | Operator (OP1) | OP-02d of C (§3 D-1) | Read the page. | `h1` "Propose a deferral: [applicant]"; Current facts: stage, outcome, external acts (none authorized or uncertain), current forecast. Effect (draft): "A SuperAdmin decides. While an approved deferral is active, readiness, the authorization of external acts and the packet release are paused on this application. Nothing else is paused. When a SuperAdmin approves it, the travel agent gets a notice with the review date." Hard stops: an act authorized or with uncertain filing; an outcome. Fields: justification (20 to 2,000), proposed review date (after today). "Propose the deferral", "Cancel". | L | UX §2.2, §6.3 Exception; BS B21 |
-| WP17-A48 | Operator (OP1) | OP-02d of C (§3 D-1) | (1) Send a review date of today. (2) Send a justification of 19 characters. | (1) `date_invalid` at the review date: "Choose a review date after today." (2) Refused at the justification ("Give a justification of at least 20 characters (up to 2,000)."), by the BFF or Core as the design decides. Values kept; deferrals delta 0. | L | §0.5 |
-| WP17-A49 | Operator (OP1); harness | OP-02d of C (§3 D-1) | Send a valid justification and review date today + 7. Harness: resend the same `_op`. | 303 to the host's receipt address (design §1.5); receipt "Request recorded" (the summary is the same for proposal and end; §0.2) with Current "Deferral: proposed, review proposed for [today + 7]". One deferral. SA-02d +1 (D-3). | L | BS B21, B35 |
-| WP17-A50 | Operator (OP1) | OP-01 during the proposal and the approval (§3 D-2, D-4; observe WP-07) | Read the views. | Proposed: as Core's pending answer (SuperAdmin owns the next step). Approved: C in "Waiting" with the review point (WP07-A165, F-07); not in "Action now"; the navigation count agrees. | L | WP-07 F-07 |
-| WP17-A51 | Operator (OP1); harness | OP-02d of C with an open deferral (§3 D-2) | GET OP-02d. Harness raw: the D-1 content with a new key. | GET: no form; "A deferral is already proposed on this application." with a link to the section. Raw: `conflict_duplicate` / `deferral_active`; nothing recorded. | L | WP-09 G-05; §0.5 |
-| WP17-A52 | Test | OP-02d hard stops and stale | An act `authorized`; an act `filing_unknown`; an outcome; a draft; a stale revision; a saved envelope after each. | On GET the blocker and no form ("A deferral cannot be proposed while a filing may have happened." with the act's page as route; "… once an outcome is recorded."; "… before submission."); the envelope refused with Core's code; stale: CMP-14; nothing recorded. | T | §0.5; WP-09 G-05 |
-| WP17-A53 | Operator (OP1); harness | OP-02e of C (§3 D-6) | Read. Give a note; send. Harness: resend the same `_op`. | `h1` "End the deferral: [applicant]"; Current: "Approved: review on [today + 14]"; Effect: "Readiness, authorization and packet release are no longer paused by this deferral. The travel agent gets a notice that the deferral ended."; note required (1 to 1,000). Accepted: receipt "Request recorded" with Current "Deferral: ended"; Y's notices +1; the resend returns the same receipt. | L | BS B21, B35 |
-| WP17-A54 | Operator (OP1); harness; test | OP-02e after D-6 (§3 D-6); tests | GET OP-02e. Harness: the saved D-6 envelope with a new key. Test: a proposed deferral; an empty note; the largest valid note (1,000 Devanagari characters). | GET: no form, "This deferral is not active." Envelope: `stale_revision` ("This deferral is no longer active: it ended or was replaced."), nothing recorded. Proposed: no end link. Empty note: refused at the field. Largest note: accepted over real HTTP (8,192 bytes is too small today). | L (GET, envelope) + T | §0.5; LD-17 |
-| WP17-A55 | Test; gallery | A deferral whose review came due | Render OP-01 and OP-02 of the application; the notices of the operator and the approver. | OP-01 lists it under "Deferral reviews due" from `core.ops_work.reviewsDue` with its review date; notices "The review date of the deferral of [applicant] has come." to the assigned operator and the approving SuperAdmin. No page computes "due" from dates. | T + gallery | BS B21 (monitoring); WP07-A165 |
+| WP17-A46 | Operator (OP1) | OP-02 Work of C, "Deferral", in each state (§3 V19G-10i, V19G-10l, V19G-10n) | Read. | No open deferral: "No deferral is currently open." and "Propose a deferral" → OP-02d. Proposed: "Proposed: a SuperAdmin decides", proposed review date, justification. Approved: "Review on [date]; readiness, authorization and packet release remain held until the deferral is ended." and "End the deferral" → OP-02e (also after an outcome). The F-39 banner uses the same sentence. | L | **O-05**; **O-06**; F-39; design §2.8.1 item 3 |
+| WP17-A47 | Operator (OP1) | OP-02d of C (§3 V19G-10i) | Read. | `h1` "Propose a deferral: [applicant]"; "What a deferral does": "An approved deferral holds readiness, filing authorization and the packet release until it is ended. Reconciliation, results and delivery go on. It is not a refusal and not a completion. A SuperAdmin decides; the travel agent is told the review date when it is approved. On the review date you and the approving SuperAdmin are reminded; nothing ends by itself."; facts; fields "Why the application should wait" (20 to 2,000; hint that the travel agent does not read it), "Proposed review date"; review; "Propose the deferral". | L | **O-06**; design §2.8.3 |
+| WP17-A48 | Operator (OP1) | OP-02d of C (§3 V19G-10i) | (1) Review date today. (2) A justification of 19 characters. | (1) `date_invalid`: "Choose a date after today (IST)." (2) Refused at the justification (BFF or Core). Values kept; deferrals delta 0. | L | Design §2.8.3, §2.14 |
+| WP17-A49 | Operator (OP1); harness | OP-02d of C (§3 V19G-10i) | Send a valid justification and today + 7. Harness: resend. | 303 to OP-02d; receipt "Request recorded" (shared summary, O-08) with Current "Proposed: a SuperAdmin decides"; one deferral. SA-02d +1 (V19G-10k). | L | **O-08**; BS B21 |
+| WP17-A50 | Operator (OP1) | OP-01 (§3 V19G-10j, V19G-10l; observe WP-07) | Read the views. | Proposed: as Core's pending answer (SuperAdmin owns the next step). Approved: C in "Waiting" with "Review on [date]; …" (F-07, F-39 as O-06 corrects); not in "Action now". | L | WP-07 F-07; **O-06** |
+| WP17-A51 | Operator (OP1); harness | OP-02d of C with the open deferral (§3 V19G-10j) | (a) GET OP-02d. (b) Harness raw: the unchanged saved V19G-10i envelope with a new key. (c) Harness raw: a new key with C's current revision. | (a) "A deferral is already proposed." with the section link; no form. (b) `stale_revision`: CMP-14 (Stage, External acts, Deferral) with the values in their fields; nothing recorded. (c) `conflict_duplicate` / `deferral_active`: the Open-deferral state and the unsent text block; nothing recorded. | L | **O-10**; WP-09 G-05 |
+| WP17-A52 | Operator (OP1); test | OP-02d of W (§3 V19G-10h); tests | GET OP-02d of W. Tests: `filing_possibly_occurred` raised after load, an outcome, a draft, stale. | W: CMP-10 "Proposing a deferral is unavailable while a filing may have happened. Owner: you (reconcile the act)." with the act link; no form. Tests: each GET shows its state and no form; a post answers Core's code with the unsent text block; nothing recorded. | L (W) + T | Design §2.8.3 |
+| WP17-A53 | Operator (OP1); harness | OP-02e of C, deferral 1 (§3 V19G-10n) | Read; give a note; send; resend. | `h1` "End the deferral: [applicant]"; "Review on [today + 14]; readiness, authorization and packet release remain held until the deferral is ended."; justification; Effect "Readiness, filing authorization and the packet release no longer wait for this deferral. Every other check still applies. The travel agent is told that the deferral ended."; note required (1 to 1,000). Accepted: receipt "Request recorded" with Current "No deferral is currently open" (the read no longer returns the ended deferral; no "Ended" claim); Y's notices +1; the resend reconciles to the same receipt. | L | **O-05**; **O-08**; design §2.8.4 |
+| WP17-A54 | Operator (OP1); harness; test | OP-02e after V19G-10n; tests | GET OP-02e of the ended deferral. Harness raw: the saved V19G-10n envelope with a new key. Test: a proposed deferral; an empty note; the largest valid note (1,000 Devanagari characters) over real HTTP. | GET: "No deferral is currently open." with the link to OP-02; no form (no invented history). Saved envelope: `stale_revision` → "This deferral is not open now. Nothing was recorded." with the unsent note (no state claimed). Proposed: "This deferral is proposed and waits for a SuperAdmin…" with no form. Empty note: "Give a reason." Largest note: the body fits the sized limit and reaches Core (the 8,192-byte limit is too small today). | L (GET, envelope) + T | **O-05**; **O-09**; LD-17 |
+| WP17-A55 | Test; gallery | An approved deferral whose review came due | Render OP-01, OP-02, OP-02e; the notices. | OP-01 "Deferral reviews due" from `core.ops_work.reviewsDue`; OP-02e "Review date reached" only when OP-01's read lists it; notices to the assigned operator and the approver; the hold stays until ended; no "overdue". | T + gallery | BS B21; design §2.8.4 |
 
 ### 2.7 OP-02 Ending the case and OP-02w Record the applicant's withdrawal request (`core.record_applicant_withdrawal`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A56 | Operator (OP1); test | OP-02 of C, "Ending the case" (§3 W-4); test: an act possibly filed | Read. | Normal: link "Record the applicant's withdrawal request" → OP-02w. Possibly filed (test): CMP-10 first "Ordinary withdrawal is unavailable: a filing may have happened. Owner: you (reconcile the act). Route: [the act's page]." and the link "Record the applicant's request only" with "TravelMudra records the request and refuses it as a withdrawal while a filing may have happened." (D-W07-15 kept on the new host). | L + T | WP-07 §2.4.6, F-09; BS B23 |
-| WP17-A57 | Operator (OP1) | OP-02w of C (§3 W-4) | Read; send with an empty reference. | Page: `h1` "Record the applicant's withdrawal request: [applicant]"; Current: stage, outcome, payment, external acts, assignment; no assessment preview (the staff read has none; §6 Q-08). Effect (draft): "TravelMudra records the request and assesses it now. It is refused while a filing may have happened, after an evidenced filing or the service's cut-off, or when the service has no cut-off that TravelMudra can apply; otherwise it is accepted. An accepted withdrawal stops new filing and keeps the history, originals, money and remaining duties. It cannot be reversed. The travel agent gets a notice of the result." Fields: "Reference of the applicant's request" (required, up to 120); note (optional, up to 2,000). The empty reference: refused at the field ("Give the reference of the applicant's request."); note kept; nothing recorded. | L | BS B24; UX §3.3 |
-| WP17-A58 | Operator (OP1); harness | OP-02w of C (§3 W-4) | Give `SYN-W17-[stamp]-WDR-C` and a note; send. Harness: resend the same `_op`. | 303 to the host's receipt address (design §1.5); receipt per §0.2 with the recorded result (branch): "Withdrawn: no further filing happens" or "Refused: [reason]" (never a success tone for refused). Current: outcome; Stage "Submitted"; the assignment and the service payment ("Received") unchanged; no custody fact appears (the service holds no originals). TA-07 of C shows the withdrawal row; Y's notices +1. One record after the resend. | L | BS B24; WP-07 F-09; WP-15 lesson |
-| WP17-A59 | Test | OP-02w under possible filing | Send the request on an application with an act `filing_unknown`. | Accepted command with `result: refused` / `filing_possibly_occurred`; the receipt "Withdrawal request recorded" with "Refused: a filing may have happened"; the protection stays; the outcome and lifecycle unchanged (as WP07-A66). | T | WP-07 F-09; BS B23 |
-| WP17-A60 | Test | OP-02w refusals and limits | `application_not_open`; `outcome_already_recorded`; `protection_mark_active`; `stale_revision`; OP2; a reference of 121 characters; the largest valid note (2,000 Devanagari characters). | Each refused with its sentence and values kept, nothing recorded; OP2: not-found; 121: refused at the field by the BFF, kept whole, no command; the largest note accepted over real HTTP (8,192 bytes is too small today). After the receipt the OP-02 page cannot show the withdrawal record ("Partly met", §6 Q-08). | T | §0.5; LD-17 |
+| WP17-A56 | Operator (OP1) | OP-02 Work of W and of C, "Ending the case" (§3 V19G-9) | Read both. | W (act uncertain): CMP-10 first "Ordinary withdrawal is unavailable: a filing may have happened. Owner: you (reconcile the act)." and the link "Record the applicant's request only" → OP-02w. C: "Record the applicant's withdrawal request" → OP-02w. | L | WP-07 §2.4.6, F-09; design §2.8.1 item 4 |
+| WP17-A57 | Operator (OP1) | OP-02w of W (§3 V19G-9) | Read; send with an empty reference. | `h1` "Record the applicant's request only"; the boundary first and "TravelMudra records the request and refuses it as a withdrawal while a filing may have happened."; "What happens"; fields "Reference of the applicant's request" (required, up to 120), note; "Record the request" (secondary under protection). No preview (the staff read has none). Empty reference: "Enter the reference of the applicant's own request: a letter, a message or a form." at the field; note kept; nothing recorded. | L | Design §2.8.5, §2.14 |
+| WP17-A58 | Operator (OP1); harness | OP-02w of W (§3 V19G-9, V19G-10) | Give `SYN-LETTER-[stamp]`; send. Harness: resend the same `_op`. | 303 to OP-02w; receipt "Withdrawal request recorded: refused" with "Refused: a filing may have happened"; W has no outcome; the protection stays; Y's notices list the refusal. Resend: the same receipt; one request record. | L | WP-07 F-09; design §6.3 V19G-9, V19G-10 |
+| WP17-A59 | Test | OP-02w accepted and cut-off branches | An application with no act: accepted; each cut-off code. | Accepted: "Application withdrawn"; the assignment, payment and custody facts unchanged; stage "Submitted". Cut-off codes: "Withdrawal request recorded: refused" with the staff T1 words. | T | BS B24; design §2.13 |
+| WP17-A60 | Test | OP-02w refusals, limits and access | `application_not_open`; `outcome_already_recorded`; `protection_mark_active`; `stale_revision`; OP2; a SuperAdmin; a reference of 121 characters; the largest valid note over real HTTP. | Each refusal with its sentence, values kept, nothing recorded; `protection_mark_active` CMP-10 with owner SuperAdmin; OP2 and a SuperAdmin: no form (Core's policy names the assigned operator); 121: refused at the field, kept whole; the largest note accepted (24,576 bytes). After the receipt, OP-02 cannot show the withdrawal record ("Partly met", §6 Q-08). | T | Design §2.8.5; LD-17 |
 
 ### 2.8 Travel-date recheck (`core.recheck_travel_dates`; in place on OP-02 and SA-04a)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A61 | Operator (OP1); SuperAdmin (SA1); harness | OP-02 and SA-04a of C (§3 R-1) | Read. Harness raw: post the recheck on both surfaces. | No "Travel-date recheck" section (Core's `travelRecheck` is null: the dates are checked). The posts: `travel_date_recheck_not_pending` ("The travel dates of this application are already checked."); nothing recorded. | L | §0.5; WP-11 action panel row 8 |
-| WP17-A62 | Test; gallery | OP-02 and SA-04a with a pending recheck | Render `not_run`; `travel_rule_unknown` with `retryAt`; `travel_rule_unknown` without `retryAt`. | `not_run`: "TravelMudra rechecks this application against the group's new dates. Readiness, the packet release and external acts wait for it." `travel_rule_unknown` with retry: "The travel-date rules could not answer: [code words]. It runs again by itself at [time] IST." Without retry: "… It does not run again by itself. Run it again when the cause is fixed." with the action → the recheck host. The owner is Core's (assigned operator, else SuperAdmin). | T + gallery | `travel-recheck.ts`; LD-08 |
-| WP17-A63 | Test | Recheck results | Send on a pending application with each result. | `rechecked`: receipt "Travel-date recheck recorded" with "Checked against the current travel dates"; Current: the blockers Core reports now. `travel_rule_unknown`: "The rules could not answer: the recheck is still pending" with the retry time, never "passed". `historical_or_held`: "Filed facts stay as they were. Other work waits for the filing evidence." | T | WP-15 lesson; BS B06, B23 |
-| WP17-A64 | Test | Recheck access | OP2; a travel agent; a SuperAdmin; a closed application (`application_not_open`). | OP2: not-found. Travel agent: no route on edge. SuperAdmin: allowed (D128). Closed: refused with its sentence; nothing recorded. | T | `policy.ts` `travel_dates.request_recheck` |
-| WP17-A65 | Travel agent (Y); test | TA-07 and TA-08 of an application waiting for a recheck (§3 V19-2 if visible; test) | Read. | "Being checked" (WP-03 U4) with no TA action; TA-08 shows Core's reason that submission waits for the recheck; no TA control runs the recheck. | L (if visible) + T | WP-03 U4; PL §5.2 |
+| WP17-A61 | Operator (OP1); SuperAdmin (SA1); harness | OP-02 Work and SA-04a Overview of C (§3 V19G-10q) | Read. Harness raw: post the recheck on both surfaces. | No "Travel-date recheck" section (Core's `travelRecheck` is null). Each post: the refusal at the top of the tab, outside the section's show condition: "No recheck is pending now: the current travel dates are already checked."; nothing recorded. | L | F-W17-04; design §2.8.1, §2.14 |
+| WP17-A62 | Test; gallery | OP-02 and SA-04a with a pending recheck | Render `not_run`; `travel_rule_unknown` with and without `retryAt`. | The section `#travel-recheck`: facts, "Readiness, the packet release and external acts wait until the recheck passes.", "Runs again by itself at [time] IST" when set; "Run the recheck now" (assigned operator; SuperAdmin also with no operator). | T + gallery | Design §2.8.1 item 1, §2.9 item 2 |
+| WP17-A63 | Test | Recheck results | Send on a pending application with each result. | Receipt "Travel-date recheck run" at the top of the tab with T8 words; `travel_rule_unknown` never reads as a pass. | T | WP-15 lesson; design §2.11 T8, §2.13 |
+| WP17-A64 | Test | Recheck access | OP2; a travel agent; a SuperAdmin; a closed application. | OP2: not-found. Travel agent: no route. SuperAdmin: allowed. Closed: refused with its sentence; nothing recorded. | T | `policy.ts` |
+| WP17-A65 | Travel agent (Y); test | TA-07 and TA-08 while a recheck is pending (§3 V19G-10u, if visible; test) | Read. | "Being checked" (WP-03 U4); TA-08 shows Core's reason; no TA control runs the recheck. | L (if visible) + T | WP-03 U4 |
 
-### 2.9 SA-02d Deferrals and SA-09d Decide the deferral (`core.decide_deferral`)
+### 2.9 SA-02d Deferrals and SA-09d deferral kinds (`core.decide_deferral`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A66 | SuperAdmin (SA1) | SA-02d and SA-01 group 6 (§3 D-3) | Read. Follow the row's decision links. | SA-02d row C "Proposed: to decide" (+1 from P-0); SA-01 "Proposed, to decide" +1 (lag form). The row links the SA-09d kinds that apply to the state (approve and decline for a proposed deferral; extend for an approved one); the WP-06 `#deferral` link goes. No decision form on SA-02d or SA-04a. | L | WP-06 §2.2.4, §2.7.5; AD-13; CC-04 |
-| WP17-A67 | SuperAdmin (SA2) | SA-09d `deferral_approve` of C, tab 2 (§3 D-3) | Read the page. | SA-09 frame: breadcrumb "Applications & groups › Applications › [applicant] › [decision]"; `h1` with the decision and the applicant; "Read at". Scope: the application and the deferral. Evidence: the operator's justification; "Review proposed for [date]". Current: stage, outcome, assignment, external acts, current forecast. The proposer and the time of the proposal show only through the link "History of this deferral" → SA-08s (no case read returns them). Effect (draft): approve: "Readiness, the authorization of external acts and the packet release are paused on this application until the deferral ends. The travel agent gets a notice with the review date. On the review date the operator and you get a reminder."; decline: "Nothing is paused. The travel agent gets no notice." Hard stops: none. Fields: review date (approve, extend) prefilled with the proposed or current date; reason (10 to 1,000). The decision is fixed by the kind page. The send button names the decision; "Cancel". | L | UX §2.2, §6.3; BS B21; PL SA-09 |
-| WP17-A68 | SuperAdmin (SA2) | SA-09d `deferral_approve` of C, tab 2 (§3 D-3) | Keep today + 7; give a reason; send. | 303 to the design's receipt host; receipt "Deferral decision recorded"; Current: "Approved: review on [today + 7]". A fresh read shows the application revision advanced. Y's notices +1 (`deferral`). OP-04 of C shows the `deferral_active` blocker (observe WP-07). | L | BS B21 |
-| WP17-A69 | SuperAdmin (SA1), tab 1 | SA-09d `deferral_decline` of C, opened before D-3 (§3 D-3) | Give a reason; send after SA2's approval. | `stale_revision`: CMP-14 "Deferral: your unsent decision Decline / now Approved, review on [today + 7]"; the reason kept as unsent text; "Another SuperAdmin already decided this deferral."; nothing recorded (deferrals and notices delta 0). | L | UX §3.3; M-09 class |
-| WP17-A70 | SuperAdmin (SA2) | SA-09d `deferral_extend` of C after D-3 (§3 D-5) | Review date today + 14; reason; send. | Only the extend page applies to an approved deferral (approve and decline answer with the state and no form). Accepted: Current "Approved: review on [today + 14]"; Y's notices +1 with the new date; OP-02 shows the new date. SA-08s of the deferral (observe WP-14) shows the recorded fields only (review date, extension, reason, actor, time). | L | BS B21; K-14 |
-| WP17-A71 | Test (`deferral-pages`, BFF) | SA-09d refusals and states | A review date of today; approve after the proposed date passed with the field left as prefilled; no decision; a reason of 9 characters; an unknown deferral id; a declined or ended deferral; an application withdrawn after the proposal; a support view. | Today: `date_invalid` at the review date ("Choose a review date after today."). Passed: the same at the prefilled date. A hand-made post without a decision: refused at form level, no command. 9 characters: at the reason. Unknown: not-found. Declined or ended: no form, the state in words. Withdrawn meanwhile: Current shows the outcome and the line "This application has an outcome: [outcome]. TravelMudra still records a decision; if you approve, the travel agent gets a deferral notice." (§6 Q-12); the page does not block what Core accepts. Support view: 409. Each refusal records nothing. | T | §0.5; WP-07 D-W07-16 |
-| WP17-A72 | Test (BFF, HTTP) | SA-09d handler | A decision of 21 characters; a review date of 11 characters; the largest valid reason (1,000 Devanagari characters) over real HTTP. | 21 and 11: refused at the field, kept whole, no `.slice`, no command. The largest reason: accepted (4,096 bytes is too small today). | T | LD-17; WP-16 PM Q-14 |
-| WP17-A73 | Test | Deferral words and owner | Every state, the pending answers `deferral_proposed` and `deferral_active`, both audiences. | §0.2 "Words"; the TA never sees the justification, proposer or approver; no "SLA", "overdue" or colour-only marker. | T | BS B10, B21 |
+| WP17-A66 | SuperAdmin (SA1) | SA-02d and SA-01 group 6 (§3 V19G-10k, V19G-10l) | Read. Follow the links. | Lead: "A deferral holds readiness, authorization and packet release until it is ended. It is not a refusal and not a completion." (D-23 as O-06 corrects). Row C, column "Deferral" from the row's pending reason only: "Proposed: to decide" (`deferral_proposed`) with "Decide" → SA-09d `deferral_approve`; after approval "Approved: waits for its review" (`deferral_active`) with "Open" → SA-04a `#deferral` (the row carries no deferral state, STOP-W17-10); any other code: Core's sentence. SA-01 +1 "Proposed, to decide" with the same link. | L | **D-23**; **O-11**; **O-06** |
+| WP17-A67 | SuperAdmin (SA2) | SA-09d `deferral_approve` of C, tab 2 (§3 V19G-10k) | Read. | `h1` "Decide the proposed deferral: [applicant]"; Scope ("Deferral [reference], proposed by the assigned operator"); Evidence (justification verbatim, proposed review date, stage, outcome, external acts, forecast); Effect (approve): "The application waits; readiness, filing authorization and the packet release are held until the operator ends the deferral. On the review date the operator and you are reminded; nothing ends by itself. The travel agent is told the review date…"; Hard stops; "Review date" prefilled with the proposed date; "Reason for your decision" (10 to 1,000); hidden `decision = approve` and BFF-only `applicationId`; "Approve the deferral"; "Cancel" → SA-04a `#deferral`. The `deferral_decline` page shows "The deferral does not start. Work goes on as before. The travel agent is not told." | L | **O-06**; design §2.10.1 |
+| WP17-A68 | SuperAdmin (SA2) | SA-09d `deferral_approve` of C (§3 V19G-10k) | Keep today + 7; reason; send. | Receipt "Request recorded" (O-08) with Current "Review on [today + 7]; readiness, authorization and packet release remain held until the deferral is ended."; a fresh read shows the application revision advanced; Y's notices +1 (`deferral`); OP-04 of C shows `deferral_active` (observe WP-07). | L | **O-08**; BS B21 |
+| WP17-A69 | SuperAdmin (SA1), tab 1 | SA-09d `deferral_decline` of C, opened before the approval (§3 V19G-10k) | Give a reason; send after SA2's approval. | Core checks the state, not a revision: `stale_revision` → not CMP-14: "This deferral was approved since you opened the page. Your decision was not recorded."; the state that applies now (approved, with the link to `deferral_extend`); the unsent text block with the reason; deferrals and notices delta 0. | L | **O-11**; design §2.10.1 |
+| WP17-A70 | SuperAdmin (SA2); test | SA-09d `deferral_extend` of C (§3 V19G-10m); test: competing extensions | Review date today + 14; reason; send. Test: two SuperAdmins extend one approved deferral from pages loaded at the same state. | Live: receipt "Request recorded"; Current "Review on [today + 14]; …"; Y's notices +1 with the new date; OP-02 shows the new date; SA-08s of the deferral shows the recorded fields only. Test: both extensions are accepted (the state stays `approved`); the later review date stands; a TA notice per distinct date; no page claims that the second was refused. | L + T | **O-11** (R-11); BS B21; K-14 |
+| WP17-A71 | Test (`decision-kinds.test.ts`, BFF) | SA-09d states and refusals | No open deferral; the wrong state for a kind; review date today; the proposed date passed with the prefilled field; reason of 9 characters; a hand-made post without a decision; an unknown deferral id; an application with an outcome; a deferral ended or declined meanwhile; a support view. | No open deferral (GET): "No deferral is currently open." with a link to SA-04a, no form. Wrong state: "This deferral is [proposed / approved]." with the link to the kind that applies, no form. Dates: "Choose a review date after today (IST)." Reason: "Give a reason of at least 10 characters (up to 1,000)." No decision: form-level, no command. Outcome: the warning above the fields, the form shows (Q-W17-05). Ended or declined meanwhile (POST): "This deferral is not open now. Your decision was not recorded." with the unsent reason (no state invented, O-05). Support view: 409. Nothing recorded on each refusal. | T | **O-05**; design §2.10.1 |
+| WP17-A72 | Test (BFF, HTTP) | SA-09d handler | A decision of 21 characters; a review date of 11 characters; the largest valid reason (1,000 Devanagari) over real HTTP. | Sent whole and refused at the field or form level; no `.slice`. The largest reason fits the sized limit (16,384 bytes) and reaches Core. | T | LD-17; Q-W17-09 |
+| WP17-A73 | Test (`timing-words.test.ts`) | Deferral words and owners | Every state, the pending answers, both audiences; the notice words of E-30. | O-06's sentence for an approved deferral everywhere; "No deferral is currently open" for none; the TA never sees the justification, proposer or approver; no "waits until", SLA, "overdue" (except Core's review due) or colour-only marker. | T | **O-06**; design §2.11 T2, T7 |
 
 ### 2.10 SA-04a Price and timing and SA-09p Propose a price increase (`core.propose_price_increase`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A74 | SuperAdmin (SA1) | SA-04a of B, "Price and timing" (§3 Q-1) | Read. | Rows: quote at submission; price in effect; "Price change waiting for the travel agent's decision: none"; service payment (staff words); estimate; forecast. Link "Propose a price increase" → SA-09p. No form on SA-04a (the carried disclosure goes). | L | CC-04, CC-15; AD-13 |
-| WP17-A75 | SuperAdmin (SA1) | SA-09p of B (§3 Q-1) | Read the page. | `h1` "Propose a price increase: [applicant]"; Evidence: quote ₹3,500; price in effect ₹3,500; service payment "Not recorded"; editor state (unassigned). Effect (draft): "The travel agent must accept the new price. Until they decide, ₹3,500 stays the price in effect. If they decline, the price they were told stays." Assigned application (test): also "The travel agent can decide only after the operator returns the application." Paid application (test): also "Adjusting a paid amount and refunds are unavailable until the product owner decides them. Owner: product owner." (§6 Q-02). Cause: "Correction of a mistaken price" only; "Change of service scope" shows as a notice, not a choice (A80). Fields: new price in rupees; reason (10 to 1,000). "Propose the price increase", "Cancel". | L + T | UX §4.3; BS B17, B18, B29; §6 Q-02, Q-03 |
-| WP17-A76 | Test | SA-09p amount handling | Send "4000", "4000.50", "4,000", "4000.555", "-1", an empty value, a 25-digit value. | Valid rupee values convert exactly to paise (400000, 400050, and the grouped form as the design allows); a value the BFF cannot convert exactly is refused at the field with the typed value kept; no rounding; no `.slice(0, 24)`; Core's `not_higher` is shown as Core answers. | T | LD-17; WP-06 D-09 |
-| WP17-A77 | SuperAdmin (SA1) | SA-09p of B (§3 Q-1) | (1) Send ₹3,500 with a valid reason. (2) Send ₹4,000 with the reason "short". | (1) `not_higher` at the new price: "Give a price higher than the price in effect, ₹3,500." (2) Refused at the reason ("Give a reason of at least 10 characters (up to 1,000)."). Values kept; price records delta 0. | L | §0.5 |
-| WP17-A78 | SuperAdmin (SA1); harness | SA-09p of B (§3 Q-1) | Send ₹4,000 with a valid reason. Harness: resend the same `_op`. | 303; receipt "Request recorded" (the summary has only the application id); Current: "Price in effect: ₹3,500"; "A price change is waiting for the travel agent's decision". The proposed amount does not show on staff pages after the send (the staff read returns only the record id: "Partly met", §6 Q-06); SA-08s of the application shows the recorded fact. Y's notices +1 (`price_change`, needs acknowledgement). One record after the resend. | L | BS B17; K-14 |
-| WP17-A79 | SuperAdmin (SA1); harness | SA-09p of B with the open change (§3 Q-2) | GET SA-09p. Harness raw: the Q-1 content with a new key. | GET: no form; "A price change is already waiting for the travel agent's decision." Raw: `conflict_duplicate` / `price_increase_open`; nothing recorded. | L | WP-09 G-05; §0.5 |
-| WP17-A80 | Test; harness | `material_scope_change` | Render SA-09p; harness raw: post `cause=material_scope_change`. | No page offers the choice. The notice (draft): "Proposing a price increase for a change of service scope is unavailable in this release: the request cannot name the applied correction. Owner: engineering." The raw post: `input_invalid` at `correctionId` (`correction_not_applied`), nothing recorded. Recorded "Unmet: no request can name the applied correction (§6 Q-03)". | T | WP-07 D-W07-16; contract `core.propose_price_increase` |
-| WP17-A81 | Test | SA-09p refusals and states | `application_not_submitted` (a draft); `outcome_already_recorded`; `stale_revision`; a support view; the largest valid reason (1,000 Devanagari characters) over real HTTP. | On GET for a draft or an application with an outcome: the blocker and no form. Stale: CMP-14. Support view: 409. The largest reason: accepted (4,096 bytes is too small today). Nothing recorded on each refusal. | T | §0.5; LD-17 |
-| WP17-A82 | SuperAdmin (SA1) | SA-04a of B after Q-3 (§3 Q-4) | Read. | "Price in effect: ₹4,000"; "Price change waiting …: none"; quote ₹3,500 unchanged. No amount due. | L | BS B17 |
+| WP17-A74 | SuperAdmin (SA1) | SA-04a of U, "Price and timing" (§3 V19G-10a) | Read. | Price in effect; no open increase; link "Propose a price increase" → SA-09p (submitted, no outcome, no open increase). No form on SA-04a. | L | I-17; design §2.9 item 4 |
+| WP17-A75 | SuperAdmin (SA1); test | SA-09p of U (§3 V19G-10a); tests: assigned, paid | Read. | `h1` "Propose a price increase: [applicant]"; Scope "Cause: a mistake in the published price."; Evidence "Price in effect ₹3,500 (350000 paise)", open increase none, service payment (opt.), Editing; Effect (decline keeps the current price; an assigned application waits for the return; an outcome lapses the increase); Hard stops ("A payment already made is not adjusted; refunds are not decided (owner: product owner)."); "New price in paise" (`newPricePaise`, hint "₹1 = 100 paise. The price in effect is ₹3,500, which is 350000 paise. Enter the full new price, not the difference."); "Reason for the increase"; then the review with the converted amount (A78). Paid (test): the boundary sentence above. | L + T | **O-02**; Q-W17-03; design §2.10.2 |
+| WP17-A76 | Test (BFF, `timing-decisions.test.ts`) | SA-09p amount handling | `400000`; `400050`; `4000.50`; `4,000`; `-1`; empty; a 25-digit value. | `400000` → review "New price: ₹4,000 (400000 paise)"; `400050` → "₹4,000.50 (400050 paise)"; `4000.50`, `4,000`, `-1` → "Enter the price in paise as digits only, for example 400000 for ₹4,000." at the field, value kept, no command; empty → "Enter the new price in paise."; 25 digits → refused whole at the field (never cut to 24), kept whole. No rounding. | T | **O-02**; LD-17 |
+| WP17-A77 | SuperAdmin (SA1) | SA-09p of U (§3 V19G-10a) | (1) `350000` with a valid reason, confirmed from the review. (2) `400000` with the reason "short". | (1) `not_higher`: "The new price must be higher than the price in effect (₹3,500, 350000 paise)." (2) Refused at the reason. Values kept; price records delta 0. | L | **O-02**; design §2.10.2 |
+| WP17-A78 | SuperAdmin (SA1); harness | SA-09p of U (§3 V19G-10a) | Enter `400000` and a reason; read the review; confirm. Harness: resend the confirmed POST. | Review (nothing sent): "New price: ₹4,000 (400000 paise)" beside "Price in effect: ₹3,500". Confirmed: receipt "Request recorded" with Current "Price increase open, waiting for the travel agent"; the proposed amount does not show on staff pages after the send ("Partly met", §6 Q-06); Y's notices +1 (`price_change`). Resend: one record. | L | **O-02**; O-08 |
+| WP17-A79 | SuperAdmin (SA1); harness | SA-09p of U with the open increase (§3 V19G-10b) | (a) GET. (b) Harness raw: the unchanged saved V19G-10a envelope with a new key. (c) Harness raw: a new key with U's current revision. | (a) "A price increase is already open: the travel agent decides." No form. (b) `stale_revision`: CMP-14 (Price in effect, open increase, Editing) with values kept; nothing recorded. (c) `price_increase_open`: the Open-increase state and the unsent text block; nothing recorded. | L | **O-10**; WP-09 G-05 |
+| WP17-A80 | Test; harness | `material_scope_change` | Render SA-09p; raw post with that cause. | No page offers the choice (hidden `cause = mistaken_price`). Raw post: `input_invalid` at `correctionId`, nothing recorded. "Unmet: waits for P-21 item 3a" (surface repair in the Core batch). | T | P-21 item 3a; STOP-W17-07 |
+| WP17-A81 | Test | SA-09p states | A draft; an outcome; a stale revision; a support view; the largest valid reason over real HTTP. | Draft: "A price increase applies only to a submitted application…"; outcome: "… Its price no longer changes."; no form; stale: CMP-14; support view: 409; largest reason accepted (16,384 bytes). | T | Design §2.10.2; LD-17 |
+| WP17-A82 | SuperAdmin (SA1) | SA-04a of U after V19G-10d (§3 V19G-10e) | Read. | "Price in effect ₹4,000"; no open increase; quote ₹3,500 labelled as the quote. | L | BS B17 |
 
 ### 2.11 SA-04a Ending the case and SA-09w Record an operational withdrawal request (`core.record_operational_withdrawal`)
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A83 | SuperAdmin (SA1) | SA-04a of D, "Ending the case" (§3 W-5) | Read. | Link "Record an operational withdrawal request" → SA-09w. Under possible filing (test): CMP-10 first and the link "Record the operational request only" (WP-11 carried rule). The generic cancellation boundary: "Cancelling an application entered in error is unavailable until the product owner decides it. Owner: product owner." with no control. | L + T | PL §5.4 SA-04; BS B24, B44; WP-11 §1.5 |
-| WP17-A84 | SuperAdmin (SA1) | SA-09w of D (§3 W-5) | Read the page. | `h1` "Record an operational withdrawal request: [applicant]"; Current: stage, outcome, payment, external acts, assignment; Effect as A57 with "operational request"; "This is a withdrawal request, not a cancellation."; fields: reference (required, up to 120); reason (10 to 1,000). "Record the request", "Cancel". | L | BS B24, B44; PL SA-09 |
-| WP17-A85 | SuperAdmin (SA1) | SA-09w of D (§3 W-5) | (1) Send an empty reference. (2) Send the reason "short". | Each refused at its field; values kept; nothing recorded. | L | §0.5 |
-| WP17-A86 | SuperAdmin (SA1); harness | SA-09w of D (§3 W-5) | Give `SYN-W17-[stamp]-OPS-D` and a reason; send. Harness: resend. | Receipt per §0.2 with the recorded result (branch); Current facts as A58; Y's notices +1; TA-07 of D shows the withdrawal row. After the receipt, staff pages show the outcome only; the refused record shows through SA-08s of the withdrawal ("Partly met", §6 Q-08). One record after the resend. | L | BS B24 |
-| WP17-A87 | Test | SA-09w refusals and possible filing | `application_not_open`; `outcome_already_recorded`; `protection_mark_active`; `stale_revision`; an act `filing_unknown`. | Each eligibility refusal records nothing; stale: CMP-14; possible filing: accepted with `result: refused` / `filing_possibly_occurred` and the receipt as A59. | T | §0.5; BS B23 |
-| WP17-A88 | Test (BFF, HTTP) | SA-09w handler | A reference of 121 characters; the largest valid reason (1,000 Devanagari characters) over real HTTP. | 121: refused at the field, kept whole, no command. The largest reason: accepted (4,096 bytes is too small today). | T | LD-17 |
+| WP17-A83 | SuperAdmin (SA1); test | SA-04a of C, "Ending the case" (§3 V19G-10s); test: possible filing | Read. | Link "Record an operational withdrawal request" → SA-09w; under possible filing (test) "Record the operational request only" after the boundary; the generic cancellation boundary as text with owner product owner and no control. | L + T | Design §2.9 item 3; BS B24, B44 |
+| WP17-A84 | SuperAdmin (SA1) | SA-09w of C (§3 V19G-10s) | Read. | `h1` "Record an operational withdrawal request: [applicant]"; Evidence (stage, outcome, external acts, service payment); Effect (accepted and refused, design §2.10.3); Hard stops ("A withdrawal never overrides a possible filing or a passed cut-off. It records no refund."); "Evidence reference" (required, up to 120); "Reason" (10 to 1,000); "Record the request". | L | Design §2.10.3 |
+| WP17-A85 | SuperAdmin (SA1) | SA-09w of C (§3 V19G-10s) | (1) Empty reference. (2) Reason "short". | (1) "Enter the reference of the operational reason." at the field. (2) At the reason. Values kept; nothing recorded. | L | Design §2.10.3 |
+| WP17-A86 | SuperAdmin (SA1); harness | SA-09w of C (§3 V19G-10s) | Give `SYN-W17-[stamp]-OPS-C` and a reason; send; resend. | Receipt by result (branch): "Application withdrawn" or "Withdrawal request recorded: refused" with the staff reason; Current facts; Y's notices +1; TA-07 of C shows the withdrawal row. The refused record shows afterwards only on SA-08s ("Partly met", §6 Q-08). One record after the resend. | L | BS B24; design §2.13 |
+| WP17-A87 | Test | SA-09w refusals and possible filing | `application_not_open`; `outcome_already_recorded`; `protection_mark_active` (CMP-10 with the SA-09m link); `stale_revision`; an act `filing_unknown`. | Eligibility refusals record nothing; stale: CMP-14; possible filing: accepted with `result: refused` and the receipt as A58. | T | Design §2.10.3 |
+| WP17-A88 | Test (BFF, HTTP) | SA-09w handler | A reference of 121 characters; the largest valid reason over real HTTP. | 121: refused at the field, kept whole. Largest reason accepted (16,384 bytes). | T | LD-17 |
 
 ### 2.12 SA-04g Group end (SuperAdmin) and V19
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A89 | SuperAdmin (SA1) | SA-04g of G2 before the date change (§3 V19-1) | Read the page. | `h1` "Group end: [group]"; "Read at"; the group's travel dates and state; "Today in India: [date]"; from `clockHealthy` the line "The clock check passes: date checks can run." (or the paused line of A93). The B25 rule as text. One row per application (name linking SA-04a): A, B, D, E, F: "Stays open: the travel return date [date] has not passed"; H: the same and "Service payment is recorded as received". No promise that an application "will end" on a date. | L | BS B25; `core.admin_group` |
-| WP17-A90 | SuperAdmin (SA1) | SA-04g of G2 after V19-2, before the date check (§3 V19-3) | Read. | A, B, D, E, F: "Eligible: ends with the group at TravelMudra's next date check" (no interval stated). H: "Stays open: service payment is recorded as received." No control on the page. | L | BS B25; WP-01 Q-13 |
-| WP17-A91 | SuperAdmin (SA1) | SA-04g of G2 after the date check (§3 V19-4) | Read. Open SA-04a of E. | A, B, D, E, F: "No longer open" with the link to SA-04a; SA-04a of E: lifecycle "Ended with its group" and its meaning line (the group-end read returns no lifecycle: "Partly met", §6 Q-09). H unchanged. Group state "Open". | L | V19; §6 Q-09 |
-| WP17-A92 | SuperAdmin (SA1) | SA-04g of G1 (§3 V19-6) | Read. | C: "Stays open:" with every reason Core returns: "The travel return date [date] has not passed"; "Service payment is recorded as received"; "An operator was assigned". A withdrawal outcome (W-4) adds no reason and removes none. The row shows all reasons, not only the first. | L | BS B25 |
-| WP17-A93 | Test (`group-end-pages`) | SA-04g words and states | Every reason code alone and together; `money_outstanding` with AM-W16-05's sentence; an unknown code; `clockHealthy` false; a group closed (`ordinary`, `group_end`); 500 items (the cap); the read unavailable; a support view. | Each code has its sentence: `filing_possibly_occurred` "A filing may have happened."; `original_held` "An original is held."; `custody_evidence_missing` "Where an original is, is not known."; `delivery_pending` "A delivery is pending or uncertain."; `money_outstanding` "Money is outstanding on this application (an open payment follow-up item, an unused reservation, a government fee paid by TravelMudra and not recovered, or a fee payment whose result is unknown)." (STOP-W16-06: which one applies is not on the read); `protection_mark_active` "A filing-protection mark is active."; `operator_work_authorized` "An operator was assigned."; unknown: "Unrecognised: [code]". Clock: "Group end is paused while TravelMudra's clock check fails. Nothing ends with a group until it passes. Owner: engineering." Closed: the closed kind in words. Cap: "This page lists the first 500 applications of this group." S7 on an unavailable read; 409 in a support view. | T | BS B25, B33; AM-W16-05; K-05 |
-| WP17-A94 | Test (Core) | V19 Core behaviour | Run `test/core/completion-group-end.test.ts`. | Pass: "keeps an unpaid application without TravelMudra work open until its group ends"; "ends nothing on the return date and ends eligible applications just after midnight India time; never during clock skew"; "ends only eligible applications page by page, and closes the group only when nothing is open"; "never ends an application whose group still has intake work open; then closes the group with the last application". | T | BS B25; V19 |
-| WP17-A95 | SuperAdmin (SA1); test | SA-04g, SA-04a, TA-05 | Look for group-end and closure controls. Test: the route inventory. | No "End now", "Close group", "Force", "Override", "Reopen" or "Restore" control on any staff page; `core.close_group` has no staff route (a travel-agent command only); no page reverses "Ended with its group". | L + T | BS B21, B25; PL §11.1 forbidden labels |
+| WP17-A89 | SuperAdmin (SA1) | SA-04g of G (§3 V19G-6) | Read. | Header facts (dates, state words, "Today (IST)", clock check); lead "After the travel return date, TravelMudra ends each open application that is unpaid, has no TravelMudra work and no open duty. It never ends one with an external act, a held original, a pending email or outstanding money. Nothing is deleted."; table "Group end status": D "No" — "The travel return date has not passed yet"; U "No" — the same; W "No" — that, "The service payment is recorded as received", "TravelMudra work was authorized on it", "An external act was authorized for it (filed, not filed or unknown)"; C "No" — return date, payment, work. No generic sentence. | L | Design §2.9 item 5, §6.3 V19G-6 |
+| WP17-A90 | SuperAdmin (SA1) | SA-04g of G after V19G-10u, before the date check (§3 V19G-10v) | Read. If the date check already ran, record V19G-10v as not observable and run A90 in the gallery. | D, U: "Ends with the group: Yes, after [return date]"; W, C: "No" with their reasons (the return-date reason gone). No control; no interval stated. | L | Design §2.9 item 5 |
+| WP17-A91 | SuperAdmin (SA1) | SA-04g of G after the date check (§3 V19G-10w) | Read. Open SA-04a of D. | D, U: "No longer open: completed or ended" (the read carries no lifecycle; "Partly met", §6 Q-09); SA-04a of D: "Ended with the group (not an outcome)". W, C unchanged. Group "Open". | L | V19; design §2.9 item 5 |
+| WP17-A92 | SuperAdmin (SA1); test (`group-end-status.test.ts`) | SA-04g with W and C after V19G-10w (live read) and fixtures | Read; render. | Every reason Core returns shows, one line each, not only the first; a withdrawal outcome adds no reason and removes none. | L + T | BS B25 |
+| WP17-A93 | Test (`group-end-status.test.ts`) | SA-04g words and states | Each T5 code; an unknown code; `clockHealthy` false; closed groups; 500 items; the read unavailable; a support view. | T5 words (§0.2 "Words"; `money_outstanding` AM-W16-05, STOP-W16-06); unknown "Unrecognised: [code]"; clock: "The clock disagrees with the database: TravelMudra ends nothing until it agrees."; closed kinds in T9 words; cap "This list shows 500 applications. More may exist."; S7; 409 in a support view. | T | Design §2.9, §2.11 T5 |
+| WP17-A94 | Test (Core) | V19 Core behaviour | Run `test/core/completion-group-end.test.ts`. | Pass, cited by assertion: "keeps an unpaid application without TravelMudra work open until its group ends"; "ends nothing on the return date and ends eligible applications just after midnight India time; never during clock skew"; "ends only eligible applications page by page, and closes the group only when nothing is open"; and the intake test, whose title reads "never ends an application whose group still has intake work open…" while it asserts that the application **ends** and intake work keeps only the **group** open, then the group closes after the intake issue is disposed (the run record cites the assertion; the title correction to "ends the application while intake work keeps the group open; closes the group once the intake work is disposed" is proposed with the WP-17 tests, S-06). | T | BS B25; **O-12** |
+| WP17-A95 | SuperAdmin (SA1); test | SA-04g, SA-04a, TA-05 | Look for group-end controls. Test: route inventory. | No "End now", "Close group", "Force", "Override", "Reopen" or "Restore" control on a staff page; `core.close_group` has no staff route; no page reverses an ended application. | L + T | BS B21, B25 |
+| WP17-A155 (new) | Test (`test/system/group-end-view.test.ts`) | Isolated exclusion: possible filing | A group past its return date with X (unpaid, never assigned, one external-act authorization written by the fixture, nothing else) and a control application with nothing held; run the sweep. | The control ends; X stays open; Core's eligibility for X lists exactly `filing_possibly_occurred`; SA-04g row X "No" with exactly "An external act was authorized for it (filed, not filed or unknown)"; TA-05 row X not "Ended with the group"; TA-07 of X open; the group open. The test fails if the filing protection is removed. | T | **O-12** (R-12); BS B25 |
+| WP17-A156 (new) | Test | Isolated exclusion: held original | As A155 with one held original only. | X open; exactly `original_held`; SA-04g "A physical original is held"; UI as A155. | T | **O-12**; BS B25, B30 |
+| WP17-A157 (new) | Test | Isolated exclusion: pending delivery | As A155 with one queued result email only (and a variant with an uncertain email). | X open; exactly `delivery_pending`; SA-04g "A result email is queued, sending or uncertain"; UI as A155. | T | **O-12**; BS B25 |
+| WP17-A158 (new) | Test | Isolated exclusion: outstanding money | As A155 with one open payment follow-up item only (and variants for an unused reservation, a TravelMudra-paid fee not recovered and a fee payment result unknown, each alone). | X open; exactly `money_outstanding`; SA-04g AM-W16-05's sentence; UI as A155. | T | **O-12**; BS B25, B29 |
 
-### 2.13 Command results, access and shell on WP-17 pages
-
-| ID | Persona | Page | Steps | Expected result | Where | Source |
-|---|---|---|---|---|---|---|
-| WP17-A96 | Travel agent; operator; SuperAdmin | Every WP-17 page | Read the shell. | Environment label; "[TEST]"; rail: TA pages under "Groups" or "Applications" as their entry; OP-02 task pages under "My work"; SA-09d under "Work queues" when opened from SA-02d, else "Applications & groups"; SA-09p, SA-09w, SA-04g under "Applications & groups"; the design's breadcrumbs; one `h1`; "Read at". | L | PL §2.2; LD-08 |
-| WP17-A97 | Test | Receipt naming (§0.2 table) | Every result shape each instance can show at a receipt address. | Named only as the table states; otherwise "Request recorded". An edited address never shows another command's title (for example a deferral proposal shown as "Deferral ended", or a group creation shown as a closure). | T | WP-03 C-03, code review R-03; WP-13 L-05 |
-| WP17-A98 | Test | Receipt addresses | Open each WP-17 receipt location without a key, with `?done=…`, with another person's key, with a refused key. | No receipt from the address; locations carry `&op=`; another person's key opens unchecked with current authorized facts; a refused key: "Nothing is recorded for request [reference] so far". | T | WP-01 A-04; WP-12 J-09 |
-| WP17-A99 | Test | Text map of every code in §0.5 and every assessment code | Unit test against Core's vocabulary. | Each has its sentence in both audiences where it can reach them; unknown: category text and "Reference code: [code]". | T | §0.5 |
-| WP17-A100 | Any (live refusals A02, A41, A48, A57, A77, A85) | Re-rendered task pages | Read. | CMP-07 at the field when Core names one; owner or route where one exists; no code alone, "Something went wrong" or "Invalid data"; the refusal re-renders its own task page at the POST address with every value kept; focus moves to the error summary. | L | PL §1.1; CR-01; AC-08 |
-| WP17-A101 | Travel agent; operator; SuperAdmin | TA-05, TA-07, OP-02, SA-04a, SA-02d | Look for controls of other roles. | TA pages: no operator or SuperAdmin control. OP pages: no SuperAdmin decision (approve deferral, price increase, operational withdrawal). SA pages: no operator readiness, filing, release or forecast control ("The assigned operator makes this judgment", BS B18). | L | BS B18; UX §2.3 |
-| WP17-A102 | Test (`wp17-host-pages`, route inventory) | Every page | Render; collect form actions. | One host page per command use: the only form posting T34 is on TA-07w; T35 on TA-07d; T48 on TA-07c; T08 on TA-05c; O42 on OP-02f; O24 on OP-02d; O43 on OP-02e; O23 on OP-02w; D24 on SA-09d; D101 on SA-09p; D22 on SA-09w; O60 and D128 in the recheck sections of OP-02 and SA-04a. TA-05 and TA-07 hold no WP-17 form; OP-02 and SA-04a hold only the recheck form. Every form action is a registered route. | T | CC-12 to CC-20 |
-| WP17-A103 | Test | Carried-form tests | Run the carried-form tests of WP-03 (A106), WP-07 (A37), WP-11 (SA-04a) and WP-06 (A110). | Their WP-17 entries leave: the tests assert that the old disclosures are gone from TA-07, TA-05, OP-02 and SA-04a; the lists hold no other change. | T | LD-02; WP03-A106; WP07-A37 |
-| WP17-A104 | Travel agent (Y, `syn-ta-2`); operator (OP2); harness | Isolation (§3 X-1) | `syn-ta-2` opens TA-04 and TA-06. OP2 opens OP-02 and OP-02f, OP-02d, OP-02e, OP-02w of C. Y opens SA-04g, SA-09d and OP-02 addresses. Harness: OP2 posts the forecast of C. | `syn-ta-2`: none of Y's groups or applications (delta 0). OP2 and Y: the uniform not-found page; no fact disclosed; the post records nothing. | L | BS B10 |
-| WP17-A105 | SuperAdmin (SA1) | The receipt address of D-3 opened by SA1 after D-6 (§3 X-1) | Open. | Unchecked receipt of another person's operation: "Deferral decision recorded" with Current "Deferral: ended". No instruction to act. | L | WP-12 J-08, J-09 |
-| WP17-A106 | Test | Receipts and statuses after later events | Open each WP-17 receipt after a later withdrawal, outcome, extension and group end. | No receipt, status read or page instructs anyone to perform an act ("file", "stop the filing", "pay", "tell the applicant"); historical receipts keep their recorded facts; later facts are "Current". | T | WP-07 F-33 |
-| WP17-A107 | SuperAdmin (SA1) | SA-08s of the deferral of C, of the withdrawal of C and of G2 (§3 X-1; observe WP-14) | Read. | Only fields recorded on each subject: `core.deferral_proposed` (proposed review date), `core.deferral_approved` (review date, extension), `core.deferral_ended`; `core.withdrawal_requested` (requester kind, evidence), `core.withdrawal_accepted` or `core.withdrawal_refused` (code, assessment); `core.group_travel_dates_edited` (before, after, open applications); each with recorded time, actor and role. The refused sends of the run left no fact. | L | BS B33; K-14 |
-| WP17-A108 | Any | Every WP-17 page | Read all text. | No forbidden label (PL §11.1: "Override", "Force complete", "Cancel import", "Pay now", "Approved" or "Done" as an overall status); "IST" on every time; units on every count; "Synthetic" (CR-08); no package or record id; no configuration value (the date-check interval, the sweep page size). | L | PL §11.1; CR-06 to CR-08 |
-| WP17-A109 | Test | Money rendering on WP-17 pages | Render 350000, 400000, 400050 and 0 paise. | Every amount through `money()`: currency in text, Indian grouping, no floating value, tabular figures. | T | CMP-16 |
-| WP17-A110 | Test | Replay matrix per command (13) | (1) Identical replay. (2) Same `_op`, changed content. (3) Back after the receipt. (4) Rejected-form refresh. (5) Lost acknowledgement. (6) Business duplicate with a new key. (7) Raw stale envelope. | (1) The original result. (2) `conflict_operation_key`; values kept. (3) A fresh form with current facts, or the closed state. (4) The corrected send recorded once. (5) C4; the status page links the host. (6) Core's own answer: `deferral_active`, `price_increase_open`, `group_closed`, `outcome_already_recorded` (an accepted withdrawal), or a new record where Core has no duplicate guard (a forecast; a withdrawal request after a refused one; a recheck that is still pending). (7) `stale_revision` (CMP-14) where Core checks a revision; the forecast, the recheck and the deferral decision and end, which carry none, answer by state. | T | BS B35; WP-08 Q-W08-15 |
-| WP17-A111 | Test (BFF sweep) | Every WP-17 handler | Search the handlers; post each field at its maximum and maximum + 1. | No `.slice`, truncation or dropped field; over-limit input refused at its field with the value kept whole; the handler never sends Core less than the user chose. | T | LD-17 |
-| WP17-A112 | Test (HTTP) | The largest valid form of each WP-17 page | Post each with Devanagari text at the maximum lengths over real HTTP: TA-07w note 2,000; OP-02d justification 2,000; OP-02e note 1,000; OP-02w note 2,000 and reference 120; SA-09d, SA-09p, SA-09w reasons 1,000; OP-02f note 500. | Each body fits its route limit and reaches Core; a refusal for size is a failure (§0.1 "BFF today"; §6 Q-15). | T | LD-17; WP-16 PM Q-14 |
-| WP17-A113 | Test (HTTP) | TA-07 (optional notices read), OP-02, SA-04a, SA-04g, every task page | (1) The page's required read unavailable. (2) The optional notices read unavailable. (3) Access revoked between two reads. | (1) S7, never an empty page or a form without its facts. (2) TA-07 shows "Notices for this application are unavailable now." in the timing and deferral rows; the rest renders. (3) The shell; no earlier facts (LD-14). | T | LD-14; D7 |
-| WP17-A114 | Test | Support views | A support view of Y on TA-05, TA-07 and the TA task pages; of OP1 on OP-02 and its task pages. | Facts only; no withdraw, price, re-apply, close, forecast, deferral or withdrawal form; `/admin` pages 409. | T | SH-R09; WP-03 code review R-05 |
-| WP17-A115 | Travel agent; operator; SuperAdmin | Task pages with text fields | Inspect browser storage; read the headers. | No note, reason, justification, reference or amount in browser storage; `no-store`. | L+T | SH-R12 |
-
-### 2.14 Accessibility (AC-01 to AC-28 that apply)
+### 2.13 SA-04a admin end of a deferral (O-13) and the P-21 items
 
 | ID | Persona | Page | Steps | Expected result | Where | Source |
 |---|---|---|---|---|---|---|
-| WP17-A116 | Keyboard-only user | TA-05c (G-2), TA-07w (W-1), TA-07d (Q-3), OP-02f (F-1), OP-02d (D-1), SA-09d (D-3), SA-09p (Q-1) at 1440 px; TA-07w and TA-07d at 390 px | Use the keyboard only. | The close confirmation, radio groups, date fields, text areas, send and cancel work with Tab, Shift+Tab, Enter, Space, arrows and Escape; the confirmation opens and closes by keyboard. | L | AC-01, AC-12 |
+| WP17-A159 (new) | SuperAdmin (SA1) | SA-04a of C, "Deferral", deferral 2 approved (§3 V19G-10p) | Read. | "Review on [today + 10]; readiness, authorization and packet release remain held until the deferral is ended."; justification; "Extend the deferral" → `deferral_extend`; the end control "End the deferral" with the effect sentence of A53 and a required note (1 to 1,000); its form posts a registered admin route that sends `core.end_deferral` (no Core change: policy, binding and staff allowlist exist); the only form posting that route. The line "The assigned operator ends it." of the design goes. | L | **O-13** (R-13); **O-06**; P-21 item 3b |
+| WP17-A160 (new) | SuperAdmin (SA1); harness | SA-04a of C (§3 V19G-10p) | Give a note; end; resend the same `_op`. | Receipt "Request recorded" (shared summary) with Current "No deferral is currently open"; SA-02d row C gone (delta to P-0); Y's notices +1 (`deferral_ended`); OP-02 of C "No deferral is currently open". Resend: the same receipt; one end. | L | **O-13**; **O-05**; **O-08** |
+| WP17-A161 (new) | Test | Admin end after an outcome and after completion | An approved deferral of an application withdrawn (outcome) and one of a completed application with no operator assigned (harness). | SA-04a offers the end in both (the operator cannot after completion); accepted; the SA-02d row and the deferral monitor count clear. | T | **O-13**; STOP-W17-06 (c) |
+| WP17-A162 (new) | Test (BFF, HTTP) | Admin end refusals and limits | A proposed deferral; the saved envelope after the end; an empty note; the largest valid note (1,000 Devanagari) over real HTTP; an operator posting the admin route; a support view. | Proposed: no end control (the decide links show). Saved envelope: `stale_revision` → "This deferral is not open now. Nothing was recorded." with the unsent note. Empty note: at the field. Largest note: accepted. Operator: uniform not-found. Support view: 409. Nothing recorded on each refusal. | T | **O-05**; LD-17 |
+| WP17-A163 (new) | — | A deferral approved, extended or kept open after an outcome | Record. | Pages warn (A71) and SA-04a ends it (A160, A161). Core refusing a post-outcome deferral decision or ending a deferral on an outcome: "Unmet: waits for P-21 item 3b" (parked as a Kind 2 candidate by the orchestrator). The Core test of V19G-13 pins today's behaviour. | T | P-21 item 3b; **O-13** |
+| WP17-A164 (new) | — | A price increase on an application recorded as paid | Record. | Pages show the boundary and no difference (A28, A75). Core refusing it, or a selected adjustment process: "Unmet: waits for P-21 item 2" (policy with Max; recommendation refuse). | — | P-21 item 2 |
+| WP17-A165 (new) | — | The forecast basis on the TA and staff reads; the held-correction values on TA-07c | Record. | Interim words stand (A32, A34, A44). "Unmet: waits for P-21 item 4" (criterion exceptions with Max). | — | P-21 item 4; **O-04** |
+| WP17-A152 (new) | Test (BFF, HTTP; WP-03 fixes) | TA-13b past-date acknowledgement | (1) Past dates, no acknowledgement. (2) Acknowledgement given for other dates (the dates changed after the review). (3) A stale group revision. (4) Same `_op` after acceptance; a resend of the acknowledged form. (5) Future dates sent directly. (6) A raw post with past dates and no acknowledgement field. (7) The binding input. | (1) The review; no command (operations delta 0). (2) A new review for the new dates; no command. (3) CMP-14 (WP03-A21); no command. (4) The same receipt; one date change. (5) No review; one command (WP03-A19). (6) Refused by the BFF; no command. (7) The acknowledgement never reaches Core (no such field in the contract). | T | **O-01**; WP03-A19 to A22 |
+| WP17-A153 (new) | Test (Core contract) | Core's own answer to a past-date edit | A direct `core.edit_travel_dates` with a past return date. | Accepted today. "Unmet: waits for P-21 item 1" (a Core defect in the Core batch, P0, failing test first; the lane's browser minimum and acknowledgement stay until it is integrated). | T | P-21 item 1; **O-01** |
+
+### 2.14 Command results, access and shell on WP-17 pages
+
+| ID | Persona | Page | Steps | Expected result | Where | Source |
+|---|---|---|---|---|---|---|
+| WP17-A96 | Travel agent; operator; SuperAdmin | Every WP-17 page | Read the shell. | Environment label; "[TEST]"; rail and breadcrumbs of design §1.4 (TA-05, TA-05c, TA-13b under Groups; TA-07 and its task pages under Applications by origin; OP-02 pages under My work; SA-09 kinds and SA-04g under Applications & groups; SA-02d under Work queues); one `h1`; "Read at". | L | Design §1.4; LD-08 |
+| WP17-A97 | Test (`bff-timing-forms.test.ts`) | Receipt naming (§0.2 table) | Every result shape at every WP-17 receipt address; the proposal key and the end key at the SA-09d receipt address; another actor's key at each named host (TA-07w, TA-07d, TA-07c, OP-02f, OP-02w, SA-09w). | Named only as the table states. Proposal and end keys at the decision address: "Request recorded". Another actor's key: "Request recorded" with current authorized facts only (O-08). An edited address never shows another command's title. | T | **O-08** (R-08); WP-03 C-03 |
+| WP17-A98 | Test | Receipt addresses | Without a key; with `?done=…`; with a refused key. | No receipt from the address; locations carry `&op=`; a refused key: "Nothing is recorded for request [reference] so far". | T | WP-01 A-04 |
+| WP17-A99 | Test (`timing-words.test.ts`) | Text map of every code in §0.5 and every assessment code | Unit test against Core's vocabulary. | Each has its sentence per audience (design §2.14); unknown: category text and "Reference code: [code]". | T | §0.5 |
+| WP17-A100 | Any (live refusals A02, A41, A48, A57, A77, A85) | Re-rendered task pages | Read. | CMP-07 at the field when Core names one; the task page at the POST address with every value kept; focus to the error summary; no code alone or "Something went wrong". | L | PL §1.1; AC-08 |
+| WP17-A101 | Travel agent; operator; SuperAdmin | TA-05, TA-07, OP-02, SA-04a, SA-02d | Look for controls of other roles. | TA pages: no staff control. OP pages: no SuperAdmin decision. SA pages: no operator readiness, filing, release or forecast control. | L | BS B18; UX §2.3 |
+| WP17-A102 | Test (`timing-host-pages.test.ts`, route inventory) | Every page | Render; collect form actions. | The only form posting each of the fourteen POST paths of design §1.5 and the admin end route is on its host (T08 TA-05c; T35 TA-07d; T34 TA-07w; T48 TA-07c; O42 OP-02f; O24 OP-02d; O43 OP-02e; O23 OP-02w; O60 OP-02 Work; D128 and the admin end route SA-04a; D24 SA-09d kinds; D101 SA-09p; D22 SA-09w); no TA page posts `/withdraw`, `/price-decision` or `/reapply` outside its task page; no page renders "withdrawn" for a refused request; no TA page names a deferral date it did not read; no amount is a sum or difference; eight new GET rows and one new admin POST row in the inventory. | T | CC-21; design §7.2; O-13 |
+| WP17-A103 | Test | Carried-form tests | Run the carried-form tests of WP-03, WP-06, WP-07 and WP-11. | Their WP-17 entries leave (design §1.6); the report-problem count per WP-09; the recheck stays as OP-02's and SA-04a's own form. | T | LD-02; design §1.6, §7.3 |
+| WP17-A104 | Travel agent (Y, `syn-ta-2`); operators (OP1, OP2); harness | Isolation (§3 X-1) | `syn-ta-2` opens TA-04 and TA-06. OP2 opens OP-02 of C and its task pages. Y opens SA-04g and OP-02 addresses. Harness: OP2 posts the forecast of C. | `syn-ta-2`: none of Y's groups or applications. OP2 (no grant): not-found; with a read grant (test): facts and "Only the assigned operator takes this step." with no form. Y: not-found. The post records nothing. | L + T | BS B10; design §2.0 |
+| WP17-A105 | SuperAdmin (SA1) | The receipt address of V19G-10k (SA2's approval) opened by SA1 after V19G-10n (§3 X-1) | Open. | Unchecked: "Request recorded" with current authorized facts only (Current "No deferral is currently open" or the current open deferral). No named decision, no instruction to act. | L | **O-08**; WP-12 J-09 |
+| WP17-A106 | Test | Receipts and statuses after later events | Open each WP-17 receipt after a later withdrawal, outcome, extension, end and group end. | No receipt or page instructs anyone to perform an act; historical receipts keep their recorded facts; later facts are "Current". | T | WP-07 F-33 |
+| WP17-A107 | SuperAdmin (SA1) | SA-08s of C's deferrals, of W's withdrawal request and of G (§3 X-1; observe WP-14) | Read. | Only fields recorded on each subject (deferral proposed, approved with review date and extension, ended; withdrawal requested with requester kind and evidence, refused with code and assessment; group dates edited with before, after, open applications), with time, actor and role. The refused sends left no fact. | L | BS B33; K-14 |
+| WP17-A108 | Any | Every WP-17 page | Read all text. | No forbidden word of §0.2 "Copy"; "IST" on every time; units on every count; "Synthetic" (CR-08); no package or record id; no configuration value. | L | Design §2.0; PL §11.1 |
+| WP17-A109 | Test | Money rendering | Render 350000, 400000, 400050, 300000 and 0 paise. | Every amount through `money()`; paise counts read "[n] paise" where shown. | T | CMP-16; design §5 |
+| WP17-A110 | Test | Replay matrix per command (13 and the admin end) | (1) Identical replay. (2) Same `_op`, changed content. (3) Back. (4) Rejected-form refresh. (5) Lost acknowledgement. (6) Business duplicate with a fresh revision. (7) Raw unchanged envelope with a new key. | (1) The original result. (2) `conflict_operation_key`; values kept. (3) A fresh page. (4) Recorded once. (5) C4; the status page links the host. (6) Core's own answer (`deferral_active`, `price_increase_open`, `group_closed`, `outcome_already_recorded`) or a new record where Core has no guard (a forecast; a withdrawal request after a refused one; a pending recheck; a second extension). (7) `stale_revision` where Core checks a revision; the forecast, the recheck and the deferral decision and end answer by state. | T | BS B35; **O-10** |
+| WP17-A111 | Test (BFF sweep) | Every WP-17 handler | Search the handlers; post each field at its maximum and maximum + 1. | No `.slice`; over-limit input refused at its field with the value kept whole; never less than the user chose. | T | LD-17 |
+| WP17-A112 | Test (HTTP) | The largest valid form of each WP-17 page | Devanagari at the maximum over real HTTP: TA-07w note 2,000; OP-02d justification 2,000; OP-02e note 1,000; OP-02w note 2,000 and reference 120; SA-09d, SA-09p, SA-09w reasons 1,000; the SA-04a end note 1,000; OP-02f note 500. | Each body fits its sized limit (design §2.12 with OP-02e and the admin end added) and reaches Core; a refusal for size is a failure. | T | **O-09**; Q-W17-09 |
+| WP17-A113 | Test (HTTP) | Every WP-17 page | (1) The required read unavailable. (2) An optional read unavailable (`core.ta_groups`, `pay.application_payments`, `ops.case_work`). (3) Access revoked between two reads. | (1) S7. (2) "Unavailable" in place of that read's facts, and for a decision page the line "[What] cannot be read now. TravelMudra checks it when you record the decision." with the form. (3) The shell; no earlier facts. | T | LD-14; design §2.0 |
+| WP17-A114 | Test | Support views | A support view of Y on TA-05, TA-05c and the TA task pages; of OP1 on OP-02 and its task pages. | Facts with "Read-only view: the travel agent takes this step." and no form; staff task pages show no form; `/admin` 409. | T | Design §2.0 |
+| WP17-A115 | Travel agent; operator; SuperAdmin | Task pages with text fields | Inspect browser storage; read the headers. | No note, reason, justification, reference, amount or acknowledgement in browser storage; `no-store`. | L+T | SH-R12 |
+
+### 2.15 Accessibility (AC-01 to AC-28 that apply)
+
+| ID | Persona | Page | Steps | Expected result | Where | Source |
+|---|---|---|---|---|---|---|
+| WP17-A116 | Keyboard-only user | TA-05c (V19G-2), TA-07w (V19G-3), TA-07d (V19G-10d), OP-02f (V19G-10f), OP-02d (V19G-10i), SA-09d (V19G-10k), SA-09p with its review (V19G-10a), TA-13b review (V19G-10u) at 1440 px; TA-07w, TA-07d at 390 px | Use the keyboard only. | Radio groups, date fields, text areas, the acknowledgement, send and cancel work with Tab, Shift+Tab, Enter, Space and arrows; no confirm dialog. | L | AC-01, AC-12 |
 | WP17-A117 | Keyboard-only user | Every WP-17 page at 1440, 390 px and 400% | Tab through. | Focus visible (3:1), never hidden. | L | AC-02 |
-| WP17-A118 | Phone user | TA-05, TA-07, TA-07w, TA-07d, OP-02f, OP-02d, SA-09d, SA-04g | 320 px; 1280 px at 400%. | One column; identity, reason, owner and next action first; scope and effect before fields; the primary action at the end, never in a fixed bar; no horizontal scroll (SA-04g rows as cards). | L | AC-04, AC-21 |
-| WP17-A119 | Any | TA-07d, SA-09d, SA-09p, OP-02f | Inspect. | The TA-07d decision and the OP-02f basis radio groups are `fieldset` with `legend`, none preselected, the choice kept after a refusal; every input labelled; required stated; date inputs say "Dates are in India time (IST)". | L | AC-05, AC-15 |
-| WP17-A120 | Any | States, reasons, withdrawal results, deferral states, "Ended with its group" | Greyscale. | Text and icon for every mark; no colour-only state. | L | AC-06 |
+| WP17-A118 | Phone user | TA-05, TA-05c, TA-07, TA-07w, TA-07d, OP-02f, OP-02d, SA-09d, SA-04g | 320 px; 1280 px at 400%. | One column; scope, facts and effect before fields; the primary action at the end, never in a fixed bar; SA-04g rows as labelled cards; no horizontal scroll. | L | AC-04, AC-21 |
+| WP17-A119 | Any | TA-07d, OP-02f, TA-13b review | Inspect. | The TA-07d decision and the OP-02f basis radio groups are `fieldset` with `legend`, none preselected, the choice kept after a refusal; the acknowledgement is a labelled checkbox naming the dates, never prechecked; SA-09d's hidden decision is named by the button; every input labelled; date hints name IST. | L | AC-05, AC-15; design §5 |
+| WP17-A120 | Any | States, reasons, withdrawal results, deferral states, "Ended with the group (not an outcome)" | Greyscale. | Text and icon for every mark; no colour-only state. | L | AC-06 |
 | WP17-A121 | Any | TA-07w, OP-02f, OP-02d, SA-09p | Send with an error. | Focus to the error summary; links to fields; values kept. | L | AC-08 |
-| WP17-A122 | Screen-reader user | Receipts; CMP-14 comparisons; boundary notices; SA-04g reasons | Read with a screen reader. | Receipts polite without moving focus; notices are notes, not live regions or errors; the comparison repeats field labels; each SA-04g row reads the applicant, then the result, then each reason. | L | AC-09, AC-13 |
-| WP17-A123 | Screen-reader user | Each unavailable action (A13 refused preview, A18 outcome recorded, A27 assigned, A51 open deferral, A79 open change, A80 scope change) | Reach the notice. | Reason, owner and route in reading order; no disabled control without its reason. | L + T | AC-13; UX §7.4 |
+| WP17-A122 | Screen-reader user | Receipts; CMP-14 comparisons; state-based refusals; boundary notices; SA-04g rows | Read with a screen reader. | Receipts polite without moving focus; the unsent text block is a `blockquote` with a heading, not a live region; notices are notes; each SA-04g row reads applicant, result, then each reason. | L | AC-09, AC-13; design §5 |
+| WP17-A123 | Screen-reader user | Each unavailable action (A13 refused preview and W, A18 outcome, A27 assigned, A51 open deferral, A52 W possible filing, A79 open increase, A80 scope change) | Reach the notice. | Reason, owner and route in reading order; no disabled control without its reason. | L + T | AC-13; UX §7.4 |
 | WP17-A124 | Phone user | Every WP-17 page at 390 px | Measure. | Controls at least 24 × 24 px; primary actions at least 44 × 44 px. | L+T | AC-10 |
 | WP17-A125 | — | Every WP-17 page | Contrast. | Text 4.5:1; non-text and focus 3:1. | L+T | AC-11 |
 | WP17-A126 | Any | Long text; reduced motion | A 2,000-character justification; a 400-character applicant name; reduced motion. | Wraps; the full text reachable; no transition with reduced motion. | L | AC-14, AC-20 |
-| WP17-A127 | Any | Every WP-17 page | Inspect landmarks and headings. | Landmarks; one `h1`; logical heading order. | L | AC-03 |
-| WP17-A128 | Travel agent and SuperAdmin (observation) | TA-07 of A after W-1; TA-05 of G2 and TA-07 of E after V19-4; TA-07 of B after Q-3; SA-04g of G2 after V19-3 | Ask Y "Is application A cancelled, completed, or still in your group?", "What happened to E, and is it a visa result?", "What price applies to B, and did you have to pay more?". Ask SA1 "Why does H not end with the group?" and "When do A, B, D, E and F end?". | The run record reports the answers and the sample size; a wrong answer is a finding. | L | AC-24, AC-26; V24 |
+| WP17-A127 | Any | Every WP-17 page | Inspect landmarks and headings. | Landmarks; one `h1`; task parts `h2`; logical order. | L | AC-03 |
+| WP17-A128 | Travel agent and SuperAdmin (observation) | TA-07 of D after V19G-3; TA-05 of G and TA-07 of D after V19G-10x; TA-07 of U after V19G-10d; SA-04g after V19G-10v | Ask Y "Is D cancelled, completed or still in your group?", "What happened to D after the trip, and is it a visa result?", "What price applies to U, and what would 'decline' have kept?". Ask SA1 "Why do W and C not end with the group?". | The run record reports the answers and the sample size; a wrong answer is a finding. | L | AC-24, AC-26; V24 |
 
-### 2.15 axe checks (WCAG 2.2 A/AA)
+### 2.16 axe checks (WCAG 2.2 A/AA)
 
 Rule for every row: run axe (`@axe-core/playwright` 4.13.0, tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`,
 `wcag22aa`) at 1440 × 900 and at 390 × 844. Expected: no violation of impact "serious" or "critical" at either width.
@@ -653,183 +656,203 @@ state.
 
 | ID | Persona | Page (state) | Where | Source |
 |---|---|---|---|---|
-| WP17-A129 | Travel agent | TA-05c of G1 with the close refusal (G-1) | L | UX §7.5; AC-01 to AC-28 |
-| WP17-A130 | Travel agent | TA-05 of G3 closed, with the receipt (G-2) | L | same |
-| WP17-A131 | Travel agent | TA-05 of G2 with ended rows (V19-4) | L | same |
-| WP17-A132 | Travel agent | TA-07w of A (W-1) | L | same |
-| WP17-A133 | Travel agent | TA-07 of A withdrawn, with the receipt (W-1) | L | same |
-| WP17-A134 | Travel agent | TA-07d of B (Q-2) | L | same |
-| WP17-A135 | Travel agent | TA-07d of B with CMP-14 (Q-3 tab 1) | L | same |
-| WP17-A136 | Travel agent | TA-07 of C with the forecast and the deferral rows (D-4) | L | same |
-| WP17-A137 | Travel agent | TA-07 of E ended with its group (V19-5) | L | same |
-| WP17-A138 | Travel agent | TA-13b of G2 with the past-date consequence line (V19-2, per §6 Q-01) | L | same |
-| WP17-A139 | Operator | OP-02f with the error summary (F-1) | L | same |
-| WP17-A140 | Operator | OP-02 of C with the forecast receipt (F-1) | L | same |
-| WP17-A141 | Operator | OP-02d with the error summary (D-1) | L | same |
-| WP17-A142 | Operator | OP-02e (D-6) | L | same |
-| WP17-A143 | Operator | OP-02w with the error summary (W-4) | L | same |
-| WP17-A144 | SuperAdmin | SA-02d with the proposed row (D-3) | L | same |
-| WP17-A145 | SuperAdmin | SA-09d form (D-3 tab 2) | L | same |
-| WP17-A146 | SuperAdmin | SA-09d with CMP-14 (D-3 tab 1) | L | same |
-| WP17-A147 | SuperAdmin | SA-09p form and its `not_higher` refusal (Q-1) | L | same |
-| WP17-A148 | SuperAdmin | SA-09w form (W-5) | L | same |
-| WP17-A149 | SuperAdmin | SA-04g of G2 before and after the date check (V19-3, V19-4) | L | same |
-| WP17-A150 | SuperAdmin | Operation status page: accepted (D-3) and "Nothing is recorded" for a refused key (D-2) | L | same |
-| WP17-A151 | Gallery | TA-07c with a released correction and its conflict; TA-07d assigned and paid; OP-02 recheck states; SA-04g every reason, clock unhealthy and the cap; TA-05 closed after the return date | L (gallery) | same |
+| WP17-A129 | Travel agent | TA-05c of G with the close refusal (V19G-2) | L | UX §7.5; AC-01 to AC-28 |
+| WP17-A130 | Travel agent | TA-05 of G0 closed, with the receipt (V19G-7) | L | same |
+| WP17-A131 | Travel agent | TA-05 of G with ended rows (V19G-10w) | L | same |
+| WP17-A132 | Travel agent | TA-07w of D (V19G-3) | L | same |
+| WP17-A133 | Travel agent | TA-07w of D with the receipt (V19G-3) | L | same |
+| WP17-A134 | Travel agent | TA-07d of U (V19G-10c) | L | same |
+| WP17-A135 | Travel agent | TA-07d of U with CMP-14 (V19G-10d tab 1) | L | same |
+| WP17-A136 | Travel agent | TA-07 of C with the forecast and the deferral row (V19G-10l) | L | same |
+| WP17-A137 | Travel agent | TA-07 of D ended with the group (V19G-10x) | L | same |
+| WP17-A138 | Travel agent | TA-13b review with the past-date acknowledgement (V19G-10u) | L | same |
+| WP17-A139 | Operator | OP-02f with the error summary (V19G-10f) | L | same |
+| WP17-A140 | Operator | OP-02f with the receipt (V19G-10f) | L | same |
+| WP17-A141 | Operator | OP-02d with the error summary (V19G-10i) | L | same |
+| WP17-A142 | Operator | OP-02e and its "No deferral is currently open" state (V19G-10n) | L | same |
+| WP17-A143 | Operator | OP-02w of W "request only" with the error summary (V19G-9) | L | same |
+| WP17-A144 | SuperAdmin | SA-02d with the proposed row (V19G-10k) | L | same |
+| WP17-A145 | SuperAdmin | SA-09d `deferral_approve` (V19G-10k tab 2) | L | same |
+| WP17-A146 | SuperAdmin | SA-09d `deferral_decline` with the state-based refusal and the unsent block (V19G-10k tab 1) | L | same |
+| WP17-A147 | SuperAdmin | SA-09p form and its `not_higher` refusal (V19G-10a) | L | same |
+| WP17-A148 | SuperAdmin | SA-09w (V19G-10s) | L | same |
+| WP17-A149 | SuperAdmin | SA-04g before and after the date check (V19G-6, V19G-10w) | L | same |
+| WP17-A150 | SuperAdmin | Operation status page: accepted and "Nothing is recorded" for a refused key (V19G-10j) | L | same |
+| WP17-A151 | Gallery | TA-07c and its conflict; TA-07d assigned and paid; OP-02 recheck states; SA-04g every reason, clock and cap; TA-05 closed after the return date; SA-09d outcome warning | L (gallery) | same |
+| WP17-A166 (new) | SuperAdmin | SA-04a of C with the admin end-deferral surface (V19G-10p) | L | same |
+| WP17-A167 (new) | Travel agent | TA-07w of W, With-the-operator state (V19G-8) | L | same |
+| WP17-A168 (new) | SuperAdmin; operator | SA-09p review with the converted amount (V19G-10a); OP-02d of W possible-filing state (V19G-10h) | L | same |
 
-## 3. Proof scenario V19 (group-end part) and the WP-17 journeys
+## 3. Proof scenario V19 (group-end part) and the WP-17 journeys (one recipe, O-12)
 
 V19 (UX §12): "Completed processing can retain financial/disclosure follow-up; group-end date closure never consumes
-unknown filing, held originals, pending delivery or outstanding money." Authority B25, B29. WP-17 proves the
-group-end part: which applications end with the group after the return date and which stay open, with their reasons,
-and that the pages never present the end as success. WP-16 proves the financial follow-up part (§3 of
-`WP-16-acceptance.md`); WP-14 the disclosure part (WP14-A13, A38). Completion runs only in tests (LD-04).
+unknown filing, held originals, pending delivery or outstanding money." Authority B25, B29. WP-17 proves the group-end
+part; WP-16 the financial follow-up part; WP-14 the disclosure part; WP-12 the originals part. Completion runs only in
+tests (LD-04).
 
-One ordered recipe. "Setup" steps use pages of other packages; "Observe" steps check items other packages own. SA1 =
-`superadmin-1`, SA2 = `superadmin-2`, OP1 = `operator-1`, OP2 = `operator-2`.
+One recipe: the design's §6 steps (V19G-1 to V19G-15, V-A) with a fresh travel agent per run, and lettered additions
+for the journeys and the live group end (Q-W17-06; §6 Q-18). "Setup" steps use pages of other packages; "Observe" steps
+check items other packages own. SA1 = `superadmin-1`, SA2 = `superadmin-2`, OP1 = `operator-1`, OP2 = `operator-2`.
 
 | Step | Actor, page | Action | Observable result | Items | Where |
 |---|---|---|---|---|---|
-| P-0 | SA1: SA-02d, SA-01; OP1: OP-01; `syn-ta-2`: TA-04, TA-06 | Read. | Baselines of §0.4 recorded. | — | L |
-| Setup 0 | SA1: SA-06 | Create and activate Y (or record the fallback). | Y signs in. | — | L |
-| Setup 1 | Y: TA-13a, TA-09, TA-08 | Create G1, G2, G3. Create drafts A and E in G2. Submit B, D, F, H in G2 and C in G1. | Three groups; two drafts; five submissions. | — | L |
-| Branch | Y: TA-07 of F | Read the withdrawal preview. | "Accepted" or "Refused: undeclared cut-off" recorded as the run's branch. | A13 | L |
-| Setup 2 | SA1: SA-07a, SA-03a; OP1: OP-02 | "Payment received" for C and H; assign C to OP1; OP1 starts work on C. | C assigned and worked; H paid. | — | L |
-| G-1 | Y: TA-05 of G1 → TA-05c | Read "Closing the group"; follow the link; send "Close the group". | Rule text and Core's counts; TA-05c anatomy; refused with every condition; nothing recorded. | A01, A02, A129 | L |
-| G-2 | Y: TA-05 of G3 → TA-05c; harness | Close; resend the same `_op`; Back; raw envelope with the earlier revision. | Neutral receipt, Current "Closed"; the same receipt; no form; CMP-14. | A03, A04 (1) to (3), A130 | L |
-| W-1 | Y: TA-07 of A → TA-07w; harness | Read; send with a note; resend the same `_op`. | Receipt "Withdrawal recorded"; Outcome "Withdrawn"; Stage "Draft"; one record; notice +1. | A13 to A15, A38, A132, A133 | L |
-| W-2 | Y: TA-07w of A; harness | GET; send the saved W-1 envelope with a new key. | No form; `outcome_already_recorded`; nothing recorded. | A18 | L |
-| Q-1 | SA1: SA-04a of B → SA-09p; harness | Read; send ₹3,500; send the reason "short"; send ₹4,000 with a reason; resend. | `not_higher`; reason refused; neutral receipt with the open change; one record; Y's notice +1. | A74, A75, A77, A78, A147 | L |
-| Q-2 | SA1: SA-09p of B; harness; Y: TA-07 of B → TA-07d | GET SA-09p; raw duplicate; Y reads TA-07 and TA-07d. | No form; `price_increase_open`; TA-07 price rows; TA-07d anatomy. | A22, A23, A79, A134 | L |
-| Q-3 | Y: two tabs of TA-07d of B; harness; TA-10 | Tab 1 opens; tab 2 accepts; harness resends tab 2; Back; tab 1 declines; read TA-10. | Receipt "Price decision recorded: Accepted"; the same on resend; decided state on Back; CMP-14 on tab 1; the notice still needs acknowledgement. | A24 to A26, A30, A31, A135 | L |
-| Q-4 | SA1: SA-04a of B; Y: TA-11 (observe WP-16) | Read. | "Price in effect: ₹4,000"; quote ₹3,500; no amount due. | A82 | L |
-| F-1 | OP1: OP-02 of C → OP-02f; harness | Read; send an end before the start; send the valid window; resend; Back. | `forecast_window_invalid`; "Forecast recorded"; one forecast; Y's timing notice +1. | A39 to A42, A139, A140 | L |
-| F-2 | Y: TA-07 of C; TA-01 | Read. | Estimate unchanged; forecast separate; the timing notice. | A32 | L |
-| D-1 | OP1: OP-02 of C → OP-02d; harness | Read; send today; send 19 characters; send valid (today + 7); resend. | `date_invalid`; justification refused; neutral receipt "proposed"; one deferral. | A46 to A49, A141 | L |
-| D-2 | OP1: OP-02d; harness; OP-01; status pages | GET; raw duplicate with a new key; read OP-01; open the status page of the refused key and of D-1's key. | No form; `deferral_active`; OP-01 as Core's answer; status pages. | A50, A51, A150 | L |
-| D-3 | SA1: SA-02d, SA-01, SA-09d `deferral_decline` tab 1; SA2: SA-09d `deferral_approve` tab 2 | SA1 reads and opens tab 1; SA2 approves (today + 7); SA1 declines in tab 1. | SA-02d and SA-01 +1; receipt "Deferral decision recorded"; CMP-14 for SA1; nothing recorded by SA1. | A66 to A69, A144 to A146 | L |
-| D-4 | OP1: OP-01, OP-02, OP-04 (observe); Y: TA-07 of C, TA-10 | Read. | C in "Waiting"; OP-02 "Approved: review on [date]"; `deferral_active` blocker; TA-07 next step; the deferral notice. | A33, A46, A50, A136 | L |
-| D-5 | SA2: SA-09d `deferral_extend` of C | Extend to today + 14. | Only the extend page has a form; new review date; Y's notice +1. | A70, A33 | L |
-| D-6 | OP1: OP-02e; harness | Read; send a note; resend; GET; saved envelope with a new key. | Neutral receipt "ended"; the same on resend; no form; `stale_revision`. | A53, A54, A142 | L |
-| R-1 | OP1: OP-02 of C; SA1: SA-04a of C; harness | Read; raw recheck posts. | No recheck section; `travel_date_recheck_not_pending`; nothing recorded. | A61 | L |
-| W-3 | Y: TA-07 of F → TA-07w | Read; send. | Receipt per the branch (accepted or refused assessment). | A13, A14, A16 | L |
-| W-4 | OP1: OP-02 of C → OP-02w; harness | Read; send an empty reference; send `SYN-W17-[stamp]-WDR-C`; resend. | Field refusal; receipt per the branch; facts unchanged except the outcome when accepted. | A56 to A58, A143 | L |
-| W-5 | SA1: SA-04a of D → SA-09w; harness | Read; empty reference; reason "short"; valid send; resend. | Field refusals; receipt per the branch. | A83 to A86, A148 | L |
-| V19-1 | SA1: SA-04g of G2 | Read. | Every row "Stays open: the travel return date [date] has not passed"; H also "Service payment is recorded as received". | A89 | L |
-| V19-2 | Setup (labelled): Y: TA-13b of G2; Y: TA-05 | Change G2 to start today − 3, return today − 1 (§6 Q-01, Q-14). If TA-13b's date controls refuse a past date (the design adds `min`), the harness posts the TA-13b form fields raw; the run record says so. Read TA-05. | WP-03 receipt; rows "Being checked" until the recheck records; the past-date line per §6 Q-01. | A11, A65, A138 | L |
-| V19-3 | SA1: SA-04g of G2 | Read before the date check. If the date check already ran, record V19-3 as not observable; A90 then runs in the gallery. | A, B, D, E, F eligible; H stays open with its reason; no control. | A90, A149 | L |
-| V19-4 | Wait; SA1: SA-04g of G2, SA-04a of E; Y: TA-05 of G2, TA-06, TA-04 | Wait for the next date check (at most the recorded interval); read. | A, B, D, E, F "Ended with its group"; H open; G2 "Open"; no success words. | A06, A12, A91, A131, A149 | L |
-| V19-5 | Y: TA-07 of E and F; TA-05 of G2 → TA-05c | Read; send "Close the group". | Ended state with history; refused `group_has_open_applications`. | A07, A37, A137 | L |
-| V19-6 | SA1: SA-04g of G1 | Read. | C stays open with every reason Core returns. | A92 | L |
-| X-1 | `syn-ta-2`; OP2; Y; SA1; harness | Isolation reads and posts; SA1 opens D-3's receipt address; SA-08s of C's deferral and withdrawal and of G2. | Delta 0; not-found; nothing recorded; unchecked historical receipt; recorded fields only. | A104, A105, A107 | L |
-| T-G | Test | Closure refusals, closed-after-return-date group, states, the lost acknowledgement and the two-tab closure. | As the items. | A04 (4), (5), A05, A08, A10 | T |
-| T-W | Test | Withdrawal states, race, refusals, BFF, words; the operator's and SuperAdmin's paths under possible filing. | As the items. | A16, A17, A18, A19 to A21, A59, A60, A87, A88 | T |
-| T-Q | Test | Assigned and paid cases, refusals, history kinds, amount handling, the scope-change cause. | As the items. | A27 to A30, A75, A76, A80, A81 | T |
-| T-K | Test | Held corrections. | As the items. | A34 to A36 | T |
-| T-F | Test | Forecast BFF, two tabs, states. | As the items. | A43 to A45 | T |
-| T-D | Test | Deferral hard stops, review due, SA-09d refusals and limits, words. | As the items. | A52, A54, A55, A71 to A73 | T |
-| T-R | Test | Recheck states, results, access, TA view. | As the items. | A62 to A65 | T |
-| T-V19 | Test | Group-end words and states; Core V19 tests; no controls. | As the items. | A93 to A95 | T |
-| T-X | Test | A09, A11, A12, A13, A97 to A99, A102, A103, A106, A109 to A115, A123 to A125. | As the items. | as listed | T |
-| X-2 | axe | Every page and state visited above. | No serious or critical violation at 1440 and 390 px. | A129 to A150 | L |
-| X-3 | axe (gallery) | A151. | As X-2. | A151 | L |
-| X-4 | Keyboard-only, screen-reader and phone users; Y; SA1 | During G-2, W-1, Q-2, Q-3, F-1, D-1, D-3, Q-1, V19-3 and V19-4: the accessibility checks, the shell, copy and refusal text, the role checks, the observation questions. | As the items. | A96, A100, A101, A108, A116 to A128 | L |
+| P-0 | SA1: SA-02d, SA-01; OP1: OP-01; `syn-ta-2`: TA-04, TA-06 | Read. | Baselines of §0.4. | — | L |
+| Setup 0 | SA1: SA-06 | Create and activate Y. | Y signs in. | — | L |
+| Setup 1 | Y: TA-13a, TA-09, TA-08 | Create G and G0; create D; submit U, W, C. | Two groups; one draft; three submissions. | — | L |
+| Branch | Y: TA-07w of U | Read Core's check now. | The run's branch recorded. | A14 | L |
+| Setup 2 | SA1: SA-07a, SA-03a; OP1: OP-02, OP-04 | Payments for W and C; assign both to OP1; start work; W: readiness, authorization of the government submission, execution uncertain. | W protected; C worked. | — | L |
+| V19G-1 | Y: TA-05 of G | Read. | Rule; facts; link; no form; no verdict. | A01 | L |
+| V19G-2 | Y: TA-05c of G | Read; close. | Refused with every condition; form stays; nothing recorded. | A02, A129 | L |
+| V19G-3 | Y: TA-07 of D → TA-07w | Read; withdraw with a note. | Aside link; anatomy; "Application withdrawn"; TA-07 rows and panel. | A13 to A15, A38, A132, A133 | L |
+| V19G-3a | Harness; Y | Resend the same `_op`; Back. | Same receipt; Withdrawn state. | A15 | L |
+| V19G-3b | Y; harness | GET TA-07w; unchanged envelope with a new key; fresh-revision new key. | Withdrawn state; `stale_revision` CMP-14; `outcome_already_recorded` with the unsent note. | A18 | L |
+| V19G-4 | Y: TA-05 of G | Read. | D's row and the group-end line. | A09 | L |
+| V19G-5 | Y: TA-05c of G | Close again. | Refused (a withdrawn draft is still open). | A02 | L |
+| V19G-6 | SA1: SA-04g of G | Read. | Every row "No" with its reasons in T5 words. | A89, A149 | L |
+| V19G-7 | Y: TA-05c of G0 | Close. | Neutral receipt on TA-05; closed sentence; TA-13b closed. | A03, A130 | L |
+| V19G-7a | Harness; Y | Resend; Back; unchanged envelope with a new key; fresh-revision new key. | Same receipt; Closed state; CMP-14; "closed meanwhile". | A04 (1) to (4) | L |
+| V19G-8 | Y: TA-07w of W | Read. | With-the-operator state; the return link on TA-07w; no form. | A13, A167 | L |
+| V19G-9 | OP1: OP-02 of W and of C → OP-02w of W | Read; empty reference; record `SYN-LETTER-[stamp]`. | Boundary first; field refusal; "Withdrawal request recorded: refused"; W no outcome. | A56 to A58, A143 | L |
+| V19G-10 | Harness | Resend V19G-9's POST. | Same receipt; one record. | A58 | L |
+| V19G-10a | SA1: SA-04a of U → SA-09p; harness | Read; `350000` (confirmed); reason "short"; `400000` read the review and confirm; resend. | `not_higher`; reason refused; review "₹4,000 (400000 paise)"; neutral receipt; one record; Y's notice +1. | A74, A75, A77, A78, A147, A168 | L |
+| V19G-10b | SA1; harness | GET SA-09p; unchanged envelope with a new key; fresh-revision new key. | No form; CMP-14; `price_increase_open`. | A79 | L |
+| V19G-10c | Y: TA-07 of U → TA-07d | Read. | Price rows; TA-07d anatomy with the current-price decline. | A22, A23, A134 | L |
+| V19G-10d | Y: two tabs of TA-07d; harness; TA-10 | Tab 1 opens; tab 2 accepts; resend; Back; tab 1 declines; read TA-10. | "You accepted ₹4,000"; same receipt; Nothing-waits; CMP-14; the notice still needs acknowledgement. | A24 to A26, A30, A31, A135 | L |
+| V19G-10e | SA1: SA-04a of U; Y: TA-11 (observe) | Read. | Price in effect ₹4,000; quote labelled. | A82 | L |
+| V19G-10f | OP1: OP-02 of C → OP-02f; harness | Read; end before start; valid window; resend; Back. | `forecast_window_invalid`; "Forecast recorded"; one forecast; `timing_risk` +1 with `ackRequired: false`. | A39 to A42, A139, A140 | L |
+| V19G-10g | Y: TA-07 of C; TA-01; TA-10 | Read. | Estimate and forecast separate; the notice without an acknowledgement request. | A32 | L |
+| V19G-10h | OP1: OP-02d of W | Read. | Possible-filing state; no form. | A52, A168 | L |
+| V19G-10i | OP1: OP-02d of C; harness | Read; today; 19 characters; valid (today + 7); resend. | `date_invalid`; justification refused; neutral receipt; one deferral. | A46 to A49, A141 | L |
+| V19G-10j | OP1; harness; OP-01; status pages | GET OP-02d; unchanged envelope with a new key; fresh-revision new key; OP-01; status pages of a refused key and of V19G-10i's key. | No form; CMP-14; `deferral_active`; OP-01 as Core's answer; status pages. | A50, A51, A150 | L |
+| V19G-10k | SA1: SA-02d, SA-01, SA-09d `deferral_decline` (tab 1); SA2: SA-09d `deferral_approve` (tab 2) | SA1 opens tab 1; SA2 approves (today + 7); SA1 declines. | SA-02d and SA-01 +1; neutral receipt; state-based refusal for SA1. | A66 to A69, A144 to A146 | L |
+| V19G-10l | OP1: OP-01, OP-02, OP-04 (observe); Y: TA-07 of C, TA-10 | Read. | "Waiting"; O-06 sentence; `deferral_active`; TA-07 deferral row; the notice. | A33, A46, A50, A66, A136 | L |
+| V19G-10m | SA2: SA-09d `deferral_extend` of C | Extend to today + 14. | Neutral receipt; new date; Y's notice +1. | A70 | L |
+| V19G-10n | OP1: OP-02e; harness | Read; end with a note; resend; GET; saved envelope with a new key. | Neutral receipt "No deferral is currently open"; same on resend; GET "No deferral is currently open"; `stale_revision` with no invented state. | A46, A53, A54, A142 | L |
+| V19G-10o | OP1: OP-02d of C; SA2: SA-09d `deferral_approve` | Deferral 2: propose (review today + 10); approve. | Deferral 2 approved. | A49, A68 | L |
+| V19G-10p | SA1: SA-04a of C; harness | Read; end deferral 2 with a note; resend. | The admin end surface; neutral receipt; SA-02d row gone; OP-02 "No deferral is currently open". | A159, A160, A166 | L |
+| V19G-10q | OP1: OP-02 of C; SA1: SA-04a of C; harness | Read; raw recheck posts. | No section; refusal at the top of the tab; nothing recorded. | A61 | L |
+| V19G-10r | Y: TA-07w of U | Accepted branch: send with a note. Refused branch: read the Refused-now state only (the hand-made post is a test). | Accepted: "Application withdrawn". Refused: no form, the reason and its owner line. | A16 | L |
+| V19G-10s | SA1: SA-04a of C → SA-09w; harness | Read; empty reference; reason "short"; valid send; resend. | Field refusals; receipt by the branch. | A83 to A86, A148 | L |
+| V19G-10u | Setup (labelled, Q-W17-06): Y: TA-13b of G; harness; Y: TA-05 | Post start today − 3 and return today − 1; read the review; acknowledge the exact dates; send; read TA-05. | No command before the acknowledgement; then "Travel dates changed"; rows "Being checked". | A11, A65, A138 | L |
+| V19G-10v | SA1: SA-04g of G | Read before the date check. | D, U "Yes, after [return date]"; W, C "No" with their reasons. | A90 | L |
+| V19G-10w | Wait; SA1: SA-04g of G, SA-04a of D; Y: TA-05 of G, TA-06, TA-04 | Wait for the next date check (at most the recorded interval); read. | D, U "Ended with the group (not an outcome)"; W, C open with every reason; G open; no success words. | A06, A12, A91, A92, A131, A149 | L |
+| V19G-10x | Y: TA-07 of D and U; TA-05c of G | Read; close. | Ended state with history; refused `group_has_open_applications`. | A07, A37, A137 | L |
+| X-1 | `syn-ta-2`; OP2; Y; SA1; harness | Isolation reads and posts; SA1 opens SA2's V19G-10k receipt address; SA-08s of C's deferrals, W's request and G. | Delta 0; not-found; nothing recorded; neutral unchecked receipt; recorded fields only. | A104, A105, A107 | L |
+| V19G-11 | Test (Core) | `completion-group-end.test.ts`, cited by assertion. | Pass. | A94 | T |
+| V19G-11a to V19G-11d | Test (system) | The four isolated exclusion fixtures with their control applications. | Each stays open with exactly its reason; UI assertions pass. | A155 to A158 | T |
+| V19G-12 | Test (system) | D and U ended by the test clock; a group closed after the return date; an open increase lapsed. | Rows, SA-04g and TA-07d words. | A08, A37 | T |
+| V19G-13 | Test | Approve a proposed deferral after an accepted withdrawal. | Core accepts (today's behaviour); SA-09d warning; SA-04a line. | A71, A163 | T |
+| V19G-14 | Test | Decide a deferral after it ended. | State-based refusal; unsent reason. | A71 | T |
+| V19G-15 | Test | A price decision posted after the withdrawal. | "This application ended meanwhile. The price stays ₹3,500." | A29 | T |
+| T-1 | Test | Closure refusals, states, the two-tab closure, lost acknowledgement. | As the items. | A04 (5), (6), A05, A10 | T |
+| T-2 | Test | Past-date acknowledgement and Core's answer. | As the items. | A152, A153 | T |
+| T-3 | Test | Withdrawal states, race, refusals, BFF, words; staff branches. | As the items. | A13, A16, A17, A18, A19 to A21, A59, A60, A87, A88 | T |
+| T-4 | Test | Price: assigned, paid, refusals, records, the reduction fixture, amounts, scope cause, states. | As the items. | A27 to A30, A75, A76, A80, A81, A154 | T |
+| T-5 | Test | Held corrections; timing; forecast BFF, two tabs, states. | As the items. | A34 to A36, A43 to A45 | T |
+| T-6 | Test | Deferral hard stops, OP-02e limits, review due, SA-09d states and limits, competing extensions, words; the admin end after an outcome and its refusals. | As the items. | A52, A54, A55, A70, A71 to A73, A161, A162 | T |
+| T-7 | Test | Recheck states, results, access. | As the items. | A62 to A65 | T |
+| T-8 | Test | SA-04g words and states; no controls. | As the items. | A92, A93, A95 | T |
+| T-9 | Test; record | A12, A97 to A99, A102, A103, A104 (read grant), A106, A109 to A115, A123 to A125; record A164 and A165 as Unmet. | As the items. | as listed, A164, A165 | T |
+| V-A | axe | Every page and state visited above (design V-A with the WP-17 additions). | No serious or critical violation at 1440 and 390 px. | A129 to A150, A166 to A168 | L |
+| X-2 | axe (gallery) | A151. | As V-A. | A151 | L |
+| X-3 | Keyboard-only, screen-reader and phone users; Y; SA1 | During V19G-2, V19G-3, V19G-10a, V19G-10d, V19G-10f, V19G-10i, V19G-10k, V19G-10u, V19G-10v and V19G-10x: the accessibility checks, the shell, copy and refusal text, the role checks, the observation questions. | As the items. | A96, A100, A101, A108, A116 to A128 | L |
 
-Proof split. V19 (group-end part) passes when V19-1 to V19-6 pass on `lane-ui` at the integrated WP-17 commit and
-T-V19 passes as named tests; with WP-16's V19 (financial follow-up part) and WP-14's disclosure part, V19 is done. If
-the date check does not run within the run's window, V19-4 and V19-5 are "Deferred" for that run (the run record
-names the interval and the wait) and T-V19 carries the end itself; the run is repeated before sign-off. The journeys
-of withdrawal, deferral, price and timing pass when their steps and test steps pass. Recorded, not failed: A80
-"Unmet"; A36 "Unmet"; the "Partly met" items of §0.2 "Pass rule". Boundaries stated, not crossed: refunds and paid
-amount adjustment (B29, B43), generic cancellation (B44), completion (LD-04). The run record names the `lane-ui` ref,
-the run tag, the travel agent, the groups, the withdrawal branch, each test, the identifiers (internal record only)
-and every delta.
+Proof split. V19 (group-end part) passes when V19G-1 to V19G-10, V19G-10u to V19G-10x and V-A pass on `lane-ui` at
+the integrated WP-17 commit, and V19G-11, V19G-11a to V19G-11d and V19G-12 to V19G-15 pass as named tests. The four
+exclusion fixtures and the live end (V19G-10w) are never waived: if the date check does not run within the run's
+window, the run waits, and V19 is not signed off before V19G-10w passes. With WP-16's financial part, WP-14's
+disclosure part and WP-12's originals part, V19 is done. The journeys of withdrawal, deferral, price and timing pass
+when their steps and test steps pass. Recorded, not failed: the "Unmet" and "Partly met" items of §0.2 "Pass rule".
+Boundaries stated, not crossed: refunds and paid-amount adjustment (B29, B43), generic cancellation (B44), completion
+(LD-04). The run record names the `lane-ui` ref, the run tag, the travel agent, the groups, the withdrawal branch, each
+test, the identifiers (internal record only) and every delta.
 
 ## 4. Scenario parts outside these proofs (traceability)
 
 | Scenario part | Where it is proven |
 |---|---|
-| TA-13b form, receipt, refusals, stale comparison and replay of `core.edit_travel_dates` | WP-03 (WP03-A18 to A22) |
+| TA-13b form, receipt, refusals, stale comparison and replay of `core.edit_travel_dates` | WP-03 (WP03-A18 to A22); the O-01 interim in the WP-03 fixes (asserted here in A11, A152) |
 | TA-05 context band, sections, rows; TA-04 list words | WP-03 (WP03-A23, A30 to A33) |
 | V19: completed processing keeps financial follow-up | WP-16 (§3 V19 steps; WP16-A18, A24, A32, A110) |
 | V19: disclosure follow-up after completion | WP-14 (WP14-A13, A38) |
-| "Ask your operator for a return" (`purpose=withdraw`) | WP-09 (WP09-A08) |
-| OP-01 views ("Waiting" for an active deferral; reviews due) | WP-07 (WP07-A165; F-07) |
-| OP-02 "Ending the case" under possible filing (D-W07-15) on the old host | WP-07 (WP07-A66); kept on OP-02w here (A56, A59) |
-| SA-02d list and SA-01 group 6 | WP-06 (WP06-A20; design §2.2.4, §2.1) |
-| TA notices and their acknowledgement (TA-10); TA-01 travel-date notices | WP-08 (Q-W08-02); WP-03 |
-| SA-04a frame, tabs and the other decisions | WP-11 |
+| V19: originals | WP-12 |
+| "Ask your operator for a return" (`purpose=withdraw`), now on TA-07w | WP-09 (WP09-A08, G-12) |
+| OP-01 views ("Waiting" for an active deferral; reviews due); the OP-02 banner | WP-07 (WP07-A165; F-07; F-39 with O-06) |
+| SA-02d list frame and SA-01 group 6 | WP-06 (WP06-A20; D-23 with O-06) |
+| TA notices and their acknowledgement (TA-10); TA-01 travel-date notices | WP-08 (Q-W08-02; E-30 with O-06, O-07); WP-03 |
+| SA-04a frame, tabs and the other decisions | WP-11 (I-17) |
 | Staff re-application of held corrections | STOP-W11-03, P-17 item 3 (WP11-A50) |
 | The audit pages | WP-14 (SA-08s); used in A107 |
-| The price in effect on TA-11 | WP-16 (TA-11); observed in Q-4 |
+| The price in effect on TA-11 | WP-16; observed in V19G-10e |
 
 ## 5. Out of scope and boundaries
 
 These MUST NOT appear on any WP-17 page:
 
-- A control that ends an application with its group, closes a group as a SuperAdmin or operator, reopens a group,
-  reverses "Ended with its group" or a withdrawal, or forces completion (BS B21, B24, B25; PL §11.1).
+- A control that ends an application with its group, closes a group as staff, reopens a group, reverses an ended
+  application or a withdrawal, or forces completion (BS B21, B24, B25).
 - A generic cancellation control (BS B44): a notice only (A83).
-- A refund, paid-amount adjustment or credit control; an amount "due", a price difference or a total (BS B17, B29,
-  B43; Q-W16-01).
-- A choice that Core always refuses: the price cause "Change of service scope" as a selectable value (A80).
-- A withdrawal form for an assigned application that is not returned (the TA-07p route only), or one that presents
-  Core's preview as the final result (A13, A17).
-- A deferral, timing or price word that invents an SLA, a deadline or an "overdue" state; a page-side "threatened"
-  or "due" computed from dates (A32, A55).
-- "Completed", "success", "done" or "closed" for an application that ended with its group or was withdrawn (A06, A12,
-  A37, A38).
-- A forecast that replaces the original estimate (A32, A42).
-- A WP-17 form on TA-05 or TA-07, or on OP-02 or SA-04a other than the recheck; a decision form on SA-02d (A102).
-- A result from the page address; an accepted time; a named receipt that the operation does not establish (A97, A98).
+- A refund, paid-amount adjustment or credit control; an amount "due", a price difference or a total (BS B17, B29).
+- A choice that Core always refuses: the price cause "Change of service scope" (A80).
+- A decline choice or receipt that names the original quote as the price kept (O-03).
+- A withdrawal form for an assigned application that is not returned (TA-07w shows the TA-07p link only), or a preview
+  presented as the final result (A13, A17).
+- A deferral word that implies a hold ends by itself or on a date ("waits until", "deferred until", "expires"); a
+  page-side "due" or "threatened" computed from dates; an acknowledgement promise for `timing_risk` (O-06, O-07).
+- A history the read does not return (an ended deferral's state, held values) (O-04, O-05).
+- "Completed", "success", "done" or "closed" for an application that ended with the group or was withdrawn.
+- A forecast that replaces the original estimate.
+- A WP-17 form outside its host (A102); a decision form on SA-02d.
+- A past-date travel-date send without the exact acknowledgement (O-01).
+- A result from the page address; an accepted time; a named receipt that the operation does not establish, or a named
+  receipt for another actor's operation (O-08).
 - A truncated field or a dropped value (LD-17); earlier facts after an access change (LD-14).
-- A configuration value (the date-check interval, the sweep page size) in copy (A108).
+- A configuration value in copy (A108).
 
-Recorded as pending, not as failures (§0.2 "Pass rule"):
+Recorded as pending, not as failures (§0.2 "Pass rule"): A153 (P-21 item 1), A164 (P-21 item 2), A80 (P-21 item 3a),
+A163 (P-21 item 3b), A165 (P-21 item 4), A36 (STOP-W11-03, P-17 item 3); "Partly met": A23, A32, A33, A44, A60, A78,
+A86, A91.
 
-- The price cause "Change of service scope": "Unmet: no request can name the applied correction" (A80; §6 Q-03).
-- Staff re-application of a held correction: "Unmet: waits for STOP-W11-03 and P-17 item 3" (A36).
-- "Partly met": the review date of a deferral on TA-07 without the notices read (A33); the SuperAdmin's reason on
-  TA-07d and the proposed amount on staff pages (A23, A78); the forecast basis on any page (A32, A44); the withdrawal
-  record on staff pages (A60, A86); the lifecycle on SA-04g (A91).
+Deferred in WP-17 (the run record lists each as "Deferred"): held corrections (A34, A35), the assigned and paid price
+cases (A27, A28), the possible-filing paths of OP-02w on a non-protected branch and SA-09w (A59, A87), the recheck
+answers (A62, A63), the review-due state (A55), the admin end after completion (A161): tests and gallery. Not
+deferrable: the V19 exclusion fixtures (A155 to A158) and the live end (V19G-10w).
 
-Deferred in WP-17 (the run record lists each as "Deferred"):
-
-- Held corrections (A34, A35): tests and gallery (a released correction needs an authorized act and non-filing
-  evidence outside the approved writes).
-- Group-end exclusions other than a recorded payment (filing, originals, delivery, money, protection mark, clock):
-  tests and gallery (A93, A94).
-- The assigned and the paid price-decision cases (A27, A28), the possible-filing withdrawal paths (A56, A59, A87), the
-  recheck answers (A62, A63), the review-due state (A55): tests and gallery.
-- V19-4 and V19-5 when the date check does not run within the run's window (§3 proof split).
-
-Not in WP-17: the TA-13b form (WP-03); notice acknowledgement (WP-08); OP-01 views (WP-07); payment and money
-follow-up pages (WP-06, WP-16); the audit pages (WP-14); the bulk intake pages and intake-issue dismissal (WP-18).
+Not in WP-17: the TA-13b form itself (WP-03); notice acknowledgement (WP-08); OP-01 views (WP-07); payment and money
+follow-up pages (WP-06, WP-16); the audit pages (WP-14); the bulk intake pages (WP-18).
 
 ## 6. Questions for the architect (ranked)
 
-PRI-20260930-01: P0 blocks the main path or risks irreversible harm; P1 goes to Max through the architect; P2 is
-parked as a note. No question below is P0: each has a page answer that keeps Core's behaviour truthful.
+Kept as asked, with each answered row reduced to its answer. `WP-17.md` §3, §4.1 and the P-21 dispositions answer:
+Q-01 → PM Q-01, O-01 (the lane's review and acknowledgement, A11, A152) and P-21 item 1 (a Core defect in the Core
+batch, P0; A153); Q-02 → P-21 item 2 (policy to Max, recommendation refuse; interim boundary, A164); Q-03 → P-21 item 3a
+(surface repair in the Core batch; A80); Q-04 → design §2.4, §2.5 (TA-07 and TA-07d state the wait for the return; no
+prefill decided); Q-05 → design §2.1 item 3, §2.4 item 1 ("Ended with the group (not an outcome)"); Q-06, Q-07 → STOP-W17-01
+parked P2 and P-21 item 4 (exceptions to Max; A165); Q-08, Q-09 → parked P2; Q-10 → Q-W17-08 (accepted); Q-11 → O-13
+(the admin end surface on SA-04a; no SuperAdmin forecast page); Q-12 → Q-W17-05 (warning, Core decides) and P-21 item
+3b (parked; A163); Q-13 → Q-W17-04 (no form); Q-14 → Q-W17-06 (approved, also the past-date move); Q-15 → Q-W17-09 and
+O-09; Q-16 → STOP-W17-14 (parked; E-30 links TA-07d); Q-17 → STOP-W17-11 (with STOP-W16-06). Q-18 is new.
 
 | ID | Rank | Question | Concrete scenario | PM recommendation |
 |---|---|---|---|---|
-| Q-01 | P1 | Core accepts travel dates in the past on `core.edit_travel_dates` (only `core.create_group` compares the start with today), and TA-13b sets no minimum date and states no consequence. The next date check then ends every eligible application of the group, which no command reverses. | Y types 2025 instead of 2026 in the return date of a group with three unpaid drafts. Within the date-check interval the three drafts read "Ended with its group"; Y must start new intake. Likelihood: low per edit, certain over many edits. Harm: irreversible end of work. The live V19 recipe (V19-2) uses the same path on purpose. | The design's minimum date on TA-13b lowers the likelihood; a raw post (or a browser without the check) still reaches Core. TA-13b states the consequence of a past return date before the send button (A11). Send Core a behaviour proposal: refuse a return date before today on an edit, or require an explicit confirmation field. Until then, approve V19-2 as a labelled set-up write (Q-14). |
-| Q-02 | P1 | Core accepts a price increase and its acceptance on an application whose service payment is "received". BS B17 and B29 keep paid amounts, adjustments and refunds unselected; UI-PLAN TA-07 lists "Unpaid case" as the precondition. | SA1 proposes ₹4,000 on a case paid at ₹3,500; Y accepts; TA-11 shows "Price in effect: ₹4,000" beside "Recorded as received". Y cannot tell whether ₹500 is owed, and nobody can record or refund it. Likelihood: medium (mistaken prices happen after payment). Harm: a money dispute with no product path. | Do not block (Core accepts): SA-09p and TA-07d show the paid fact and the boundary notice (A28, A75); no page computes a difference. Ask Max whether a price increase of a paid application is allowed at all; if not, a Core guard is a behaviour proposal. |
-| Q-03 | P1 | The wire contract and binding of `core.propose_price_increase` carry no `correctionId` and no evidence, so the cause `material_scope_change` is refused every time (`correction_not_applied`). | An applied correction changes the service scope; SA1 chooses "Change of service scope"; Core refuses whatever SA1 does. Likelihood: certain for that cause. Harm: renewed TA authority for a scope change (B17) cannot be asked through the product. | SA-09p offers only "Correction of a mistaken price" with a notice for the scope change (A80, "Unmet"). Report a surface defect to the orchestrator (contract and binding, as STOP-W11-03), with the correction chosen from the applied corrections of the application. |
-| Q-04 | P2 | A price increase on an assigned case waits for a formal return: Core refuses the travel agent's decision (`awaiting_formal_return`), and the operator owns the next step. | Y reads the notice "The price of the application changed", opens TA-07 and finds no decision form. Likelihood: medium. Harm: delay, confusion. | TA-07 and TA-07d say that the decision waits for the operator's return and link TA-07p (A27); SA-09p warns before the send (A75). Decide whether TA-07p gets a `purpose=price` prefill as WP-09 did for withdrawal. |
-| Q-05 | P2 | Core derives the common progress "completed" for `ended_with_group` and "delivery_closure_pending" for an open application with any outcome (a withdrawn application waiting for its group end). UI-PLAN §4.2 requires "Ended with group", never success. | TA-06 shows "Completed" for E, which TravelMudra never processed; A shows "Delivery/closure pending" with no delivery. Likelihood: certain. Harm: low to medium (the TA tells the customer the wrong thing). | Show the lifecycle words "Ended with its group" in the stage or progress column where the lifecycle is `ended_with_group`, and Core's progress only as a labelled secondary fact; for a withdrawn open application show the outcome first (A12, A37, A38). A unit test pins the mapping. A Core change of the derivation is a proposal, not needed for WP-17. |
-| Q-06 | P2 | Facts that the TA and staff reads do not return: the deferral's review date on the TA case read (only in the `deferral` notice); the SuperAdmin's reason for a price increase on the TA read; the proposed amount on the staff read. | Y sees "Your operator: review the deferral" without the date; Y decides a price change without its reason; SA1 cannot see the amount after proposing it. Likelihood: certain. Harm: low. | TA-07 reads the notices (optional read, LD-14) for the review date (A33); the reason and the amount are "Partly met" (A23, A78). Kind 1 note: adding them to the case reads removes a client-side join of notices and cases (criterion point 2 demonstrated for the review date; not for the reason and the amount). Parked P2. |
-| Q-07 | P2 | No read returns a forecast's basis, note or recording time. | Y sees a later forecast without its reason (UX §4.4 asks for the reason); OP1 cannot see which basis is current. Likelihood: certain. Harm: low. | "Partly met" (A32, A44). Kind 1 note: basis, note, recorder and time on `timing.forecast` (criterion point 2 not demonstrated: no join is removed; it adds a fact). Parked P2. |
-| Q-08 | P2 | The staff case read has no withdrawal record and no preview. | OP1 records the applicant's request, receives "Refused: …", and later OP-02 shows no trace of the refused request. Likelihood: certain for refused requests. Harm: low (SA-08s holds it). | "Partly met" (A57, A60, A86); link SA-08s of the withdrawal from the receipt. Kind 1 note (the withdrawal row and preview on the staff read). Parked P2. |
-| Q-09 | P2 | `core.admin_group` drops the lifecycle from each item (the internal view has it), so ended and completed applications both read `application_not_open`. | SA1 reads SA-04g of a group and cannot tell which applications ended with the group. Likelihood: certain. Harm: low (SA-04a holds it). | "No longer open" with a link (A91). Contract defect note: carry the lifecycle the view already computes. Parked P2. |
-| Q-10 | P2 | `core.record_forecast` has no expected revision. | OP1 records a forecast in tab 1 after tab 2 recorded a newer one; tab 1's becomes current without a comparison. Likelihood: low. Harm: low (history kept). | No page-side guard; OP-02f shows the current forecast at load (A44). Parked P2. |
-| Q-11 | P2 | The policy allows a SuperAdmin to record a forecast and to end a deferral, but no admin route exists. | OP1 is suspended during a deferral; nobody can end it until C is reassigned. Likelihood: low. Harm: low (reassignment exists). | No page (LD-07: no route, no command use to host). Parked P2 note. |
-| Q-12 | P2 | `core.decide_deferral` does not check that the application is still open. | An operator proposes a deferral; Y withdraws the application; SA2 approves; Y gets a deferral notice for a withdrawn application. Likelihood: low. Harm: low. | SA-09d shows the current outcome and the effect line (A71); the page does not block. Defect note to the orchestrator. Parked P2. |
-| Q-13 | P2 | When Core's preview refuses a withdrawal, TA-07 shows a boundary and no form, although Core would record the request with a refused assessment. | Y wants a record that they asked to withdraw while a filing may have happened. Likelihood: low. Harm: low. | Keep the boundary (UI-PLAN TA-07 "Unavailable") with the owner and route (A13); record the deliberate deviation from D-W07-16. The operator's and SuperAdmin's paths keep "record the request only" (F-09). |
-| Q-14 | P2 | Proof writes (as Q-W16-06). | The run adds three groups and seven applications; G1 (C) and G2 (H) stay open; G2's dates go into the past; the run waits up to the date-check interval. | Approve the writes of §0.2 "Data hygiene" and V19-2. |
-| Q-15 | P2 | Body limits below the largest valid form on seven WP-17 routes (§0.1 "BFF today"). | A 1,000-character Devanagari reason on SA-09d is refused for size. Likelihood: low. Harm: low. | Confirm that `WP-16.md` PM Q-14's fix covers the WP-17 routes; A112 tests each. |
-| Q-16 | P2 | The `price_change` notice needs acknowledgement apart from the decision. | After accepting on TA-07d, Y still sees "Needs your acknowledgement" on TA-10 for the same change. Likelihood: certain. Harm: low. | Keep the two facts separate (UX §4.2); TA-07d's receipt links TA-10 (A31). Parked P2. |
-| Q-17 | P2 | STOP-W16-06: the codes behind `money_outstanding` are not on the group-end read (AM-W16-05). | SA1 reads "Money is outstanding" without knowing which money. Likelihood: certain when money is outstanding. Harm: low. | Use AM-W16-05's sentence (A93); keep STOP-W16-06 as the Kind 1 input it already is. |
+| Q-01 | P1 | Past travel dates on an edit. | Answered: O-01; P-21 item 1. | — |
+| Q-02 | P1 | Price increase on a paid application. | Answered: P-21 item 2 (with Max). | — |
+| Q-03 | P1 | `correctionId` missing on the price proposal. | Answered: P-21 item 3a. | — |
+| Q-04 | P2 | Price decision waits for a formal return. | Answered: design §2.4, §2.5. | — |
+| Q-05 | P2 | Progress words of ended and withdrawn applications. | Answered: design words; Core's derivation unchanged. | — |
+| Q-06 | P2 | TA review date, SuperAdmin reason, proposed amount not on the reads. | Answered: parked; P-21 item 4 for the exceptions. | — |
+| Q-07 | P2 | Forecast basis on no read. | Answered: P-21 item 4. | — |
+| Q-08 | P2 | No withdrawal record on the staff read. | Answered: parked P2. | — |
+| Q-09 | P2 | No lifecycle on the group-end read. | Answered: parked P2. | — |
+| Q-10 | P2 | Forecast without an expected revision. | Answered: Q-W17-08. | — |
+| Q-11 | P2 | SuperAdmin forecast and end without routes. | Answered: O-13 (admin end built); forecast parked. | — |
+| Q-12 | P2 | A deferral decided after an outcome. | Answered: Q-W17-05; P-21 item 3b. | — |
+| Q-13 | P2 | TA withdrawal with a refused preview. | Answered: Q-W17-04. | — |
+| Q-14 | P2 | Proof writes. | Answered: Q-W17-06. | — |
+| Q-15 | P2 | Body limits. | Answered: Q-W17-09; O-09. | — |
+| Q-16 | P2 | Price-change notice acknowledgement after the decision. | Answered: STOP-W17-14 parked. | — |
+| Q-17 | P2 | Money codes on the group-end read. | Answered: STOP-W17-11. | — |
+| Q-18 | P2 | The lettered additions write beyond design §6.2's approved set: C with its payment, assignment and start of work; one forecast; two deferrals (one ended on OP-02e, one on SA-04a); the price increase of U and its acceptance; Y's withdrawal request of U; SA1's operational withdrawal request of C. | Without them the price, forecast, deferral, admin-end and operational-withdrawal journeys run only as tests, and C (paid, worked, open) cannot show live that a worked application stays open after the group end. Likelihood: certain. Harm: low (synthetic, run-tagged; C stays open in G). | Approve the writes of §0.2 "Data hygiene" (synthetic only). |
 
 ## 7. Sign-off
 
@@ -839,11 +862,11 @@ parked as a note. No question below is P0: each has a page answer that keeps Cor
 | Installation and ref (`uat.py status lane-ui` output: commit or tag) | |
 | Lane commit of the tests named for `T` items | |
 | Run tag, travel agent used, group labels, withdrawal branch and identifiers (internal record reference) | |
-| Date-check interval of the installation and the wait at V19-4 | |
+| Date-check interval of the installation and the wait at V19G-10w | |
 | Baselines (P-0) and the deltas observed | |
 | Browsers and versions | |
 | Assistive technology used | |
-| V19 (group-end part) result (steps; tests) | |
+| V19 (group-end part) result (steps; tests; exclusion fixtures) | |
 | Deferred items (reference each) | |
 | Partly met and Unmet items (decision reference) | |
 | Open findings (ID, rank, scenario) | |
@@ -1004,4 +1027,21 @@ Result per item (Pass, Fail, Blocked, Partly met, Unmet, Deferred or Not run; ev
 | WP17-A149 | | | |
 | WP17-A150 | | | |
 | WP17-A151 | | | |
+| WP17-A152 | | | |
+| WP17-A153 | | | |
+| WP17-A154 | | | |
+| WP17-A155 | | | |
+| WP17-A156 | | | |
+| WP17-A157 | | | |
+| WP17-A158 | | | |
+| WP17-A159 | | | |
+| WP17-A160 | | | |
+| WP17-A161 | | | |
+| WP17-A162 | | | |
+| WP17-A163 | | | |
+| WP17-A164 | | | |
+| WP17-A165 | | | |
+| WP17-A166 | | | |
+| WP17-A167 | | | |
+| WP17-A168 | | | |
 | V19 proof (group-end part) | | | |
