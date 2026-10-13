@@ -1,0 +1,40 @@
+# L7 on b26d2a5 with only the test change (derived.ts unchanged), 2026-10-13T11:49:26Z
+▶ L7: the pending answer agrees with the control while a legacy mark waits
+  ✖ L7: the SuperAdmin owns the next step until the disposition; then the operator authorizes the external act (1472.564369ms)
+✖ L7: the pending answer agrees with the control while a legacy mark waits (1475.501133ms)
+ℹ tests 1
+ℹ suites 1
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15634.538537
+
+✖ failing tests:
+
+test at test/operations/protection-mark-legacy.test.ts:336:3
+✖ L7: the SuperAdmin owns the next step until the disposition; then the operator authorizes the external act (1472.564369ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'assigned_operator',
+  +   'acc_3KJPC2M2HZAC4VHV152DJY4WQ1',
+  +   'ready',
+  +   'authorize_external_act',
+  +   '0'
+  -   'superadmin',
+  -   null,
+  -   'protection_mark_determination_missing',
+  -   'resolve_incident',
+  -   '160'
+    ]
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'assigned_operator', 'acc_3KJPC2M2HZAC4VHV152DJY4WQ1', 'ready', 'authorize_external_act', '0' ],
+    expected: [ 'superadmin', null, 'protection_mark_determination_missing', 'resolve_incident', '160' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
