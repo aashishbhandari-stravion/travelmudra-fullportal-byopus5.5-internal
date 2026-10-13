@@ -235,3 +235,28 @@ Rollout to the other two lanes after the first observed refusal. What the hook d
 the lane, and it does not bound subagents (rule 2 remains the lane's own discipline); a `SubagentStop` or
 `PreToolUse` guard inside subagents is the next candidate if subagent sizes stay high.
 
+### 7.5 Why the model defaults were not followed (13 October 2026)
+
+The shared working agreement that every lane session loads names the worker defaults (Haiku for mechanical work,
+Sonnet for evidence gathering, Opus or Fable for demanding reasoning) and the orchestrator's own memory holds
+"compact capped worker handoffs". The lanes still ran 141 subagents on Opus. Three causes, in order of weight:
+
+1. The lane prompts of 12 October named the lane's model (Opus 5.5 as the lane architect) and said nothing about
+   subagents: no model per task class, no context cap, no return limit. The lane read every task as demanding.
+2. The Agent tool inherits the parent's model when no `model` argument is passed. The default outcome of silence is
+   Opus, so a rule that is not restated as "pass `model` on every call" does not bite.
+3. Nothing measured subagent cost until the account card raised it. The per-turn context of subagents was not
+   visible to the lane, the orchestrator or Max.
+
+Correction for the prompt template (section 5): a lane prompt MUST carry the subagent rule with numbers (one task
+per subagent, brief and return limit, under 100k context per turn, partial return before 200k) and the sentence
+"pass `model` explicitly on every Agent call: haiku mechanical, sonnet evidence, opus judgment and package review
+only", plus the main-chat threshold and the compaction procedure. A rule in the global agreement is a default; the
+prompt is where it becomes an instruction.
+
+### 7.6 Priority under the budget (Max, 13 October 2026, register OD-X16)
+
+The Core lane finishes first and goes into main; the bulk lane continues only Core-independent units and then
+pauses; the UI lane pauses now with a full persisted resume file. A paused lane costs nothing; its committed work
+integrates at a clean prefix when it resumes. The measurement of 7.3 is taken on the Core lane and the bulk lane.
+
