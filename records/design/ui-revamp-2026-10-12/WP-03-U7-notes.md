@@ -72,8 +72,7 @@ Files: `src/apps/edge/instance.ts`, `src/apps/staff/instance.ts`.
 
 `scripts/dev/gallery-pages.ts` registers `taHomeGalleryPages`, `groupsGalleryPages`, `applicationsGalleryPages`,
 `applicationGalleryPages`, `submitGalleryPages`, `prepareGalleryPages`, `documentDetailGalleryPages`,
-`individualIntakeGalleryPages` (82 pages; 182 in total, no duplicate file name). `test/ui/gallery.test.ts` now takes
-about 25 to 30 minutes.
+`individualIntakeGalleryPages` (82 pages; 182 in total, no duplicate file name).
 
 ## 7. Tests changed or added
 
@@ -101,6 +100,7 @@ about 25 to 30 minutes.
 | `test/system/capacity-pages.test.ts`, `interrupted-work.test.ts`, `sign-in.test.ts` | Group form from `/ta/groups/new`. |
 | `test/system/new-service.test.ts` | Service read on TA-09c (design §9.3). |
 | `test/system/refusals.test.ts` | `PARAMS['requirementType'] = 'passport'` beside the architect's `kind` line (new path parameter of T66). |
+| `test/ui/gallery.test.ts` | Phone navigation menu lists Home first (T01 is registered; design §9.3 expected this pin to stay valid, it does not). |
 
 Traced test titles: none changed.
 
@@ -108,8 +108,15 @@ No fix in a unit's page file was needed beyond the assigned TA-09c changes.
 
 ## 8. Checks
 
-See the report to the architect for the final counts. `test/unit/seo-record.test.ts` fails as expected (style sheet
-changed; the architect regenerates the record).
+| Check | Result |
+|---|---|
+| `npm run typecheck` | Clean. |
+| `npm run lint` | Clean. |
+| `npm run test:unit` | 1173 tests: 1171 pass, 1 todo (the U5 passport drift guard), 1 fail: `seo-record.test.ts` (expected; record stale after the CSS block). |
+| `npm run test:ui` | 2087 tests: 2085 pass, 1 todo, 1 fail: the gallery's phone menu pin (Home now listed). Pin fixed; the "phone layouts" group (8 tests) rerun: 8 of 8. The 43-minute full UI run was not repeated. |
+| `node --test "test/static/**/*.test.ts"` | 74 of 74. |
+| `TMPDIR=/tmp/w3u7 npm run test:system` | 177 of 177. |
+| `TMPDIR=/tmp/w3u7 npm run test:integration` | First run 292 of 293: `documents-tasks.test.ts` › "carry ids and closed codes only …" found `ASHA` in the diagnostics. Not reproduced in two reruns of that file (26 of 26 each) or a full rerun (293 of 293). Inference: a random id in a diagnostic line contained the substring (P2 flaky test, documents module, not this unit's). |
 
 ## 9. Items for the architect
 
@@ -121,4 +128,5 @@ changed; the architect regenerates the record).
 | U7-04 | P2 | `#dates` fallbacks remain in `pages/ta-home.ts:93` and `core/ta.ts:389`; they apply only while TA-13b is not served, which is never the case now. | Remove when those files are next edited. |
 | U7-05 | P2 | Result label "Intake" for `intake_attempt` (§4). | Confirm or reword. |
 | U7-06 | — | `DESIGN.md` lines named by U3-08, U4 N-4 and the U5 notes are not written (outside this unit). | Architect's single `DESIGN.md` edit. |
-| U7-07 | — | `test:ui` duration grew with 82 gallery pages (about 25 to 30 minutes for the gallery file). | None needed; note for planning check runs. |
+| U7-07 | — | `test:ui` duration grew with 82 gallery pages (the full UI run took 43 minutes). | None needed; note for planning check runs. |
+| U7-08 | P2 | `test/integration/documents-tasks.test.ts` "carry ids and closed codes only" checks forbidden words as substrings of the whole diagnostic text; a random id that contains `ASHA` (Crockford letters) fails it without any personal data (inference from one failure not reproduced in three runs). | Documents module: match the forbidden values as whole words, or use fixture words that cannot occur in an id. |
