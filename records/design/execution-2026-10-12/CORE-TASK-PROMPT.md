@@ -48,6 +48,7 @@ approved together so that "holistically the design and code is done":
 | P-18 (1) Kind 2 (OD-X7), P0 before production: passport-identity guard on sharing an original; SuperAdmin correction decision with evidence (unlink, void a wrong receipt, remove a part that never arrives, re-receipt). Placement: in this task if the proposal's effort estimate is not large, else the first item after this run (the orchestrator decides on the estimate). Blast radius MUST stay inside the physical-originals service type; the tests MUST show other service types unchanged. Max tests it by simulation | Kind 2, P0 (pre-production) | `P-18-wp12-originals.md`; the Kind 2 proposal when written |
 | P-21 (2) Kind 2 (OD-X9): Core refuses `core.propose_price_increase` (any cause) on an application with a recorded payment, with a reason the pages can name; a test confirms that applications created after a catalogue price change are quoted at the current price. Proposal plus review first. The refund and group-cancellation lever of OD-X9 (c) is NOT in this task | Kind 2, P1 | `P-21-wp17-timing-withdrawal.md` item 2; the Kind 2 proposal when written |
 | P-11 (OD-X10, confirmed 13 Oct 2026): a required list of one to five evidence references on every gate exception grant; an attestation alone is accepted; the four review fixes of `P-11-12-review.md` are conditions. The proposal and its one review exist; build from them, no re-review | Kind 2, P1 | `P-11-…` and `research/reviews/P-11-12-review.md` (UI lane) |
+| P-13 (1) (OD-X12): the owning TA's current account email on `dlv.delivery_page` for the SuperAdmin ONLY; the operator variant carries no address. Kind 1 with Max's exception; delivery module read | Kind 1, exception | `P-13-wp08-delivery-reads.md` item 1 |
 | P-13 (8) stored subject and version identifiers in `dlv.selection`; P-13 (9) email attempts newest first with a stated cap: ONLY if Max adds them to the batch (orchestrator tells the lane) | Kind 1; defect | `P-13-wp08-delivery-reads.md` (amended) |
 
 Parked by Max, not worked in this task: P-20 (1) disclosure correction evidence (P1, undecided, register OD-X8 and NOTE-02); notice types and aggregation (NOTE-01).
@@ -74,7 +75,7 @@ class of failure per fix.
 
 ## 4. Ownership
 
-`src/modules/core/` except the K2-S1 group files; `src/modules/identity/` session and surface-read wiring for the WP-15 support-view item only; `src/modules/catalogue/` for the WP-02 F-01 staleness defect only; `src/modules/payments/service-status.ts` and its tests;
+`src/modules/core/` except the K2-S1 group files; `src/modules/delivery/` read models for the P-13 (1) item only; `src/modules/identity/` session and surface-read wiring for the WP-15 support-view item only; `src/modules/catalogue/` for the WP-02 F-01 staleness defect only; `src/modules/payments/service-status.ts` and its tests;
 `src/core-api/bindings/{core,identity}.ts`, `src/core-api/allowlists.ts` and `src/core-api/server.ts` for the
 replay path; `src/contracts/core.ts` additive fields only; `src/modules/operations/` launch guards for P-06 (1);
 `test/core/`, `test/payments/`, `test/identity/`, `test/system/` for those paths. No migration is expected; if one
