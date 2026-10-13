@@ -1,0 +1,14 @@
+# 'replays a sign-in code request whose address differs from the recorded one only in letter case' (test/system/three-instances.test.ts) before the change, 2026-10-13
+  ✖ replays a sign-in code request whose address differs from the recorded one only in letter case (80.655393ms)
+✖ a lost acknowledgement (202.048371ms)
+ℹ tests 15
+ℹ pass 14
+ℹ fail 1
+✖ failing tests:
+test at test/system/three-instances.test.ts:281:3
+✖ replays a sign-in code request whose address differs from the recorded one only in letter case (80.655393ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w1-identity/test/system/three-instances.test.ts:301:12)
+    actual: 'rejected',
+    expected: 'accepted',

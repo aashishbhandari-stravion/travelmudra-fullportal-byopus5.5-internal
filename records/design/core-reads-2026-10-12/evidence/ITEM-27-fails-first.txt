@@ -1,0 +1,24 @@
+# 'each item carries its stored subject id and version id on the wire; a packet has no version' (test/delivery/selection.test.ts) before the change, 2026-10-13
+  ✖ each item carries its stored subject id and version id on the wire; a packet has no version (1138.078354ms)
+✖ the selection read (1142.299224ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ each item carries its stored subject id and version id on the wire; a packet has no version (1138.078354ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +     undefined,
+  +     undefined
+  -     'dov_3YTJ1BYVDJEMJR9H6W8YPPK0DP',
+  -     'dov_3YTJ1BYVDJEMJR9H6W8YPPK0DP'
+  +     undefined,
+  +     undefined
+  -     'dov_50Q8WM6X7Z2RH1T7XYSWX11DH6',
+  -     'dov_50Q8WM6X7Z2RH1T7XYSWX11DH6'
+  +     undefined,
+  +     undefined
+  -     'pkt_6MSWA6RKC9RTT355YY4S32KJNS',
+  -     null
+    actual: [ [ 1, 'document_version', undefined, undefined ], [ 2, 'document_version', undefined, undefined ], [ 3, 'packet', undefined, undefined ] ],
+    expected: [ [ 1, 'document_version', 'dov_3YTJ1BYVDJEMJR9H6W8YPPK0DP', 'dov_3YTJ1BYVDJEMJR9H6W8YPPK0DP' ], [ 2, 'document_version', 'dov_50Q8WM6X7Z2RH1T7XYSWX11DH6', 'dov_50Q8WM6X7Z2RH1T7XYSWX11DH

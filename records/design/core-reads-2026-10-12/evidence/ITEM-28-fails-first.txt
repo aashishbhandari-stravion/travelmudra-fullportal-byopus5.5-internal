@@ -1,0 +1,9 @@
+# 'the page lists the newest 100 sends first; an uncertain send older than that window still sets the boundary; the resend offers stay correct' (test/delivery/email-notices.test.ts) before the change, 2026-10-13
+  ✖ the page lists the newest 100 sends first; an uncertain send older than that window still sets the boundary; the resend offers stay correct (1062.124146ms)
+✖ document email (1067.482557ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ the page lists the newest 100 sends first; an uncertain send older than that window still sets the boundary; the resend offers stay correct (1062.124146ms)
+  AssertionError [ERR_ASSERTION]: the newest 100, newest first
