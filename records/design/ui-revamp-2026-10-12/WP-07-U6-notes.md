@@ -5,7 +5,7 @@ Unit U6 of WP-07. Author: the U6 engineer, 13 October 2026. Input for the archit
 files of other units. Binding inputs: `WP-07-design.md` §2.0, §2.10, §2.11, §2.12, §2.13, §3.1, §4.1, §4.3, §4.5, §7.1
 (U6 row), §7.3 (`payments-views.test.ts` row); `WP-07.md` §3 and §4 (F-08, F-37 apply here); `WP-16-design.md` §1.8
 (AM-W16-02), §2.9; `WP-07-acceptance.md` §2.5 (A79 to A97, A166) and §2.7; `WP-06-U4-notes.md`; `PLAN.md` LD-14, LD-17;
-the unit brief (money rule: no computed difference, no "due").
+the unit brief (money rule: no "due"; the architect narrowed it on 13 October 2026, §5).
 
 ## 1. Files
 
@@ -14,7 +14,7 @@ the unit brief (money rule: no computed difference, no "due").
 | `src/apps/staff/payments/finance-pages.ts` (new) | SA-07h `financeIndexPage`, SA-07t `taExposurePage`; paths and route ids (`FINANCE_PATHS`, `FINANCE_ROUTE_IDS`); shared pieces for the task pages (ceiling now, exposure facts, open request, change state words, ceiling history table, the money boundary notices); SA-07t receipt expectations `taFinanceReceipts`. |
 | `src/apps/staff/payments/ceiling-pages.ts` (new) | SA-07l and SA-07i `ceilingFormPage`, SA-09c `changeDecisionPage`, `changeDecisionReceipts`; a local decision frame on `decisionPage` (§3, D-U6-01). |
 | `src/apps/staff/payments/finance-routes.ts` (new) | `financeRoutes()`: 5 GET and 4 POST routes (§2); `ceilingInput` (form read whole); `finish` (answer with the audit re-render); body limit 16,384. |
-| `test/unit/web/ceiling-pages.test.ts` (new) | 26 tests. |
+| `test/unit/web/ceiling-pages.test.ts` (new) | 27 tests. |
 | `test/unit/bff-finance.test.ts` (new) | 12 tests (HTTP against a scripted Core). |
 | `scripts/dev/gallery/finance.ts` (new) | `financeGalleryPages()` (20 pages) and fixtures shared with both tests. Not registered. |
 
@@ -65,12 +65,14 @@ command contract does not take (`contractRefusal`, imported from `decisions/rout
 ## 3. Pages and states
 
 All pages: rail `current` = `/admin/finance`; "Read at [time] IST"; no `.badge`, no attention flag, no "Within" or "Over
-the ceiling", no computed amount (tested on every page). Every amount is a Core field through `money()` (neutral).
+the ceiling", no amount owed (tested on every page). Every amount is a Core field through `money()` (neutral); the one
+computed amount is the labelled arithmetic of the ceiling and counted exposure of one `pay.ta_finance` row (§2.10.2
+item 3, Q-W07-11).
 
 | Page | Content, in order | States |
 |---|---|---|
 | SA-07h `/admin/finance` | h1 "Finance", lead; `#requests` (count "[n] requests"; rows: travel agent link, requested ceiling "from ₹[old] when requested", requested by and time, reason, action: "Decide" → SA-09c approve, or for the viewer's request "You requested this; a different SuperAdmin decides." + "Withdraw your request" → SA-09c decline); `#tas` (travel agent link, ceiling with "Default"/"Set", counted exposure, unused reservations, paid by TravelMudra not recovered; cap line at 200); `#follow-up` ("Payment follow-up: [o] items open; [m] items yours." with links to SA-07f and `?state=mine`); `#gate2` (design text, links "Flags from operators", "Search all applications"); `#decrease` (boundary row 5) | S2 requests: "No ceiling increase waits for a decision."; S2 travel agents: "No travel agent has an application or a ceiling yet."; S7: required read |
-| SA-07t `/admin/finance/tas/:id` | receipt (`lowered`, `requested`); header (crumbs "Money & exposure › Finance", h1 "Exposure ceiling: [travel agent]", lead, reference); status facts (Ceiling with "Default ₹0" or "Set by a SuperAdmin on [time] IST"; Counted exposure; Of which unused reservations (still counted); Of which paid by TravelMudra, not recovered; "Counted exposure is above / not above the ceiling."); the rule line; default-ceiling notice (only at the default); `#increase-request` panel (amounts, requester, reason; requester line; audit line when not healthy; links by reader); `#change-ceiling` ("Lower the ceiling" link or "The default ceiling is ₹0: it cannot be lowered."; "Request an increase" link or "An increase request already waits; it is decided first."); `#reservations` + release notice; `#fees` + exclusion notice; `#changes` (history; "Current ceiling" mark; "Withdrawn by the requester"); `#decrease` | No exposure record: Ceiling ₹0 "Default ₹0", Counted exposure "No exposure is recorded for this travel agent."; empty tables say what is empty; support view: no change links |
+| SA-07t `/admin/finance/tas/:id` | receipt (`lowered`, `requested`); header (crumbs "Money & exposure › Finance", h1 "Exposure ceiling: [travel agent]", lead, reference); status facts (Ceiling with "Default ₹0" or "Set by a SuperAdmin on [time] IST"; Counted exposure; Of which unused reservations (still counted); Of which paid by TravelMudra, not recovered; "Ceiling minus counted exposure: ₹[n]" while counted exposure is not above the ceiling (₹0.00 when equal), else "Counted exposure is ₹[n] above the ceiling."; both from the same exposure row; no row without an exposure record); the rule line; default-ceiling notice (only at the default); `#increase-request` panel (amounts, requester, reason; requester line; audit line when not healthy; links by reader); `#change-ceiling` ("Lower the ceiling" link or "The default ceiling is ₹0: it cannot be lowered."; "Request an increase" link or "An increase request already waits; it is decided first."); `#reservations` + release notice; `#fees` + exclusion notice; `#changes` (history; "Current ceiling" mark; "Withdrawn by the requester"); `#decrease` | No exposure record: Ceiling ₹0 "Default ₹0", Counted exposure "No exposure is recorded for this travel agent."; empty tables say what is empty; support view: no change links |
 | SA-07l `…/ceiling/lower` | CMP-25 frame `lower-*`: scope; evidence (exposure facts, open request); effect (design words); fields "New, lower ceiling" (₹, decimal, hint with the ceiling now), "Reason for lowering", hidden `basis`; review; "Lower the ceiling"; Cancel → SA-07t | draft; closed "The ceiling is the default ₹0. It cannot be lowered." (links: request page, back); support view (closed) |
 | SA-07i `…/ceiling/increase-request` | frame `increase-*`, design words; "Requested ceiling", "Reason for the increase"; "Request the increase" | draft; closed "An increase to ₹[n] waits since [time] IST, requested by [name]." (links by reader); support view |
 | SA-09c `approve_increase` | frame `approve-*`: scope "from ₹[old] (the ceiling when requested) to ₹[new]. Requested by [name] at [time] IST."; evidence (request reason, exposure now, reservations count, last 5 history rows, "All ceiling changes"); effect; hard stops; "Reason for approving (optional)", hidden `_rev.change`; review; "Approve the increase to ₹[new]" | first match: support view; decided ("This request was approved by [name] at [time] IST." / "withdrawn by the requester" / "declined by [name]"); own request (closed, design sentence, "Withdraw your request"); audit not healthy (unavailable, CMP-10, owner TravelMudra); requester not active (closed, "Decline the request"); ceiling changed (`old_paise ≠` ceiling now; closed, both amounts); draft |
@@ -114,9 +116,14 @@ request). No accepted time. A mismatch gives the unchecked receipt.
 
 ## 5. Deviations from the design (with reasons)
 
+Closed: the first report built SA-07t without the design's arithmetic row (the brief then forbade any difference). The
+architect decided on 13 October 2026 that the design governs (the brief meant amounts owed); `ceilingArithmetic` in
+`finance-pages.ts` now gives "Ceiling minus counted exposure" or "Counted exposure is [₹] above the ceiling" from the same
+exposure row, tested in both shapes and the equal case (₹0.00). It also shows in the "Exposure now" evidence of SA-07l,
+SA-07i and SA-09c.
+
 | ID | Design | Built | Reason | Rank |
 |---|---|---|---|---|
-| DV-U6-01 | §2.10.2 item 3: "Ceiling minus counted exposure: [₹]" or "Counted exposure is [₹] above the ceiling" (Q-W07-11); acceptance A81 "Headroom", V09-14 "₹2,000 above" | Both Core amounts and the sentence "Counted exposure is above the ceiling." / "… is not above the ceiling." No computed amount. | The unit brief: "never compute a 'due' or a difference". | P1 (§7) |
 | DV-U6-02 | Default-ceiling notice: "… is unavailable while the ceiling is the default ₹0: that reservation rule is not decided. … Setting a ceiling … makes fee commitments possible within it." | "Committing a government fee for a paid application of this travel agent is unavailable until the product owner decides the reservation rule for a paid application at the default ₹0 ceiling. Setting a ceiling (two SuperAdmins for an increase) makes fee commitments possible within it." Owner product owner; route "Request a higher ceiling (a second SuperAdmin approves it)." → SA-07i. | `boundaryNotice` fixes the sentence form "[action] is unavailable until [policy]." Facts unchanged. | P2 |
 | DV-U6-03 | WP-16 §2.9 row 5: "Verifying a bank receipt, allocating it, recording a recovery and adjusting a balance are unavailable until …" | "… recording a recovery or adjusting a balance is unavailable until …" | Same component sentence form ("is"); "or" keeps it grammatical. | P2 |
 | DV-U6-04 | SA-09c own request as CMP-10 | `closed` state with the same sentence and the "Withdraw your request" link (D-U6-05). | Template does not fit. | P2 |
@@ -163,22 +170,20 @@ request). No accepted time. A mismatch gives the unchecked receipt.
 
 | Rank | Item | Concrete scenario | Proposal |
 |---|---|---|---|
-| P1 | Computed difference on SA-07t (DV-U6-01): design §2.10.2 item 3, Q-W07-11 (accepted P2), acceptance A81 and V09-14 expect an amount; the unit brief forbids a difference. | The V09-14 live check reads SA-07t for "Counted exposure is ₹2,000 above the ceiling" and fails; or, with the amount added, a reader takes "Ceiling minus counted exposure: ₹46,000" as room that a paid case at ₹0 or a parked case would still refuse. | Architect decides. Built: no amount, the comparison in words. Adding the design's line is one fact row in `exposureFacts` (`finance-pages.ts`). The PM aligns A81 and V09-14 either way. |
-| P1 | Acceptance rows A81, A83, A85, A87, A89 (4), A90, A93, A94 carry words that differ from the design and from F-37 (for example A93 "Lowering counted exposure is unavailable until the Accounts verification of bank receipts is decided"; A87 "Approve a ceiling increase: …"; A90 effect "The ceiling stays ₹[current]"; A89 (4) "Owner: SuperAdmin"). | A live run of A93 searches for its sentence and records a failure although the page carries the bound WP-16 row 5 words. | The design and amendments govern names and words (checklist header rule); the PM aligns these rows at the WP-07 acceptance alignment. |
+| P1 (to the PM, architect 13 October 2026) | Acceptance rows A81, A83, A85, A87, A89 (4), A90, A93, A94 carry words that differ from the design and from F-37 (for example A93 "Lowering counted exposure is unavailable until the Accounts verification of bank receipts is decided"; A87 "Approve a ceiling increase: …"; A90 effect "The ceiling stays ₹[current]"; A89 (4) "Owner: SuperAdmin"). | A live run of A93 searches for its sentence and records a failure although the page carries the bound WP-16 row 5 words. | The design and amendments govern names and words (checklist header rule); the PM aligns these rows at the WP-07 acceptance alignment. |
 | P2 | Audit boundary label (DV-U6-05). | A SuperAdmin reads "Known limitation" above the audit sentence and assumes approvals are permanently unavailable, not until the audit record recovers. | Add a boundary kind for a temporary dependency state in `presentation.ts` (WP-01 file), or accept. |
 | P2 | Component sentence form (DV-U6-02, DV-U6-03). | A reviewer compares the notices word by word with WP-16 §2.9 and flags "or … is" and "until … at the default ₹0 ceiling". | Accept (facts, owner and route are the table's), or give `boundaryNotice` a plural/condition variant (WP-01 file). |
 | P2 | The approval page compares only the requested-from amount with the ceiling now; Core also compares the basis change. | Another SuperAdmin lowers the ceiling and a third raises it back to the same amount: the page shows the approval form; Core refuses `ceiling_changed_since_request`; the page shows the sentence with both amounts equal. Nothing is recorded. | Accept, or add the request's basis change id to `zWireCeilingChange` (Kind 1, `src/contracts/`; not this unit). |
 | P2 | `pay.finance_index.requests` has a contract maximum of 1,000 and Core's query has no limit. | More than 1,000 travel agents each have an open increase request: the wire answer fails its schema and SA-07h answers the shell's error page. | Defect note for the payments module (a limit with a `more` flag); improbable at current scale. |
 | P2 | Textarea `maxlength` counts a line break once; the browser sends CRLF (WP-06 U4 class). | A reason typed to exactly 1,000 characters with line breaks reaches Core over 1,000 and is refused at its field, values kept. | Park, or normalise CRLF in the form parser (shell). |
-| P2 | Not this unit: `npx tsc` reports three errors in `test/unit/web/delivery-components.test.ts` (another engineer's uncommitted file; reason-code literal types). | The lane's typecheck fails at integration until that file is fixed. | The owner of that file fixes it; not touched here. |
 
 ## 8. Checks run
 
-- `npx tsc -p tsconfig.json`: no error in this unit's files; 3 errors in `test/unit/web/delivery-components.test.ts` (not
-  this unit's file, written concurrently by another engineer).
+- `npx tsc -p tsconfig.json`: no error (the 3 errors first seen in `test/unit/web/delivery-components.test.ts`, another
+  engineer's file, are gone at the rerun).
 - `npx eslint --max-warnings=0` on the six files: pass.
 - `node --test test/unit/web/ceiling-pages.test.ts test/unit/bff-finance.test.ts test/unit/web/service-payment-page.test.ts`:
-  64 tests, 64 pass (26 + 12 + 26).
+  65 tests, 65 pass (27 + 12 + 26).
 - `node --test "test/static/**/*.test.ts"`: 74 tests, 74 pass (the route scanner needs literal route ids and actions:
   the declarations carry them; a unit test pins them to `FINANCE_ROUTE_IDS`).
 - `financeGalleryPages()` rendered once: 20 pages, each with one h1 and no internal reference.

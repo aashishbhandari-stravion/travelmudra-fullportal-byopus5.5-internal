@@ -214,3 +214,146 @@ listed, none is in a file of this change.
 | `src/apps/edge/intake/routes.ts` input cuts (section 2) | P1 | Nine selected bulk services is a normal case | Shared file: orchestrator decision pending. |
 | `sendWhole` lives in `src/apps/edge/core/prepare-forms.ts`; the document routes import it from there | P2 | Certain; no user effect | Move it to `src/apps/shared/core/shared.ts` beside `answer` when that file is in a write set, then use it in `intake/routes.ts` too. |
 | The neutral receipts lose the command's name on the main path ("Request recorded" after creating a group) | P2 | Certain; wording only | Command identity in the operation read (S-08), then restore the titles. |
+
+## Acceptance fixes, 13 October 2026
+
+Fixes of the four acceptance findings F-01 to F-04 (`WP-03-acceptance.md` §8; F-04 raised to P1 by the architect under the
+lane rule that no input is cut). Author: the acceptance fix engineer. Input for the architect's integration. Nothing is
+committed. Base: lane HEAD 4479b6d. The tree also holds other packages' uncommitted work (operator and SuperAdmin wiring,
+delivery pages, `static/css/components.css` block at the end of the file, `static/js/enhance.js`); none of it is changed.
+
+### Files and changed lines (lane tree)
+
+| File | Lines | Change |
+|---|---|---|
+| `src/apps/edge/core/group-routes.ts` | 20–22, 32–34, 60–61 | F-01: the review of dates before today answers 422 (`REVIEW_STATUS`); comment |
+| `static/css/components.css` | 434–443 (one new block after `.page-header__lead`, before the container query) | F-02: `.page-header__title`, `.breadcrumbs__item`, `.page-header__meta dd`, `.page-header__lead`: `min-width: 0; overflow-wrap: anywhere`. Separate from the other package's block at the end of the file (3533 onward) |
+| `src/apps/shared/pages/groups.ts` | 167–177, 459, 488–489, 576–580, 615 (one line removed), 621–622 | F-03: no `min` on the four travel-date inputs; the rules in the hints (`START_DATE_HINT`, `CHANGED_START_HINT`, `RETURN_DATE_HINT`); comments |
+| `src/apps/shared/pages/individual-intake.ts` | 148–156, 181–183, 186 (three lines removed), 381, 385 | F-04: no `maxlength` on issuing country and nationality; any refusal at either field states the three-letter rule |
+| `src/apps/shared/pages/prepare.ts` | 596–613, 622, 631, 657–658, 741–742, 816–817 | F-04: no `maxlength` on details nationality and residence and on identity issuing country and nationality; `COUNTRY_RULE`/`countryRule` names the field and the rule |
+| `src/apps/shared/pages/documents.ts` | 335–345, 350, 432–433 | F-04: no `maxlength` on the passport details' issuing state and nationality; their refusal states the rule. **Outside the named file list** (the same class on a travel-agent form; the file had no other uncommitted change). The architect may drop this hunk; then the open item below applies to it |
+| `scripts/dev/gallery/groups.ts` | 9–10, 35–41, 164, 179 | `LONG_GROUP_NAME` (120 characters, no space); pages `group-long-name.html`, `group-dates-long-name.html` |
+| `scripts/dev/gallery/application.ts` | 9–12, 27, 169 | Page `application-long-group-name.html` |
+| `scripts/dev/gallery/individual-intake.ts` | 6–10, 22, 140–150 | Pages `add-one-applicant-country-name.html` ("India" refused, kept) and `add-one-applicant-long-group-name.html` |
+| `test/unit/bff-form-answers.test.ts` | new | Class test (F-01) |
+| `test/ui/travel-agent-fields.test.ts` | new | Browser checks (F-02, F-03, F-04) |
+| `test/unit/web/{groups-pages,individual-intake,prepare-pages,document-detail}.test.ts` | see Tests | Page tests |
+
+`static/js/enhance.js` is not changed. No file under `src/modules/`, `src/workers/`, `src/kernel/`, `src/contracts/`,
+`src/core-api/`, `src/platform/` or migrations changed.
+
+### F-01: the review of dates before today
+
+- Cause confirmed: `group-routes.ts` answered the review with `ctx.page(...)` and no status (200); `server.ts`
+  `sendResult` throws `internal`/`unexpected` for a POST page answer below 400. The handler tests passed because their
+  scripted `ctx.page` returns whatever status it gets.
+- Fix: the review answers 422 (a refusal to save until acknowledged, as for a refused value). The handler tests now
+  assert 422 for the review (both review tests in `groups-pages.test.ts`).
+- Class fix: `test/unit/bff-form-answers.test.ts` starts the real app server with **the full edge route set**
+  (`edgeRoutes()`) in front of a scripted Core and posts every POST route, with a CSRF token and an operation key of
+  its own. The first test fails when a POST route of edge has no row (a new form needs its row). Each scripted read
+  goes through Core's wire contract of its query and back, so a fixture outside the contract fails. Each case asserts
+  the status (never 500, always 400 or more), an HTML answer, an element of the page shown again, and that nothing
+  reached Core where nothing may. Proof: with the 422 removed, the travel-date review case fails ("the server refused
+  the handler's answer").
+- Routes covered (all 38 POST routes edge serves):
+  - Page shown again, 33 routes: `ta.groups.create`; `ta.groups.travel_dates` (review 422, stale comparison 409,
+    field refusal 422); `ta.groups.close`; `ta.applications.submit`, `hand_back`, `request_assistance`,
+    `report_problem`, `withdraw`, `price_decision`, `transition_decision`, `link_dependency`, `unlink_dependency`,
+    `reapply_correction`, `edit` ("India" refused before any command 422; stale 409), `correct_identity` ("India"
+    refused before any command 422; Core refusal 422); `ta.documents.resolve_extraction`, `classification`, `upload`,
+    `replace`, `associate`; `ta.intake.start_individual`, `start_bulk`, `correction`; `ta.delivery.retrieve`,
+    `packet_retrieve`; `ta.selections.create`; `ta.notices.acknowledge`; `ta.account.email.start`, `confirm` (refused,
+    and accepted with an unusable address 422), `cancel`; `ta.search.seal` (bad request 400); `sign_in.ta.request`,
+    `sign_in.ta.verify`.
+  - Error page only (no page of their own; a refusal is the shell's page with the category's status), 4 routes:
+    `ta.intake.answer`, `abandon`, `resume`, `incident_dispose`.
+  - Redirect only: `sign_in.sign_out` and `ta.search.seal` (accepted) answer 303.
+- Limit: one or two representative page paths per route, not every path (for example the address page's ended
+  states and the sign-in pages' unknown-result 503 pages are not posted). Staff POST routes are not covered.
+
+### F-02: long words in titles and breadcrumbs
+
+- Cause: the reset gives `h1`, `li`, `dd` and `p` `overflow-wrap: break-word`, which wraps a long run only after the
+  layout sized the flex and grid columns by it: the TA-05 `h1`, the breadcrumb item and (on the application pages)
+  the "Group" fact in the header widen the page header grid to the run's width. An inherited `anywhere` on
+  `.page-header` does not reach these elements (the reset rule applies to them directly).
+- Fix: one rule at the component level for every page header: the title, every breadcrumb item, the header facts and
+  the lead get `overflow-wrap: anywhere` (which also narrows a flex or grid column) and `min-width: 0`. It is the WP-02
+  F-09 property, applied to the shared header instead of a `.user-text` class per name, so every page with a typed
+  name in its header is covered. The identity band title already had it.
+- Fixtures: a group name of 120 characters without a space on the group page, the travel-date page, an application
+  workspace and "Add one applicant". The gallery sweep (`test/ui/gallery.test.ts`, 360 and 320 px, and axe at 1440 and
+  390 px) checks them like every page; `travel-agent-fields.test.ts` also checks them at 320 and 390 px and asserts the
+  name is in the title or the breadcrumb. Before the fix the application page's breadcrumb was 946 px wide at 320 px.
+
+### F-03: travel dates with the page script
+
+- Every travel-agent date input with a range: the four travel-date inputs in `groups.ts` (create: `min` = today;
+  travel-date page: `min` = today, advisory). No other travel-agent date input has `min` or `max` (date of birth on
+  the one-applicant, identity and document pages, declared date fields: none).
+- Fix as WP-02 F-02 (server-judged, page words): the inputs carry no `min` or `max`, so the browser never runs a
+  range check and never shows its own text or date format. The rules stand in the hints: create "Today or later, as a
+  date in India time (IST)."; travel-date page "Dates are in India time (IST). A date before today is saved only after
+  you confirm it."; return date "On the travel start date or later." The inline check keeps the page's own words for
+  an empty field. A start date before today is sent: on create, Core refuses it and the page names it at the field
+  ("The travel start date must be today or later, as an India date.", summary link to the field); on the travel-date
+  page, edge shows the review. No change to `enhance.js` was needed.
+- Tests: `groups-pages.test.ts` (no `min`/`max`, the hints, `aria-describedby`); `travel-agent-fields.test.ts`
+  (with the script: a past date on both forms shows no message on leaving the field and is sent as typed; the
+  refused create page shows the page's rule at the field). Proof: with `min` restored, the create-form browser test
+  fails.
+
+### F-04: country codes are never cut
+
+- Removed `maxlength="3"` from every travel-agent code field that took it: "Add one applicant" issuing country and
+  nationality; application details nationality and country of residence; identity correction issuing country and
+  nationality; the document page's passport details issuing state and nationality. The hints still name the
+  three-letter code.
+- The value goes whole to the server. The one-applicant form: Core's input check refuses "India" at
+  `applicant.issuingCountry` (`too_big`); the page now says "Enter the issuing country as its three-letter code on the
+  passport, for example IND for India." (any refusal at the field, before: "This is longer than accepted. Shorten
+  it."). The details and identity forms: `sendWhole` refuses "India" before any command at its field (Core's contract
+  takes three characters); the messages name the field ("Nationality: enter the three-letter code shown on the
+  passport, for example IND for India.", before: "the value is too long"). The document page: Core's MRZ rule refuses
+  it at `fields.issuingState`; the message states the rule (before: "Enter a valid value."). Every value stays as
+  typed.
+- Tests: "India" is refused at its field and comes back as "India" on all four forms (page tests; the one-applicant
+  BFF test computes Core's refusal from the command's own input schema `zStartIndividual` and asserts the command
+  received "India" whole); the browser test types "India" key by key into both one-applicant fields, reads "India"
+  back and finds "India" in the posted body. Proof: with `maxlength` restored, the browser test fails.
+
+### Tests
+
+| File | Added | Changed |
+|---|---|---|
+| `test/unit/bff-form-answers.test.ts` | 46 (wire shape of the scripted reads; every POST route has a row; 42 cases; 2 redirects) | — |
+| `test/ui/travel-agent-fields.test.ts` | 8 | — |
+| `test/unit/web/groups-pages.test.ts` | — | 2 rewritten (create form; travel-date inputs: no range, hints) and the 422 status asserted in 2 review tests |
+| `test/unit/web/individual-intake.test.ts` | 3 (no `maxlength`; "India" refused at both fields, kept; BFF: sent whole, Core's own refusal, kept) | — |
+| `test/unit/web/prepare-pages.test.ts` | 2 (identity and details: "India" refused before any command, kept, rule named) | — |
+| `test/unit/web/document-detail.test.ts` | 1 (issuing state: no `maxlength`; refused, kept, rule) | — |
+
+Each new test was checked to fail without its fix (F-01 class case; F-02, F-03 and F-04 browser tests).
+
+### Checks
+
+| Check | Result |
+|---|---|
+| `npx tsc -p tsconfig.json` (lane tree) | Clean |
+| `npx eslint --max-warnings=0` on every changed and new file | Clean |
+| `node --test` groups-pages, individual-intake, prepare-pages, document-detail, bff-form-answers, bff-documents, carried-forms-ta, ta-components, components (lane tree) | 321 pass, 1 todo, 1 fail: `carried-forms-ta.test.ts` "a submitted case links the delivery page…" (the workspace's delivery link; another package's uncommitted delivery work, not a file of this change) |
+| `node --test "test/static/**/*.test.ts"` | 74/74 |
+| `test/ui/travel-agent-fields.test.ts` | 8/8 |
+| Clean copy of 4479b6d with only this change applied (CSS: this hunk only) | tsc clean; the five page and BFF suites 197 pass, 1 todo; static 74 and browser 8 pass |
+| `test/unit/seo-record.test.ts` | 1 fail, expected: the style sheet change changes the renderer digest; the crawl record is the architect's to regenerate (not run here) |
+| `test/ui/gallery.test.ts` (lane tree) | Every gallery page at 1440 and 390 px, light and dark, with axe, and at 360 and 320 px for overflow: 1551 pass, 0 fail (includes the five new pages). The run reached the phone layouts and was stopped by its 50-minute time limit during "navigation: what needs attention…" (it loops over every page at three widths); the other twelve later tests were run by name: 13 pass. Not run: that navigation test (rail and menu only; this change touches the page header) |
+
+### Open items (ranked)
+
+| Item | Rank | Scenario and likelihood | Proposal |
+|---|---|---|---|
+| Other `maxlength` cuts on the document page's passport details: passport number (9), document code (2), personal number (14) | P1 | A travel agent types a ten-character passport number by mistake; the browser keeps nine, Core's MRZ rule accepts nine, and a wrong number is recorded without a word. Low (Indian numbers have eight characters) | Same pattern as F-04 (no `maxlength`; Core refuses at the field; the rule in words). Same file as the F-04 hunk |
+| Other `maxlength` cuts of free text on travel-agent forms: group name 120 (`groups.ts`), identity surname and given names 100, passport number 30, passport type 40, "What was wrong" 1,000, declared field limits (`prepare.ts`), the document page's reason 500, notes 2,000, search 200 | P2 | A travel agent pastes a 130-character name or reference as the group name; the group is created with 120 characters, no message. Low | Remove `maxlength` where a server limit and a message at the field exist (identity names already have "Nothing was shortened" messages); one sweep |
+| A partly typed date (Chromium `badInput`) still shows the browser's text: `enhance.js` `messageFor` returns `validationMessage` for `badInput` | P2 | A travel agent types only the day and month and leaves the field: "Please enter a valid value. The field is incomplete or has an invalid date." Medium; the text is clear but not the page's | One line in `enhance.js` (`badInput`: "Enter the whole date: day, month and year."); the file holds another package's uncommitted change, so the orchestrator schedules it |
+| The class test covers edge only; staff POST routes are not posted through the server | P2 | A staff form handler answers `ctx.page(page)` without a status; every send of that form answers 500. Low (this review found every edge page answer with a status but this one) | Add a staff table to the same test (staff routes, operator and SuperAdmin sessions), or make `AppPostContext.page` require a status of 400 or more in `src/apps/shared/routes.ts` (shared wiring; orchestrator) |
