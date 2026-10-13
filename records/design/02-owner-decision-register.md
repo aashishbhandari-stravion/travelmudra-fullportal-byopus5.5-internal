@@ -132,6 +132,17 @@ Reported from the UI lane chat on 12 October 2026 and awaiting Max's confirmatio
 P-05 (Kind 1 exception for the declared eligibility in the TA offering display) and the Core batch (P-04, P-06, P-10 with
 P-12 option C). P-11 was confirmed on 13 October 2026 (OD-X10).
 
+Reported from the Core lane chat on 13 October 2026 and awaiting Max's confirmation to the orchestrator before entry
+(the lane builds on them as Max gave them): (a) ITEM-03 review R-01, the fix (e4ffed9: the pending answer names the
+SuperAdmin while a legacy mark waits) approved; (b) ITEM-03 review R-02 (case S6), the restore drill chosen among an
+automated test, the drill, or both; it runs as a step of the D-04 drill item after the UI lane renders the `filing`
+field of the resolution form (deploy the previous commit with `uat.py`, back up and restore, resolve a mark by the old
+rule, deploy the new branch, confirm the authorization is refused with `protection_mark_determination_missing`);
+(c) method D-08 (lane PLAN): one git worktree per worker, at most three at once; items grouped by code area in waves
+that replace the prompt §8 order, one commit and one Codex review per item; `opus` for Kind 2 items and `sonnet` for
+defects and reads; worker cap 100k per turn, partial return before 275k. (c) changes OD-X22 (1) and the 200k figure
+for the Core lane. Would be OD-X23.
+
 ## Part B — Material engineering choices (input for `ENGINEERING_OVERRIDES.md`)
 
 None of these changes a business rule. Each replaces a prior technical choice of brief revision 2 or contract revision 1.

@@ -377,3 +377,23 @@ is live at once; whether a running session picks up the edited `autoCompactWindo
 the lane is told to reopen at its next pause if the automatic trigger is wanted before then. Written into the lane
 rules for future lanes (register entry names the files). Expected cost: Opus workers under the 100k/200k caps cost
 about five times Sonnet per token, not the ten- to twenty-fold of the uncapped workers of 12 to 13 October.
+
+### 7.12 The Core P0 package lands; readings 11Z and 12Z (13 October 2026, 18:00 IST)
+
+The Core lane's first package (ITEM-01, 02, 03, 33, 04; eight commits on 30ee1c1, head 5f5e26b) merged cleanly on
+main as b8321c3 with the full check green (2567 of 2567, 15 minutes). The lane's internal records merged as 77793cd.
+The held bulk package does not merge on the new main (two test files conflict with ITEM-33's intake tests), so the
+bulk lane merges main first when it resumes and re-packages; Max is told the bulk lane can resume.
+
+Readings (`lane-burn.py`): Core 11Z main 185 turns, 28.2M context, peak 275k, 2 Sonnet worker turns; 12Z main
+104 turns, 24.3M, peak 279k, 208 Sonnet worker turns, 13.8M. The Sonnet workers after the OD-X22 message are
+explained by the lane's D-08: Max, in the lane chat, set Opus for Kind 2 items and Sonnet for defects and reads,
+worktrees per worker (at most three), waves by code area, partial return before 275k. That is a lane-reported
+amendment of OD-X22 (1) and waits for Max's one-word confirmation here. The lane also reported eight worker turns
+over the 100k cap (122k to 285k) in the P0 package; the caps are restated in its confirmation, and the wave 1 grant
+repeats them.
+
+Lane setup gap found while preparing the bulk resume: the UI and bulk lane clones had `autoCompactWindow` only,
+no guard hook, so a 280k breach there would have been caught by nothing but the lane's own rule. Both now carry the
+hook at 280,000. Lesson for the lane checklist: the hook is part of the clone step, not of the prompt.
+
