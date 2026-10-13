@@ -260,3 +260,16 @@ The Core lane finishes first and goes into main; the bulk lane continues only Co
 pauses; the UI lane pauses now with a full persisted resume file. A paused lane costs nothing; its committed work
 integrates at a clean prefix when it resumes. The measurement of 7.3 is taken on the Core lane and the bulk lane.
 
+### 7.7 Self-compaction (13 October 2026)
+
+A lane cannot compact itself on request: the model has no compaction tool, and `/compact` is a user command. The
+remembered rule therefore ended in a pause and a request to Max, which is a cost on him. The fix is the automatic
+trigger: Claude Code compacts when the context reaches the auto-compact window minus the summary reserve (20k)
+minus 13k, and the `autoCompactWindow` setting (100k to 1M tokens, every model) sets that window. With
+`autoCompactWindow: 250000` in each lane repo's `.claude/settings.local.json` the lanes compact themselves at about
+217k. Trade-off: the automatic trigger does not choose a clean boundary; the lane's `state/RESUME.md` at every
+boundary and the edits on disk cover a compaction that lands mid-unit. The guard hook stays as the backstop on the
+Core lane. Verified in the docs (env-vars, settings-reference, model-config) and the installed binary; whether a
+running session picks up a file edit of `autoCompactWindow` is not stated, so a lane session is reopened when idle.
+For the next project: set `autoCompactWindow` in the lane's local settings on lane creation, with the hook.
+
