@@ -22,11 +22,12 @@ the orchestrator (internal bfae3a7) with three conditions (§3 below). Nothing i
 
 `asOf` (instant of the read transaction, `tx.now`); `promise {deliverable, claimsGovernmentResult, summary}`;
 `population {nationality, passportType, residence, purposes}`; `travelDateRules {minDaysBeforeTravelStartToSubmit,
-maxDaysBeforeTravelStartToSubmit}`; `dependencies [{upstreamTitle, applicantRelation, requiredOutcome,
-requiredArtifactType, conditionedActions}]`; `externalAuthority {kind, label}`; `steps [{code, actor, meaning}]`;
+maxDaysBeforeTravelStartToSubmit}`; `dependencies [{upstreamServiceCode, upstreamTitle, applicantRelation,
+requiredOutcome, requiredArtifactType, conditionedActions}]`; `externalAuthority {kind, label}`; `steps [{code, actor, meaning}]`;
 `externalActs []`. Each term is `null` when the governing declaration holds no value (absent or unresolved).
-`upstreamTitle` is the title of an offering the reader may read, in the same country, whose service code the relation
-names; otherwise `null`. A step's `meaning` is `null` when `progressMapping` does not map its code.
+`upstreamServiceCode` is the declared code. `upstreamTitle` is the title of the one offering the reader may read, in the
+same country, with the service code the relation names, in a service mode Core accepts for the required outcome; `null`
+when no such offering or more than one exists (review fix R-01, §10). A step's `meaning` is `null` when `progressMapping` does not map its code.
 
 ## 3. Orchestrator conditions (bfae3a7)
 
@@ -86,7 +87,8 @@ names; otherwise `null`. A step's `meaning` is `null` when `progressMapping` doe
 | P2 | Step names come from declared codes. An unclear code reads unclear ("Chk docs v2"). A declared step label would need a declaration schema change (Kind 2). | A SuperAdmin declares the code `chk_docs_v2`; the table shows "Chk docs v2". |
 | P2 | A declared and supported withdrawal cut-off is not shown as a positive statement ("You can withdraw until …"). | A travel agent asks until when a withdrawal is possible; the page states nothing when the cut-off is supported. |
 | P2 | Country adapter checks declared for travel dates (`evaluateTravelDateRules`) are not shown; only the declared window is. | A country rule refuses dates inside the shown window; the travel agent learns it at the draft check. |
-| P2 | Two readable offerings in one country with the same service code (different modes): the dependency shows the first title in list order. | A country offers `syn_tourist_evisa` filed by TravelMudra and by a provider; the dependency names one of them. |
+| P2 | The upstream mode rule copies Core's link check (`core.link_dependency`: a preparation-only upstream is refused for an issued or refused result) as `upstreamModeAccepted` in the binding. Core does not export the rule. | Core widens its link rule later; the binding still names a title Core would refuse. Fix then: Core exports one predicate that both use. |
+| P2 (R-02, parked) | The new wire limits are tighter than the declaration schema: `steps` max 100 and `dependencies` max 50, while the declaration does not cap local steps or relations. Above a limit the whole answer cannot be encoded. Not changed (orchestrator: parked). | A declaration with 101 local steps is registered; the travel agent's service page for that offering fails with an internal error. |
 | P2 | The services list (TA-02) and a bulk service context do not use the declared terms yet. | — (reuse is possible under the same guard). |
 
 ## 9. Checks run (13 October 2026, lane working tree, uncommitted)
@@ -103,3 +105,41 @@ names; otherwise `null`. A step's `meaning` is `null` when `progressMapping` doe
 | `test/system/new-service.test.ts`, `test/system/ported-pages.test.ts` (three instances; the travel agent's service page through edge from the real core, including a service created through the SuperAdmin pages) | 12/12 pass. |
 | `test/system/browser.test.ts` | 5 pass, 1 fail: the expected failure D-1 at line 106 only. The real page showed "Who can apply / Travellers / Indian citizens who hold an ordinary passport and live in India / Purposes / Business", which the proposed replacement line matches. The assertion after line 106 in that test (`violations` empty) did not run. |
 | `node --test "test/unit/web/**/*.test.ts"` | 1400 pass, 0 fail, 1 todo. |
+
+## 10. Review fixes (13 October 2026, after commit 935d723)
+
+Review: lane `research/reviews/P05-code-review.md`, verdict "sound with the fixes above"; point 1 failed on R-01.
+
+**R-01 (P1), fixed, uncommitted.** The dependency title lookup returned the first readable offering with the same country
+and service code, in any filing mode. Fix in `src/core-api/bindings/catalogue.ts`:
+
+- `upstreamModeAccepted(mode, requiredOutcome)` (lines 120-128): Core's link rule; a preparation-only upstream is not
+  accepted for an `issued` or `refused` result.
+- `upstreamTitle(tx, catalogue, sel, readable, relation)` (lines 130-147) replaces `readableTitle`: it takes the
+  relation, keeps the readable offerings in the same country with the named service code and an accepted mode, and
+  returns a title only when exactly one remains; else `null`.
+- `dependencyTerms` (line 154) also carries the declared `upstreamServiceCode`.
+- Contract (`src/contracts/queries.ts` lines 111-117): `upstreamServiceCode` added to the dependency item of `declared`
+  (additive inside the new schema; nothing earlier changed); the comment states the rule.
+- Page (`src/apps/shared/pages/services.ts` lines 372-373): without a title the item reads "The service with the code
+  “<declared code>”, …". The earlier wording "A service that is not listed for you" is removed: it was untrue for the
+  ambiguous case.
+- Fixtures (gallery, unit tests) carry the code.
+
+Tests (`test/integration/catalogue-offering-display.test.ts`, new describe "a dependency whose service code two filing
+modes share"): a second synthetic database seeded with the synthetic catalogue plus a preparation-only offering under
+the code `syn_tourist_evisa` (titled to sort first) and a second transit relation to that code requiring `withdrawn`.
+Three tests: both modes are readable and the preparation-only one comes first (precondition); the `issued` relation
+names "SYN Tourist e-visa" (two-mode regression); the `withdrawn` relation, which both modes can meet, gives no title
+and only the code (ambiguous match). Sensitivity: with the earlier first-match lookup restored temporarily, the two
+relation tests fail; with the fix they pass.
+
+**R-02 (P2), parked** as instructed; recorded in §8.
+
+Checks after the fix: `npx tsc -p tsconfig.json` clean; eslint clean on the seven changed files; integration test 10/10;
+`services-pages` + `bff-services` 31 pass, 1 fail, 1 todo; `test/static` 74/74; services gallery pages 60 checks, 0
+problems. The one failure is the operator's list test ("the list: published values by country …", expects
+`aria-current` on `/ops/catalogue`). Cause: concurrent uncommitted work in the tree removes the operator's Services
+pages (`opsCatalogueRoutes` from `src/apps/staff/instance.ts`, rows O58 and O59 from `src/web/route-inventory.ts`, the
+Services entry from `src/web/ui/shell.ts`). This fix does not cause it; the owner of that change updates or removes the
+operator tests in `services-pages.test.ts`.
