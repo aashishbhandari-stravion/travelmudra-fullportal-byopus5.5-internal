@@ -273,3 +273,9 @@ Core lane. Verified in the docs (env-vars, settings-reference, model-config) and
 running session picks up a file edit of `autoCompactWindow` is not stated, so a lane session is reopened when idle.
 For the next project: set `autoCompactWindow` in the lane's local settings on lane creation, with the hook.
 
+Final form the same day (Max): the working threshold is manual and set to 280k (a pause at a clean boundary, Max
+compacts about once an hour); the automatic window stays only as insurance at about 350k (`autoCompactWindow:
+383000`, trigger = window minus the 20k summary reserve minus 13k); the guard hook denies subagent launches above
+280k. Reason: an automatic trigger at the working threshold compacts mid-unit; a human compaction lands at a clean
+boundary. The experiment measures this variant.
+

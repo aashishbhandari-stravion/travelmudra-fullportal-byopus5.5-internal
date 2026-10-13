@@ -3,7 +3,7 @@
 
 Input (stdin, JSON from Claude Code): session_id, transcript_path, tool_name, tool_input, ...
 Output: nothing when the launch is allowed; a deny decision with the instruction when it is not.
-Limit: CONTEXT_GUARD_LIMIT tokens (default 220000). The context of a turn is the sum of input, cache read and
+Limit: CONTEXT_GUARD_LIMIT tokens (default 280000). The context of a turn is the sum of input, cache read and
 cache creation tokens of the last assistant message in the transcript. A transcript that cannot be read allows the
 launch (the guard never blocks on its own failure) and says so on stderr.
 Lane efficiency experiment, 13 October 2026 (internal diary 2026-10-13, section 7).
@@ -12,7 +12,7 @@ import json
 import os
 import sys
 
-LIMIT = int(os.environ.get("CONTEXT_GUARD_LIMIT", "220000"))
+LIMIT = int(os.environ.get("CONTEXT_GUARD_LIMIT", "280000"))
 GUARDED_TOOLS = {"Agent", "Task", "Workflow"}
 
 
