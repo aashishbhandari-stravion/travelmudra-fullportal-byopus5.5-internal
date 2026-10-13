@@ -217,10 +217,21 @@ the same script: context tokens per lane, average and peak main context, subagen
 compactions, and any failure attributed to a compaction (a lost finding, a repeated unit, a wrong resume). The rule
 is adjusted on evidence; a compaction-caused failure outranks the saving.
 
-### 7.4 Candidate next step (not yet done)
+### 7.4 The deterministic guard (installed on the Core lane, 13 October 2026)
 
 A deterministic hook instead of a remembered check: a `PreToolUse` hook receives the transcript path, can read the
 last assistant turn's usage, and can refuse the next subagent launch with the instruction to finish, write the
 resume file and compact. That removes the dependence on the lane remembering rule 1. To be tried on one lane first,
 after Max's go, because it changes the lane's local settings.
+
+Done the same day on Max's go. `internal/tools/context-guard.py` is the hook: it reads the last assistant turn's
+usage from the transcript path Claude Code passes to every hook, and denies an `Agent`, `Task` or `Workflow` call
+above 220k with the rule 1 instruction as the denial reason, so the lane sees what to do next. It never blocks on
+its own failure (no transcript, unreadable file). Offline test against the live transcripts: the UI lane at
+600,612 tokens and the Core lane at 303,111 denied; the orchestrator at 124,500 allowed. Installed first on the Core
+lane (`hooks/context-guard.py` in the lane folder, `.claude/settings.local.json` in the lane repo, excluded from
+git locally). Claude Code captures hooks at session start, so the guard arms when the lane session next starts.
+Rollout to the other two lanes after the first observed refusal. What the hook does not do: it cannot compact for
+the lane, and it does not bound subagents (rule 2 remains the lane's own discipline); a `SubagentStop` or
+`PreToolUse` guard inside subagents is the next candidate if subagent sizes stay high.
 
