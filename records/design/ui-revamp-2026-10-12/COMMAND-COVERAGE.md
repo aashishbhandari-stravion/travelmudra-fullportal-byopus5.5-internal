@@ -321,6 +321,10 @@ package. A disposition that hides a served command would be Max's decision; none
 | CC-16 | WP-12 commands on the operator case page | The WP-12 commands leave OP-02 "Delivery & originals"; each has one host page (OP-09n, OP-09m, OP-09t, OP-09l) under the application's Originals page OP-09. The rail destination "Originals" stays hidden until Core serves an originals register read (WP-12 STOP-W12-01). | One host page per command. | WP-12 |
 | CC-17 | WP-14 commands on the incident pages, the case page, OP-02 "Delivery & originals" and the documents queue rows | Each command has one host page per surface; close stays on the incident page. The SuperAdmin incident page has no association decision form (S-09). | One host page per command. | WP-14 |
 | CC-18 | WP-13 commands on the launch page, the offering page, the impact assessment page and TA-07 | Launch-control commands become SA-05j decision kinds; retirement gets SA-05x; impact item decisions SA-05n; transitions SA-05t; the travel agent's changed terms TA-07t (accept and decline); recheck (SA-05b), draft discard (SA-05c) and reviewer (SA-05m) stay in place. | One host page per command. | WP-13 |
+| CC-19 | WP-16 money pages | The correction leaves the SA-07a disclosure for SA-07c; the owner change leaves the
+item page for SA-07r. The four money boundaries are notices with reason, owner and route on the page of their object
+and never a control, also not a disabled button; their POST routes stay and answer SA-07b. `accounts.home` is retired
+per Q-W16-04 after its notices are rehomed. | One host page per command. | WP-16 |
 
 After these dispositions no served command is without a page.
 
