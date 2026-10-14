@@ -467,3 +467,50 @@ In the Behavior column, plain section numbers are sections of this document. "UI
 - AC-27
 
 The text of each criterion is in UI-PLAN.md section 10.
+
+## 7. Dated addition, 12 October 2026 (UI revamp lane)
+
+Added by the Principal Technical Architect of lane `ui-revamp-2026-10-12` (Opus 5.5) under
+`execution-2026-10-12/UI-REVAMP-PROMPT.md` §4. Source: `../../uat/2026-10-12-uat-pass1-triage.md` §1 and §3.1.
+This section adds states and rules. It does not rewrite sections 1 to 6. Where it differs from them, it
+governs for the named page.
+
+### 7.1 BU-P04 Progress: self-refresh (UAT-10)
+
+1. While the attempt is in a running stage, the page MUST refresh its progress by itself at an interval that
+   comes from configuration. The interval is not a constant in the page code. Max's expectation is about one
+   minute.
+2. The page MUST show a "Refresh" control and the line "Updated [time] IST". The control works without
+   JavaScript (a link to the same address).
+3. A self-refresh MUST NOT discard unsent input, MUST NOT move focus, MUST NOT change selection and MUST NOT
+   change the scroll position. It MUST NOT announce progress ticks (AC-17).
+4. The page shows progress by stage (Reading source, Processing documents, Preparing drafts, Results
+   available) with counts by unit (§4.2). A determinate bar appears only with a stable denominator (§4.5
+   rule 2). Otherwise the stage strip shows activity without a percentage.
+5. On completion the page shows the "Results available" banner without moving focus (§4.5 rule 7) and stops
+   refreshing.
+6. Mechanism: the implementer chooses (timed fetch of the read model through the page's own instance, or a
+   reload that keeps position). Edge reads Core by API only.
+
+### 7.2 BU-P02 Source setup and BU-P06 Issue detail: inputs per source type and the passport rule (UAT-06, UAT-14)
+
+1. BU-P02 shows only the inputs of the chosen source type. Each required input carries a "required" mark. An
+   input that the server requires for the chosen type MUST NOT read "(optional)".
+2. The Services block shows only where the chosen type needs it (a folder without a sheet needs at least one
+   service).
+3. An input that does not belong to the chosen type (for example a file with the folder choice) MUST be
+   refused with a field error. It MUST NOT be ignored silently. This is an edge form rule; Core is not
+   involved.
+4. BU-P02 and BU-P06 state the passport rule of `UI-PLAN.md` §14.2 TA-09-R1: exactly two pages, front and
+   back; one file with both pages, or two files with one page each.
+
+### 7.3 BU-P09 Imports: a travel-agent-wide list (UAT-11)
+
+1. A TA MUST have one place that lists every running and finished import across the TA's groups, with state,
+   group and progress. Each row opens BU-P04 or BU-P05 for that attempt.
+2. Candidate placements: a rail destination "Imports" (BU-P09 as a TA-wide page with a group filter), or a
+   TA-01 Home panel "Imports in progress". The UI lane decides at WP-04 design review.
+3. The read model "TA imports across groups" does not exist at product commit 102e4c9. It is a Kind 1
+   candidate (`DECISIONS-2026-10-10.md` §3.1). The UI lane sends a seam request to the bulk lane
+   (`SEAM-CONTRACT.md` §3). Until a version of the contract serves it, BU-P09 stays per group and this
+   addition stays open.
