@@ -1,0 +1,116 @@
+# Machine-local instructions TEMPLATE (copy to the product root as `CLAUDE.local.md`, excluded from git)
+
+This template keeps the structure of the machine-local file with the machine values blank: `<port>`,
+`<uat-home>`, `<user>`, `<tailscale-or-host-address>`. Replace them for the new machine, delete the
+installation rows that do not exist there, and rewrite "State of the project" from the current handover record.
+Never commit the filled file; never put it in the internal repository with real values.
+
+---
+
+# Machine-local instructions (this machine only, excluded from git)
+
+Claude Code loads this file beside the tracked `CLAUDE.md`. Codex sessions on this machine: read it when
+`AGENTS.md` tells you to. It holds what is specific to this machine and to Max's workflow; the tracked
+`CLAUDE.md`, `AGENTS.md` and `docs/agent-guide.md` hold the rules every contributor follows.
+
+## Read the tracked guide first
+
+The working rules, the focused-fix rule, how the system works, the module map, the test recipes and the
+`uat.py`-only rule are in `docs/agent-guide.md` (tracked, public-fit). Read it before you change
+anything. This file only adds what is specific to this machine and to Max's workflow.
+
+## State of the project
+
+The build run (milestones 1 to 6, 4 to 8 October 2026) is complete. Local `main` holds the product; tag
+`m6-final-assurance` (7be21b1) is the accepted build. Max pushed `main` and the tags. UAT pass 1 ran on
+12 October 2026 and stopped early; its findings (`internal/records/uat/2026-10-12-max-uat-findings.md`)
+wait for the work after the UI rewrite. Max opens one task chat per problem. The handover record of the build is
+`internal/records/diary/2026-10-08-travelmudra-build-m1-to-m6-handover.md`. Read it when you need the
+history of a decision. Known open items (do not fix unless Max assigns them): the P2 list in
+`internal/records/FINAL-REPORT.md` section 6, and three P1 questions in
+`internal/records/diary/2026-10-08-independent-architecture-and-ui-review.md`.
+
+## Max's workflow on this machine
+
+- Max decides; agents never push. Commit locally with a public-fit message (the repository boundary hook
+  checks it; never bypass it). One chat writes to this working tree at a time.
+- A parallel fix chat works in its own lane clone under `~/workDirectory/Critical/<project>/lanes/<id>/`
+  (global rules). This project keeps the nested layout, so `projectctl` does not manage it; lanes are made
+  by hand (clone of this repository, `internal/` cloned inside and excluded, boundary hooks installed,
+  copies of this file and `AGENTS.md`, a `workspace.json` and a `START-HERE.md`). Max integrates lane
+  commits into this checkout and pushes.
+- The orchestrator chat writes lane UAT configurations and runs `uat.py up` and `cleanup` for lanes, with
+  `source` set to the lane's clone; a lane deploys its own commits to its installation with `uat.py deploy`. A lane prompt MUST include: "Local deployments go only
+  through `scripts/uat/uat.py` (see `scripts/uat/README.md`). Do not run the tm deployment steps by hand.
+  Propose any change to `uat.py` to the orchestrator." Changes to `uat.py` are made on main by the
+  orchestrator.
+- Up to 3 lanes may each have one installation (about 1.4 GB each; `uat.py stop` frees the memory).
+
+## Installations on this machine
+
+UAT home: `<uat-home>/` (configs in `configs/<name>.json`, port registry
+`registry.json`). Run `python3 scripts/uat/uat.py ports` for the current list; the registry is the truth.
+
+| Name | Browser ports (edge, staff) | Internal ports (core, processing) | Root | Notes |
+|---|---|---|---|---|
+| `lane-max` | <port>, <port> | <port>, <port> | `<uat-home>/lane-max` | Core task lane `core-reads-2026-10-12` since 13 October 2026 (clone at `~/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/repo`, branch `core-reads-2026-10-12`). Before that Max's lane `max-uat-2026-10-09`; data kept. Unit prefix `tm-lane-max-`. Config: `configs/lane-max.json` |
+| `lane-ui` | <port>, <port> | <port>, <port> | `<uat-home>/lane-ui` | UI revamp lane `ui-revamp-2026-10-12`. Unit prefix `tm-lane-ui-`. Config: `configs/lane-ui.json` |
+| `lane-bulk` | <port>, <port> | <port>, <port> | `<uat-home>/lane-bulk` | Bulk redesign lane `bulk-refactor-2026-10-12`. Unit prefix `tm-lane-bulk-`. Config: `configs/lane-bulk.json` |
+
+The former main preview (`preview`, ports <port> to <port>) was removed on 12 October 2026 at Max's request.
+It is not to be recreated unless Max asks. Ports <port> to <port> are free.
+
+Put new code on an installation (data and accounts stay):
+
+```bash
+python3 scripts/uat/uat.py deploy <uat-home>/configs/<name>.json --ref <tag-or-branch-or-commit>
+```
+
+New installation: `uat.py suggest-ports`, write `configs/<name>.json` (see `scripts/uat/README.md`),
+`uat.py check <config>`, `uat.py up <config>`. You MUST NOT clean up an installation unless Max asks for
+that by name. Delete the configuration file after a cleanup. The units are linked, not enabled: after a
+machine restart run `uat.py start <name>`.
+
+Max reaches an installation from his Mac through an SSH tunnel with the same port numbers on both sides:
+
+```bash
+ssh -N -L <port>:127.0.0.1:<port> -L <port>:127.0.0.1:<port> <user>@<tailscale-or-host-address>
+```
+
+`<tailscale-or-host-address>` is this machine's Tailscale address. On the Mac, open `http://127.0.0.1:<edge port>/sign-in`
+and `http://127.0.0.1:<staff port>/staff/sign-in` (http, not https; never the Tailscale address directly:
+the servers listen only on 127.0.0.1 and the sign-in cookies need it).
+
+The synthetic accounts are `syn-ta-1@synthetic.test`, `syn-operator-1@synthetic.test` and
+`syn-superadmin-1@synthetic.test` (also -2, -3). Sign-in codes: Max runs `<installation root>/signin-codes.mjs` with an email
+address in his own terminal; agents use only `--list` and `--check`.
+
+## Context budget (Max, 13 October 2026)
+
+Each turn re-sends the whole chat context, so cost is context size times turns. Every lane prompt restates these
+two rules with their numbers; this file carries them for every session in this tree and in every hand-made lane
+copy of it.
+
+- Subagent rule. One task per subagent, with a written brief and a return limit. Keep a subagent under 100k
+  context per turn and make it return a partial result before 200k. Pass `model` explicitly on every Agent call:
+  `haiku` for mechanical work, `sonnet` for evidence gathering, `opus` only for judgment and package review. The
+  Agent tool inherits the parent model when `model` is omitted.
+- Worker tier by module (Max, 13 October 2026). Work on the Core module, the kernel, or restore and recovery code
+  uses `opus` workers under the same caps. Exception confirmed by Max on 13 October 2026 for the Core lane
+  `core-reads-2026-10-12` only: `opus` workers for Kind 2 items, `sonnet` workers for defects and reads, one git worktree
+  per worker (at most three), waves by code area, partial return before 275k. Elsewhere
+  `sonnet` workers implement a decided design from a written brief, with the item's Codex review behind every return;
+  `opus` there for a fix whose cause is unknown, a change that touches kernel or transaction semantics across modules,
+  and restore or recovery code. A Codex review that returns design-level findings on a `sonnet` item is the signal to
+  change the tier.
+- Core lane thresholds (Max, 13 October 2026, afternoon): the Core lane prepares for a compaction at 380,000 (guard
+  hook at 380,000) and compacts automatically at about 430,000 (`autoCompactWindow` 463000). The other lanes keep
+  280,000 until Max says otherwise.
+- Parent rule. Check your own context at every boundary: before a new unit, after a package, before every
+  subagent call (`get_usage` on session `self`). Above 280,000 tokens issue no new command or subagent, let
+  running subagents finish and collect their returns, commit the unit if it is coherent or leave the edits on disk
+  and write `state/RESUME.md` (files touched, intent, next step, pending decision), then stop and wait for Max to
+  compact. After the compaction read `state/RESUME.md` and re-read only the files it names.
+- Claude Code lanes carry `.claude/settings.local.json` (excluded from git): the `internal/tools/context-guard.py`
+  PreToolUse hook refuses a subagent call above 280,000 tokens, and `autoCompactWindow` 383000 is insurance only
+  (automatic compaction at about 350k is not the working threshold).
