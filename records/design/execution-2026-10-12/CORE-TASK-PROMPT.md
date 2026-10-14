@@ -30,9 +30,35 @@ approved together so that "holistically the design and code is done":
 | P-10 (g) a payment correction that changes only `eventAt` is refused `correction_no_change` | Defect, payments | `P-10-wp06-core-requests.md` |
 | P-14 (1) as amended after the WP-07 review: the projection MUST return the recorded basis per gate and act, not a computed verdict: (a) payment recorded as received, with the entry; (b) an exception (which, scope, until when, used or not); (c) a prior commitment of the same attempt; (d) the recorded first-work basis after work started; with the read time. Reason: `controls.ts:670-687` answers `passed` both for previously authorized work and for a prior commitment of the same attempt, neither establishes payment receipt, and `offers.startWork` is null after work starts, so a label built on `passed` would be untrue. Kind 1 only if it exposes recorded facts with their source scope; extension of P-10 (e) | Kind 1 | `P-14-wp07-gate-basis-and-gate2-read.md` (amended) |
 | P-14 (2) suspected defect: `pay.application_payments.gate2` evaluates the operator's authorize action with the SuperAdmin as actor; failing test first, close as not a defect if it passes | Defect (suspected) | `P-14-wp07-gate-basis-and-gate2-read.md` |
+| P-17 (2) the `possibly_filed` mark's flags (STOP-W11-01); the exhausted act's future owner, decider, reason and time (STOP-W11-02): join removals | Kind 1 | `P-17-wp11-reconciliation-marks-corrections.md` |
+| P-17 (3) `core.apply_held_correction` on the staff allowlist (Core's pending answer names staff; the binding exists); the BFF route is the UI lane's | Wiring | `P-17-wp11-reconciliation-marks-corrections.md` |
+| P-18 (3) Core accepts more than 50 originals or links while the case-work wire encodes at most 50; recommendation: refuse the 51st with a reason (a cap over a guarantee); failing test first | Defect | `P-18-wp12-originals.md` |
+| P-18 (4) an originals register read for operators (UX §5.2) | Kind 1 | `P-18-wp12-originals.md` |
+| P-20 (2) incident rows carry the stored owner, not the current duty holder (`incidentDutyHolders` not applied to the read); after an assignment ends the incident leaves every attention view and count; failing test first | Defect | `P-20-wp14-incidents.md` |
+| P-20 (3) required-item and notice lists on the incident read capped at 20 while the command accepts more; serve the accepted bounds (or paginate) | Defect, contract | `P-20-wp14-incidents.md` |
+| P-19 (3) the current impact items of an offering across assessments (applicant, TA, transition state, decision facts); the launch-control effect for each existing action on the TA's case read | Kind 1 | `P-19-wp13-offering-change.md` |
+| P-19 (4) a declined transition appears in no count or state and the application stays blocked with no owner; approving again after a decline reports success and opens nothing (fix by refusing); the transition target is the head at command time with no reviewed head (P-06 class; test first); Core's pending answer ignores suspension and withdrawal holds (held work shown as actionable and counted); failing tests first | Defects | `P-19-wp13-offering-change.md` |
+| WP-15 note: a support-view session of an accounting-grant holder omits the accounting surface (`sessions.ts`; `accounts.surface_read` has no support-view flag), so the support view does not match the person's read scope (V22); failing test first; read-only, downloads excluded | Defect, identity | UI lane record `WP-15.md` (internal 145203b) |
+| P-21 (1) P0: a travel-date edit accepts past dates while create refuses them (`commands/groups.ts`); refuse on edit as on create with a field error; failing test first; classified a defect (inconsistent validation), not Kind 2 | Defect, P0 | `P-21-wp17-timing-withdrawal.md` |
+| P-21 (3a) `core.propose_price_increase` lacks `correctionId` in its contract and binding, so a scope-change increase is always refused; surface repair | Wiring | `P-21-wp17-timing-withdrawal.md` |
+| WP-02 F-01: a values publication from a preview made before a new TA draft was accepted records 1 affected draft while 2 existed; the staleness check ignores changes to existing work; failing test first | Defect, catalogue | UI lane record `WP-02.md` §6.1 (internal f8468c8) |
+| P-15 (1) Kind 2, Max's direction A (register OD-X4): a Core blocker `dependency_not_linked` on readiness and authorization while a declared relation has no live link. Build from the proposal `K2-P15-1-dependency-not-linked.md` (SHA-256 63f539a5…) and its review `research/reviews/K2-P15-1-review.md` (dispositions §18): one mandatory blocker at control stage 10, no exception clears it, rule 19a pending answer, one reason code, no migration, tests I1 to I14, V1 to V4, S1. Q2 (widen the wire `ref` pattern, `src/contracts/errors.ts:56`): decided yes. The `release_packet` part (Q1) MUST NOT be built before Max's yes is recorded in the register | Kind 2, P0 | `K2-P15-1-dependency-not-linked.md`, `K2-P15-1-review.md` |
+| P-17 (1) Kind 2, direction A (OD-X5): the `possibly_filed` mark resolves only after the lost facts are recorded again with evidence. Same condition: proposal plus review first | Kind 2, P0 | `P-17-wp11-reconciliation-marks-corrections.md`; the Kind 2 proposal when written |
+| P-17 (4) Kind 2 (OD-X6): a notice to the TA on an outcome correction, with the history line as a separate point; the notice count for a correction of N applications MUST be bounded (Max: no bombardment). Proposal plus review first | Kind 2, P1 | same; the Kind 2 proposal when written |
+| P-18 (1) Kind 2 (OD-X7), P0 before production: passport-identity guard on sharing an original; SuperAdmin correction decision with evidence (unlink, void a wrong receipt, remove a part that never arrives, re-receipt). Placement: in this task if the proposal's effort estimate is not large, else the first item after this run (the orchestrator decides on the estimate). Blast radius MUST stay inside the physical-originals service type; the tests MUST show other service types unchanged. Max tests it by simulation | Kind 2, P0 (pre-production) | `P-18-wp12-originals.md`; the Kind 2 proposal when written |
+| P-21 (2) Kind 2 (OD-X9): Core refuses `core.propose_price_increase` (any cause) on an application with a recorded payment, with a reason the pages can name; a test confirms that applications created after a catalogue price change are quoted at the current price. Build from the proposal `K2-P21-2-price-fixed-by-payment.md` (SHA-256 50a0fcf1…) and its review `K2-P21-2-review.md` (dispositions §19), option A; Q4 (current `payment_received` status) and Q5 (option A) decided yes. The release disposition (Q1), the scope-authority rule (Q2) and the B16 question (Q3) are Max's; build nothing of §3.6 before Q1 is recorded in the register, and build the `correctionId` repair P-21 (3a) only after Q2. The ownership spread of §10 beyond Core and Payments (kernel vocabulary, identity policy, platform, CLI) needs the orchestrator's grant line in SEAM-CONTRACT §1, written after Q1. The refund and group-cancellation lever of OD-X9 (c) is NOT in this task | Kind 2, P1 | `K2-P21-2-price-fixed-by-payment.md`, `K2-P21-2-review.md` |
+| P-11 (OD-X10, confirmed 13 Oct 2026): a required list of one to five evidence references on every gate exception grant; an attestation alone is accepted; the four review fixes of `P-11-12-review.md` are conditions. The proposal and its one review exist; build from them, no re-review | Kind 2, P1 | `P-11-…` and `research/reviews/P-11-12-review.md` (UI lane) |
+| P-13 (1) (OD-X12): the owning TA's current account email on `dlv.delivery_page` for the SuperAdmin ONLY; the operator variant carries no address. Kind 1 with Max's exception; delivery module read | Kind 1, exception | `P-13-wp08-delivery-reads.md` item 1 |
+| P-20 (1) Kind 2 (OD-X8, decided 13 Oct 2026, fix before launch): a disclosure incident's correction is met only by an eligible replacement of the incident's file or by a recorded "no replacement owed" decision with business evidence; general evidence no longer counts; closed incidents unchanged; open ones resting on a reference return to "not recorded"; a SuperAdmin may record the decision. Operations case-work module, one additive nullable column. Proposal plus review first; brief SHA-256 c840fac7124f15ab… | Kind 2, P1 pre-launch | `P-20-wp14-incidents.md` item 1, `P-20-1-information-brief.md`; the Kind 2 proposal when written |
 | P-13 (8) stored subject and version identifiers in `dlv.selection`; P-13 (9) email attempts newest first with a stated cap: ONLY if Max adds them to the batch (orchestrator tells the lane) | Kind 1; defect | `P-13-wp08-delivery-reads.md` (amended) |
 
-Not in this lane: P-11 (gate exception evidence, Kind 2, separate decision and separate task); P-05 (catalogue
+Parked by Max, not worked in this task: notice types and aggregation (NOTE-01).
+
+P2 notes from K2-P15-1 §17 (N1 to N5: fee act waits with readiness; declared conditioned actions outside the enforced set; rule 20 counts any unmet linked relation; wait-interval rebuild window; bulk intake creates dependents unlinked, N formal returns possible), not worked unless Max assigns them.
+
+P2 notes from the UI lane, not worked unless Max assigns them (PRI-20260930-01): an Issued → Refused outcome correction can end an unfiled dependent as `dependency_failed` and the correction back is then refused (check with a failing test first, rank then); `correct_from_evidence` does not validate `fields` against the declaration; `passportType` is missing from its wire contract; the unresolved decision runs no control stage; an "information" notice consumes the account's notice slot so a later deletion request is refused as a duplicate; `artifact_association` incidents can be opened without an artifact and never resolved (failing test first, rank then); open and evidence have no business duplicate guard; `doc.queue` stops at 200 rows; `filed_historical` items have treatment `pending` and inflate open-item counts; the catalogue binding `evidenceOf` carries one evidence row per form; suspend and lift accept a withdrawn offering; the treatment and lift bindings ignore the path offering; `decide_transition` treats `reconciliation_exhausted` as not possibly filed (failing test first, rank then; filing-safety class); a `timing_risk` notice has `ackRequired: false` (the pages follow it; confirm it is intended); `dlv.record_direct_external` and the physical handover lack a business duplicate guard and a lifecycle guard (BS B35; STOP-W10-08); a future direct-external date is accepted (R-14); a reused authenticator code within the same 30 s step gets the combined "did not work" text and counts toward the lock (WP-01 F-02).
+
+Not in this lane: the refund and SuperAdmin group-cancellation lever of OD-X9 (c) (production-readiness phase); P-05 (catalogue
 display, UI lane grant); anything the bulk lane owns, including the K2-S1 group files
 (`src/modules/core/commands/groups.ts`, `src/modules/core/intake-writers.ts`, the group paths of `facade.ts`
 and `api.ts`, `src/contracts/core.ts` group fields). The kernel is off limits.
@@ -52,7 +78,7 @@ class of failure per fix.
 
 ## 4. Ownership
 
-`src/modules/core/` except the K2-S1 group files; `src/modules/payments/service-status.ts` and its tests;
+`src/modules/core/` except the K2-S1 group files; `src/modules/delivery/` read models for the P-13 (1) item only; `src/modules/identity/` session and surface-read wiring for the WP-15 support-view item only; `src/modules/catalogue/` for the WP-02 F-01 staleness defect only; `src/modules/payments/service-status.ts` and its tests;
 `src/core-api/bindings/{core,identity}.ts`, `src/core-api/allowlists.ts` and `src/core-api/server.ts` for the
 replay path; `src/contracts/core.ts` additive fields only; `src/modules/operations/` launch guards for P-06 (1);
 `test/core/`, `test/payments/`, `test/identity/`, `test/system/` for those paths. No migration is expected; if one
@@ -83,3 +109,62 @@ the UI lane.
 A kernel need; a Kind 2 change (a new command or a new behaviour, including anything from P-11); a file of
 another owner; a migration; a specification conflict; a `uat.py` failure. Usage-limit pauses: resume after the
 pause without asking.
+
+## 8. Launch amendments (13 October 2026, orchestrator; these override §1 to §7 where they differ)
+
+**Launch.** Max confirmed the batch on 13 October 2026 (register OD-X13) with the additions P-13 (8) and P-13 (9).
+The lane starts from main `30ee1c1`, which holds the bulk seam version 2 (passport parts, through 3854c88) and the
+UI shell and public entry (WP-01, WP-20, through 42cb373). Merge `origin/main` only when the orchestrator names a
+new integration.
+
+**Installation.** `lane-max`: edge `http://127.0.0.1:4620`, staff `http://127.0.0.1:4622/staff/sign-in`, core 4621,
+processing 4623, root `~/.local/share/travelmudra-uat/lane-max`, units `tm-lane-max-*`, config
+`~/.local/share/travelmudra-uat/configs/lane-max.json` (source: this lane's `repo/`). Its data and synthetic
+accounts stay. Deploy your own commits: `python3 scripts/uat/uat.py deploy <config> --ref <commit>` from `repo/`.
+Nothing else touches the installation. Sign-in codes: Max runs `signin-codes.mjs`; you use `--list` and `--check`.
+
+**Kind 2 items are in scope when the register names them.** OD-X4 (P-15 (1)), OD-X5 and OD-X14 (P-17 (1) Part 1),
+OD-X6 (P-17 (4)), OD-X7 (P-18 (1) guard slice), OD-X8 (P-20 (1)), OD-X9 (P-21 (2)), OD-X10 (P-11), OD-X12
+(P-13 (1)). Build each from its reviewed proposal in the UI lane's `output/proposals/` (final SHA-256 in the seam log
+§5) and the review dispositions; the proposal's ownership section names the files for that item only. A migration a
+reviewed proposal names is authorized for that item; any other migration is a proposal first. Kernel: only the
+additive vocabulary values a reviewed proposal names and the seam log authorizes (today: the reason code of
+K2-P21-2); any other kernel need is a stop. §7 is amended: a Kind 2 change is a stop only when the register does not
+name it.
+
+**Exclusions.** The K2-S1 group files, `src/modules/core/intake-writers.ts` (bulk lane grant of 13 Oct),
+`src/modules/intake/`, `src/modules/documents/`, `src/workers/` (bulk lane), every file that renders HTML (UI lane).
+
+**Parts that wait for Max** (`DECISION-BRIEFS-2026-10-13.md`; do not build them; build everything else of the item):
+P-15 (1) the `release_packet` part (Q1); P-21 (2) the release disposition §3.6 (Q1) and the scope-authority choice
+(Q2, build SC-1 only after his yes), B16 (Q3); P-18 (1) everything beyond the guard-only slice (Q1 to Q8, Q10);
+P-17 (4) the history line H (Q-N3) and the residuals Q-N2, Q-N4 (build the notice N); P-20 (1) Q-1 to Q-3 (build the
+parts that do not depend on them); P-17 (1) Part 2 (after the run, OD-X14). The orchestrator delivers each answer as
+a register entry.
+
+**Order of work.** P0 first: P-21 (1) past dates on edit; P-15 (1) blocker on readiness and authorization; P-17 (1)
+Part 1; P-18 (1) guard slice. Then P-20 (1). Then the defects (P-04, P-06, P-10 (g), P-14 (2), P-19 (4), P-20 (2),
+P-20 (3), WP-15 note, WP-02 F-01, P-18 (3)). Then the Kind 1 reads and wiring (P-10 a, b, d, e; P-12 C; P-14 (1);
+P-17 (2), (3); P-18 (4); P-19 (3); P-13 (1), (8), (9); P-21 (3a)). Then P-17 (4) N, P-21 (2) refusal, P-11. One
+commit per item, failing test first, one Codex review per unique item (read only, `gpt-6.1-sol` high, no re-review;
+the UI lane's runner is `lanes/ui-revamp-2026-10-12/research/reviews/run-codex-review.sh`, copy it), dispositions
+recorded in `ITEM-nn.md`.
+
+**Walk-through for Max.** Every Kind 2 item ships `ITEM-nn-WALKTHROUGH.md`: the steps Max performs on `lane-max` with
+the synthetic accounts, the simulation where the scenario needs one (a restore for P-17 (1): a script that records
+the lost facts in a copy, never on real data), the expected refusals and resolutions, and the facts to look for. The
+first one is P-17 (1) Part 1; Max asked for it.
+
+**Team and resilience.** Workers are subagents of this chat (engineers; writers), one writer per tree; keep
+`state/RESUME.md` in the lane folder with every in-flight worker's id and next step; a resume job every 20 minutes
+while idle resumes workers stopped by a usage-limit pause.
+
+**Communication (Max, 13 October 2026).** Message the orchestrator (session "10 Oct [Critical Orchestrator UI Revamp
+Assessment] UI specs for Main and Bulk Upload", find it with ListAgents) ONLY for: a package ready for integration
+(commits, check counts, review dispositions, seam fields, P2 notes), a grant or decision needed, a stop condition, a
+blocked deploy. One message per milestone. No acknowledgements, no progress notes, no estimates ahead of the reviewed
+file. Silence from the orchestrator means logged. A question the orchestrator sends you is answered by a subagent
+with a self-contained question file, and relayed. Questions inside a decided direction go to a fresh Fable 5.1
+subagent at high effort (one per question, `research/questions/`); take its recommendation and log both positions in
+`PLAN.md` for Max's end review. A Kind 2 change, an exception to the Kind 1 criterion, a register item or a scope
+change is never decided by an advisor: it goes to the orchestrator, who routes it to Max.

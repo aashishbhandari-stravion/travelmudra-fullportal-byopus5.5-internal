@@ -1,5 +1,25 @@
 {
-  "blockedPaths": ["BUILD_SPEC.md", "*ENGINEERING_OVERRIDES*", "records/*", "scratch/*"],
-  "forbiddenWords": ["BUILD_SPEC", "Naruto", "Goku", "agent-guidance", "max-stravion", "workDirectory", "HyperVisa", "shreetravion", "aashish", "ultracode"],
-  "allowWordsInPaths": []
+  "blockedPaths": [
+    "BUILD_SPEC.md",
+    "*ENGINEERING_OVERRIDES*",
+    "records/*",
+    "scratch/*"
+  ],
+  "forbiddenWords": [
+    "BUILD_SPEC",
+    "Naruto",
+    "Goku",
+    "agent-guidance",
+    "max-stravion",
+    "workDirectory",
+    "HyperVisa",
+    "shreetravion",
+    "aashish",
+    "ultracode"
+  ],
+  "allowWordsInPaths": [],
+  "allowPaths": [
+    "CLAUDE.md",
+    "AGENTS.md"
+  ]
 }

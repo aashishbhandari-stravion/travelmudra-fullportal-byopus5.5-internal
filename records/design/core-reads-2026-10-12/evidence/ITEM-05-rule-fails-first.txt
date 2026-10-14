@@ -1,0 +1,62 @@
+# test/operations/disclosure-correction.test.ts (all cases), test/operations/incident-authority.test.ts (two disclosure cases), test/operations/artifacts-incidents.test.ts (T-CO58, T-CO59) before the change, 2026-10-13 (worktree wave3-disclosure at e0b978d, tests only changed)
+  ✖ T-CO58, T-CO59: a wrong-recipient report blocks the version for good; resolution needs a notice to every affected travel agent and a verified replacement (1910.261988ms)
+✖ incidents (6490.223311ms)
+  ✖ a reference, recorded on the incident or sent with the resolution; the incident read offers no resolution (2066.844689ms)
+  ✖ a replacement confirmed for another candidate application of the group (3513.807555ms)
+  ✖ a replacement whose bytes are unavailable, also after its integrity incident is resolved (2210.276993ms)
+  ✖ a replacement blocked by an open incident of the application; met once that incident is resolved (1822.934351ms)
+✖ what never meets the correction (13148.317821ms)
+  ✖ a replacement recorded without naming the file it replaces, verified without a person (2115.880721ms)
+  ✖ follows the one eligible file, not the replacement links: a rejected replacement replaced again meets it; an eligible one replaced by a file under review does not (2518.944503ms)
+✖ what meets the correction (9428.61711ms)
+  ✖ is reported with attributed evidence: the version is blocked for good and the owning travel agent's notice is required (1845.854896ms)
+  ✖ a SuperAdmin's disclosure incident on a case requires the owning travel agent's notice, and a reference never meets its correction (928.587043ms)
+✖ a disclosure outside the product's delivery records (2775.758668ms)
+ℹ tests 34
+ℹ pass 25
+ℹ fail 9
+✖ failing tests:
+✖ T-CO58, T-CO59: a wrong-recipient report blocks the version for good; resolution needs a notice to every affected travel agent and a verified replacement (1910.261988ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice_missing' ],
+    expected: [ 'correction', 'notice_missing' ],
+✖ a reference, recorded on the incident or sent with the resolution; the incident read offers no resolution (2066.844689ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [],
+    expected: [ 'correction' ],
+✖ a replacement confirmed for another candidate application of the group (3513.807555ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+    expected: [ 'correction', 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+✖ a replacement whose bytes are unavailable, also after its integrity incident is resolved (2210.276993ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+    expected: [ 'correction', 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+✖ a replacement blocked by an open incident of the application; met once that incident is resolved (1822.934351ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+    expected: [ 'correction', 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+✖ a replacement recorded without naming the file it replaces, verified without a person (2115.880721ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'correction', 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+    expected: [ 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+✖ follows the one eligible file, not the replacement links: a rejected replacement replaced again meets it; an eligible one replaced by a file under review does not (2518.944503ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'correction', 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+    expected: [ 'notice:acc_148HZT16MC2TDWKVQN48HVRB08' ],
+✖ is reported with attributed evidence: the version is blocked for good and the owning travel agent's notice is required (1845.854896ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'notice_missing' ],
+    expected: [ 'correction', 'notice_missing' ],
+✖ a SuperAdmin's disclosure incident on a case requires the owning travel agent's notice, and a reference never meets its correction (928.587043ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+# Note (2026-10-13): after this run the T-CO58, T-CO59 title was restored to its original wording, because docs/verification/traceability.md names it; the test body is as run here. Commit 2b5a93e (amended from b86a285).

@@ -1,0 +1,12 @@
+# the launch effect per existing-work action on the travel agent's case read > gives allow for every action of a launched offering and the hold with its code under a holding suspension, as the controls decide (test/core/launch.test.ts) before the change, 13 October 2026
+  ✖ gives allow for every action of a launched offering and the hold with its code under a holding suspension, as the controls decide (2439.159207ms)
+✖ the launch effect per existing-work action on the travel agent's case read (2441.020181ms)
+ℹ tests 4
+ℹ pass 3
+ℹ fail 1
+✖ failing tests:
+✖ gives allow for every action of a launched offering and the hold with its code under a holding suspension, as the controls decide (2439.159207ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: undefined,
+    expected: [ { action: 'submit', effect: 'allow', codes: [] }, { action: 'request_assistance', effect: 'allow', codes: [] }, { action: 'assign', effect: 'allow', codes: [] }, { action: 'start_operator_work', effect: 'allow', codes: [] }, { action: 'assistance_entry', effect: 'allow', codes: [] } ],

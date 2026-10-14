@@ -1,0 +1,37 @@
+ITEM-24 R02 mutation checks, 13 October 2026. Worktree branch wave2-originals-r02 at 96bcf5d plus the new tests.
+
+=== Mutation (a): remove 'ops.originals' from the staff allowlist (src/core-api/allowlists.ts) ===
+  ✖ R5: the staff service may make the query and the edge service may not (2.390494ms)
+✖ the originals register shows each reader the originals of the applications they may read (8893.249174ms)
+ℹ tests 6
+ℹ pass 5
+ℹ fail 1
+✖ failing tests:
+test at test/operations/originals-register.test.ts:226:3
+✖ R5: the staff service may make the query and the edge service may not (2.390494ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w9-originals/test/operations/originals-register.test.ts:227:12)
+    actual: false,
+    expected: true,
+
+=== Mutation (b): remove the application read scope from the linked applications (registerLinks in src/modules/operations/case-work/store.ts) ===
+  ✖ R4: an original shared between two applications shows each operator only the application that operator may read (1896.579789ms)
+✖ the originals register shows each reader the originals of the applications they may read (8104.52215ms)
+ℹ tests 6
+ℹ pass 5
+ℹ fail 1
+✖ failing tests:
+test at test/operations/originals-register.test.ts:193:3
+✖ R4: an original shared between two applications shows each operator only the application that operator may read (1896.579789ms)
+  AssertionError [ERR_ASSERTION]: {"originals":[{"originalId":"org_1BWFQC04RX0PFF6PKJSX3P04TK","itemType":"passport","description":"Applicant passport","state":"held","holderKind":"tm_office","location":"SYN office shelf B","parts":[{"partNo":1,"label":"Passport booklet","state":"held","holderKind":"tm_office","location":"SYN office shelf B"}],"linkedApplications":[{"applicationId":"app_1BAP97J8FS2CYPPV0BYQK50HCA","applicantName":"Brandt, SYN Second"},{"applicationId":"app_2WY2SREN3XSX43FFS2PQ024Y3A","applicantName":"Alvarez, SYN First"}]},{"originalId":"org_4AS5H4R5ZCQT7FZWMG2KD7QDJN","itemType":"passport","description":"Applicant passport","state":"held","holderKind":"tm_office","location":"SYN office safe","parts":[{"partNo":1,"label":"Passport booklet","state":"held","holderKind":"tm_office","location":"SYN office safe"}],"linkedApplications":[{"applicationId":"app_7PV1AC38CD0BB2CBTV409ZF4RQ","applicantName":"Syndel, SYN Applicant"}]},{"originalId":"org_4KNZPDMPEYA10M4F45XC5G0FSE","itemType":"passport","description":"Applicant passport","state":"held","holderKind":"tm_office","location":"SYN office shelf B","parts":[{"partNo":1,"label":"Passport booklet","state":"held","holderKind":"tm_office","location":"SYN office shelf B"}],"linkedApplications":[{"applicationId":"app_595EAZTZZJTA392QXH10491PN8","applicantName":"Syndel, SYN Applicant"}]},{"originalId":"org_0E6SBD1B2RNVYFPM0XT9QTNG88","itemType":"passport","description":"Applicant passport","state":"held","holderKind":"tm_office","location":"SYN office shelf B","parts":[{"partNo":1,"label":"Passport booklet","state":"held","holderKind":"tm_office","location":"SYN office shelf B"}],"linkedApplications":[{"applicationId":"app_7B57EZPEHWD6KVQ0XBMK5FCYNH","applicantName":"Syndel, SYN Applicant"},{"applicationId":"app_7CW9EP81KSWZMAWFGS5D5C73Q8","applicantName":"Syndel, SYN Applicant"}]}],"truncated":false}
+  + actual - expected
+  +     applicantName: 'Brandt, SYN Second',
+  +     applicationId: 'app_1BAP97J8FS2CYPPV0BYQK50HCA'
+  +   },
+  +   {
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w9-originals/test/operations/originals-register.test.ts:215:12)
+    actual: [ { applicationId: 'app_1BAP97J8FS2CYPPV0BYQK50HCA', applicantName: 'Brandt, SYN Second' }, { applicationId: 'app_2WY2SREN3XSX43FFS2PQ024Y3A', applicantName: 'Alvarez, SYN First' } ],
+    expected: [ { applicationId: 'app_2WY2SREN3XSX43FFS2PQ024Y3A', applicantName: 'Alvarez, SYN First' } ],
+
+Both product files were restored with git checkout; git status showed only test/operations/originals-register.test.ts modified.
+All data is synthetic.

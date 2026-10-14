@@ -1,0 +1,23 @@
+# artifacts-incidents.test.ts: 'the incident read at the bounds of the report command' (3 of 4 cases fail; the affected-lists case passes today because the binding does not slice them, the wire case fails on them) before the change, 2026-10-13
+  ✖ serves all 102 required and 102 missing evidence codes (36.553568ms)
+  ✖ serves all 101 notices (2.759212ms)
+  ✖ encodes the incident page and the SuperAdmin list on the wire (15.651457ms)
+✖ the incident read at the bounds of the report command (56.23362ms)
+ℹ tests 15
+ℹ pass 12
+ℹ fail 3
+✖ failing tests:
+✖ serves all 102 required and 102 missing evidence codes (36.553568ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'correction', 'notice:acc_00NWS4XY8BV92HQDRACKT0BPAT', 'notice:acc_01FEGMNXPBWAV005CKD0M52MMZ', 'notice:acc_04DHFRQ1N48GSB0S60KTB62K3F', 'notice:acc_07VHV5WE45B6AKR47H5CKJX51P', 'notice:acc_0A9RJV0XRGQCW9CD3CFBCB170A', 'notice:acc_0C4ME02NJ1PNFWZ
+    expected: [
+✖ serves all 101 notices (2.759212ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [
+    expected: [
+✖ encodes the incident page and the SuperAdmin list on the wire (15.651457ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+    actual: WireError: wire_unencodable
+    expected: undefined,

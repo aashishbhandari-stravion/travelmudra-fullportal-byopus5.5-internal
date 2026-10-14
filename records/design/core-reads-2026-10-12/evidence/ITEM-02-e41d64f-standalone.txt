@@ -1,0 +1,13 @@
+# work-acts.test.ts at e41d64f (no uncommitted change), 2026-10-13T15:38:36+05:30
+▶ readiness on a relation with no link
+  ✔ I1: the real record_readiness is refused by dependency_not_linked for the unlinked relation and writes nothing (862.139776ms)
+  ✔ in returned_to_ta, the travel agent links while the operator confirms readiness: the link is accepted, the real record_readiness is refused in either start order and writes nothing (7311.222028ms)
+✔ readiness on a relation with no link (8173.985703ms)
+ℹ tests 12
+ℹ suites 7
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38244.718922

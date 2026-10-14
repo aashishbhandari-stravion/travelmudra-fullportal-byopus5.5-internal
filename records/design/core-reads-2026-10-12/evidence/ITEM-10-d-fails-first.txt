@@ -1,0 +1,18 @@
+# test/core/launch.test.ts 'who existing work under launch control is pending on' (2 tests) before the change, 2026-10-13
+  ✖ names the SuperAdmin and the existing-work treatment while a suspension holds the work, and the operator step once it continues (2460.868508ms)
+  ✖ names the SuperAdmin while a withdrawal without continuation holds unfiled work (1270.027632ms)
+✖ who existing work under launch control is pending on (3732.153625ms)
+ℹ tests 5
+ℹ pass 3
+ℹ fail 2
+✖ failing tests:
+✖ names the SuperAdmin and the existing-work treatment while a suspension holds the work, and the operator step once it continues (2460.868508ms)
+  AssertionError [ERR_ASSERTION]: app_1B5262D95290GT3J8W0PXYBYA2
+  + actual - expected
+    actual: [ 'superadmin', null, 'awaiting_assignment', 'assign_operator', 312n ],
+    expected: [ 'superadmin', null, 'existing_work_hold', 'record_existing_work_treatment', 341n ],
+✖ names the SuperAdmin while a withdrawal without continuation holds unfiled work (1270.027632ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'assigned_operator', 'operator_work_not_started', 'start_operator_work', 365n ],
+    expected: [ 'superadmin', 'withdrawal_continuation_not_permitted', 'record_existing_work_treatment', 367n ],

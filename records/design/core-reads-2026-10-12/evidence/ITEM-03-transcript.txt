@@ -1,0 +1,97 @@
+# Test transcript: protection-mark filing determination (commit d2067af), throwaway test databases, 2026-10-13T15:57:36+05:30
+
+▶ a mark that held "possibly filed" is resolved with a filing determination
+  ✔ F1: a possibly filed mark with no filing act on record is refused without a filing statement, and the mark keeps guarding the case (1496.215282ms)
+  ✔ F2: a possibly filed mark resolves on the statement "not filed" with an external reference, and the submission can then be authorized (1496.305306ms)
+  ✔ F3: "not filed" with evidence of another kind only is refused, and nothing is written; an external reference or a document version is enough (1116.052577ms)
+  ✔ F4: a filed submission on record resolves the mark as filed on record with that act, refuses a "not filed" statement as stale, and still refuses a second submission (2889.698404ms)
+  ✔ F5: an authorized act is live permission: the mark is not resolved, with or without a filing statement (1182.533954ms)
+  ✔ F6: after the operator records "execution uncertain", the mark resolves as protected by that act, and a new authorization is refused while the act is open (1323.743677ms)
+  ✔ F7: an act whose reconciliation was exhausted resolves the mark as protected by that act, and refiling stays refused (1434.448987ms)
+  ✔ F8: for a preparation-only offering the mark resolves as not applicable with no act kind, and a filing statement is refused with a field error (732.567278ms)
+  ✔ F9: a mark that did not hold "possibly filed" resolves as before with any evidence, records no determination, and refuses a filing statement (1115.139308ms)
+  ✔ F10: two marks on one application, from two restores, each need their own determination; resolving one leaves the other active (1636.495278ms)
+✔ a mark that held "possibly filed" is resolved with a filing determination (14428.450474ms)
+▶ the operation key of a resolution, and a resolution that does not complete
+  ✔ F11: the same key and body replays the first result; the same key with another filing statement conflicts; a new key finds the mark resolved (972.140095ms)
+  ✔ F12: a lost acknowledgement leaves the resolution committed; the same key replays it, and exactly one resolution fact exists (1060.687516ms)
+  ✔ F13: a failure before the commit leaves the mark active with no determination, no fact and no operation record; the same key then resolves it (1113.730767ms)
+✔ the operation key of a resolution, and a resolution that does not complete (3147.920536ms)
+▶ the table refuses a resolved possibly filed mark without a determination
+  ✔ F14: a direct update that resolves a possibly filed mark and leaves the determination empty is refused by the check; a mark that did not hold "possibly filed" is not (956.651822ms)
+✔ the table refuses a resolved possibly filed mark without a determination (957.091991ms)
+▶ a provider handoff files for a third-party-filed offering
+  ✔ F15: a filed provider handoff resolves the mark as filed on record with that handoff, and a second handoff stays refused (1546.599483ms)
+✔ a provider handoff files for a third-party-filed offering (1547.290957ms)
+▶ gate exceptions
+  ✔ F16: a Gate 1 and a Gate 2 exception granted before the mark are still granted after the resolution, and the Gate 1 exception can still be used (814.691389ms)
+✔ gate exceptions (815.366994ms)
+▶ the staff case read
+  ✔ V1: the case read gives no mark when none is active, and an active mark with its flags, restore, time and the filing answer of each state (8309.324037ms)
+✔ the staff case read (8310.029239ms)
+▶ L2: a legacy mark without a disposition blocks the authorizations
+  ✔ L2: the submission and the fee act are refused with the missing determination, and a refusal writes nothing (1679.93728ms)
+✔ L2: a legacy mark without a disposition blocks the authorizations (1683.728173ms)
+▶ L3: the SuperAdmin records the disposition of a legacy mark
+  ✔ L3: not filed, with an external reference: one disposition row, the mark row as recorded, the revision plus one, the fact; then the authorization is accepted (1605.465012ms)
+✔ L3: the SuperAdmin records the disposition of a legacy mark (1606.169962ms)
+▶ L4: the disposition refuses what the resolution table does not allow
+  ✔ L4: no `filing` and no protective act: filing possibly occurred; nothing is written (1239.295376ms)
+  ✔ L4: a second disposition of the mark is a duplicate; the first stays (1139.175644ms)
+  ✔ L4: an active mark, a mark that did not hold possibly filed and a mark with a determination are stale; nothing is written (2493.763648ms)
+  ✔ L4: an operator is refused as the policy refuses a resource it may not touch; nothing is written (1123.548602ms)
+  ✔ L4: the database refuses UPDATE, DELETE and TRUNCATE of a disposition row (1229.382535ms)
+✔ L4: the disposition refuses what the resolution table does not allow (7227.363897ms)
+▶ L6: the earlier release's resolution, sent again with its key
+  ✔ L6: the stored result is replayed; no determination is written; the authorizations still wait (1415.954565ms)
+✔ L6: the earlier release's resolution, sent again with its key (1416.914639ms)
+▶ V2: the staff case read lists the legacy marks
+  ✔ V2: a legacy mark is listed with a required determination; after the disposition the list is empty (1222.411916ms)
+✔ V2: the staff case read lists the legacy marks (1223.071426ms)
+▶ the filing determination migration over a database holding marks an earlier release resolved
+  ✔ L1: the migration applies and the legacy mark is unchanged: same resolver, time, reason and evidence, no determination, row not rewritten (10.279104ms)
+  ✔ L1: the check that a resolved, possibly filed mark has a determination exists and is not validated; the other new checks are validated (25.08597ms)
+  ✔ L1: after the migration a new resolved, possibly filed mark without a determination is refused on the check; a mark with a determination is accepted (24.070921ms)
+  ✔ L1: a write to the legacy row is refused on the check and leaves the row as it was (20.442952ms)
+  ✔ L1: running the migrations again applies nothing (64.230026ms)
+✔ the filing determination migration over a database holding marks an earlier release resolved (148.580547ms)
+▶ interval-loss restore of the composed product, then the product at work again
+  ✔ T-15-79: at the restore boundary the waiting resend's task is cancelled and its send becomes uncertain (restore boundary); the source is untouched (27.002877ms)
+  ✔ T-15-79: the scope computed from the restored state names the current readiness, the built packet and the cancelled send, through each owner's source (68.959987ms)
+  ✔ T-15-79: reopening is refused while a candidate is neither marked nor excluded with a reason; with every mark it opens (253.338737ms)
+  ✔ T-15-79: after reopening, the restored product never hands the cancelled send to the transport (462.401699ms)
+  ✔ T-15-68: after reopening, a mark blocks authorization, packet release, byte release and gate decisions; resolving it with evidence lifts each block (1156.02783ms)
+  ✔ T-15-78, T-F41: a new command's facts reach the application list and the audit search; restored facts stay searchable; projections were rebuilt (2350.662437ms)
+  ✔ T-F49: after a restore with new secrets, re-recording the same physical original is refused as already recorded; another original is recorded (98.690078ms)
+✔ interval-loss restore of the composed product, then the product at work again (4422.270401ms)
+▶ a mark an earlier release resolved without a filing determination, through backup and restore
+  ✔ S3: the restore succeeds; the legacy mark is as it was written, the check that refuses a new one is present and not validated (10.540823ms)
+  ✔ S3: in the restored database a new resolved, possibly filed mark without a determination is refused on the check; with a determination it is accepted (12.324055ms)
+✔ a mark an earlier release resolved without a filing determination, through backup and restore (23.890197ms)
+▶ filingKindOf
+  ✔ names the act kind that files for each service mode, and none for preparation only (0.930962ms)
+  ✔ names no kind for a mode it does not know (0.18088ms)
+✔ filingKindOf (2.579654ms)
+▶ filingDetermination
+  ✔ row 1: a service mode without a filing act records not applicable, whatever acts exist (1.386442ms)
+  ✔ row 2: a filed act of the kind records filed on record with that authorization (0.277703ms)
+  ✔ row 2 comes before every other row: a filed act wins over an authorized, unknown or exhausted act (0.285801ms)
+  ✔ row 3: an authorized act of the kind is live permission and records nothing (0.299263ms)
+  ✔ row 3 comes before row 4: an authorized act holds the mark although another act is filing unknown (0.235697ms)
+  ✔ row 4: a filing unknown or exhausted act of the kind records protected by act with that authorization (0.300245ms)
+  ✔ row 4: one not-filed act and one filing unknown act still record protected by act (0.242039ms)
+  ✔ row 5: no act of the kind needs not-filed evidence (0.286206ms)
+  ✔ row 5: only not-filed acts of the kind never answer the question (0.194871ms)
+  ✔ row 5: a filed fee act with no submission is not a filing (0.177451ms)
+  ✔ ignores acts of other kinds in every state (0.232941ms)
+  ✔ decides each act state of the kind alone (0.245489ms)
+  ✔ records only determinations that the closed set holds, and never not filed (only the SuperAdmin input records it) (0.282489ms)
+✔ filingDetermination (5.384834ms)
+ℹ tests 55
+ℹ suites 16
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43542.69628

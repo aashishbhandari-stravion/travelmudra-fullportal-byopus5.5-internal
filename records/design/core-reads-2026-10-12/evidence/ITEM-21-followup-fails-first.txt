@@ -1,0 +1,91 @@
+Failing tests first: review follow-up of the recorded gate basis read
+Worktree branch: wave3-gatebasis; head: 8c73b600b4fce47e6833d8f7411e24201ed292be
+Date: 2026-10-13T23:19:44+05:30
+Working tree before the source change (only the test file changed):
+ M test/core/recorded-gate-basis.test.ts
+ test/core/recorded-gate-basis.test.ts | 98 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 95 insertions(+), 3 deletions(-)
+sha256 of the test file: 1f8a3fcd4057eccebb54c9ea2267ff8461ec3445070ec56b38005a062464dedf
+
+Command: node --test --test-global-setup=test/support/global-setup.ts test/core/recorded-gate-basis.test.ts
+
+Filtered output:
+  ✖ serves the readiness validity of the case read beside a granted readiness exception: stale or held, the exception’s own freshness stays as checked and the evaluator refuses (1368.001383ms)
+  ✖ serves no Gate 2 for an unpaid government act Gate 2 does not apply to, with the evaluator’s reason: the service mode or the declaration (1198.881453ms)
+✖ the recorded gate basis per act on the staff case reads (16313.10964ms)
+ℹ tests 7
+ℹ pass 5
+ℹ fail 2
+✖ failing tests:
+✖ serves the readiness validity of the case read beside a granted readiness exception: stale or held, the exception’s own freshness stays as checked and the evaluator refuses (1368.001383ms)
+  AssertionError [ERR_ASSERTION]: stale_basis: the validity case.readiness serves
+  + actual - expected
+    actual: undefined,
+    expected: 'previous_operator',
+✖ serves no Gate 2 for an unpaid government act Gate 2 does not apply to, with the evaluator’s reason: the service mode or the declaration (1198.881453ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ [ 'authorize_government_submission', [Object], undefined ], [ 'authorize_government_fee_payment', [Object], undefined ] ],
+    expected: [ [ 'authorize_government_submission', null, 'service_mode' ], [ 'authorize_government_fee_payment', null, 'service_mode' ] ],
+
+Failure detail:
+✖ failing tests:
+
+test at test/core/recorded-gate-basis.test.ts:260:3
+✖ serves the readiness validity of the case read beside a granted readiness exception: stale or held, the exception’s own freshness stays as checked and the evaluator refuses (1368.001383ms)
+  AssertionError [ERR_ASSERTION]: stale_basis: the validity case.readiness serves
+  + actual - expected
+  
+  + undefined
+  - 'previous_operator'
+  
+      at readinessOf (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w14-gatebasis/test/core/recorded-gate-basis.test.ts:270:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w14-gatebasis/test/core/recorded-gate-basis.test.ts:274:15)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'previous_operator',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/core/recorded-gate-basis.test.ts:307:3
+✖ serves no Gate 2 for an unpaid government act Gate 2 does not apply to, with the evaluator’s reason: the service mode or the declaration (1198.881453ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        'authorize_government_submission',
+  +     {
+  +       exception: null,
+  +       priorCommitments: [],
+  +       servicePayment: {
+  +         entryId: null,
+  +         status: 'unrecorded',
+  +         statusRevision: 0n
+  +       }
+  +     },
+  +     undefined
+  -     null,
+  -     'service_mode'
+      ],
+      [
+        'authorize_government_fee_payment',
+  +     {
+  +       exception: null,
+  +       priorCommitments: [],
+  +       servicePayment: {
+  +         entryId: null,
+  +         status: 'unrecorded',
+  +         statusRevision: 0n
+  +       }
+  +     },
+  +     undefined
+  -     null,
+  -     'service_mode'
+      ]
+    ]

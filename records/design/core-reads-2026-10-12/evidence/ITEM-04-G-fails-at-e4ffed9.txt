@@ -1,0 +1,30 @@
+# G1-G4 on e4ffed9 with only the test and kit changes (originals.ts and reasons.ts unchanged), 2026-10-13T11:54:49Z
+▶ sharing a passport record checks the applicant's passport key
+  ✔ G1: the same applicant's other application in the group shares the passport record (2230.344588ms)
+  ✖ G2: another applicant's application is refused with the identity mismatch, and nothing is written (1778.197193ms)
+✖ sharing a passport record checks the applicant's passport key (4013.664562ms)
+▶ other item types and the earlier refusals are unchanged
+  ✔ G3: a record of another item type is shared with another applicant's application, as before (1778.824372ms)
+  ✔ G4: a preparation-only or electronic target, and another operator's application, keep their refusals for another applicant's passport (3577.195576ms)
+✔ other item types and the earlier refusals are unchanged (5356.956777ms)
+ℹ tests 4
+ℹ suites 2
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24177.059574
+
+✖ failing tests:
+
+test at test/operations/original-link-identity.test.ts:92:3
+✖ G2: another applicant's application is refused with the identity mismatch, and nothing is written (1778.197193ms)
+  AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_2Q8H0VJ2KDB8ZH696T8PG1A8BD","result":{"resource":{"type":"original","id":"org_308BQGN5H1AGHT62G0VK8AM3NX"},"summary":{"originalId":"org_308BQGN5H1AGHT62G0VK8AM3NX","applicationId":"app_4X36YK6CATM07P21KWCVBBNTE3"}}}
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

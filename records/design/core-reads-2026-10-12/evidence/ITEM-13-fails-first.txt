@@ -1,0 +1,15 @@
+# 'shows the Accounts surface of an operator who holds the accounting grant, read-only, and drops it with the grant and the account' (test/identity/policy.test.ts) before the change, 2026-10-13
+  ✖ shows the Accounts surface of an operator who holds the accounting grant, read-only, and drops it with the grant and the account (105.709913ms)
+✖ support view (317.366398ms)
+ℹ tests 13
+ℹ pass 12
+ℹ fail 1
+✖ failing tests:
+test at test/identity/policy.test.ts:353:3
+✖ shows the Accounts surface of an operator who holds the accounting grant, read-only, and drops it with the grant and the account (105.709913ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  -   'accounts'
+      at TestContext.<anonymous> (file:///home/max-stravion/workDirectory/Critical/MaxHyperVisaFullPortalImplementationOpus5.5/lanes/core-reads-2026-10-12/wt/w1-identity/test/identity/policy.test.ts:383:12)
+    actual: [ 'ops' ],
+    expected: [ 'ops', 'accounts' ],

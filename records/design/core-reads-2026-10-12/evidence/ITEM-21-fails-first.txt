@@ -1,0 +1,33 @@
+# Failing test first: test/core/recorded-gate-basis.test.ts on wave3-gatebasis at baa00e8 (no implementation), 13 Oct 2026
+# Command: node --test --test-global-setup=test/support/global-setup.ts test/core/recorded-gate-basis.test.ts (filtered)
+  ✖ serves Gate 1’s recorded basis for the first operator work to the assigned operator and the SuperAdmin; the evaluator agrees in each state (1822.49255ms)
+  ✖ serves Gate 2’s recorded basis for each government act: the payment entry, the exception and the act of the same attempt; the evaluator agrees in each state (1481.199572ms)
+  ✖ serves the readiness gate’s recorded basis of each act after a reassignment to the new operator; the evaluator agrees in each state (1512.121744ms)
+  ✖ lists the act each service mode offers: a provider handoff and a packet release have no Gate 2 (1408.233923ms)
+  ✖ encodes through the case contracts for the SuperAdmin and the assigned operator, with no verdict field; the travel agent’s case read has none (1580.130349ms)
+✖ the recorded gate basis per act on the staff case reads (7808.650919ms)
+ℹ tests 5
+ℹ pass 0
+ℹ fail 5
+✖ failing tests:
+✖ serves Gate 1’s recorded basis for the first operator work to the assigned operator and the SuperAdmin; the evaluator agrees in each state (1822.49255ms)
+  AssertionError [ERR_ASSERTION]: the reader is served the recorded gate basis of an open application
+    actual: false,
+    expected: true,
+✖ serves Gate 2’s recorded basis for each government act: the payment entry, the exception and the act of the same attempt; the evaluator agrees in each state (1481.199572ms)
+  AssertionError [ERR_ASSERTION]: the reader is served the recorded gate basis of an open application
+    actual: false,
+    expected: true,
+✖ serves the readiness gate’s recorded basis of each act after a reassignment to the new operator; the evaluator agrees in each state (1512.121744ms)
+  AssertionError [ERR_ASSERTION]: the previous operator is not served the field
+  + actual - expected
+    actual: undefined,
+    expected: null,
+✖ lists the act each service mode offers: a provider handoff and a packet release have no Gate 2 (1408.233923ms)
+  AssertionError [ERR_ASSERTION]: the reader is served the recorded gate basis of an open application
+    actual: false,
+    expected: true,
+✖ encodes through the case contracts for the SuperAdmin and the assigned operator, with no verdict field; the travel agent’s case read has none (1580.130349ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+    actual: false,
+    expected: true,

@@ -1,0 +1,22 @@
+ITEM-31-b follow-up (W22): bulk price scenarios run as one sequential test
+Date: 2026-10-14. Worktree wt/w20-price-tests, branch price-after-publication-tests, parent 14f3fa7.
+Changed file: test/intake/bulk-mapping.test.ts (appended block only, from line 446).
+
+Run 1: the new test alone
+  node --test --test-global-setup=test/support/global-setup.ts --test-name-pattern "keeps the attempt baseline with continue_current, then moves" test/intake/bulk-mapping.test.ts
+  ✔ keeps the attempt baseline with continue_current, then moves the draft to the head with continue_on_head (4180.575041ms)
+  ℹ tests 1
+  ℹ pass 1
+  ℹ fail 0
+
+Run 2: the whole file
+  node --test --test-global-setup=test/support/global-setup.ts test/intake/bulk-mapping.test.ts
+  ℹ tests 17
+  ℹ pass 17
+  ℹ fail 0
+
+Checks
+  npx tsc -p tsconfig.json --noEmit              exit 0
+  npx eslint test/intake/bulk-mapping.test.ts    exit 0
+  node --test ... test/static/*.test.ts          tests 76, pass 76, fail 0
+  git status before commit: only test/intake/bulk-mapping.test.ts modified

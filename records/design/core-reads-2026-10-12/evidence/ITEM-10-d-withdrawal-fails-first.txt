@@ -1,0 +1,11 @@
+  ✖ names the SuperAdmin while a withdrawal without continuation holds unfiled work (1669.23648ms)
+✖ who existing work under launch control is pending on (1672.272261ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ names the SuperAdmin while a withdrawal without continuation holds unfiled work (1669.23648ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+    actual: [ 'superadmin', 'withdrawal_continuation_not_permitted', 'record_existing_work_treatment', 180n ],
+    expected: [ 'superadmin', 'withdrawal_continuation_not_permitted', 'record_outcome', 180n ],

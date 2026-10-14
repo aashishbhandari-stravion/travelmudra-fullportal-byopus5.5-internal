@@ -1,0 +1,9 @@
+# test/core/catalogue-impact.test.ts 'refuses a second approval once the travel agent declined; a retried approval of an open transition returns it; a hold stays available' before the change, 2026-10-13
+  ✖ refuses a second approval once the travel agent declined; a retried approval of an open transition returns it; a hold stays available (1547.408511ms)
+✖ structural transitions of Core's applications (1550.251656ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+✖ failing tests:
+✖ refuses a second approval once the travel agent declined; a retried approval of an open transition returns it; a hold stays available (1547.408511ms)
+  Error: expected impact_decision_not_allowed, got {"status":"accepted","replayed":false,"operationId":"opr_6SVDFEFM5HWB0NDTR5JTBMWZP9","result":{"resource":{"type":"application","id":"app_14BZX62M15HFCER4PZBHCAG5FV"},"summary":{"transitionId":"stt_1G85FS7H89PTFPPR3S7JYPH2TY","taAuthorityRequired":true}}}

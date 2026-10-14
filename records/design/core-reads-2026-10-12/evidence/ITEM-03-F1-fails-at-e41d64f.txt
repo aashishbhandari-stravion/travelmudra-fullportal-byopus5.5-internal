@@ -1,0 +1,30 @@
+# F1 at e41d64f (source without the change; test file copied in), 2026-10-13T15:38:17+05:30
+▶ a mark that held "possibly filed" is resolved with a filing determination
+  ✖ F1: a possibly filed mark with no filing act on record is refused without a filing statement, and the mark keeps guarding the case (1333.453459ms)
+✖ a mark that held "possibly filed" is resolved with a filing determination (1338.184686ms)
+ℹ tests 1
+ℹ suites 1
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16874.277694
+
+✖ failing tests:
+
+test at test/operations/protection-mark-filing.test.ts:154:3
+✖ F1: a possibly filed mark with no filing act on record is refused without a filing statement, and the mark keeps guarding the case (1333.453459ms)
+  AssertionError [ERR_ASSERTION]: {"status":"accepted","replayed":false,"operationId":"opr_3WWH02S7314RM7JX2Q4FMNQCFK","result":{"resource":{"type":"application","id":"app_0WGJWDXZ5FJVMFHG693W3SV20P"},"summary":{"applicationId":"app_0WGJWDXZ5FJVMFHG693W3SV20P","markId":"pmk_2DJK19K8QZ2JYCJ0SQX15A740K"}}}
+  + actual - expected
+  
+  + 'accepted'
+  - 'rejected'
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'accepted',
+    expected: 'rejected',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
